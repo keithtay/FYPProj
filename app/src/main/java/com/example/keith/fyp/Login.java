@@ -32,6 +32,7 @@ public class Login extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+            //testing
         }
 
         return super.onOptionsItemSelected(item);
