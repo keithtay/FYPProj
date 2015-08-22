@@ -24,14 +24,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/imageView"
-                android:src="@drawable/PCCLogo2" />
+                android:src="@drawable/pcclogo" />
         </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/layer2">
+            android:id="@+id/layer2"
+            android:paddingRight="120dp">
 
             <LinearLayout
                 android:orientation="vertical"
@@ -68,19 +69,26 @@
                 android:layout_weight="1">
 
                 <EditText
-                    android:layout_width="400dp"
+                    android:layout_width="350dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/editText"
                     android:textSize="30dp" />
 
-                <EditText
-                    android:layout_width="400dp"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:ems="10"
-                    android:id="@+id/editText2"
-                    android:textSize="30dp"
-                    android:paddingTop="25dp" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:paddingTop="20dp">
+
+                    <EditText
+                        android:layout_width="350dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:ems="10"
+                        android:id="@+id/editText2"
+                        android:textSize="30dp" />
+                </LinearLayout>
+
             </LinearLayout>
         </LinearLayout>
 
