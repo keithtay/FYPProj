@@ -9,7 +9,7 @@ import com.example.keith.fyp.R;
 /**
  * Created by Keith on 24/8/2015.
  */
-public class Patient extends ActionBarActivity {
+public class PatientActivity extends ActionBarActivity {
 
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);

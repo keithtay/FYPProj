@@ -10,23 +10,23 @@
         android:label="Pear"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".views.Login"
+            android:name=".views.LoginActivity"
             android:label="Pear"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:windowSoftInputMode="adjustResize" >
-
-        </activity>
-        <activity
-            android:name=".views.Patient"
-            android:label="Person Centred Care" />
-        <activity
-            android:name=".views.PatientList"
-            android:label="@string/title_activity_patientlist" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".views.Patient"
+            android:label="Person Centred Care" />
+        <activity
+            android:name=".views.PatientListActivity"
+            android:label="@string/title_activity_patientlist" >
+
         </activity>
     </application>
 

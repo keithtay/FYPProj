@@ -17,7 +17,7 @@ import com.example.keith.fyp.R;
 import com.example.keith.fyp.utils.UnitConverter;
 
 
-public class Login extends ActionBarActivity {
+public class LoginActivity extends ActionBarActivity {
     Button button;
     EditText et1;
     String Username;
@@ -89,11 +89,10 @@ public class Login extends ActionBarActivity {
 
             @Override
             public void onClick(View arg0) {
-                Username = et1.getText().toString();
-                Toast.makeText(getApplicationContext(), "Welcome back " + Username + "!", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(context, Patient.class);
+//                Username = et1.getText().toString();
+//                Toast.makeText(getApplicationContext(), "Welcome back " + Username + "!", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(context, PatientListActivity.class);
                 startActivity(intent);
-
             }
         });
     }
