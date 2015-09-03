@@ -2,6 +2,9 @@
 
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/primary</item>
+
+        <item name="material_drawer_selected">#01ffffff</item>
+        <item name="material_drawer_selected_text">@color/primary</item>
     </style>
 
     <style name="AppTheme" parent="AppTheme.Base">
