@@ -8,16 +8,17 @@
         android:label="Pear"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Login"
+            android:name=".views.Login"
             android:label="Pear"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".Patient"
+            android:name=".views.Patient"
             android:label="Person Centred Care"></activity>
     </application>
 

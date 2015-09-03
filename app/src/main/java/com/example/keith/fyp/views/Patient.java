@@ -1,8 +1,10 @@
-package com.example.keith.fyp;
+package com.example.keith.fyp.views;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
+
+import com.example.keith.fyp.R;
 
 /**
  * Created by Keith on 24/8/2015.
