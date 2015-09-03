@@ -1,7 +1,7 @@
 <resources>
 
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light">
-
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/primary</item>
     </style>
 
     <style name="AppTheme" parent="AppTheme.Base">
