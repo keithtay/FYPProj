@@ -1,4 +1,4 @@
-package com.example.keith.fyp.views;
+package com.example.keith.fyp.views.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,10 +11,8 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.example.keith.fyp.R;
-import com.example.keith.fyp.utils.UnitConverter;
 
 
 public class LoginActivity extends ActionBarActivity {

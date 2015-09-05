@@ -10,6 +10,8 @@
     <string name="title_activity_patientlist">Patient List</string>
     <string name="action_setting">Setting</string>
     <string name="action_patient_search">Search Patient</string>
+    <string name="no_search_patient_result_notif">There is currently no patient with \'%1$s\' in their name</string>
+    <string name="no_patient_notif">Currently there is no patient registered</string>
 
 
 </resources>

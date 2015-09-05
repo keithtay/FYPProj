@@ -2,20 +2,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.keith.fyp.views.PatientListActivity">
+    tools:context="com.example.keith.fyp.views.activities.PatientListActivity">
 
     <RelativeLayout
         android:id="@+id/contentWrapper"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
+        <com.example.keith.fyp.views.EmptyRecyclerView
             android:id="@+id/patientListGrid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:padding="@dimen/activity_content_root_padding"></android.support.v7.widget.RecyclerView>
+            android:padding="@dimen/activity_content_root_padding"></com.example.keith.fyp.views.EmptyRecyclerView>
 
+        <LinearLayout
+            android:id="@+id/noSearchResultContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/noSearchResultNotif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_search_patient_result_notif"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/noPatientContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:layout_marginBottom="16dp"
+                android:src="@drawable/ic_no_patient" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_patient_notif"
+                android:textAlignment="center"
+                android:textSize="24sp" />
+        </LinearLayout>
     </RelativeLayout>
-
 </RelativeLayout>

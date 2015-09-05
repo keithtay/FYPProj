@@ -1,21 +1,19 @@
-package com.example.keith.fyp.views;
+package com.example.keith.fyp.views.activities;
 
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.v7.widget.SearchView;
-import android.widget.Toast;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.utils.CrossfadeWrapper;
+import com.example.keith.fyp.views.EmptyRecyclerView;
 import com.example.keith.fyp.views.adapters.PatientListAdapter;
 import com.mikepenz.crossfader.Crossfader;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -40,7 +38,7 @@ public class PatientListActivity extends ActionBarActivity {
     private AccountHeader accountHeader;
     private MiniDrawer miniDrawer = null;
     private Crossfader crossFader;
-    private RecyclerView patientListRecyclerView;
+    private EmptyRecyclerView patientListRecyclerView;
     private PatientListAdapter patientListAdapter;
 
     @Override
@@ -53,8 +51,10 @@ public class PatientListActivity extends ActionBarActivity {
         // ================
         patientListAdapter = new PatientListAdapter(this, getPatientList());
 
-        patientListRecyclerView = (RecyclerView) findViewById(R.id.patientListGrid);
+        patientListRecyclerView = (EmptyRecyclerView) findViewById(R.id.patientListGrid);
         patientListRecyclerView.setAdapter(patientListAdapter);
+        patientListRecyclerView.setNoSearchResultView(findViewById(R.id.noSearchResultContainer));
+        patientListRecyclerView.setNoPatientView(findViewById(R.id.noPatientContainer));
         int numOfColumn = 4;
         patientListRecyclerView.setLayoutManager(new GridLayoutManager(this, numOfColumn));
         patientListRecyclerView.addItemDecoration(
@@ -215,6 +215,8 @@ public class PatientListActivity extends ActionBarActivity {
 
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setQueryHint(getString(R.string.action_patient_search));
+
+        patientListRecyclerView.setSearchFieldView(searchView);
 
         SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
             @Override

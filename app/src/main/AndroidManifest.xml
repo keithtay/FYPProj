@@ -10,17 +10,17 @@
         android:label="Pear"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".views.LoginActivity"
+            android:name=".views.activities.LoginActivity"
             android:label="Pear"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:windowSoftInputMode="adjustResize" >
 
         </activity>
         <activity
-            android:name=".views.PatientActivity"
+            android:name=".views.activities.PatientActivity"
             android:label="Person Centred Care" />
         <activity
-            android:name=".views.PatientListActivity"
+            android:name=".views.activities.PatientListActivity"
             android:label="@string/title_activity_patientlist" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

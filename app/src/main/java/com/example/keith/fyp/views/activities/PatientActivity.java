@@ -1,4 +1,4 @@
-package com.example.keith.fyp.views;
+package com.example.keith.fyp.views.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;

@@ -1,4 +1,4 @@
-package com.example.keith.fyp.views;
+package com.example.keith.fyp.views.layouts;
 
 import android.content.Context;
 import android.util.AttributeSet;
