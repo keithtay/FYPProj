@@ -8,6 +8,8 @@
     <string name="password">Password</string>
     <string name="username">Username</string>
     <string name="title_activity_patientlist">Patient List</string>
-    <string name="action_setting">Search</string>
+    <string name="action_setting">Setting</string>
+    <string name="action_patient_search">Search Patient</string>
+
 
 </resources>

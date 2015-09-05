@@ -14,18 +14,21 @@
             android:label="Pear"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:windowSoftInputMode="adjustResize" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
-            android:name=".views.Patient"
+            android:name=".views.PatientActivity"
             android:label="Person Centred Care" />
         <activity
             android:name=".views.PatientListActivity"
             android:label="@string/title_activity_patientlist" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
 
         </activity>
     </application>

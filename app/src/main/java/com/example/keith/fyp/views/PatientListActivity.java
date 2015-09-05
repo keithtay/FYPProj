@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.support.v7.widget.SearchView;
+import android.widget.Toast;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Patient;
@@ -197,7 +199,7 @@ public class PatientListActivity extends ActionBarActivity {
                 "345634",
                 "745234"};
 
-        for(int i=0; i<patientPhotos.length; i++) {
+        for (int i = 0; i < patientPhotos.length; i++) {
             Patient newPatient = new Patient(patientNames[i], patientNric[i], patientPhotos[i]);
             patientList.add(newPatient);
         }
@@ -210,6 +212,25 @@ public class PatientListActivity extends ActionBarActivity {
         super.onCreateOptionsMenu(menu);
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_patientlist, menu);
+
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setQueryHint(getString(R.string.action_patient_search));
+
+        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String query) {
+                patientListAdapter.getFilter().filter(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return true;
+            }
+        };
+
+        searchView.setOnQueryTextListener(queryTextListener);
+
         return true;
     }
 
@@ -221,7 +242,8 @@ public class PatientListActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_search) {
+
             return true;
             //testing
         }
@@ -239,8 +261,8 @@ public class PatientListActivity extends ActionBarActivity {
         @Override
         public void getItemOffsets(Rect outRect, View view,
                                    RecyclerView parent, RecyclerView.State state) {
-            outRect.left = space/2;
-            outRect.right = space/2;
+            outRect.left = space / 2;
+            outRect.right = space / 2;
             outRect.bottom = space;
         }
     }
