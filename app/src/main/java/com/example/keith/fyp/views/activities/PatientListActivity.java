@@ -3,7 +3,6 @@ package com.example.keith.fyp.views.activities;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,7 +12,7 @@ import android.support.v7.widget.SearchView;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.utils.CrossfadeWrapper;
-import com.example.keith.fyp.views.EmptyRecyclerView;
+import com.example.keith.fyp.views.EmptyAndAutofitRecyclerView;
 import com.example.keith.fyp.views.adapters.PatientListAdapter;
 import com.mikepenz.crossfader.Crossfader;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -38,7 +37,7 @@ public class PatientListActivity extends ActionBarActivity {
     private AccountHeader accountHeader;
     private MiniDrawer miniDrawer = null;
     private Crossfader crossFader;
-    private EmptyRecyclerView patientListRecyclerView;
+    private EmptyAndAutofitRecyclerView patientListRecyclerView;
     private PatientListAdapter patientListAdapter;
 
     @Override
@@ -51,12 +50,10 @@ public class PatientListActivity extends ActionBarActivity {
         // ================
         patientListAdapter = new PatientListAdapter(this, getPatientList());
 
-        patientListRecyclerView = (EmptyRecyclerView) findViewById(R.id.patientListGrid);
+        patientListRecyclerView = (EmptyAndAutofitRecyclerView) findViewById(R.id.patientListGrid);
         patientListRecyclerView.setAdapter(patientListAdapter);
         patientListRecyclerView.setNoSearchResultView(findViewById(R.id.noSearchResultContainer));
         patientListRecyclerView.setNoPatientView(findViewById(R.id.noPatientContainer));
-        int numOfColumn = 4;
-        patientListRecyclerView.setLayoutManager(new GridLayoutManager(this, numOfColumn));
         patientListRecyclerView.addItemDecoration(
                 new SpacesItemDecoration((int) getResources().getDimension(R.dimen.activity_content_root_padding)));
 
@@ -265,7 +262,23 @@ public class PatientListActivity extends ActionBarActivity {
                                    RecyclerView parent, RecyclerView.State state) {
             outRect.left = space / 2;
             outRect.right = space / 2;
-            outRect.bottom = space;
+            outRect.bottom = space / 2;
+            outRect.top = space / 2;
+
+            int numOfColumn = 4;
+            int numOfChild = parent.getChildCount();
+            int numOfItemInLastCol = (numOfChild % numOfColumn) + 1;
+            int lastRowStartIndex = numOfChild - numOfItemInLastCol;
+
+            // First row
+            if(parent.getChildAdapterPosition(view) / numOfColumn == 0) {
+                outRect.top = space;
+            }
+
+            // Last row
+            if(parent.getChildAdapterPosition(view) >= lastRowStartIndex) {
+                outRect.bottom = space;
+            }
         }
     }
 }

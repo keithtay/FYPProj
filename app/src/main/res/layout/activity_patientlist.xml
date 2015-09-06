@@ -9,12 +9,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.example.keith.fyp.views.EmptyRecyclerView
+        <com.example.keith.fyp.views.EmptyAndAutofitRecyclerView
             android:id="@+id/patientListGrid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            android:padding="@dimen/activity_content_root_padding"></com.example.keith.fyp.views.EmptyRecyclerView>
+            android:columnWidth="300dp"
+            android:paddingLeft="@dimen/activity_content_root_padding"
+            android:paddingRight="@dimen/activity_content_root_padding"></com.example.keith.fyp.views.EmptyAndAutofitRecyclerView>
 
         <LinearLayout
             android:id="@+id/noSearchResultContainer"
