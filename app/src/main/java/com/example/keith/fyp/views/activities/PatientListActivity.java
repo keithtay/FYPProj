@@ -14,6 +14,7 @@ import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.utils.CrossfadeWrapper;
 import com.example.keith.fyp.views.EmptyAndAutofitRecyclerView;
 import com.example.keith.fyp.views.adapters.PatientListAdapter;
+import com.melnykov.fab.FloatingActionButton;
 import com.mikepenz.crossfader.Crossfader;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -44,6 +45,7 @@ public class PatientListActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patientlist);
+
 
         // ================
         // Prepare the patient list
