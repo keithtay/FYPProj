@@ -286,5 +286,5 @@
     <color name="ripple">@color/white</color>
     <color name="accent">@color/pink_A200</color>
     <color name="list_item_active_bg">@color/light_green_50</color>
-
+    <color name="list_item_divider">@color/grey_200</color>
 </resources>

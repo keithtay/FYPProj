@@ -8,7 +8,9 @@
         android:id="@+id/infoCategListView"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:choiceMode="singleChoice"></ListView>
+        android:choiceMode="singleChoice"
+        android:divider="@color/list_item_divider"
+        android:dividerHeight="1dp"></ListView>
 
     <View
         android:layout_width="match_parent"
