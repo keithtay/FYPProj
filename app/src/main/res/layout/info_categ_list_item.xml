@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:gravity="center_vertical"
+    android:text="Info Category"
+    android:paddingLeft="@dimen/list_item_padding"
+    android:textSize="20sp"
+    android:background="@drawable/list_item_bg"/>

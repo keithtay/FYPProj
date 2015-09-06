@@ -5,4 +5,5 @@
     <dimen name="appLogoBigWidth">400dp</dimen>
     <dimen name="appLogoSmallWidth">150dp</dimen>
     <dimen name="activity_content_root_padding">16dp</dimen>
+    <dimen name="list_item_padding">24dp</dimen>
 </resources>

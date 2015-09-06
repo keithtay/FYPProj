@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
+    <color name="transparent">#00FFFFFF</color>
 
     <color name="red_50">#FFEBEE</color>
     <color name="red_100">#FFCDD2</color>
@@ -284,5 +285,6 @@
     <color name="primary_pressed">@color/light_green_700</color>
     <color name="ripple">@color/white</color>
     <color name="accent">@color/pink_A200</color>
+    <color name="list_item_active_bg">@color/light_green_50</color>
 
 </resources>

@@ -34,12 +34,20 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".CreatePatientActivity"
+            android:name=".views.activities.CreatePatientActivity"
             android:label="@string/title_activity_create_patient"
-            android:parentActivityName=".views.activities.PatientListActivity">
+            android:parentActivityName=".views.activities.PatientListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.activities.PatientListActivity" />
+        </activity>
+        <activity
+            android:name=".views.activities.CreatePatientFormActivity"
+            android:label="@string/title_activity_create_patient_form"
+            android:parentActivityName=".views.activities.CreatePatientActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".views.activities.CreatePatientActivity" />
         </activity>
     </application>
 
