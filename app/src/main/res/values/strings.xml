@@ -12,6 +12,11 @@
     <string name="action_patient_search">Search Patient</string>
     <string name="no_search_patient_result_notif">There is currently no patient with \'%1$s\' in their name</string>
     <string name="no_patient_notif">Currently there is no patient registered</string>
+    <string name="nav_patient_list">Patient List</string>
+    <string name="nav_notification">Notification</string>
+    <string name="nav_account">Account</string>
+    <string name="nav_settings">Settings</string>
+    <string name="title_activity_create_patient">CreatePatientActivity</string>
 
 
 </resources>
