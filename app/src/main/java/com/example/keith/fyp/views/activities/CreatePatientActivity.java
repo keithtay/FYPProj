@@ -1,21 +1,35 @@
 package com.example.keith.fyp.views.activities;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.app.FragmentTransaction;
+import android.content.res.Configuration;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.models.Patient;
+import com.example.keith.fyp.utils.CreatePatientFormFragmentDecoder;
+import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.views.fragments.CreatePatientInfoCategListFragment;
-import com.example.keith.fyp.views.fragments.CreatePatientInfoFormFragment;
+import com.example.keith.fyp.views.fragments.CreatePatientInfoFormEmergencyContactFragment;
+import com.example.keith.fyp.views.fragments.CreatePatientInfoFormPersonalInfoFragment;
 
 public class CreatePatientActivity extends AppCompatActivity implements CreatePatientInfoCategListFragment.Communicator {
 
     private CreatePatientInfoCategListFragment infoCategListFragment;
-    private CreatePatientInfoFormFragment infoFormFragment;
+    private CreatePatientInfoFormPersonalInfoFragment infoFormContainerFragment;
+
     private FragmentManager fragmentManager;
+    private CreatePatientInfoFormPersonalInfoFragment personalInfoFragment;
+    private CreatePatientInfoFormEmergencyContactFragment emergencyContactFragment;
+
+    private Patient createdPatient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +41,8 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         fragmentManager = getFragmentManager();
         infoCategListFragment = (CreatePatientInfoCategListFragment) fragmentManager.findFragmentById(R.id.CreatePatientInfoCategListFragment);
         infoCategListFragment.setCommunicator(this);
+
+        createdPatient = DataHolder.getCreatedPatient();
     }
 
     @Override
@@ -44,25 +60,36 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         switch (item.getItemId()) {
             case android.R.id.home:
                 // app icon in action bar clicked; goto parent activity.
-                this.finish();
+                DataHolder.resetCreatedPatient();
+                NavUtils.navigateUpFromSameTask(this);
                 return true;
-            default:
-                return super.onOptionsItemSelected(item);
         }
+        return true;
     }
 
     @Override
     public void respond(int index) {
-        infoFormFragment = (CreatePatientInfoFormFragment) fragmentManager.findFragmentById(R.id.CreatePatientInfoFormFragment);
+        int screenOrientation = getResources().getConfiguration().orientation;
 
-        if(infoFormFragment != null && infoFormFragment.isVisible()) {
+        Fragment fragmentToBeDisplayed = CreatePatientFormFragmentDecoder.getFragment(index);
+
+        if(screenOrientation == Configuration.ORIENTATION_LANDSCAPE) {
             // In landscape orientation
-            infoFormFragment.changeData(index);
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.CreatePatientInfoFormFragmentContainer, fragmentToBeDisplayed);
+            transaction.addToBackStack(null);
+            transaction.commit();
         } else {
             // In portrait orientation
             Intent intent = new Intent(this, CreatePatientFormActivity.class);
             intent.putExtra("selectedCategory", index);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        DataHolder.resetCreatedPatient();
     }
 }

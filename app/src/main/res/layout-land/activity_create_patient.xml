@@ -16,11 +16,10 @@
         android:layout_height="fill_parent"
         android:background="@drawable/shadow_right"></View>
 
-    <fragment
-        android:id="@+id/CreatePatientInfoFormFragment"
-        android:name="com.example.keith.fyp.views.fragments.CreatePatientInfoFormFragment"
+    <LinearLayout
+        android:id="@+id/CreatePatientInfoFormFragmentContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        android:layout_weight="1"></LinearLayout>
 
 </LinearLayout>

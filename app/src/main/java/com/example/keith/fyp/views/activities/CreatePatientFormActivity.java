@@ -1,18 +1,28 @@
 package com.example.keith.fyp.views.activities;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.keith.fyp.R;
-import com.example.keith.fyp.views.fragments.CreatePatientInfoCategListFragment;
-import com.example.keith.fyp.views.fragments.CreatePatientInfoFormFragment;
+import com.example.keith.fyp.models.Patient;
+import com.example.keith.fyp.utils.CreatePatientFormFragmentDecoder;
+import com.example.keith.fyp.utils.DataHolder;
+import com.example.keith.fyp.views.fragments.CreatePatientInfoFormPersonalInfoFragment;
 
 public class CreatePatientFormActivity extends AppCompatActivity {
 
-    private CreatePatientInfoFormFragment infoFormFragment;
+    private FragmentManager fragmentManager;
+
+    private Patient createdPatient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,10 +31,17 @@ public class CreatePatientFormActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        createdPatient = DataHolder.getCreatedPatient();
+
         Intent intent = getIntent();
-        int selectedCategory = intent.getIntExtra("selectedCategory",0);
-        infoFormFragment = (CreatePatientInfoFormFragment) getFragmentManager().findFragmentById(R.id.CreatePatientInfoFormFragment);
-        infoFormFragment.changeData(selectedCategory);
+        int selectedCategoryIndex = intent.getIntExtra("selectedCategory",0);
+        Fragment fragmentToBeDisplayed = CreatePatientFormFragmentDecoder.getFragment(selectedCategoryIndex);
+
+        fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.CreatePatientInfoFormFragmentContainer, fragmentToBeDisplayed);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @Override
@@ -47,5 +64,15 @@ public class CreatePatientFormActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            // Go back to parent activity since this activity is mainly for portrait
+            NavUtils.navigateUpFromSameTask(this);
+        }
     }
 }

@@ -44,7 +44,8 @@
         <activity
             android:name=".views.activities.CreatePatientFormActivity"
             android:label="@string/title_activity_create_patient_form"
-            android:parentActivityName=".views.activities.CreatePatientActivity" >
+            android:parentActivityName=".views.activities.CreatePatientActivity"
+            android:configChanges="orientation|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.activities.CreatePatientActivity" />
