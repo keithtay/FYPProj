@@ -5,10 +5,48 @@
 
         <item name="material_drawer_selected">#01ffffff</item>
         <item name="material_drawer_selected_text">@color/primary</item>
+
+        <item name="android:textColorPrimary">@color/text_color_default</item>
+        <item name="android:textViewStyle">@style/MyTextViewStyle</item>
     </style>
 
     <style name="AppTheme" parent="AppTheme.Base">
 
     </style>
+
+    <style name="MyTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/text_color_default</item>
+    </style>
+
+    <style name="typo_headline">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="typo_title">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">21sp</item>
+    </style>
+
+    <style name="typo_subhead">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="typo_body2">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="typo_body1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
 
 </resources>

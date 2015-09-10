@@ -10,13 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.utils.CreatePatientFormFragmentDecoder;
 import com.example.keith.fyp.utils.DataHolder;
-import com.example.keith.fyp.views.fragments.CreatePatientInfoFormPersonalInfoFragment;
 
 public class CreatePatientFormActivity extends AppCompatActivity {
 
