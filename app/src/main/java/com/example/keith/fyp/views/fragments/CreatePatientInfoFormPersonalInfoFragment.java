@@ -2,7 +2,6 @@ package com.example.keith.fyp.views.fragments;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -18,24 +17,18 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.PatientFormSpec;
 
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.w3c.dom.Text;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Calendar;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
@@ -62,10 +55,10 @@ public class CreatePatientInfoFormPersonalInfoFragment extends CreatePatientInfo
 
         rootView = (LinearLayout) inflater.inflate(R.layout.fragment_create_patient_info_form_personal_info, container, false);
 
-        patientFormSpecs.add(new PatientFormSpec(R.id.first_name_text_view, "name", TEXT_VIEW));
-        patientFormSpecs.add(new PatientFormSpec(R.id.nric_text_view, "nric", TEXT_VIEW));
+        patientFormSpecs.add(new PatientFormSpec(R.id.first_name_edit_text, "name", TEXT_VIEW));
+        patientFormSpecs.add(new PatientFormSpec(R.id.nric_edit_text, "nric", TEXT_VIEW));
 
-        dobTextView = (EditText) rootView.findViewById(R.id.dob_text_view);
+        dobTextView = (EditText) rootView.findViewById(R.id.dob_date_picker);
         dobTextView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -129,7 +122,7 @@ public class CreatePatientInfoFormPersonalInfoFragment extends CreatePatientInfo
             }
         });
 
-        phoneNumberTextView = (EditText) rootView.findViewById(R.id.phone_number_text_view);
+        phoneNumberTextView = (EditText) rootView.findViewById(R.id.phone_number_edit_text);
         phoneNumberTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
