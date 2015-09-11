@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
+
 /**
  * Created by Sutrisno on 3/9/2015.
  */
@@ -20,6 +22,7 @@ public class Patient {
     private String guardianFullName;
     private String guardianContactNumber;
     private String guardianEmail;
+    private ArrayList<Allergy> allergyList = new ArrayList<>();
 
     public String getGuardianFullName() {
         return guardianFullName;
@@ -135,5 +138,13 @@ public class Patient {
 
     public void setDob(DateTime dob) {
         this.dob = dob;
+    }
+
+    public ArrayList<Allergy> getAllergyList() {
+        return allergyList;
+    }
+
+    public void setAllergyList(ArrayList<Allergy> allergyList) {
+        this.allergyList = allergyList;
     }
 }

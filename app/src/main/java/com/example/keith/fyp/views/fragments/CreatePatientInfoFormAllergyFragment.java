@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Allergy;
+import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.views.adapters.AllergyListAdapter;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormF
 
         rootView = (LinearLayout) inflater.inflate(R.layout.fragment_create_patient_info_form_allergy, container, false);
 
-        allergyList = new ArrayList<>();
+        allergyList = DataHolder.getCreatedPatient().getAllergyList();
         allergyListAdapter = new AllergyListAdapter(getActivity(), this, allergyList);
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -100,6 +101,7 @@ public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormF
         Allergy newAllergy = new Allergy(allergyName, allergyReaction, allergyNotes);
         allergyList.add(newAllergy);
         allergyListAdapter.notifyDataSetChanged();
+        DataHolder.getCreatedPatient().setAllergyList(allergyList);
 
         resetNewAllergyFields();
 
