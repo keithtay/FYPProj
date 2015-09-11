@@ -3,23 +3,19 @@ package com.example.keith.fyp.views.adapters;
 import android.content.Context;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Filter;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Allergy;
-import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.views.fragments.CreatePatientInfoFormAllergyFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,6 +58,13 @@ public class AllergyListAdapter extends RecyclerView.Adapter<AllergyListAdapter.
         EditText allergyReaction;
         EditText allergyNotes;
         ImageView menuButton;
+        ExpandableLayout expandableLayout;
+        Button cancelButton;
+        Button saveButton;
+
+        String oldAllergyName;
+        String oldAllergyReaction;
+        String oldAllergyNotes;
 
         public AllergyListViewHolder(View itemView) {
             super(itemView);
@@ -69,7 +72,30 @@ public class AllergyListAdapter extends RecyclerView.Adapter<AllergyListAdapter.
             allergyReaction = (EditText) itemView.findViewById(R.id.allergy_list_reaction_edit_text);
             allergyNotes = (EditText) itemView.findViewById(R.id.allergy_list_notes_edit_text);
             menuButton = (ImageView) itemView.findViewById(R.id.menu_button);
+            expandableLayout = (ExpandableLayout) itemView.findViewById(R.id.edit_allergy_expandable_layout);
+            cancelButton = (Button) itemView.findViewById(R.id.edit_allergy_cancel_button);
+            saveButton = (Button) itemView.findViewById(R.id.edit_allergy_save_button);
             menuButton.setOnClickListener(this);
+
+            setFormEditable(false);
+
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setFormEditable(false);
+                    if(expandableLayout.isOpened()) {
+                        expandableLayout.hide();
+                    }
+
+                    restoreOldFieldsValue();
+                }
+            });
+        }
+
+        private void restoreOldFieldsValue() {
+            allergyName.setText(oldAllergyName);
+            allergyReaction.setText(oldAllergyReaction);
+            allergyNotes.setText(oldAllergyNotes);
         }
 
         @Override
@@ -84,17 +110,33 @@ public class AllergyListAdapter extends RecyclerView.Adapter<AllergyListAdapter.
 
         @Override
         public boolean onMenuItemClick(MenuItem item) {
-            int selectedItemIdx = getAdapterPosition();
-
             switch (item.getItemId()) {
                 case R.id.action_allergy_edit:
+                    oldAllergyName = allergyName.getText().toString();
+                    oldAllergyReaction = allergyReaction.getText().toString();
+                    oldAllergyNotes = allergyNotes.getText().toString();
+
+                    if(!expandableLayout.isOpened()) {
+                        expandableLayout.show();
+                    }
+                    setFormEditable(true);
                     return true;
                 case R.id.action_allergy_delete:
+                    int selectedItemIdx = getAdapterPosition();
                     fragment.deleteItem(selectedItemIdx);
                     return true;
                 default:
                     return false;
             }
+        }
+
+        private void setFormEditable(boolean isEditable) {
+            allergyName.setFocusable(isEditable);
+            allergyReaction.setFocusable(isEditable);
+            allergyNotes.setFocusable(isEditable);
+            allergyName.setFocusableInTouchMode(isEditable);
+            allergyReaction.setFocusableInTouchMode(isEditable);
+            allergyNotes.setFocusableInTouchMode(isEditable);
         }
     }
 }
