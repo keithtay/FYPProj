@@ -141,8 +141,10 @@ public class CreatePatientInfoFormFragment extends Fragment {
                         @Override
                         public void onTextChanged(CharSequence s, int start, int before, int count) {
                             try {
-                                DateTime date = dateFormat.parseDateTime(s.toString());
-                                PropertyUtils.setProperty(createdPatient, spec.getAttributeName(), date);
+                                if(s.toString() != null && !s.toString().isEmpty()) {
+                                    DateTime date = dateFormat.parseDateTime(s.toString());
+                                    PropertyUtils.setProperty(createdPatient, spec.getAttributeName(), date);
+                                }
                             } catch (IllegalAccessException e) {
                                 e.printStackTrace();
                             } catch (InvocationTargetException e) {
