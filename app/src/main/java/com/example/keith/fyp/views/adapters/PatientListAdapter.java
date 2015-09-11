@@ -2,7 +2,6 @@ package com.example.keith.fyp.views.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +14,6 @@ import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Patient;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -48,7 +45,7 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
     public void onBindViewHolder(PatientListViewHolder holder, int position) {
         Patient currentPatient = filteredPatientList.get(position);
         holder.patientPhoto.setImageResource(currentPatient.getPhotoId());
-        holder.patientName.setText(currentPatient.getName());
+        holder.patientName.setText(currentPatient.getFirstName());
         holder.patientNric.setText(currentPatient.getNric());
     }
 
@@ -101,7 +98,7 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
                 this.filteredPatientList.addAll(this.patientList);
             } else {
                 for (final Patient patient : this.patientList) {
-                    if (patient.getName().toLowerCase().contains(constaintStr)) {
+                    if (patient.getFirstName().toLowerCase().contains(constaintStr)) {
                         this.filteredPatientList.add(patient);
                     }
                 }

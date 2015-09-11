@@ -39,7 +39,7 @@ public class PatientListActivity extends AppCompatActivity {
         patientListRecyclerView.setNoSearchResultView(findViewById(R.id.noSearchResultContainer));
         patientListRecyclerView.setNoPatientView(findViewById(R.id.noPatientContainer));
         patientListRecyclerView.addItemDecoration(
-                new SpacesItemDecoration((int) getResources().getDimension(R.dimen.activity_content_root_padding)));
+                new SpacesItemDecoration((int) getResources().getDimension(R.dimen.activity_content_container_padding)));
 
         UtilsUi.setNavigationDrawer(this, savedInstanceState);
     }

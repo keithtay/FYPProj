@@ -15,8 +15,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnWidth="300dp"
-            android:paddingLeft="@dimen/activity_content_root_padding"
-            android:paddingRight="@dimen/activity_content_root_padding"></com.example.keith.fyp.views.EmptyAndAutofitRecyclerView>
+            android:paddingLeft="@dimen/activity_content_container_padding"
+            android:paddingRight="@dimen/activity_content_container_padding"></com.example.keith.fyp.views.EmptyAndAutofitRecyclerView>
 
         <com.melnykov.fab.FloatingActionButton
             android:id="@+id/createPatientFab"
