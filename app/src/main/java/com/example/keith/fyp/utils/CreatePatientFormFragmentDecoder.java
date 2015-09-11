@@ -32,12 +32,6 @@ public class CreatePatientFormFragmentDecoder {
             case 5:
                 fragmentToBeDisplayed = new CreatePatientInfoFormEmergencyContactFragment();
                 break;
-            case 6:
-                fragmentToBeDisplayed = new CreatePatientInfoFormPersonalInfoFragment();
-                break;
-            case 7:
-                fragmentToBeDisplayed = new CreatePatientInfoFormEmergencyContactFragment();
-                break;
         }
 
         return fragmentToBeDisplayed;

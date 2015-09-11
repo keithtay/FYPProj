@@ -25,9 +25,7 @@ public class CreatePatientInfoCategListFragment extends Fragment implements Adap
 
         String[] infoCategList = {
                 "Personal Information",
-                "Emergency Contact",
-                "Alergy",
-                "Album",
+                "Allergy",
                 "Social History",
                 "Prescription",
                 "Routinity",
