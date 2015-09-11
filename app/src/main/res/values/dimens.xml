@@ -14,4 +14,6 @@
     <dimen name="activity_content_container_padding">@dimen/med_spacing</dimen>
     <dimen name="paper_card_padding">@dimen/big_spacing</dimen>
     <dimen name="paper_card_row_spacing">@dimen/med_spacing</dimen>
+    <dimen name="paper_card_row_spacing_half">@dimen/sml_spacing</dimen>
+    <dimen name="padding_flat_button">16dp</dimen>
 </resources>

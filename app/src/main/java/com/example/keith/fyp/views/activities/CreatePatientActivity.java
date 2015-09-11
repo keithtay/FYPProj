@@ -16,7 +16,7 @@ import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.utils.CreatePatientFormFragmentDecoder;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.views.fragments.CreatePatientInfoCategListFragment;
-import com.example.keith.fyp.views.fragments.CreatePatientInfoFormEmergencyContactFragment;
+import com.example.keith.fyp.views.fragments.CreatePatientInfoFormVitalFragment;
 import com.example.keith.fyp.views.fragments.CreatePatientInfoFormPersonalInfoFragment;
 
 public class CreatePatientActivity extends AppCompatActivity implements CreatePatientInfoCategListFragment.Communicator {
@@ -26,7 +26,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
 
     private FragmentManager fragmentManager;
     private CreatePatientInfoFormPersonalInfoFragment personalInfoFragment;
-    private CreatePatientInfoFormEmergencyContactFragment emergencyContactFragment;
+    private CreatePatientInfoFormVitalFragment emergencyContactFragment;
 
     private Patient createdPatient;
 

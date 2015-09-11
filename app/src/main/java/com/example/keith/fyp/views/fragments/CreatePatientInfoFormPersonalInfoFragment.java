@@ -39,11 +39,7 @@ import java.util.Calendar;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 
-public class CreatePatientInfoFormPersonalInfoFragment extends CreatePatientInfoFormFragment implements Serializable {
-
-    private InputMethodManager inputManager;
-
-    private Activity activity;
+public class CreatePatientInfoFormPersonalInfoFragment extends CreatePatientInfoFormFragment {
 
     private LinearLayout rootView;
     private MaterialSpinner genderSpinner;
@@ -59,9 +55,6 @@ public class CreatePatientInfoFormPersonalInfoFragment extends CreatePatientInfo
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.init();
-
-        activity = getActivity();
-        inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
 
         rootView = (LinearLayout) inflater.inflate(R.layout.fragment_create_patient_info_form_personal_info, container, false);
 
@@ -176,11 +169,6 @@ public class CreatePatientInfoFormPersonalInfoFragment extends CreatePatientInfo
         }
 
         return rootView;
-    }
-
-    private void hideKeyboard() {
-        inputManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),
-                InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     @Override

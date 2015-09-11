@@ -1,12 +1,15 @@
 package com.example.keith.fyp.views.fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -42,9 +45,14 @@ public class CreatePatientInfoFormFragment extends Fragment {
 
     protected final DateTimeFormatter dateFormat = DateTimeFormat.forPattern("d MMM yyyy");
 
+    protected Activity activity;
+    protected InputMethodManager inputManager;
+
     public void init() {
         createdPatient = DataHolder.getCreatedPatient();
         patientFormSpecs = new ArrayList<>();
+        activity = getActivity();
+        inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 
     // Fill the form with the previously inserted value and add listener on change value
@@ -158,5 +166,10 @@ public class CreatePatientInfoFormFragment extends Fragment {
 
             }
         }
+    }
+
+    protected void hideKeyboard() {
+        inputManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
     }
 }

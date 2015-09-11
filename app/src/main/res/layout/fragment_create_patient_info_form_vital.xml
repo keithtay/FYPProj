@@ -27,17 +27,9 @@
                     android:orientation="vertical"
                     android:padding="@dimen/paper_card_padding">
 
-                    <ImageView
-                        android:id="@+id/photo_image_view"
-                        android:layout_width="180dp"
-                        android:layout_height="240dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/add_photo"></ImageView>
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/paper_card_padding"
                         android:orientation="horizontal">
 
                         <android.support.design.widget.TextInputLayout
@@ -46,12 +38,13 @@
                             android:layout_weight="1">
 
                             <EditText
-                                android:id="@+id/first_name_edit_text"
+                                android:id="@+id/vital_date_picker"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="First Name"
-                                android:inputType="textCapWords"
-                                android:nextFocusDown="@+id/last_name_edit_text" />
+                                android:editable="false"
+                                android:focusable="false"
+                                android:hint="Date Taken"
+                                android:inputType="date" />
                         </android.support.design.widget.TextInputLayout>
 
                         <View
@@ -64,10 +57,10 @@
                             android:layout_weight="1">
 
                             <EditText
-                                android:id="@+id/last_name_edit_text"
+                                android:id="@+id/vital_time_picker"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Last Name"
+                                android:hint="Time Taken"
                                 android:inputType="textCapWords"
                                 android:nextFocusDown="@+id/nric_edit_text" />
                         </android.support.design.widget.TextInputLayout>
@@ -86,10 +79,10 @@
                             android:layout_weight="1">
 
                             <EditText
-                                android:id="@+id/nric_edit_text"
+                                android:id="@+id/vital_label_spinner"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="NRIC"
+                                android:hint="Before/After Meal"
                                 android:inputType="textCapCharacters"
                                 android:nextFocusDown="@+id/address_edit_text" />
                         </android.support.design.widget.TextInputLayout>
@@ -104,11 +97,11 @@
                             android:layout_weight="1">
 
                             <EditText
-                                android:id="@+id/address_edit_text"
+                                android:id="@+id/temperature_edit_text"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Address"
-                                android:inputType="textCapWords"
+                                android:hint="Temperature (\u00B0C)"
+                                android:inputType="number"
                                 android:nextFocusDown="@+id/home_number_edit_text" />
                         </android.support.design.widget.TextInputLayout>
 
@@ -126,11 +119,11 @@
                             android:layout_weight="1">
 
                             <EditText
-                                android:id="@+id/home_number_edit_text"
+                                android:id="@+id/blood_pressure_systol_edit_text"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Home Number"
-                                android:inputType="phone"
+                                android:hint="Blood Pressure (Systol)"
+                                android:inputType="number"
                                 android:nextFocusDown="@+id/phone_number_edit_text" />
                         </android.support.design.widget.TextInputLayout>
 
@@ -144,12 +137,12 @@
                             android:layout_weight="1">
 
                             <EditText
-                                android:id="@+id/phone_number_edit_text"
+                                android:id="@+id/blood_pressure_diastol_edit_text"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Phone Number"
+                                android:hint="Blood Pressure (Diastol)"
                                 android:imeOptions="actionNext"
-                                android:inputType="phone"
+                                android:inputType="number"
                                 android:nextFocusDown="@+id/gender_spinner" />
                         </android.support.design.widget.TextInputLayout>
 
@@ -161,67 +154,16 @@
                         android:layout_marginTop="@dimen/paper_card_row_spacing"
                         android:orientation="horizontal">
 
-                        <fr.ganfra.materialspinner.MaterialSpinner
-                            android:id="@+id/gender_spinner"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="-8dp"
-                            android:layout_weight="1"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            app:ms_alignLabels="false"
-                            app:ms_arrowColor="@color/text_color_light"
-                            app:ms_arrowSize="12dp"
-                            app:ms_baseColor="@color/text_color_light"
-                            app:ms_errorColor="@color/text_color_error"
-                            app:ms_floatingLabelColor="@color/text_color_light"
-                            app:ms_floatingLabelText="Gender"
-                            app:ms_hint="Gender"
-                            app:ms_multiline="false" />
-
-                        <View
-                            android:layout_width="@dimen/activity_content_container_padding"
-                            android:layout_height="0dp"></View>
-
                         <android.support.design.widget.TextInputLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1">
 
                             <EditText
-                                android:id="@+id/dob_date_picker"
+                                android:id="@+id/height_edit_text"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:editable="false"
-                                android:focusable="false"
-                                android:hint="Date of Birth"
-                                android:inputType="date" />
-                        </android.support.design.widget.TextInputLayout>
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="@dimen/paper_card_row_spacing"
-                        android:background="@color/list_item_divider"></View>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/paper_card_row_spacing"
-                        android:orientation="horizontal">
-
-                        <android.support.design.widget.TextInputLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
-
-                            <EditText
-                                android:id="@+id/guardian_full_name_edit_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Guardian Full Name"
+                                android:hint="Height (cm)"
                                 android:inputType="textCapWords"
                                 android:nextFocusDown="@+id/guardian_contact_number_edit_text" />
                         </android.support.design.widget.TextInputLayout>
@@ -236,11 +178,11 @@
                             android:layout_weight="1">
 
                             <EditText
-                                android:id="@+id/guardian_contact_number_edit_text"
+                                android:id="@+id/weight_edit_text"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Guardian Contact Number"
-                                android:inputType="phone"
+                                android:hint="Weight (kg)"
+                                android:inputType="number"
                                 android:nextFocusDown="@+id/guardian_email_edit_text" />
                         </android.support.design.widget.TextInputLayout>
 
@@ -253,26 +195,16 @@
                         android:orientation="horizontal">
 
                         <android.support.design.widget.TextInputLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
                             <EditText
-                                android:id="@+id/guardian_email_edit_text"
+                                android:id="@+id/vital_notes_edit_text"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Guardian Email"
-                                android:inputType="textEmailAddress" />
+                                android:hint="Notes"
+                                android:inputType="text" />
                         </android.support.design.widget.TextInputLayout>
-
-                        <View
-                            android:layout_width="@dimen/paper_card_row_spacing"
-                            android:layout_height="0dp"></View>
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"></View>
 
                     </LinearLayout>
 

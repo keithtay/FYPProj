@@ -26,10 +26,10 @@ public class CreatePatientInfoCategListFragment extends Fragment implements Adap
         String[] infoCategList = {
                 "Personal Information",
                 "Allergy",
+                "Vital",
                 "Social History",
                 "Prescription",
-                "Routinity",
-                "Vital"};
+                "Routinity",};
 
         ArrayAdapter<String> infoCategAdapter = new ArrayAdapter<>(getActivity(), R.layout.info_categ_list_item, infoCategList);
         infoCategListView.setAdapter(infoCategAdapter);

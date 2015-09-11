@@ -13,14 +13,14 @@ import java.io.Serializable;
 /**
  * Created by Sutrisno on 9/9/2015.
  */
-public class CreatePatientInfoFormEmergencyContactFragment extends CreatePatientInfoFormFragment implements Serializable {
+public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFragment {
     LinearLayout rootView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.init();
 
-        rootView = (LinearLayout) inflater.inflate(R.layout.fragment_create_patient_info_form_emergency_contact, container, false);
+        rootView = (LinearLayout) inflater.inflate(R.layout.fragment_create_patient_info_form_vital, container, false);
 
         return rootView;
     }

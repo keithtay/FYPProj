@@ -2,7 +2,8 @@ package com.example.keith.fyp.utils;
 
 import android.app.Fragment;
 
-import com.example.keith.fyp.views.fragments.CreatePatientInfoFormEmergencyContactFragment;
+import com.example.keith.fyp.views.fragments.CreatePatientInfoFormAllergyFragment;
+import com.example.keith.fyp.views.fragments.CreatePatientInfoFormVitalFragment;
 import com.example.keith.fyp.views.fragments.CreatePatientInfoFormPersonalInfoFragment;
 
 /**
@@ -18,19 +19,19 @@ public class CreatePatientFormFragmentDecoder {
                 fragmentToBeDisplayed = new CreatePatientInfoFormPersonalInfoFragment();
                 break;
             case 1:
-                fragmentToBeDisplayed = new CreatePatientInfoFormEmergencyContactFragment();
+                fragmentToBeDisplayed = new CreatePatientInfoFormAllergyFragment();
                 break;
             case 2:
-                fragmentToBeDisplayed = new CreatePatientInfoFormPersonalInfoFragment();
+                fragmentToBeDisplayed = new CreatePatientInfoFormVitalFragment();
                 break;
             case 3:
-                fragmentToBeDisplayed = new CreatePatientInfoFormEmergencyContactFragment();
+                fragmentToBeDisplayed = new CreatePatientInfoFormVitalFragment();
                 break;
             case 4:
                 fragmentToBeDisplayed = new CreatePatientInfoFormPersonalInfoFragment();
                 break;
             case 5:
-                fragmentToBeDisplayed = new CreatePatientInfoFormEmergencyContactFragment();
+                fragmentToBeDisplayed = new CreatePatientInfoFormVitalFragment();
                 break;
         }
 
