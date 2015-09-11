@@ -16,6 +16,15 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/paper_card_padding" >
 
+            <ImageView
+                android:id="@+id/menu_button"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:paddingLeft="15dp"
+                android:paddingBottom="15dp"
+                android:src="@drawable/ic_arrow_drop_down"></ImageView>
+
             <LinearLayout
                 android:id="@+id/new_allergy_form_first_row"
                 android:layout_width="match_parent"

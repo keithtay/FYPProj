@@ -44,7 +44,7 @@ public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormF
         rootView = (LinearLayout) inflater.inflate(R.layout.fragment_create_patient_info_form_allergy, container, false);
 
         allergyList = new ArrayList<>();
-        allergyListAdapter = new AllergyListAdapter(getActivity(), allergyList);
+        allergyListAdapter = new AllergyListAdapter(getActivity(), this, allergyList);
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
@@ -117,6 +117,11 @@ public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormF
         if(addAllergyExpandableLayout.isOpened()) {
             addAllergyExpandableLayout.hide();
         }
+    }
+
+    public void deleteItem(int selectedItemIdx) {
+        allergyList.remove(selectedItemIdx);
+        allergyListAdapter.notifyDataSetChanged();
     }
 
     class SpacesCardItemDecoration extends RecyclerView.ItemDecoration {
