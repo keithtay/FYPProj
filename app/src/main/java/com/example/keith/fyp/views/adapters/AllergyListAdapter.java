@@ -14,8 +14,10 @@ import android.widget.ImageView;
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Allergy;
+import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.views.fragments.CreatePatientInfoFormAllergyFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -83,11 +85,26 @@ public class AllergyListAdapter extends RecyclerView.Adapter<AllergyListAdapter.
                 @Override
                 public void onClick(View v) {
                     setFormEditable(false);
-                    if(expandableLayout.isOpened()) {
+                    if (expandableLayout.isOpened()) {
                         expandableLayout.hide();
                     }
-
                     restoreOldFieldsValue();
+                }
+            });
+
+            saveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ArrayList<Allergy> allergyList = DataHolder.getCreatedPatient().getAllergyList();
+                    Allergy allergy = allergyList.get(getAdapterPosition());
+                    allergy.setName(allergyName.getText().toString());
+                    allergy.setReaction(allergyReaction.getText().toString());
+                    allergy.setNotes(allergyNotes.getText().toString());
+
+                    setFormEditable(false);
+                    if (expandableLayout.isOpened()) {
+                        expandableLayout.hide();
+                    }
                 }
             });
         }
