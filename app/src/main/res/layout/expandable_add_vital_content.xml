@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:paddingBottom="@dimen/paper_card_row_spacing">
 
@@ -72,19 +73,23 @@
                     android:layout_marginTop="@dimen/paper_card_row_spacing"
                     android:orientation="horizontal">
 
-                    <android.support.design.widget.TextInputLayout
+                    <fr.ganfra.materialspinner.MaterialSpinner
+                        android:id="@+id/vital_label_spinner"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <EditText
-                            android:id="@+id/vital_label_spinner"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Before/After Meal"
-                            android:inputType="textCapCharacters"
-                            android:nextFocusDown="@+id/address_edit_text" />
-                    </android.support.design.widget.TextInputLayout>
+                        android:layout_marginTop="-8dp"
+                        android:layout_weight="1"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        app:ms_alignLabels="false"
+                        app:ms_arrowColor="@color/text_color_light"
+                        app:ms_arrowSize="12dp"
+                        app:ms_baseColor="@color/text_color_light"
+                        app:ms_errorColor="@color/text_color_error"
+                        app:ms_floatingLabelColor="@color/text_color_light"
+                        app:ms_floatingLabelText="Before/After Meal"
+                        app:ms_hint="Before/After Meal"
+                        app:ms_multiline="false" />
 
                     <View
                         android:layout_width="@dimen/activity_content_container_padding"

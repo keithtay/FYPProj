@@ -31,4 +31,10 @@
         <item>Female</item>
     </string-array>
 
+    <string-array name="option_vital_label">
+        <item>Before meal</item>
+        <item>After meal</item>
+    </string-array>
+
+
 </resources>

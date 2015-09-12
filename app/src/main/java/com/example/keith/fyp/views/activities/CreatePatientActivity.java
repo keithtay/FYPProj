@@ -77,7 +77,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
                 inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
             }
-            
+
             // Change fragment
             Fragment fragmentToBeDisplayed = CreatePatientFormFragmentDecoder.getFragment(index);
             FragmentTransaction transaction = fragmentManager.beginTransaction();

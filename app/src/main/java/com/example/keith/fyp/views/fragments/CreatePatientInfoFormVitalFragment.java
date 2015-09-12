@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -12,6 +13,8 @@ import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
 
 import org.joda.time.DateTime;
+
+import fr.ganfra.materialspinner.MaterialSpinner;
 
 /**
  * Created by Sutrisno on 9/9/2015.
@@ -22,6 +25,7 @@ public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFra
     private ExpandableLayout addVitalExpandable;
     private EditText vitalDateTakenTextView;
     private EditText vitalTimeTakenTextView;
+    private MaterialSpinner vitalLabelSpinner;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,6 +60,12 @@ public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFra
                 return false;
             }
         });
+
+        vitalLabelSpinner = (MaterialSpinner) rootView.findViewById(R.id.vital_label_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity,
+                R.array.option_vital_label, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        vitalLabelSpinner.setAdapter(adapter);
 
         return rootView;
     }
