@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_content_container_padding"
+                app:cardElevation="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/paper_card_padding">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <EditText
+                                android:id="@+id/live_with_edit_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Live With"
+                                android:inputType="text"
+                                android:nextFocusDown="@+id/diet_edit_text" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <View
+                            android:layout_width="@dimen/paper_card_row_spacing"
+                            android:layout_height="0dp"></View>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <EditText
+                                android:id="@+id/diet_edit_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Diet"
+                                android:inputType="text" />
+                        </android.support.design.widget.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/paper_card_row_spacing"
+                        android:orientation="horizontal">
+
+                        <fr.ganfra.materialspinner.MaterialSpinner
+                            android:id="@+id/religion_spinner"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            app:ms_alignLabels="false"
+                            app:ms_arrowColor="@color/text_color_light"
+                            app:ms_arrowSize="12dp"
+                            app:ms_baseColor="@color/text_color_light"
+                            app:ms_errorColor="@color/text_color_error"
+                            app:ms_floatingLabelColor="@color/text_color_light"
+                            app:ms_floatingLabelText="Religion"
+                            app:ms_hint="Religion"
+                            app:ms_multiline="false" />
+
+                        <View
+                            android:layout_width="@dimen/activity_content_container_padding"
+                            android:layout_height="0dp"></View>
+
+                        <fr.ganfra.materialspinner.MaterialSpinner
+                            android:id="@+id/sexually_active_spinner"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            app:ms_alignLabels="false"
+                            app:ms_arrowColor="@color/text_color_light"
+                            app:ms_arrowSize="12dp"
+                            app:ms_baseColor="@color/text_color_light"
+                            app:ms_errorColor="@color/text_color_error"
+                            app:ms_floatingLabelColor="@color/text_color_light"
+                            app:ms_floatingLabelText="Sexually Active"
+                            app:ms_hint="Sexually Active"
+                            app:ms_multiline="false" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/paper_card_row_spacing"
+                        android:orientation="horizontal">
+
+                        <fr.ganfra.materialspinner.MaterialSpinner
+                            android:id="@+id/secondhand_smoker_spinner"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            app:ms_alignLabels="false"
+                            app:ms_arrowColor="@color/text_color_light"
+                            app:ms_arrowSize="12dp"
+                            app:ms_baseColor="@color/text_color_light"
+                            app:ms_errorColor="@color/text_color_error"
+                            app:ms_floatingLabelColor="@color/text_color_light"
+                            app:ms_floatingLabelText="Secondhand Smoker"
+                            app:ms_hint="Secondhand Smoker"
+                            app:ms_multiline="false" />
+
+                        <View
+                            android:layout_width="@dimen/activity_content_container_padding"
+                            android:layout_height="0dp"></View>
+
+                        <fr.ganfra.materialspinner.MaterialSpinner
+                            android:id="@+id/alcohol_use_spinner"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            app:ms_alignLabels="false"
+                            app:ms_arrowColor="@color/text_color_light"
+                            app:ms_arrowSize="12dp"
+                            app:ms_baseColor="@color/text_color_light"
+                            app:ms_errorColor="@color/text_color_error"
+                            app:ms_floatingLabelColor="@color/text_color_light"
+                            app:ms_floatingLabelText="Alcohol Use"
+                            app:ms_hint="Alcohol Use"
+                            app:ms_multiline="false" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/paper_card_row_spacing"
+                        android:orientation="horizontal">
+
+                        <fr.ganfra.materialspinner.MaterialSpinner
+                            android:id="@+id/caffeine_use_spinner"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            app:ms_alignLabels="false"
+                            app:ms_arrowColor="@color/text_color_light"
+                            app:ms_arrowSize="12dp"
+                            app:ms_baseColor="@color/text_color_light"
+                            app:ms_errorColor="@color/text_color_error"
+                            app:ms_floatingLabelColor="@color/text_color_light"
+                            app:ms_floatingLabelText="Caffeine Use"
+                            app:ms_hint="Caffeine Use"
+                            app:ms_multiline="false" />
+
+                        <View
+                            android:layout_width="@dimen/activity_content_container_padding"
+                            android:layout_height="0dp"></View>
+
+                        <fr.ganfra.materialspinner.MaterialSpinner
+                            android:id="@+id/tobacco_use_spinner"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            app:ms_alignLabels="false"
+                            app:ms_arrowColor="@color/text_color_light"
+                            app:ms_arrowSize="12dp"
+                            app:ms_baseColor="@color/text_color_light"
+                            app:ms_errorColor="@color/text_color_error"
+                            app:ms_floatingLabelColor="@color/text_color_light"
+                            app:ms_floatingLabelText="Tobacco Use"
+                            app:ms_hint="Tobacco Use"
+                            app:ms_multiline="false" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/paper_card_row_spacing"
+                        android:orientation="horizontal">
+
+                        <fr.ganfra.materialspinner.MaterialSpinner
+                            android:id="@+id/drug_use_spinner"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            app:ms_alignLabels="false"
+                            app:ms_arrowColor="@color/text_color_light"
+                            app:ms_arrowSize="12dp"
+                            app:ms_baseColor="@color/text_color_light"
+                            app:ms_errorColor="@color/text_color_error"
+                            app:ms_floatingLabelColor="@color/text_color_light"
+                            app:ms_floatingLabelText="Drug Use"
+                            app:ms_hint="Drug Use"
+                            app:ms_multiline="false" />
+
+                        <View
+                            android:layout_width="@dimen/activity_content_container_padding"
+                            android:layout_height="0dp"></View>
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"></View>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="@dimen/paper_card_row_spacing"
+                        android:background="@color/list_item_divider"></View>
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <!-- Make sure there is spacing between the card and the container-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/activity_content_container_padding" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -36,5 +36,26 @@
         <item>After meal</item>
     </string-array>
 
+    <string-array name="option_religion">
+        <item>Christian</item>
+        <item>Catholic</item>
+        <item>Islam</item>
+        <item>Atheist</item>
+        <item>Free Thinker</item>
+        <item>Hindu</item>
+        <item>Buddhist</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="option_yes_no">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="option_frequency">
+        <item>Never</item>
+        <item>Seldom</item>
+        <item>Regular</item>
+    </string-array>
 
 </resources>
