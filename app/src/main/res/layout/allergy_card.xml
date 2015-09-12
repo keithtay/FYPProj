@@ -22,12 +22,13 @@
 
                 <ImageView
                     android:id="@+id/menu_button"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
                     android:layout_alignParentRight="true"
-                    android:paddingLeft="15dp"
-                    android:paddingBottom="15dp"
-                    android:src="@drawable/ic_arrow_drop_down"></ImageView>
+                    android:padding="15dp"
+                    android:layout_marginRight="-10dp"
+                    android:layout_marginTop="-25dp"
+                    android:src="@drawable/ic_more_horiz"></ImageView>
 
                 <LinearLayout
                     android:id="@+id/new_allergy_form_first_row"
