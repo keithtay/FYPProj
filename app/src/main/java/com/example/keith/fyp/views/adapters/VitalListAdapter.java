@@ -53,17 +53,36 @@ public class VitalListAdapter extends RecyclerView.Adapter<VitalListAdapter.Vita
         Vital vital = vitalList.get(position);
         holder.dateTaken.setText(vital.getDateTimeTaken().toString(Global.DATE_FORMAT));
         holder.timeTaken.setText(vital.getDateTimeTaken().toString(Global.TIME_FORMAT));
-        if(vital.isBeforeMeal()) {
-            holder.beforeAfterMeal.setSelection(1);
+        if(vital.isBeforeMeal() != null) {
+            if(vital.isBeforeMeal()) {
+                holder.beforeAfterMeal.setSelection(1);
+            } else {
+                holder.beforeAfterMeal.setSelection(2);
+            }
         } else {
-            holder.beforeAfterMeal.setSelection(2);
+            holder.beforeAfterMeal.setSelection(0);
         }
-        holder.temperature.setText(Float.toString(vital.getTemperature()));
-        holder.temperature.setText(Float.toString(vital.getTemperature()));
-        holder.bloodPressureSystol.setText(Float.toString(vital.getBloodPressureSystol()));
-        holder.bloodPressureDiastol.setText(Float.toString(vital.getBloodPressureDiastol()));
-        holder.height.setText(Float.toString(vital.getHeight()));
-        holder.weight.setText(Float.toString(vital.getWeight()));
+
+        if(vital.getTemperature() != null) {
+            holder.temperature.setText(Float.toString(vital.getTemperature()));
+        }
+
+        if(vital.getBloodPressureSystol() != null) {
+            holder.bloodPressureSystol.setText(Float.toString(vital.getBloodPressureSystol()));
+        }
+
+        if(vital.getBloodPressureDiastol() != null) {
+            holder.bloodPressureDiastol.setText(Float.toString(vital.getBloodPressureDiastol()));
+        }
+
+        if(vital.getHeight() != null) {
+            holder.height.setText(Float.toString(vital.getHeight()));
+        }
+
+        if(vital.getWeight() != null) {
+            holder.weight.setText(Float.toString(vital.getWeight()));
+        }
+
         holder.notes.setText(vital.getNotes());
     }
 
@@ -168,15 +187,37 @@ public class VitalListAdapter extends RecyclerView.Adapter<VitalListAdapter.Vita
                     String beforeOrAfterMeal = beforeAfterMeal.getSelectedItem().toString();
                     if(beforeOrAfterMeal.equals("Before meal")) {
                         vital.setIsBeforeMeal(true);
-                    } else {
+                    } else if(beforeOrAfterMeal.equals("After meal")) {
                         vital.setIsBeforeMeal(false);
+                    } else {
+                        vital.setIsBeforeMeal(null);
                     }
 
-                    vital.setTemperature(Float.parseFloat(temperature.getText().toString()));
-                    vital.setBloodPressureSystol(Float.parseFloat(bloodPressureSystol.getText().toString()));
-                    vital.setBloodPressureDiastol(Float.parseFloat(bloodPressureDiastol.getText().toString()));
-                    vital.setHeight(Float.parseFloat(height.getText().toString()));
-                    vital.setWeight(Float.parseFloat(weight.getText().toString()));
+                    String tempStr = temperature.getText().toString();
+                    if(tempStr != null && !tempStr.isEmpty()) {
+                        vital.setTemperature(Float.parseFloat(tempStr));
+                    }
+
+                    String systolStr = bloodPressureSystol.getText().toString();
+                    if(systolStr != null && !systolStr.isEmpty()) {
+                        vital.setBloodPressureSystol(Float.parseFloat(systolStr));
+                    }
+
+                    String diastolStr = temperature.getText().toString();
+                    if(diastolStr != null && !diastolStr.isEmpty()) {
+                        vital.setBloodPressureDiastol(Float.parseFloat(diastolStr));
+                    }
+
+                    String heightStr = temperature.getText().toString();
+                    if(heightStr != null && !heightStr.isEmpty()) {
+                        vital.setHeight(Float.parseFloat(heightStr));
+                    }
+
+                    String weightStr = temperature.getText().toString();
+                    if(weightStr != null && !weightStr.isEmpty()) {
+                        vital.setWeight(Float.parseFloat(weightStr));
+                    }
+
                     vital.setNotes(notes.getText().toString());
 
                     setFormEditable(false);
@@ -192,8 +233,10 @@ public class VitalListAdapter extends RecyclerView.Adapter<VitalListAdapter.Vita
             timeTaken.setText(oldTimeTaken);
             if(oldBeforeAfterMeal.equals("Before meal")) {
                 beforeAfterMeal.setSelection(1);
-            } else {
+            } else if(oldBeforeAfterMeal.equals("After meal")) {
                 beforeAfterMeal.setSelection(2);
+            } else {
+                beforeAfterMeal.setSelection(0);
             }
 
             temperature.setText(oldTemperature);

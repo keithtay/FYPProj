@@ -7,15 +7,15 @@ import org.joda.time.DateTime;
  */
 public class Vital {
     private DateTime dateTimeTaken;
-    private boolean isBeforeMeal;
-    private float temperature;
-    private float bloodPressureSystol;
-    private float bloodPressureDiastol;
-    private float height;
-    private float weight;
+    private Boolean isBeforeMeal;
+    private Float temperature;
+    private Float bloodPressureSystol;
+    private Float bloodPressureDiastol;
+    private Float height;
+    private Float weight;
     private String notes;
 
-    public Vital(DateTime dateTimeTaken, boolean isBeforeMeal, float temperature, float bloodPressureSystol, float bloodPressureDiastol, float height, float weight, String notes) {
+    public Vital(DateTime dateTimeTaken, Boolean isBeforeMeal, Float temperature, Float bloodPressureSystol, Float bloodPressureDiastol, Float height, Float weight, String notes) {
         this.dateTimeTaken = dateTimeTaken;
         this.isBeforeMeal = isBeforeMeal;
         this.temperature = temperature;
@@ -34,51 +34,51 @@ public class Vital {
         this.dateTimeTaken = dateTimeTaken;
     }
 
-    public boolean isBeforeMeal() {
+    public Boolean isBeforeMeal() {
         return isBeforeMeal;
     }
 
-    public void setIsBeforeMeal(boolean isBeforeMeal) {
+    public void setIsBeforeMeal(Boolean isBeforeMeal) {
         this.isBeforeMeal = isBeforeMeal;
     }
 
-    public float getTemperature() {
+    public Float getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(float temperature) {
+    public void setTemperature(Float temperature) {
         this.temperature = temperature;
     }
 
-    public float getBloodPressureSystol() {
+    public Float getBloodPressureSystol() {
         return bloodPressureSystol;
     }
 
-    public void setBloodPressureSystol(float bloodPressureSystol) {
+    public void setBloodPressureSystol(Float bloodPressureSystol) {
         this.bloodPressureSystol = bloodPressureSystol;
     }
 
-    public float getBloodPressureDiastol() {
+    public Float getBloodPressureDiastol() {
         return bloodPressureDiastol;
     }
 
-    public void setBloodPressureDiastol(float bloodPressureDiastol) {
+    public void setBloodPressureDiastol(Float bloodPressureDiastol) {
         this.bloodPressureDiastol = bloodPressureDiastol;
     }
 
-    public float getHeight() {
+    public Float getHeight() {
         return height;
     }
 
-    public void setHeight(float height) {
+    public void setHeight(Float height) {
         this.height = height;
     }
 
-    public float getWeight() {
+    public Float getWeight() {
         return weight;
     }
 
-    public void setWeight(float weight) {
+    public void setWeight(Float weight) {
         this.weight = weight;
     }
 

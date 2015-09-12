@@ -173,31 +173,31 @@ public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFra
         String dateTakenStr = vitalDateTakenEditText.getText().toString();
         String timeTakenStr = vitalTimeTakenEditText.getText().toString();
 
-        float temperature = 0;
+        Float temperature = null;
         String temperatureStr = temperatureEditText.getText().toString();
         if(temperatureStr != null && !temperatureStr.isEmpty()) {
             temperature = Float.parseFloat(temperatureStr);
         }
 
-        float bloodPressureSystol = 0;
+        Float bloodPressureSystol = null;
         String bloodPressureSystolStr = bloodPressureSystolEditText.getText().toString();
         if(bloodPressureSystolStr != null && !bloodPressureSystolStr.isEmpty()) {
             bloodPressureSystol = Float.parseFloat(bloodPressureSystolStr);
         }
 
-        float bloodPressureDiastol = 0;
+        Float bloodPressureDiastol = null;
         String bloodPressureDiastolStr = bloodPressureDiastolEditText.getText().toString();
         if(bloodPressureDiastolStr != null && !bloodPressureDiastolStr.isEmpty()) {
             bloodPressureDiastol = Float.parseFloat(bloodPressureDiastolStr);
         }
 
-        float height = 0;
+        Float height = null;
         String heightStr = heightEditText.getText().toString();
         if(heightStr != null && !heightStr.isEmpty()) {
             height = Float.parseFloat(heightStr);
         }
 
-        float weight = 0;
+        Float weight = null;
         String weightStr = weightEditText.getText().toString();
         if(weightStr != null && !weightStr.isEmpty()) {
             weight = Float.parseFloat(weightStr);
@@ -215,12 +215,14 @@ public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFra
         dateTimeToSave = dateTimeToSave.withHourOfDay(timeTaken.getHourOfDay());
         dateTimeToSave = dateTimeToSave.withMinuteOfHour(timeTaken.getMinuteOfHour());
 
-        boolean isBeforeMeal = false;
+        Boolean isBeforeMeal = null;
         if (beforeOrAfterMealStr.equals("Before meal")) {
             isBeforeMeal = true;
+        } else if(beforeOrAfterMealStr.equals("After meal")) {
+            isBeforeMeal = false;
         }
 
-        Vital newVital = new Vital(dateTimeToSave, isBeforeMeal, temperature, bloodPressureSystol, height, height, weight, notes);
+        Vital newVital = new Vital(dateTimeToSave, isBeforeMeal, temperature, bloodPressureSystol, bloodPressureDiastol, height, weight, notes);
         vitalList.add(0,newVital);
         vitalListAdapter.notifyItemInserted(0);
 
