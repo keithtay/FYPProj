@@ -101,9 +101,7 @@ public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFra
                     vitalDateTakenEditText.setText(currentDateStr);
                     vitalTimeTakenEditText.setText(currentTimeStr);
                 } else {
-                    // TODO: reset all field
-                    vitalDateTakenEditText.setText(null);
-                    vitalTimeTakenEditText.setText(null);
+                    resetNewVitalFields();
                 }
                 return false;
             }
@@ -148,7 +146,7 @@ public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFra
 
     public void deleteItem(int selectedItemIdx) {
         vitalList.remove(selectedItemIdx);
-        vitalListAdapter.notifyDataSetChanged();
+        vitalListAdapter.notifyItemRemoved(selectedItemIdx);
     }
 
     private void closeExpandableAddVital() {
@@ -223,8 +221,8 @@ public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFra
         }
 
         Vital newVital = new Vital(dateTimeToSave, isBeforeMeal, temperature, bloodPressureSystol, height, height, weight, notes);
-        vitalList.add(0, newVital);
-        vitalListAdapter.notifyDataSetChanged();
+        vitalList.add(0,newVital);
+        vitalListAdapter.notifyItemInserted(0);
 
         resetNewVitalFields();
 

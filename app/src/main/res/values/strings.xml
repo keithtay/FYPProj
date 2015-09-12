@@ -25,6 +25,7 @@
     <string name="action_allergy_edit">Edit</string>
     <string name="action_allergy_delete">Delete</string>
     <string name="select_time_add_new_vital">Select the time of which vital is measured</string>
+    <string name="add_new_prescription">Add New Prescription</string>
 
     <string-array name="option_gender">
         <item>Male</item>
@@ -34,6 +35,12 @@
     <string-array name="option_vital_label">
         <item>Before meal</item>
         <item>After meal</item>
+    </string-array>
+
+    <string-array name="option_prescription_before_after_meal">
+        <item>Before meal</item>
+        <item>After meal</item>
+        <item>No preferences</item>
     </string-array>
 
     <string-array name="option_religion">

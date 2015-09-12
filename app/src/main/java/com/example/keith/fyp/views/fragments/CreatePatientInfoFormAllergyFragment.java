@@ -118,7 +118,7 @@ public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormF
 
         Allergy newAllergy = new Allergy(allergyName, allergyReaction, allergyNotes);
         allergyList.add(0, newAllergy);
-        allergyListAdapter.notifyDataSetChanged();
+        allergyListAdapter.notifyItemInserted(0);
 
         resetNewAllergyFields();
 
@@ -140,6 +140,6 @@ public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormF
 
     public void deleteItem(int selectedItemIdx) {
         allergyList.remove(selectedItemIdx);
-        allergyListAdapter.notifyDataSetChanged();
+        allergyListAdapter.notifyItemRemoved(selectedItemIdx);
     }
 }
