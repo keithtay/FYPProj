@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -21,6 +22,8 @@ import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.views.adapters.AllergyListAdapter;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 
 /**
@@ -28,6 +31,7 @@ import java.util.ArrayList;
  */
 public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormFragment {
     private LinearLayout rootView;
+    private LinearLayout addNewAllergyHeaderContainer;
     private RecyclerView allergyRecyclerView;
     private LinearLayoutManager layoutManager;
     private AllergyListAdapter allergyListAdapter;
@@ -58,11 +62,23 @@ public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormF
 
         addAllergyExpandableLayout = (ExpandableLayout) rootView.findViewById(R.id.add_allergy_expandable_layout);
 
+        addNewAllergyHeaderContainer = (LinearLayout) rootView.findViewById(R.id.add_new_allergy_header_container);
+        addNewAllergyHeaderContainer.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (addAllergyExpandableLayout.isOpened()) {
+                    resetNewAllergyFields();
+                }
+                return false;
+            }
+        });
+
         cancelNewAllergyButton = (Button) rootView.findViewById(R.id.cancel_allergy_button);
         cancelNewAllergyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 closeExpandableAddAllergy();
+                resetNewAllergyFields();
             }
         });
 
