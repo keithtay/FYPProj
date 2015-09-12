@@ -21,6 +21,7 @@ import com.example.keith.fyp.models.Allergy;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.views.adapters.AllergyListAdapter;
+import com.example.keith.fyp.views.decorators.SpacesCardItemDecoration;
 
 import org.joda.time.DateTime;
 
@@ -140,27 +141,5 @@ public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormF
     public void deleteItem(int selectedItemIdx) {
         allergyList.remove(selectedItemIdx);
         allergyListAdapter.notifyDataSetChanged();
-    }
-
-    class SpacesCardItemDecoration extends RecyclerView.ItemDecoration {
-        private int space;
-
-        public SpacesCardItemDecoration(int space) {
-            this.space = space;
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view,
-                                   RecyclerView parent, RecyclerView.State state) {
-            outRect.bottom = space / 2;
-            outRect.top = space / 2;
-
-            int numOfChild = parent.getChildCount();
-
-            // Last item
-            if (parent.getChildAdapterPosition(view) + 1 >= numOfChild) {
-                outRect.bottom = space * 2;
-            }
-        }
     }
 }

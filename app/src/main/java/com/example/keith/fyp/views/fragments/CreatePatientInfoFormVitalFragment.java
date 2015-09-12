@@ -1,18 +1,33 @@
 package com.example.keith.fyp.views.fragments;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.models.Allergy;
+import com.example.keith.fyp.models.Vital;
+import com.example.keith.fyp.utils.DataHolder;
+import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.views.adapters.VitalListAdapter;
+import com.example.keith.fyp.views.decorators.SpacesCardItemDecoration;
 
 import org.joda.time.DateTime;
+
+import java.sql.Date;
+import java.util.ArrayList;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 
@@ -23,9 +38,25 @@ public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFra
     private LinearLayout rootView;
     private LinearLayout addNewVitalHeaderContainer;
     private ExpandableLayout addVitalExpandable;
-    private EditText vitalDateTakenTextView;
-    private EditText vitalTimeTakenTextView;
+
+    private EditText vitalDateTakenEditText;
+    private EditText vitalTimeTakenEditText;
+    private EditText temperatureEditText;
+    private EditText bloodPressureSystolEditText;
+    private EditText bloodPressureDiastolEditText;
+    private EditText heightEditText;
+    private EditText weightEditText;
+    private EditText notesEditText;
     private MaterialSpinner vitalLabelSpinner;
+
+    private RecyclerView vitalRecyclerView;
+
+    private Button cancelNewVitalButton;
+    private Button addNewVitalButton;
+
+    private ArrayList<Vital> vitalList;
+    private VitalListAdapter vitalListAdapter;
+    private LinearLayoutManager layoutManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,11 +64,29 @@ public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFra
 
         rootView = (LinearLayout) inflater.inflate(R.layout.fragment_create_patient_info_form_vital, container, false);
 
-        vitalDateTakenTextView = (EditText) rootView.findViewById(R.id.vital_date_picker);
-        setupEditTextToBeDatePicker(vitalDateTakenTextView);
+        temperatureEditText = (EditText) rootView.findViewById(R.id.temperature_edit_text);
+        bloodPressureSystolEditText = (EditText) rootView.findViewById(R.id.blood_pressure_systol_edit_text);
+        bloodPressureDiastolEditText = (EditText) rootView.findViewById(R.id.blood_pressure_diastol_edit_text);
+        heightEditText = (EditText) rootView.findViewById(R.id.height_edit_text);
+        weightEditText = (EditText) rootView.findViewById(R.id.weight_edit_text);
+        notesEditText = (EditText) rootView.findViewById(R.id.vital_notes_edit_text);
 
-        vitalTimeTakenTextView = (EditText) rootView.findViewById(R.id.vital_time_picker);
-        setupEditTextToBeTimePicker(vitalTimeTakenTextView);
+        notesEditText.setImeActionLabel("Add", EditorInfo.IME_ACTION_DONE);
+        notesEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    createAndAddVital();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        vitalDateTakenEditText = (EditText) rootView.findViewById(R.id.vital_date_picker);
+        setupEditTextToBeDatePicker(vitalDateTakenEditText);
+
+        vitalTimeTakenEditText = (EditText) rootView.findViewById(R.id.vital_time_picker);
+        setupEditTextToBeTimePicker(vitalTimeTakenEditText);
 
         addVitalExpandable = (ExpandableLayout) rootView.findViewById(R.id.add_vital_expandable_layout);
 
@@ -46,16 +95,15 @@ public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFra
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (!addVitalExpandable.isOpened()) {
-                    // TODO: fill in current date and time
                     DateTime currentDateTime = DateTime.now();
-                    String currentDateStr = currentDateTime.toString(dateFormat);
-                    String currentTimeStr = currentDateTime.toString(timeFormat);
-                    vitalDateTakenTextView.setText(currentDateStr);
-                    vitalTimeTakenTextView.setText(currentTimeStr);
+                    String currentDateStr = currentDateTime.toString(Global.DATE_FORMAT);
+                    String currentTimeStr = currentDateTime.toString(Global.TIME_FORMAT);
+                    vitalDateTakenEditText.setText(currentDateStr);
+                    vitalTimeTakenEditText.setText(currentTimeStr);
                 } else {
                     // TODO: reset all field
-                    vitalDateTakenTextView.setText(null);
-                    vitalTimeTakenTextView.setText(null);
+                    vitalDateTakenEditText.setText(null);
+                    vitalTimeTakenEditText.setText(null);
                 }
                 return false;
             }
@@ -67,6 +115,120 @@ public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFra
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         vitalLabelSpinner.setAdapter(adapter);
 
+        vitalList = DataHolder.getCreatedPatient().getVitalList();
+        vitalListAdapter = new VitalListAdapter(getActivity(), this, vitalList);
+        layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        vitalRecyclerView = (RecyclerView) rootView.findViewById(R.id.vital_recycler_view);
+        vitalRecyclerView.setLayoutManager(layoutManager);
+        vitalRecyclerView.setAdapter(vitalListAdapter);
+        vitalRecyclerView.addItemDecoration(
+                new SpacesCardItemDecoration((int) getResources().getDimension(R.dimen.paper_card_row_spacing)));
+
+        cancelNewVitalButton = (Button) rootView.findViewById(R.id.cancel_add_vital_button);
+        cancelNewVitalButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeExpandableAddVital();
+                resetNewVitalFields();
+            }
+        });
+
+        addNewVitalButton = (Button) rootView.findViewById(R.id.add_new_vital_button);
+        addNewVitalButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createAndAddVital();
+            }
+        });
+
         return rootView;
+    }
+
+    public void deleteItem(int selectedItemIdx) {
+        vitalList.remove(selectedItemIdx);
+        vitalListAdapter.notifyDataSetChanged();
+    }
+
+    private void closeExpandableAddVital() {
+        if (addVitalExpandable.isOpened()) {
+            addVitalExpandable.hide();
+        }
+    }
+
+    private void resetNewVitalFields() {
+        vitalDateTakenEditText.setText(null);
+        vitalTimeTakenEditText.setText(null);
+        temperatureEditText.setText(null);
+        bloodPressureSystolEditText.setText(null);
+        bloodPressureDiastolEditText.setText(null);
+        heightEditText.setText(null);
+        weightEditText.setText(null);
+        notesEditText.setText(null);
+        vitalLabelSpinner.setSelection(0);
+    }
+
+    private void createAndAddVital() {
+        // TODO: check for valid entry
+
+        String dateTakenStr = vitalDateTakenEditText.getText().toString();
+        String timeTakenStr = vitalTimeTakenEditText.getText().toString();
+
+        float temperature = 0;
+        String temperatureStr = temperatureEditText.getText().toString();
+        if(temperatureStr != null && !temperatureStr.isEmpty()) {
+            temperature = Float.parseFloat(temperatureStr);
+        }
+
+        float bloodPressureSystol = 0;
+        String bloodPressureSystolStr = bloodPressureSystolEditText.getText().toString();
+        if(bloodPressureSystolStr != null && !bloodPressureSystolStr.isEmpty()) {
+            bloodPressureSystol = Float.parseFloat(bloodPressureSystolStr);
+        }
+
+        float bloodPressureDiastol = 0;
+        String bloodPressureDiastolStr = bloodPressureDiastolEditText.getText().toString();
+        if(bloodPressureDiastolStr != null && !bloodPressureDiastolStr.isEmpty()) {
+            bloodPressureDiastol = Float.parseFloat(bloodPressureDiastolStr);
+        }
+
+        float height = 0;
+        String heightStr = heightEditText.getText().toString();
+        if(heightStr != null && !heightStr.isEmpty()) {
+            height = Float.parseFloat(heightStr);
+        }
+
+        float weight = 0;
+        String weightStr = weightEditText.getText().toString();
+        if(weightStr != null && !weightStr.isEmpty()) {
+            weight = Float.parseFloat(weightStr);
+        }
+
+        String notes = notesEditText.getText().toString();
+        String beforeOrAfterMealStr = vitalLabelSpinner.getSelectedItem().toString();
+
+        DateTime dateTaken = Global.DATE_FORMAT.parseDateTime(dateTakenStr);
+        DateTime timeTaken = Global.TIME_FORMAT.parseDateTime(timeTakenStr);
+        DateTime dateTimeToSave = DateTime.now();
+        dateTimeToSave = dateTimeToSave.withYear(dateTaken.getYear());
+        dateTimeToSave = dateTimeToSave.withMonthOfYear(dateTaken.getMonthOfYear());
+        dateTimeToSave = dateTimeToSave.withDayOfMonth(dateTaken.getDayOfMonth());
+        dateTimeToSave = dateTimeToSave.withHourOfDay(timeTaken.getHourOfDay());
+        dateTimeToSave = dateTimeToSave.withMinuteOfHour(timeTaken.getMinuteOfHour());
+
+        boolean isBeforeMeal = false;
+        if (beforeOrAfterMealStr.equals("Before meal")) {
+            isBeforeMeal = true;
+        }
+
+        Vital newVital = new Vital(dateTimeToSave, isBeforeMeal, temperature, bloodPressureSystol, height, height, weight, notes);
+        vitalList.add(0, newVital);
+        vitalListAdapter.notifyDataSetChanged();
+
+        resetNewVitalFields();
+
+        closeExpandableAddVital();
+        hideKeyboard();
     }
 }

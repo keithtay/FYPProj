@@ -8,6 +8,8 @@
 
         <item name="android:textColorPrimary">@color/text_color_default</item>
         <item name="android:textViewStyle">@style/MyTextViewStyle</item>
+
+        <item name="android:editTextStyle">@style/MyEditTextStyle</item>
     </style>
 
     <style name="AppTheme" parent="AppTheme.Base">
@@ -15,7 +17,11 @@
     </style>
 
     <style name="MyTextViewStyle" parent="android:Widget.TextView">
-        <item name="android:textColor">@color/text_color_default</item>
+        <item name="android:textColor">@drawable/edit_text_selector</item>
+    </style>
+
+    <style name="MyEditTextStyle" parent="android:Widget.EditText">
+        <item name="android:textColor">@drawable/edit_text_selector</item>
     </style>
 
     <style name="typo_headline">
