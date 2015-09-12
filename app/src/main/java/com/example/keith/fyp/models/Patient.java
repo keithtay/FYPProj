@@ -23,6 +23,7 @@ public class Patient {
     private String guardianContactNumber;
     private String guardianEmail;
     private ArrayList<Allergy> allergyList = new ArrayList<>();
+    private ArrayList<Vital> vitalList = new ArrayList<>();
 
     public String getGuardianFullName() {
         return guardianFullName;
@@ -146,5 +147,13 @@ public class Patient {
 
     public void setAllergyList(ArrayList<Allergy> allergyList) {
         this.allergyList = allergyList;
+    }
+
+    public ArrayList<Vital> getVitalList() {
+        return vitalList;
+    }
+
+    public void setVitalList(ArrayList<Vital> vitalList) {
+        this.vitalList = vitalList;
     }
 }
