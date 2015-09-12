@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:paddingBottom="@dimen/paper_card_row_spacing">
 
@@ -106,7 +106,7 @@
                             android:layout_height="wrap_content"
                             android:hint="Temperature (\u00B0C)"
                             android:inputType="number"
-                            android:nextFocusDown="@+id/home_number_edit_text" />
+                            android:nextFocusDown="@+id/blood_pressure_systol_edit_text" />
                     </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
@@ -128,7 +128,7 @@
                             android:layout_height="wrap_content"
                             android:hint="Blood Pressure (Systol)"
                             android:inputType="number"
-                            android:nextFocusDown="@+id/phone_number_edit_text" />
+                            android:nextFocusDown="@+id/blood_pressure_diastol_edit_text" />
                     </android.support.design.widget.TextInputLayout>
 
                     <View
@@ -147,7 +147,7 @@
                             android:hint="Blood Pressure (Diastol)"
                             android:imeOptions="actionNext"
                             android:inputType="number"
-                            android:nextFocusDown="@+id/gender_spinner" />
+                            android:nextFocusDown="@+id/height_edit_text" />
                     </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
@@ -169,7 +169,7 @@
                             android:layout_height="wrap_content"
                             android:hint="Height (cm)"
                             android:inputType="textCapWords"
-                            android:nextFocusDown="@+id/guardian_contact_number_edit_text" />
+                            android:nextFocusDown="@+id/weight_edit_text" />
                     </android.support.design.widget.TextInputLayout>
 
                     <View
@@ -187,7 +187,7 @@
                             android:layout_height="wrap_content"
                             android:hint="Weight (kg)"
                             android:inputType="number"
-                            android:nextFocusDown="@+id/guardian_email_edit_text" />
+                            android:nextFocusDown="@+id/vital_notes_edit_text" />
                     </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
