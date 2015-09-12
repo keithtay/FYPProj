@@ -5,216 +5,34 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:fillViewport="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/activity_content_container_padding"
+        android:layout_marginRight="@dimen/activity_content_container_padding">
 
-        <LinearLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="@dimen/activity_content_container_padding"
+            android:layout_marginBottom="@dimen/paper_card_row_spacing_half"
+            app:cardElevation="5dp">
 
-            <android.support.v7.widget.CardView
+            <com.andexert.expandablelayout.library.ExpandableLayout xmlns:expandable="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/add_vital_expandable_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_content_container_padding"
-                app:cardElevation="5dp">
+                expandable:el_contentLayout="@layout/expandable_add_vital_content"
+                expandable:el_headerLayout="@layout/expandable_add_vital_header" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/paper_card_padding">
+        </android.support.v7.widget.CardView>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/allergy_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-                        <android.support.design.widget.TextInputLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
+    </LinearLayout>
 
-                            <EditText
-                                android:id="@+id/vital_date_picker"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:editable="false"
-                                android:focusable="false"
-                                android:hint="Date Taken"
-                                android:inputType="date" />
-                        </android.support.design.widget.TextInputLayout>
-
-                        <View
-                            android:layout_width="@dimen/paper_card_row_spacing"
-                            android:layout_height="0dp"></View>
-
-                        <android.support.design.widget.TextInputLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
-
-                            <EditText
-                                android:id="@+id/vital_time_picker"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Time Taken"
-                                android:inputType="textCapWords"
-                                android:nextFocusDown="@+id/nric_edit_text" />
-                        </android.support.design.widget.TextInputLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/paper_card_row_spacing"
-                        android:orientation="horizontal">
-
-                        <android.support.design.widget.TextInputLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
-
-                            <EditText
-                                android:id="@+id/vital_label_spinner"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Before/After Meal"
-                                android:inputType="textCapCharacters"
-                                android:nextFocusDown="@+id/address_edit_text" />
-                        </android.support.design.widget.TextInputLayout>
-
-                        <View
-                            android:layout_width="@dimen/activity_content_container_padding"
-                            android:layout_height="0dp"></View>
-
-                        <android.support.design.widget.TextInputLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
-
-                            <EditText
-                                android:id="@+id/temperature_edit_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Temperature (\u00B0C)"
-                                android:inputType="number"
-                                android:nextFocusDown="@+id/home_number_edit_text" />
-                        </android.support.design.widget.TextInputLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/paper_card_row_spacing"
-                        android:orientation="horizontal">
-
-                        <android.support.design.widget.TextInputLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
-
-                            <EditText
-                                android:id="@+id/blood_pressure_systol_edit_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Blood Pressure (Systol)"
-                                android:inputType="number"
-                                android:nextFocusDown="@+id/phone_number_edit_text" />
-                        </android.support.design.widget.TextInputLayout>
-
-                        <View
-                            android:layout_width="@dimen/activity_content_container_padding"
-                            android:layout_height="0dp"></View>
-
-                        <android.support.design.widget.TextInputLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
-
-                            <EditText
-                                android:id="@+id/blood_pressure_diastol_edit_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Blood Pressure (Diastol)"
-                                android:imeOptions="actionNext"
-                                android:inputType="number"
-                                android:nextFocusDown="@+id/gender_spinner" />
-                        </android.support.design.widget.TextInputLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/paper_card_row_spacing"
-                        android:orientation="horizontal">
-
-                        <android.support.design.widget.TextInputLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
-
-                            <EditText
-                                android:id="@+id/height_edit_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Height (cm)"
-                                android:inputType="textCapWords"
-                                android:nextFocusDown="@+id/guardian_contact_number_edit_text" />
-                        </android.support.design.widget.TextInputLayout>
-
-                        <View
-                            android:layout_width="@dimen/paper_card_row_spacing"
-                            android:layout_height="0dp"></View>
-
-                        <android.support.design.widget.TextInputLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
-
-                            <EditText
-                                android:id="@+id/weight_edit_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Weight (kg)"
-                                android:inputType="number"
-                                android:nextFocusDown="@+id/guardian_email_edit_text" />
-                        </android.support.design.widget.TextInputLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/paper_card_row_spacing"
-                        android:orientation="horizontal">
-
-                        <android.support.design.widget.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <EditText
-                                android:id="@+id/vital_notes_edit_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Notes"
-                                android:inputType="text" />
-                        </android.support.design.widget.TextInputLayout>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-            <!-- Make sure there is spacing between the card and the container-->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/activity_content_container_padding" />
-        </LinearLayout>
-    </ScrollView>
 </LinearLayout>
