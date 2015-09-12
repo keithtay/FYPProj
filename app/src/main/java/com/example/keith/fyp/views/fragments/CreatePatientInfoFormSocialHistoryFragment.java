@@ -97,6 +97,16 @@ public class CreatePatientInfoFormSocialHistoryFragment extends CreatePatientInf
             patientFormSpecs.add(new PatientFormSpec(R.id.tobacco_use_spinner, "tobaccoUse", SPINNER_FREQ_SOCIAL_HISTORY));
             patientFormSpecs.add(new PatientFormSpec(R.id.drug_use_spinner, "drugUse", SPINNER_FREQ_SOCIAL_HISTORY));
 
+            patientFormSpecs.add(new PatientFormSpec(R.id.pet_edit_text, "pet", TEXT_VIEW_SOCIAL_HISTORY));
+            patientFormSpecs.add(new PatientFormSpec(R.id.occupation_edit_text, "occupation", TEXT_VIEW_SOCIAL_HISTORY));
+            patientFormSpecs.add(new PatientFormSpec(R.id.like_edit_text, "like", TEXT_VIEW_SOCIAL_HISTORY));
+            patientFormSpecs.add(new PatientFormSpec(R.id.dislike_edit_text, "dislike", TEXT_VIEW_SOCIAL_HISTORY));
+            patientFormSpecs.add(new PatientFormSpec(R.id.hobby_edit_text, "hobby", TEXT_VIEW_SOCIAL_HISTORY));
+            patientFormSpecs.add(new PatientFormSpec(R.id.habbit_edit_text, "habbit", TEXT_VIEW_SOCIAL_HISTORY));
+            patientFormSpecs.add(new PatientFormSpec(R.id.holiday_exp_edit_text, "holidayExperience", TEXT_VIEW_SOCIAL_HISTORY));
+            patientFormSpecs.add(new PatientFormSpec(R.id.education_edit_text, "education", TEXT_VIEW_SOCIAL_HISTORY));
+            patientFormSpecs.add(new PatientFormSpec(R.id.exercise_edit_text, "exercise", TEXT_VIEW_SOCIAL_HISTORY));
+
             prepareForm(rootView, patientFormSpecs);
         } catch (IllegalAccessException e) {
             e.printStackTrace();

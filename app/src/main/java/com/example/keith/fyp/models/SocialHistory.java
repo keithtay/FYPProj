@@ -14,8 +14,90 @@ public class SocialHistory {
     private String tobaccoUse;
     private String drugUse;
 
+    private String pet;
+    private String occupation;
+    private String like;
+    private String dislike;
+    private String hobby;
+    private String habbit;
+    private String holidayExperience;
+    private String education;
+    private String exercise;
+
     public SocialHistory() {
 
+    }
+
+    public String getPet() {
+        return pet;
+    }
+
+    public void setPet(String pet) {
+        this.pet = pet;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public String getLike() {
+        return like;
+    }
+
+    public void setLike(String like) {
+        this.like = like;
+    }
+
+    public String getDislike() {
+        return dislike;
+    }
+
+    public void setDislike(String dislike) {
+        this.dislike = dislike;
+    }
+
+    public String getHobby() {
+        return hobby;
+    }
+
+    public void setHobby(String hobby) {
+        this.hobby = hobby;
+    }
+
+    public String getHabbit() {
+        return habbit;
+    }
+
+    public void setHabbit(String habbit) {
+        this.habbit = habbit;
+    }
+
+    public String getHolidayExperience() {
+        return holidayExperience;
+    }
+
+    public void setHolidayExperience(String holidayExperience) {
+        this.holidayExperience = holidayExperience;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
+    }
+
+    public String getExercise() {
+        return exercise;
+    }
+
+    public void setExercise(String exercise) {
+        this.exercise = exercise;
     }
 
     public String getLiveWith() {
