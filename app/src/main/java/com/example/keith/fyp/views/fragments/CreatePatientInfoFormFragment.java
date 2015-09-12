@@ -1,7 +1,9 @@
 package com.example.keith.fyp.views.fragments;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.Fragment;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,9 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.keith.fyp.R;
@@ -28,6 +33,7 @@ import org.joda.time.format.DateTimeFormatter;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 import javadz.beanutils.PropertyUtils;
@@ -44,6 +50,7 @@ public class CreatePatientInfoFormFragment extends Fragment {
     protected ArrayList<PatientFormSpec> patientFormSpecs;
 
     protected final DateTimeFormatter dateFormat = DateTimeFormat.forPattern("d MMM yyyy");
+    protected final DateTimeFormatter timeFormat = DateTimeFormat.forPattern("HH:mm");
 
     protected Activity activity;
     protected InputMethodManager inputManager;
@@ -173,5 +180,86 @@ public class CreatePatientInfoFormFragment extends Fragment {
     protected void hideKeyboard() {
         inputManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    protected void setupEditTextToBeDatePicker(final EditText editText) {
+        editText.setFocusable(false);
+
+        editText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int mYear;
+                int mMonth;
+                int mDay;
+
+                String prevSelectedDateStr = editText.getText().toString();
+
+                if (prevSelectedDateStr == null || prevSelectedDateStr.isEmpty()) {
+                    Calendar mcurrentDate = Calendar.getInstance();
+                    mYear = mcurrentDate.get(Calendar.YEAR);
+                    mMonth = mcurrentDate.get(Calendar.MONTH);
+                    mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+                } else {
+                    DateTime date = dateFormat.parseDateTime(prevSelectedDateStr);
+                    mYear = date.getYear();
+                    mMonth = date.getMonthOfYear();
+                    mDay = date.getDayOfMonth();
+                }
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker datepicker, int selectedYear, int selectedMonth, int selectedDay) {
+                        DateTime date = DateTime.now();
+
+                        date = date.withDayOfMonth(selectedDay);
+                        date = date.withMonthOfYear(selectedMonth);
+                        date = date.withYear(selectedYear);
+
+                        String selectedDateStr = date.toString(dateFormat);
+                        editText.setText(selectedDateStr);
+                    }
+                }, mYear, mMonth, mDay);
+                datePickerDialog.setTitle(activity.getString(R.string.select_date_of_birth));
+                datePickerDialog.show();
+            }
+        });
+    }
+
+    protected void setupEditTextToBeTimePicker(final EditText editText) {
+        editText.setFocusable(false);
+        editText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int mHour;
+                int mMinutes;
+
+                String prevSelectedTimeStr = editText.getText().toString();
+
+                if (prevSelectedTimeStr == null || prevSelectedTimeStr.isEmpty()) {
+                    Calendar mcurrentDate = Calendar.getInstance();
+                    mHour = mcurrentDate.get(Calendar.HOUR_OF_DAY);
+                    mMinutes = mcurrentDate.get(Calendar.MINUTE);
+                } else {
+                    DateTime date = timeFormat.parseDateTime(prevSelectedTimeStr);
+                    mHour = date.getHourOfDay();
+                    mMinutes = date.getMinuteOfHour();
+                }
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        DateTime time = DateTime.now();
+
+                        time = time.withHourOfDay(hourOfDay);
+                        time = time.withMinuteOfHour(minute);
+
+                        String selectedTimeStr = time.toString(timeFormat);
+                        editText.setText(selectedTimeStr);
+                    }
+                }, mHour, mMinutes, true);
+
+                timePickerDialog.setTitle(activity.getString(R.string.select_time_add_new_vital));
+                timePickerDialog.show();
+            }
+        });
     }
 }

@@ -1,8 +1,6 @@
 package com.example.keith.fyp.views.fragments;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -15,10 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,14 +23,7 @@ import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.PatientFormSpec;
 import com.example.keith.fyp.utils.DataHolder;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
-import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
-
-import java.util.Calendar;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 
@@ -86,43 +74,7 @@ public class CreatePatientInfoFormPersonalInfoFragment extends CreatePatientInfo
         }
 
         dobTextView = (EditText) rootView.findViewById(R.id.dob_date_picker);
-        dobTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int mYear;
-                int mMonth;
-                int mDay;
-
-                String prevSelectedDateStr = dobTextView.getText().toString();
-
-                if (prevSelectedDateStr == null || prevSelectedDateStr.isEmpty()) {
-                    Calendar mcurrentDate = Calendar.getInstance();
-                    mYear = mcurrentDate.get(Calendar.YEAR);
-                    mMonth = mcurrentDate.get(Calendar.MONTH);
-                    mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
-                } else {
-                    DateTime date = dateFormat.parseDateTime(prevSelectedDateStr);
-                    mYear = date.getYear();
-                    mMonth = date.getMonthOfYear();
-                    mDay = date.getDayOfMonth();
-                }
-
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-                    public void onDateSet(DatePicker datepicker, int selectedYear, int selectedMonth, int selectedDay) {
-                        DateTime date = DateTime.now();
-
-                        date = date.withDayOfMonth(selectedDay);
-                        date = date.withMonthOfYear(selectedMonth);
-                        date = date.withYear(selectedYear);
-
-                        String selectedDateStr = date.toString(dateFormat);
-                        dobTextView.setText(selectedDateStr);
-                    }
-                }, mYear, mMonth, mDay);
-                datePickerDialog.setTitle(activity.getString(R.string.select_date_of_birth));
-                datePickerDialog.show();
-            }
-        });
+        setupEditTextToBeDatePicker(dobTextView);
 
         genderSpinner = (MaterialSpinner) rootView.findViewById(R.id.gender_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity,

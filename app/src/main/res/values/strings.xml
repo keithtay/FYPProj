@@ -24,6 +24,7 @@
     <string name="select_date_of_birth">Select Patient Date of Birth</string>
     <string name="action_allergy_edit">Edit</string>
     <string name="action_allergy_delete">Delete</string>
+    <string name="select_time_add_new_vital">Select the time of which vital is measured</string>
 
     <string-array name="option_gender">
         <item>Male</item>
