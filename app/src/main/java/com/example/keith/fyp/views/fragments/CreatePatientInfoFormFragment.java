@@ -25,6 +25,7 @@ import org.joda.time.DateTime;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
@@ -35,7 +36,11 @@ import javadz.beanutils.PropertyUtils;
  */
 public class CreatePatientInfoFormFragment extends Fragment {
     protected final String TEXT_VIEW = "TextView";
+    protected final String TEXT_VIEW_SOCIAL_HISTORY = "TextViewSocialHistory";
     protected final String SPINNER_GENDER = "SpinnerGender";
+    protected final String SPINNER_RELIGION = "SpinnerReligion";
+    protected final String SPINNER_YES_NO_SOCIAL_HISTORY = "SpinnerYesNoSocialHistory";
+    protected final String SPINNER_FREQ_SOCIAL_HISTORY = "SpinnerFrequencySocialHistory";
     protected final String DATE_PICKER = "DatePicker";
 
     protected Patient createdPatient;
@@ -98,7 +103,7 @@ public class CreatePatientInfoFormFragment extends Fragment {
                                 char toStoreValue = ' ';
                                 if (selectedGender.equals("Male")) {
                                     toStoreValue = 'M';
-                                } else if(selectedGender.equals("Female")) {
+                                } else if (selectedGender.equals("Female")) {
                                     toStoreValue = 'F';
                                 }
                                 PropertyUtils.setProperty(createdPatient, spec.getAttributeName(), toStoreValue);
@@ -137,7 +142,7 @@ public class CreatePatientInfoFormFragment extends Fragment {
                         @Override
                         public void onTextChanged(CharSequence s, int start, int before, int count) {
                             try {
-                                if(s.toString() != null && !s.toString().isEmpty()) {
+                                if (s.toString() != null && !s.toString().isEmpty()) {
                                     DateTime date = Global.DATE_FORMAT.parseDateTime(s.toString());
                                     PropertyUtils.setProperty(createdPatient, spec.getAttributeName(), date);
                                 }
@@ -161,7 +166,144 @@ public class CreatePatientInfoFormFragment extends Fragment {
                         datePicker.setText(dateValue.toString(Global.DATE_FORMAT));
                     }
                     break;
+                case TEXT_VIEW_SOCIAL_HISTORY:
+                    TextView textViewSocialHistory = (TextView) view;
+                    textViewSocialHistory.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            try {
+                                PropertyUtils.setProperty(createdPatient.getSocialHistory(), spec.getAttributeName(), s.toString());
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
+                            } catch (NoSuchMethodException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+
+                        }
+                    });
+
+                    String attributeValueSocialHistoryStr = (String) PropertyUtils.getProperty(createdPatient.getSocialHistory(), spec.getAttributeName());
+                    if (attributeValueSocialHistoryStr != null && !attributeValueSocialHistoryStr.isEmpty()) {
+                        textViewSocialHistory.setText(attributeValueSocialHistoryStr);
+                    }
+                    break;
+                case SPINNER_RELIGION:
+                    final MaterialSpinner religionSpinner = (MaterialSpinner) view;
+                    religionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            try {
+                                String selectedReligion = religionSpinner.getSelectedItem().toString();
+                                PropertyUtils.setProperty(createdPatient.getSocialHistory(), spec.getAttributeName(), selectedReligion);
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
+                            } catch (NoSuchMethodException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+
+                    String patientReligion = (String) PropertyUtils.getProperty(createdPatient.getSocialHistory(), spec.getAttributeName());
+                    if (patientReligion != null && !patientReligion.isEmpty()) {
+                        String[] religionStrArray = getResources().getStringArray(R.array.option_religion);
+                        int idx = Arrays.asList(religionStrArray).indexOf(patientReligion);
+                        religionSpinner.setSelection(idx + 1);
+                    }
+                    break;
+                case SPINNER_YES_NO_SOCIAL_HISTORY:
+                    final MaterialSpinner yesNoSpinner = (MaterialSpinner) view;
+                    yesNoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            try {
+                                String yesOrNo = yesNoSpinner.getSelectedItem().toString();
+                                Boolean isYes;
+
+                                switch (yesOrNo) {
+                                    case "Yes":
+                                        isYes = true;
+                                        break;
+                                    case "No":
+                                        isYes = false;
+                                        break;
+                                    default:
+                                        isYes = null;
+                                        break;
+                                }
+                                PropertyUtils.setProperty(createdPatient.getSocialHistory(), spec.getAttributeName(), isYes);
+
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
+                            } catch (NoSuchMethodException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+
+                    Boolean isYes = (Boolean) PropertyUtils.getProperty(createdPatient.getSocialHistory(), spec.getAttributeName());
+                    if(isYes != null) {
+                        if (isYes) {
+                            yesNoSpinner.setSelection(1);
+                        } else {
+                            yesNoSpinner.setSelection(2);
+                        }
+                    }
+                    break;
+                case SPINNER_FREQ_SOCIAL_HISTORY:
+                    final MaterialSpinner freqSpinner = (MaterialSpinner) view;
+                    freqSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            try {
+                                String freqStr = freqSpinner.getSelectedItem().toString();
+                                PropertyUtils.setProperty(createdPatient.getSocialHistory(), spec.getAttributeName(), freqStr);
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
+                            } catch (NoSuchMethodException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+
+                    String patientFreq = (String) PropertyUtils.getProperty(createdPatient.getSocialHistory(), spec.getAttributeName());
+                    if (patientFreq != null && !patientFreq.isEmpty()) {
+                        String[] freqStrArray = getResources().getStringArray(R.array.option_frequency);
+                        int idx = Arrays.asList(freqStrArray).indexOf(patientFreq);
+                        freqSpinner.setSelection(idx+1);
+                    }
+                    break;
             }
         }
     }

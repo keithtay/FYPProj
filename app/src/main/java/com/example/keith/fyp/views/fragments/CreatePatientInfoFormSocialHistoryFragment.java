@@ -83,6 +83,29 @@ public class CreatePatientInfoFormSocialHistoryFragment extends CreatePatientInf
         drugUseSpinner = (MaterialSpinner) rootView.findViewById(R.id.drug_use_spinner);
         drugUseSpinner.setAdapter(frequencyAdapter);
 
+
+        // Fill the form with the previously added content
+        try {
+            // Patient attribute name (second attribute) should be the same with the one in Patient class
+            patientFormSpecs.add(new PatientFormSpec(R.id.live_with_edit_text, "liveWith", TEXT_VIEW_SOCIAL_HISTORY));
+            patientFormSpecs.add(new PatientFormSpec(R.id.diet_edit_text, "diet", TEXT_VIEW_SOCIAL_HISTORY));
+            patientFormSpecs.add(new PatientFormSpec(R.id.religion_spinner, "religion", SPINNER_RELIGION));
+            patientFormSpecs.add(new PatientFormSpec(R.id.sexually_active_spinner, "isSexuallyActive", SPINNER_YES_NO_SOCIAL_HISTORY));
+            patientFormSpecs.add(new PatientFormSpec(R.id.secondhand_smoker_spinner, "isSecondhandSmoker", SPINNER_YES_NO_SOCIAL_HISTORY));
+            patientFormSpecs.add(new PatientFormSpec(R.id.alcohol_use_spinner, "alcoholUse", SPINNER_FREQ_SOCIAL_HISTORY));
+            patientFormSpecs.add(new PatientFormSpec(R.id.caffeine_use_spinner, "caffeineUse", SPINNER_FREQ_SOCIAL_HISTORY));
+            patientFormSpecs.add(new PatientFormSpec(R.id.tobacco_use_spinner, "tobaccoUse", SPINNER_FREQ_SOCIAL_HISTORY));
+            patientFormSpecs.add(new PatientFormSpec(R.id.drug_use_spinner, "drugUse", SPINNER_FREQ_SOCIAL_HISTORY));
+
+            prepareForm(rootView, patientFormSpecs);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
         return rootView;
     }
 }
