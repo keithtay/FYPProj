@@ -2,6 +2,7 @@ package com.example.keith.fyp.views.activities;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.app.FragmentTransaction;
 import android.content.res.Configuration;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Patient;
@@ -22,13 +24,10 @@ import com.example.keith.fyp.views.fragments.CreatePatientInfoFormPersonalInfoFr
 public class CreatePatientActivity extends AppCompatActivity implements CreatePatientInfoCategListFragment.Communicator {
 
     private CreatePatientInfoCategListFragment infoCategListFragment;
-    private CreatePatientInfoFormPersonalInfoFragment infoFormContainerFragment;
 
     private FragmentManager fragmentManager;
-    private CreatePatientInfoFormPersonalInfoFragment personalInfoFragment;
-    private CreatePatientInfoFormVitalFragment emergencyContactFragment;
 
-    private Patient createdPatient;
+    private InputMethodManager inputManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +36,11 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
         fragmentManager = getFragmentManager();
         infoCategListFragment = (CreatePatientInfoCategListFragment) fragmentManager.findFragmentById(R.id.CreatePatientInfoCategListFragment);
         infoCategListFragment.setCommunicator(this);
-
-        createdPatient = DataHolder.getCreatedPatient();
     }
 
     @Override
@@ -70,10 +69,17 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
     public void respond(int index) {
         int screenOrientation = getResources().getConfiguration().orientation;
 
-        Fragment fragmentToBeDisplayed = CreatePatientFormFragmentDecoder.getFragment(index);
-
         if(screenOrientation == Configuration.ORIENTATION_LANDSCAPE) {
             // In landscape orientation
+
+            // Hide keyboard
+            if(getCurrentFocus() != null) {
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+            
+            // Change fragment
+            Fragment fragmentToBeDisplayed = CreatePatientFormFragmentDecoder.getFragment(index);
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.CreatePatientInfoFormFragmentContainer, fragmentToBeDisplayed);
             transaction.addToBackStack(null);
