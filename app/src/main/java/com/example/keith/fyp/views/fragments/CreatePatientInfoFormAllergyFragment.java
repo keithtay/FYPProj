@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Allergy;
+import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.views.adapters.AllergyListAdapter;
 
@@ -99,9 +100,8 @@ public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormF
         // TODO: check for valid entry
 
         Allergy newAllergy = new Allergy(allergyName, allergyReaction, allergyNotes);
-        allergyList.add(newAllergy);
+        allergyList.add(0, newAllergy);
         allergyListAdapter.notifyDataSetChanged();
-        DataHolder.getCreatedPatient().setAllergyList(allergyList);
 
         resetNewAllergyFields();
 
@@ -116,7 +116,7 @@ public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormF
     }
 
     private void closeExpandableAddAllergy() {
-        if(addAllergyExpandableLayout.isOpened()) {
+        if (addAllergyExpandableLayout.isOpened()) {
             addAllergyExpandableLayout.hide();
         }
     }
@@ -142,7 +142,7 @@ public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormF
             int numOfChild = parent.getChildCount();
 
             // Last item
-            if(parent.getChildAdapterPosition(view)+1 >= numOfChild) {
+            if (parent.getChildAdapterPosition(view) + 1 >= numOfChild) {
                 outRect.bottom = space * 2;
             }
         }
