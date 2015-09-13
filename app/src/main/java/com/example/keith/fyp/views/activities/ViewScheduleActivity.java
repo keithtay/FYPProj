@@ -1,9 +1,11 @@
 package com.example.keith.fyp.views.activities;
 
+import android.graphics.drawable.NinePatchDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.keith.fyp.R;
@@ -22,6 +24,8 @@ public class ViewScheduleActivity extends AppCompatActivity {
 
     private LinearLayout eventListContainer;
 
+    private int spacing;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,26 +34,57 @@ public class ViewScheduleActivity extends AppCompatActivity {
         eventList = getPatientEventList();
         eventListContainer = (LinearLayout) findViewById(R.id.event_list_container);
 
-        for(Event event : eventList) {
+        spacing = (int) getResources().getDimension(R.dimen.paper_card_padding) / 2;
+        int marginLeft = (int) getResources().getDimension(R.dimen.event_margin_left);
+
+        // Initialize current time (for display purpose) TODO: change with actual current time
+        DateTime currentTime = Global.TIME_FORMAT.parseDateTime("12:30");
+
+        boolean isCurrentTimeMarkHasBeenDisplayed = false;
+
+        // Adding event views to the layout
+        int lastIndex = eventList.size() - 1;
+        for (int i = 0; i <= lastIndex; i++) {
+
+            Event event = eventList.get(i);
+
             String eventTitle = event.getTitle();
             String eventDescription = event.getDescription();
             DateTime startTime = event.getStartTime();
+            DateTime endTime = event.getEndTime();
             String startTimeStr = startTime.toString(Global.TIME_FORMAT);
             String durationStr = Long.toString(event.getDuration().getStandardMinutes()) + " min";
 
-            View eventView = getLayoutInflater().inflate(R.layout.event_layout, eventListContainer, false);
+            if (!isCurrentTimeMarkHasBeenDisplayed) {
+                if (currentTime.isBefore(startTime)) {
+                    View currentTimeMarker = getLayoutInflater().inflate(R.layout.current_time_marker, eventListContainer, false);
+                    if (i == 0) {
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        lp.setMargins(0, 0, 0, spacing);
+                        currentTimeMarker.setLayoutParams(lp);
+                    }
+                    eventListContainer.addView(currentTimeMarker);
+                    isCurrentTimeMarkHasBeenDisplayed = true;
+                } else if ((currentTime.isAfter(startTime) && currentTime.isBefore(endTime)) ||
+                        currentTime.isEqual(startTime)) {
+                    // TODO: Display event with current time mark
+                    View eventView = createEventViewWithLayout(R.layout.event_layout_current, eventTitle, eventDescription, startTimeStr, durationStr, i, lastIndex, 0);
+                    eventListContainer.addView(eventView);
+                    isCurrentTimeMarkHasBeenDisplayed = true;
+                    continue;
+                }
+            }
 
-            TextView titleTextView = (TextView) eventView.findViewById(R.id.event_title_text_view);
-            TextView descriptionTextView = (TextView) eventView.findViewById(R.id.event_description_text_view);
-            TextView startTimeTextView = (TextView) eventView.findViewById(R.id.event_start_time_text_view);
-            TextView durationTextView = (TextView) eventView.findViewById(R.id.event_duration_text_view);
-
-            titleTextView.setText(eventTitle);
-            descriptionTextView.setText(eventDescription);
-            startTimeTextView.setText(startTimeStr);
-            durationTextView.setText(durationStr);
-
+            View eventView = createEventViewWithLayout(R.layout.event_layout, eventTitle, eventDescription, startTimeStr, durationStr, i, lastIndex, marginLeft);
             eventListContainer.addView(eventView);
+        }
+
+        if (!isCurrentTimeMarkHasBeenDisplayed) {
+            View currentTimeMarker = getLayoutInflater().inflate(R.layout.current_time_marker, eventListContainer, false);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(0, spacing, 0, 0);
+            currentTimeMarker.setLayoutParams(lp);
+            eventListContainer.addView(currentTimeMarker);
         }
     }
 
@@ -74,6 +109,37 @@ public class ViewScheduleActivity extends AppCompatActivity {
         eventList.add(event3);
 
         return eventList;
+    }
+
+    private View createEventViewWithLayout(int layoutId, String eventTitle, String eventDescription, String startTimeStr, String durationStr, int i, int lastIndex, int marginLeft) {
+
+        View eventView = getLayoutInflater().inflate(layoutId, eventListContainer, false);
+
+        TextView titleTextView = (TextView) eventView.findViewById(R.id.event_title_text_view);
+        TextView descriptionTextView = (TextView) eventView.findViewById(R.id.event_description_text_view);
+        TextView startTimeTextView = (TextView) eventView.findViewById(R.id.event_start_time_text_view);
+        TextView durationTextView = (TextView) eventView.findViewById(R.id.event_duration_text_view);
+
+        titleTextView.setText(eventTitle);
+        descriptionTextView.setText(eventDescription);
+        startTimeTextView.setText(startTimeStr);
+        durationTextView.setText(durationStr);
+
+        if (i > 0 && i < lastIndex) {
+            LinearLayout.LayoutParams defaultEventLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            defaultEventLayoutParams.setMargins(marginLeft, spacing, 0, spacing);
+            eventView.setLayoutParams(defaultEventLayoutParams);
+        } else if (i == 0) {
+            LinearLayout.LayoutParams firstEventLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            firstEventLayoutParams.setMargins(marginLeft, 0, 0, spacing);
+            eventView.setLayoutParams(firstEventLayoutParams);
+        } else if (i == lastIndex) {
+            LinearLayout.LayoutParams lastEventLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            lastEventLayoutParams.setMargins(marginLeft, spacing, 0, 0);
+            eventView.setLayoutParams(lastEventLayoutParams);
+        }
+
+        return eventView;
     }
 }
 

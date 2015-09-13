@@ -20,4 +20,5 @@
     <dimen name="patient_info_in_schedule_spacing">@dimen/sml_spacing</dimen>
 
     <dimen name="event_detail_padding">@dimen/big_spacing</dimen>
+    <dimen name="event_margin_left">50dp</dimen>
 </resources>

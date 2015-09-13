@@ -149,8 +149,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center_horizontal"
-                    android:paddingTop="@dimen/activity_content_container_padding"
-                    android:paddingBottom="@dimen/activity_content_container_padding">
+                    android:paddingTop="@dimen/paper_card_padding"
+                    android:paddingBottom="@dimen/paper_card_padding">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -167,16 +167,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/divider"
-                        android:layout_marginTop="@dimen/activity_content_container_padding"
-                        android:layout_marginBottom="@dimen/activity_content_container_padding">
+                        android:layout_marginTop="@dimen/paper_card_padding"
+                        android:layout_marginBottom="@dimen/paper_card_padding">
                     </View>
                     <LinearLayout
                         android:id="@+id/event_list_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingLeft="@dimen/activity_content_container_padding"
-                        android:paddingRight="@dimen/activity_content_container_padding">
+                        android:paddingLeft="@dimen/paper_card_padding"
+                        android:paddingRight="@dimen/paper_card_padding">
 
                     </LinearLayout>
                 </LinearLayout>
