@@ -204,7 +204,11 @@ public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFra
         }
 
         String notes = notesEditText.getText().toString();
-        String beforeOrAfterMealStr = vitalLabelSpinner.getSelectedItem().toString();
+
+        String beforeOrAfterMealStr = null;
+        if(vitalLabelSpinner.getSelectedItemPosition() != 0) {
+            beforeOrAfterMealStr = vitalLabelSpinner.getSelectedItem().toString();
+        }
 
         DateTime dateTaken = Global.DATE_FORMAT.parseDateTime(dateTakenStr);
         DateTime timeTaken = Global.TIME_FORMAT.parseDateTime(timeTakenStr);

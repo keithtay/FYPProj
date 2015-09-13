@@ -159,7 +159,11 @@ public class CreatePatientInfoFormPrescriptionFragment extends CreatePatientInfo
             endDate = Global.DATE_FORMAT.parseDateTime(endDateStr);
         }
 
-        String beforeAfterMealStr = beforeAfterMealSpinner.getSelectedItem().toString();
+        String beforeAfterMealStr = null;
+        if(beforeAfterMealSpinner.getSelectedItemPosition() != 0) {
+            beforeAfterMealStr = beforeAfterMealSpinner.getSelectedItem().toString();
+        }
+
         String notes = notesEditText.getText().toString();
 
         Prescription newPrescription = new Prescription(name, dosage, freqPerDay, instruction, startDate, endDate, beforeAfterMealStr, notes);

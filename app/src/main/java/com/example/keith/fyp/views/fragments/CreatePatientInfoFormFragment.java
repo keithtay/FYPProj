@@ -204,7 +204,11 @@ public class CreatePatientInfoFormFragment extends Fragment {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             try {
-                                String selectedReligion = religionSpinner.getSelectedItem().toString();
+                                String selectedReligion = null;
+                                if(religionSpinner.getSelectedItemPosition() != 0) {
+                                    selectedReligion = religionSpinner.getSelectedItem().toString();
+                                }
+
                                 PropertyUtils.setProperty(createdPatient.getSocialHistory(), spec.getAttributeName(), selectedReligion);
                             } catch (IllegalAccessException e) {
                                 e.printStackTrace();
@@ -280,7 +284,10 @@ public class CreatePatientInfoFormFragment extends Fragment {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             try {
-                                String freqStr = freqSpinner.getSelectedItem().toString();
+                                String freqStr = null;
+                                if(freqSpinner.getSelectedItemPosition() != 0) {
+                                    freqStr = freqSpinner.getSelectedItem().toString();
+                                }
                                 PropertyUtils.setProperty(createdPatient.getSocialHistory(), spec.getAttributeName(), freqStr);
                             } catch (IllegalAccessException e) {
                                 e.printStackTrace();

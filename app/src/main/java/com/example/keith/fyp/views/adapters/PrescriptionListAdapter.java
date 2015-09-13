@@ -175,8 +175,12 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
                         prescription.setEndDate(endDate);
                     }
 
-                    String beforeOrAfterMeal = beforeAfterMealSpinner.getSelectedItem().toString();
-                    prescription.setBeforeAfterMeal(beforeOrAfterMeal);
+                    if(beforeAfterMealSpinner.getSelectedItemPosition() != 0) {
+                        String beforeOrAfterMeal = beforeAfterMealSpinner.getSelectedItem().toString();
+                        prescription.setBeforeAfterMeal(beforeOrAfterMeal);
+                    } else {
+                        prescription.setBeforeAfterMeal(null);
+                    }
 
                     prescription.setName(nameEditText.getText().toString());
                     prescription.setDosage(dosageEditText.getText().toString());
