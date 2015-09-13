@@ -27,6 +27,19 @@ public class Patient {
     private ArrayList<Prescription> prescriptionList = new ArrayList<>();
     private ArrayList<Routinity> routinityList = new ArrayList<>();
     private SocialHistory socialHistory = new SocialHistory();
+    private Schedule todaySchedule;
+
+    // TODO: remove since it is only for testing (using local stored photo)
+    private int photoId;
+
+    public Patient() {
+    }
+
+    public Patient(String firstName, String nric, int photoId) {
+        this.firstName = firstName;
+        this.nric = nric;
+        this.photoId = photoId;
+    }
 
     public String getGuardianFullName() {
         return guardianFullName;
@@ -50,12 +63,6 @@ public class Patient {
 
     public void setGuardianEmail(String guardianEmail) {
         this.guardianEmail = guardianEmail;
-    }
-
-    // TODO: remove since it is only for testing (using local stored photo)
-    private int photoId;
-
-    public Patient() {
     }
 
     public String getLastName() {
@@ -104,12 +111,6 @@ public class Patient {
 
     public void setPhoto(Bitmap photo) {
         this.photo = photo;
-    }
-
-    public Patient(String firstName, String nric, int photoId) {
-        this.firstName = firstName;
-        this.nric = nric;
-        this.photoId = photoId;
     }
 
     public String getFirstName() {
@@ -182,5 +183,13 @@ public class Patient {
 
     public void setRoutinityList(ArrayList<Routinity> routinityList) {
         this.routinityList = routinityList;
+    }
+
+    public Schedule getTodaySchedule() {
+        return todaySchedule;
+    }
+
+    public void setTodaySchedule(Schedule todaySchedule) {
+        this.todaySchedule = todaySchedule;
     }
 }

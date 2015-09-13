@@ -16,4 +16,8 @@
     <dimen name="paper_card_row_spacing">@dimen/med_spacing</dimen>
     <dimen name="paper_card_row_spacing_half">@dimen/sml_spacing</dimen>
     <dimen name="padding_flat_button">16dp</dimen>
+
+    <dimen name="patient_info_in_schedule_spacing">@dimen/sml_spacing</dimen>
+
+    <dimen name="event_detail_padding">@dimen/big_spacing</dimen>
 </resources>
