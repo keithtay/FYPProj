@@ -18,7 +18,6 @@ import com.example.keith.fyp.models.Prescription;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.views.fragments.CreatePatientInfoFormPrescriptionFragment;
-import com.example.keith.fyp.views.fragments.CreatePatientInfoFormVitalFragment;
 
 import org.joda.time.DateTime;
 
@@ -27,18 +26,17 @@ import java.util.Arrays;
 import java.util.List;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
-import javadz.beanutils.PropertyUtils;
 
 /**
  * Created by Sutrisno on 12/9/2015.
  */
-public class PrecriptionListAdapter extends RecyclerView.Adapter<PrecriptionListAdapter.PrescriptionListViewHolder> {
+public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionListAdapter.PrescriptionListViewHolder> {
 
     private LayoutInflater inflater;
     private List<Prescription> prescriptionList;
     private CreatePatientInfoFormPrescriptionFragment fragment;
 
-    public PrecriptionListAdapter(Context context, CreatePatientInfoFormPrescriptionFragment createPatientInfoFormPrescriptionFragment, List<Prescription> prescriptionList) {
+    public PrescriptionListAdapter(Context context, CreatePatientInfoFormPrescriptionFragment createPatientInfoFormPrescriptionFragment, List<Prescription> prescriptionList) {
         this.inflater = LayoutInflater.from(context);
         this.prescriptionList = prescriptionList;
         this.fragment = createPatientInfoFormPrescriptionFragment;

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/list_item_divider"></View>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/paper_card_row_spacing"
+        android:paddingLeft="@dimen/paper_card_padding"
+        android:paddingRight="@dimen/paper_card_padding"
+        android:paddingBottom="@dimen/paper_card_row_spacing">
+        <Button
+            android:id="@+id/edit_routinity_cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:textAllCaps="true"
+            android:layout_toLeftOf="@+id/edit_routinity_save_button"
+            android:paddingLeft="@dimen/padding_flat_button"
+            android:paddingRight="@dimen/padding_flat_button"
+            android:textStyle="bold"
+            style="?android:attr/borderlessButtonStyle"/>
+        <Button
+            android:id="@+id/edit_routinity_save_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Save"
+            android:textAllCaps="true"
+            android:textColor="@color/primary"
+            android:textStyle="bold"
+            android:paddingLeft="@dimen/padding_flat_button"
+            android:paddingRight="@dimen/padding_flat_button"
+            style="?android:attr/borderlessButtonStyle"/>
+    </RelativeLayout>
+</LinearLayout>

@@ -25,6 +25,7 @@ public class Patient {
     private ArrayList<Allergy> allergyList = new ArrayList<>();
     private ArrayList<Vital> vitalList = new ArrayList<>();
     private ArrayList<Prescription> prescriptionList = new ArrayList<>();
+    private ArrayList<Routinity> routinityList = new ArrayList<>();
     private SocialHistory socialHistory = new SocialHistory();
 
     public String getGuardianFullName() {
@@ -173,5 +174,13 @@ public class Patient {
 
     public void setPrescriptionList(ArrayList<Prescription> prescriptionList) {
         this.prescriptionList = prescriptionList;
+    }
+
+    public ArrayList<Routinity> getRoutinityList() {
+        return routinityList;
+    }
+
+    public void setRoutinityList(ArrayList<Routinity> routinityList) {
+        this.routinityList = routinityList;
     }
 }

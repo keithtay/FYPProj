@@ -26,6 +26,7 @@
     <string name="action_allergy_delete">Delete</string>
     <string name="select_time_add_new_vital">Select the time of which vital is measured</string>
     <string name="add_new_prescription">Add New Prescription</string>
+    <string name="add_new_routinity">Add New Routinity</string>
 
     <string-array name="option_gender">
         <item>Male</item>
@@ -63,6 +64,13 @@
         <item>Never</item>
         <item>Seldom</item>
         <item>Regular</item>
+    </string-array>
+
+    <string-array name="option_every_label">
+        <item>Day</item>
+        <item>Week</item>
+        <item>Month</item>
+        <item>Year</item>
     </string-array>
 
 </resources>

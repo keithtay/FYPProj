@@ -20,7 +20,7 @@ import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Prescription;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
-import com.example.keith.fyp.views.adapters.PrecriptionListAdapter;
+import com.example.keith.fyp.views.adapters.PrescriptionListAdapter;
 import com.example.keith.fyp.views.decorators.SpacesCardItemDecoration;
 
 import org.joda.time.DateTime;
@@ -47,7 +47,7 @@ public class CreatePatientInfoFormPrescriptionFragment extends CreatePatientInfo
     private MaterialSpinner beforeAfterMealSpinner;
 
     private ArrayList<Prescription> prescriptionList;
-    private PrecriptionListAdapter prescriptionListAdapter;
+    private PrescriptionListAdapter prescriptionListAdapter;
 
     private LinearLayout addNewPrescriptionHeaderContainer;
     private Button cancelNewPrescriptionButton;
@@ -76,7 +76,7 @@ public class CreatePatientInfoFormPrescriptionFragment extends CreatePatientInfo
         setupEditTextToBeDatePicker(endDatePicker);
 
         prescriptionList = DataHolder.getCreatedPatient().getPrescriptionList();
-        prescriptionListAdapter = new PrecriptionListAdapter(getActivity(), this, prescriptionList);
+        prescriptionListAdapter = new PrescriptionListAdapter(getActivity(), this, prescriptionList);
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
