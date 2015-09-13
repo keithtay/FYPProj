@@ -313,7 +313,7 @@ public class CreatePatientInfoFormFragment extends Fragment {
                 InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
-    public void setupEditTextToBeDatePicker(final EditText editText) {
+    public void setupEditTextToBeDatePicker(final EditText editText, final String title) {
         editText.setFocusable(false);
 
         editText.setOnClickListener(new View.OnClickListener() {
@@ -349,13 +349,13 @@ public class CreatePatientInfoFormFragment extends Fragment {
                         editText.setText(selectedDateStr);
                     }
                 }, mYear, mMonth, mDay);
-                datePickerDialog.setTitle(activity.getString(R.string.select_date_of_birth));
+                datePickerDialog.setTitle(title);
                 datePickerDialog.show();
             }
         });
     }
 
-    public void setupEditTextToBeTimePicker(final EditText editText) {
+    public void setupEditTextToBeTimePicker(final EditText editText, final String title) {
         editText.setFocusable(false);
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -388,7 +388,7 @@ public class CreatePatientInfoFormFragment extends Fragment {
                     }
                 }, mHour, mMinutes, true);
 
-                timePickerDialog.setTitle(activity.getString(R.string.select_time_add_new_vital));
+                timePickerDialog.setTitle(title);
                 timePickerDialog.show();
             }
         });

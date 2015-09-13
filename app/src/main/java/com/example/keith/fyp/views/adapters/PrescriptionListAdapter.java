@@ -123,9 +123,9 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
             instructionEditText = (EditText) itemView.findViewById(R.id.prescription_item_instruction_edit_text);
 
             startDatePicker = (EditText) itemView.findViewById(R.id.prescription_item_start_date_picker);
-            fragment.setupEditTextToBeDatePicker(startDatePicker);
+            fragment.setupEditTextToBeDatePicker(startDatePicker, fragment.getString(R.string.select_prescription_start_date));
             endDatePicker = (EditText) itemView.findViewById(R.id.prescription_item_end_date_picker);
-            fragment.setupEditTextToBeDatePicker(endDatePicker);
+            fragment.setupEditTextToBeDatePicker(endDatePicker, fragment.getString(R.string.select_prescription_end_date));
 
             notesEditText = (EditText) itemView.findViewById(R.id.prescription_item_notes_edit_text);
 

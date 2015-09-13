@@ -27,6 +27,13 @@
     <string name="select_time_add_new_vital">Select the time of which vital is measured</string>
     <string name="add_new_prescription">Add New Prescription</string>
     <string name="add_new_routinity">Add New Routinity</string>
+    <string name="select_prescription_start_date">Select Prescription Start Date</string>
+    <string name="select_prescription_end_date">Select Prescription End Date</string>
+    <string name="select_routinity_start_date">Select Routinity Start Date</string>
+    <string name="select_routinity_end_date">Select Routinity End Date</string>
+    <string name="select_vital_date">Select date of which vital is measured</string>
+    <string name="select_routinity_start_time">Select routinity start time</string>
+    <string name="select_routinity_end_time">Select routinity end time</string>
 
     <string-array name="option_gender">
         <item>Male</item>

@@ -74,7 +74,7 @@ public class CreatePatientInfoFormPersonalInfoFragment extends CreatePatientInfo
         }
 
         dobTextView = (EditText) rootView.findViewById(R.id.dob_date_picker);
-        setupEditTextToBeDatePicker(dobTextView);
+        setupEditTextToBeDatePicker(dobTextView, getString(R.string.select_date_of_birth));
 
         genderSpinner = (MaterialSpinner) rootView.findViewById(R.id.gender_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity,

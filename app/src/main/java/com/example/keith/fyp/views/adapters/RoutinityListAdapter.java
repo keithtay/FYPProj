@@ -140,10 +140,10 @@ public class RoutinityListAdapter extends RecyclerView.Adapter<RoutinityListAdap
             everyEditText = (EditText) itemView.findViewById(R.id.routinity_item_every_edit_text);
             everySpinner = (Spinner) itemView.findViewById(R.id.routinity_item_every_spinner);
 
-            fragment.setupEditTextToBeDatePicker(startDatePicker);
-            fragment.setupEditTextToBeDatePicker(endDatePicker);
-            fragment.setupEditTextToBeTimePicker(startTimePicker);
-            fragment.setupEditTextToBeTimePicker(endTimePicker);
+            fragment.setupEditTextToBeDatePicker(startDatePicker, fragment.getString(R.string.select_routinity_start_date));
+            fragment.setupEditTextToBeDatePicker(endDatePicker, fragment.getString(R.string.select_routinity_end_date));
+            fragment.setupEditTextToBeTimePicker(startTimePicker, fragment.getString(R.string.select_routinity_start_time));
+            fragment.setupEditTextToBeTimePicker(endTimePicker, fragment.getString(R.string.select_routinity_end_time));
 
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(fragment.getActivity(),
                     R.array.option_every_label, android.R.layout.simple_spinner_item);

@@ -83,10 +83,10 @@ public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFra
         });
 
         vitalDateTakenEditText = (EditText) rootView.findViewById(R.id.vital_date_picker);
-        setupEditTextToBeDatePicker(vitalDateTakenEditText);
+        setupEditTextToBeDatePicker(vitalDateTakenEditText, getString(R.string.select_vital_date));
 
         vitalTimeTakenEditText = (EditText) rootView.findViewById(R.id.vital_time_picker);
-        setupEditTextToBeTimePicker(vitalTimeTakenEditText);
+        setupEditTextToBeTimePicker(vitalTimeTakenEditText, getString(R.string.select_time_add_new_vital));
 
         addVitalExpandable = (ExpandableLayout) rootView.findViewById(R.id.add_vital_expandable_layout);
 

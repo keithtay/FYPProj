@@ -72,8 +72,8 @@ public class CreatePatientInfoFormPrescriptionFragment extends CreatePatientInfo
         notesEditText = (EditText) rootView.findViewById(R.id.presc_notes_edit_text);
         beforeAfterMealSpinner = (MaterialSpinner) rootView.findViewById(R.id.before_after_meal_spinner);
 
-        setupEditTextToBeDatePicker(startDatePicker);
-        setupEditTextToBeDatePicker(endDatePicker);
+        setupEditTextToBeDatePicker(startDatePicker, getString(R.string.select_prescription_start_date));
+        setupEditTextToBeDatePicker(endDatePicker, getString(R.string.select_prescription_end_date));
 
         prescriptionList = DataHolder.getCreatedPatient().getPrescriptionList();
         prescriptionListAdapter = new PrescriptionListAdapter(getActivity(), this, prescriptionList);

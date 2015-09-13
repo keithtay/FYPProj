@@ -70,10 +70,10 @@ public class CreatePatientInfoFormRoutinityFragment extends CreatePatientInfoFor
         everyEditText = (EditText) rootView.findViewById(R.id.routinity_every_edit_text);
         everySpinner = (Spinner) rootView.findViewById(R.id.routinity_every_spinner);
 
-        setupEditTextToBeDatePicker(startDatePicker);
-        setupEditTextToBeDatePicker(endDatePicker);
-        setupEditTextToBeTimePicker(startTimePicker);
-        setupEditTextToBeTimePicker(endTimePicker);
+        setupEditTextToBeDatePicker(startDatePicker, getString(R.string.select_routinity_start_date));
+        setupEditTextToBeDatePicker(endDatePicker, getString(R.string.select_routinity_end_date));
+        setupEditTextToBeTimePicker(startTimePicker, getString(R.string.select_routinity_start_time));
+        setupEditTextToBeTimePicker(endTimePicker, getString(R.string.select_routinity_end_time));
 
         routinityList = DataHolder.getCreatedPatient().getRoutinityList();
         routinityListAdapter = new RoutinityListAdapter(getActivity(), this, routinityList);

@@ -122,10 +122,10 @@ public class VitalListAdapter extends RecyclerView.Adapter<VitalListAdapter.Vita
             super(itemView);
 
             dateTaken = (EditText) itemView.findViewById(R.id.vital_item_date_picker);
-            fragment.setupEditTextToBeDatePicker(dateTaken);
+            fragment.setupEditTextToBeDatePicker(dateTaken, fragment.getString(R.string.select_vital_date));
 
             timeTaken = (EditText) itemView.findViewById(R.id.vital_item_time_picker);
-            fragment.setupEditTextToBeTimePicker(timeTaken);
+            fragment.setupEditTextToBeTimePicker(timeTaken, fragment.getString(R.string.select_time_add_new_vital));
 
             beforeAfterMeal = (MaterialSpinner) itemView.findViewById(R.id.vital_item_label_spinner);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(fragment.getActivity(),
