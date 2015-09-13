@@ -37,7 +37,7 @@ public class CreatePatientFormActivity extends AppCompatActivity {
 
         fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.CreatePatientInfoFormFragmentContainer, fragmentToBeDisplayed);
+        transaction.replace(R.id.create_patient_info_form_fragment_container, fragmentToBeDisplayed);
         transaction.addToBackStack(null);
         transaction.commit();
     }

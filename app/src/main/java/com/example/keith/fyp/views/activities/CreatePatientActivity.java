@@ -14,12 +14,9 @@ import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 
 import com.example.keith.fyp.R;
-import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.utils.CreatePatientFormFragmentDecoder;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.views.fragments.CreatePatientInfoCategListFragment;
-import com.example.keith.fyp.views.fragments.CreatePatientInfoFormVitalFragment;
-import com.example.keith.fyp.views.fragments.CreatePatientInfoFormPersonalInfoFragment;
 
 public class CreatePatientActivity extends AppCompatActivity implements CreatePatientInfoCategListFragment.Communicator {
 
@@ -39,7 +36,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         fragmentManager = getFragmentManager();
-        infoCategListFragment = (CreatePatientInfoCategListFragment) fragmentManager.findFragmentById(R.id.CreatePatientInfoCategListFragment);
+        infoCategListFragment = (CreatePatientInfoCategListFragment) fragmentManager.findFragmentById(R.id.create_patient_info_categ_list_fragment);
         infoCategListFragment.setCommunicator(this);
     }
 
@@ -81,7 +78,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
             // Change fragment
             Fragment fragmentToBeDisplayed = CreatePatientFormFragmentDecoder.getFragment(index);
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.CreatePatientInfoFormFragmentContainer, fragmentToBeDisplayed);
+            transaction.replace(R.id.create_patient_info_form_fragment_container, fragmentToBeDisplayed);
             transaction.addToBackStack(null);
             transaction.commit();
         } else {

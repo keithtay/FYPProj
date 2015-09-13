@@ -1,25 +1,41 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     tools:context="com.example.keith.fyp.views.activities.CreatePatientActivity">
 
     <fragment
-        android:id="@+id/CreatePatientInfoCategListFragment"
+        android:id="@+id/create_patient_info_categ_list_fragment"
         android:name="com.example.keith.fyp.views.fragments.CreatePatientInfoCategListFragment"
         android:layout_width="300dp"
         android:layout_height="wrap_content" />
 
     <View
+        android:id="@+id/info_categ_list_shadow"
         android:layout_width="10dp"
         android:layout_height="fill_parent"
+        android:layout_toRightOf="@id/create_patient_info_categ_list_fragment"
         android:background="@drawable/shadow_right"></View>
 
     <LinearLayout
-        android:id="@+id/CreatePatientInfoFormFragmentContainer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"></LinearLayout>
+        android:id="@+id/create_patient_info_form_fragment_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_toRightOf="@id/info_categ_list_shadow"
+        android:orientation="vertical"></LinearLayout>
 
-</LinearLayout>
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/save_new_patient_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_save_white_24dp"
+        fab:fab_colorNormal="@color/primary"
+        fab:fab_colorPressed="@color/primary_pressed"
+        fab:fab_colorRipple="@color/ripple"/>
+
+</RelativeLayout>
