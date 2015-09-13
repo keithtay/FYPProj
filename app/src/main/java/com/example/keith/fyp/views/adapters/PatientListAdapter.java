@@ -1,6 +1,7 @@
 package com.example.keith.fyp.views.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Patient;
+import com.example.keith.fyp.views.activities.ViewScheduleActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +27,10 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
     private LayoutInflater inflater;
     private List<Patient> patientList;
     private List<Patient> filteredPatientList;
+    private Context context;
 
     public PatientListAdapter(Context context, List<Patient> patientList) {
+        this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.patientList = new ArrayList<>();
         this.patientList.addAll(patientList);
@@ -37,6 +41,14 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
     @Override
     public PatientListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View rootView = inflater.inflate(R.layout.patient_card, parent, false);
+        rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO:
+                Intent intent = new Intent(context, ViewScheduleActivity.class);
+                context.startActivity(intent);
+            }
+        });
         PatientListViewHolder viewHolder = new PatientListViewHolder(rootView);
         return viewHolder;
     }
