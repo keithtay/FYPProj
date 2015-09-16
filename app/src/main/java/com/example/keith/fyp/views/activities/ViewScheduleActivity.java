@@ -1,11 +1,9 @@
 package com.example.keith.fyp.views.activities;
 
-import android.graphics.drawable.NinePatchDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.keith.fyp.R;
@@ -13,7 +11,6 @@ import com.example.keith.fyp.models.Event;
 import com.example.keith.fyp.utils.Global;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
@@ -24,7 +21,7 @@ public class ViewScheduleActivity extends AppCompatActivity {
 
     private LinearLayout eventListContainer;
 
-    private int spacing;
+    private int spacingBetweenEventView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +31,11 @@ public class ViewScheduleActivity extends AppCompatActivity {
         eventList = getPatientEventList();
         eventListContainer = (LinearLayout) findViewById(R.id.event_list_container);
 
-        spacing = (int) getResources().getDimension(R.dimen.paper_card_padding) / 2;
-        int marginLeft = (int) getResources().getDimension(R.dimen.event_margin_left);
+        displaySchedule();
+    }
+
+    private void displaySchedule() {
+        spacingBetweenEventView = (int) getResources().getDimension(R.dimen.paper_card_padding) / 2;
 
         // Initialize current time (for display purpose) TODO: change with actual current time
         DateTime currentTime = Global.TIME_FORMAT.parseDateTime("12:30");
@@ -45,7 +45,6 @@ public class ViewScheduleActivity extends AppCompatActivity {
         // Adding event views to the layout
         int lastIndex = eventList.size() - 1;
         for (int i = 0; i <= lastIndex; i++) {
-
             Event event = eventList.get(i);
 
             String eventTitle = event.getTitle();
@@ -55,34 +54,38 @@ public class ViewScheduleActivity extends AppCompatActivity {
             String startTimeStr = startTime.toString(Global.TIME_FORMAT);
             String durationStr = Long.toString(event.getDuration().getStandardMinutes()) + " min";
 
-            if (!isCurrentTimeMarkHasBeenDisplayed) {
-                if (currentTime.isBefore(startTime)) {
-                    View currentTimeMarker = getLayoutInflater().inflate(R.layout.current_time_marker, eventListContainer, false);
-                    if (i == 0) {
-                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                        lp.setMargins(0, 0, 0, spacing);
-                        currentTimeMarker.setLayoutParams(lp);
-                    }
-                    eventListContainer.addView(currentTimeMarker);
-                    isCurrentTimeMarkHasBeenDisplayed = true;
-                } else if ((currentTime.isAfter(startTime) && currentTime.isBefore(endTime)) ||
-                        currentTime.isEqual(startTime)) {
-                    // TODO: Display event with current time mark
-                    View eventView = createEventViewWithLayout(R.layout.event_layout_current, eventTitle, eventDescription, startTimeStr, durationStr, i, lastIndex, 0);
-                    eventListContainer.addView(eventView);
-                    isCurrentTimeMarkHasBeenDisplayed = true;
-                    continue;
+            if (!isCurrentTimeMarkHasBeenDisplayed && currentTime.isBefore(startTime)) {
+                View currentTimeMarker = getLayoutInflater().inflate(R.layout.current_time_marker, eventListContainer, false);
+                if (i == 0) {
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    lp.setMargins(0, 0, 0, spacingBetweenEventView);
+                    currentTimeMarker.setLayoutParams(lp);
                 }
+                eventListContainer.addView(currentTimeMarker);
+                isCurrentTimeMarkHasBeenDisplayed = true;
             }
 
-            View eventView = createEventViewWithLayout(R.layout.event_layout, eventTitle, eventDescription, startTimeStr, durationStr, i, lastIndex, marginLeft);
+            int layoutId;
+            // Give left margin for non-current events
+            int marginLeft = (int) getResources().getDimension(R.dimen.event_margin_left);
+
+            boolean isEventCurrentlyOccurring = (currentTime.isAfter(startTime) && currentTime.isBefore(endTime)) || currentTime.isEqual(startTime);
+            if (!isCurrentTimeMarkHasBeenDisplayed && isEventCurrentlyOccurring) {
+                layoutId = R.layout.event_layout_current;
+                isCurrentTimeMarkHasBeenDisplayed = true;
+                marginLeft = 0;
+            } else {
+                layoutId = R.layout.event_layout;
+            }
+
+            View eventView = createEventViewWithLayout(layoutId, eventTitle, eventDescription, startTimeStr, durationStr, i, lastIndex, marginLeft);
             eventListContainer.addView(eventView);
         }
 
         if (!isCurrentTimeMarkHasBeenDisplayed) {
             View currentTimeMarker = getLayoutInflater().inflate(R.layout.current_time_marker, eventListContainer, false);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(0, spacing, 0, 0);
+            lp.setMargins(0, spacingBetweenEventView, 0, 0);
             currentTimeMarker.setLayoutParams(lp);
             eventListContainer.addView(currentTimeMarker);
         }
@@ -111,7 +114,7 @@ public class ViewScheduleActivity extends AppCompatActivity {
         return eventList;
     }
 
-    private View createEventViewWithLayout(int layoutId, String eventTitle, String eventDescription, String startTimeStr, String durationStr, int i, int lastIndex, int marginLeft) {
+    private View createEventViewWithLayout(int layoutId, String eventTitle, String eventDescription, String startTimeStr, String durationStr, int currentIndex, int lastIndex, int marginLeft) {
 
         View eventView = getLayoutInflater().inflate(layoutId, eventListContainer, false);
 
@@ -125,17 +128,17 @@ public class ViewScheduleActivity extends AppCompatActivity {
         startTimeTextView.setText(startTimeStr);
         durationTextView.setText(durationStr);
 
-        if (i > 0 && i < lastIndex) {
+        if (currentIndex > 0 && currentIndex < lastIndex) {
             LinearLayout.LayoutParams defaultEventLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            defaultEventLayoutParams.setMargins(marginLeft, spacing, 0, spacing);
+            defaultEventLayoutParams.setMargins(marginLeft, spacingBetweenEventView, 0, spacingBetweenEventView);
             eventView.setLayoutParams(defaultEventLayoutParams);
-        } else if (i == 0) {
+        } else if (currentIndex == 0) {
             LinearLayout.LayoutParams firstEventLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            firstEventLayoutParams.setMargins(marginLeft, 0, 0, spacing);
+            firstEventLayoutParams.setMargins(marginLeft, 0, 0, spacingBetweenEventView);
             eventView.setLayoutParams(firstEventLayoutParams);
-        } else if (i == lastIndex) {
+        } else if (currentIndex == lastIndex) {
             LinearLayout.LayoutParams lastEventLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            lastEventLayoutParams.setMargins(marginLeft, spacing, 0, 0);
+            lastEventLayoutParams.setMargins(marginLeft, spacingBetweenEventView, 0, 0);
             eventView.setLayoutParams(lastEventLayoutParams);
         }
 
