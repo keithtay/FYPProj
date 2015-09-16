@@ -205,9 +205,16 @@ public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFra
 
         String notes = notesEditText.getText().toString();
 
-        String beforeOrAfterMealStr = null;
+        String beforeOrAfterMealStr;
+        Boolean isBeforeMeal = null;
         if(vitalLabelSpinner.getSelectedItemPosition() != 0) {
             beforeOrAfterMealStr = vitalLabelSpinner.getSelectedItem().toString();
+
+            if (beforeOrAfterMealStr.equals("Before meal")) {
+                isBeforeMeal = true;
+            } else if(beforeOrAfterMealStr.equals("After meal")) {
+                isBeforeMeal = false;
+            }
         }
 
         DateTime dateTaken = Global.DATE_FORMAT.parseDateTime(dateTakenStr);
@@ -218,13 +225,6 @@ public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFra
         dateTimeToSave = dateTimeToSave.withDayOfMonth(dateTaken.getDayOfMonth());
         dateTimeToSave = dateTimeToSave.withHourOfDay(timeTaken.getHourOfDay());
         dateTimeToSave = dateTimeToSave.withMinuteOfHour(timeTaken.getMinuteOfHour());
-
-        Boolean isBeforeMeal = null;
-        if (beforeOrAfterMealStr.equals("Before meal")) {
-            isBeforeMeal = true;
-        } else if(beforeOrAfterMealStr.equals("After meal")) {
-            isBeforeMeal = false;
-        }
 
         Vital newVital = new Vital(dateTimeToSave, isBeforeMeal, temperature, bloodPressureSystol, bloodPressureDiastol, height, weight, notes);
         vitalList.add(0,newVital);
