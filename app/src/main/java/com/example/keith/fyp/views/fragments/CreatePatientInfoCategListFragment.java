@@ -29,7 +29,7 @@ public class CreatePatientInfoCategListFragment extends Fragment implements Adap
                 "Vital",
                 "Social History",
                 "Prescription",
-                "Routinity",};
+                "Routine",};
 
         ArrayAdapter<String> infoCategAdapter = new ArrayAdapter<>(getActivity(), R.layout.info_categ_list_item, infoCategList);
         infoCategListView.setAdapter(infoCategAdapter);

@@ -20,16 +20,16 @@
             app:cardElevation="5dp">
 
             <com.andexert.expandablelayout.library.ExpandableLayout xmlns:expandable="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/add_routinity_expandable_layout"
+                android:id="@+id/add_routine_expandable_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                expandable:el_contentLayout="@layout/expandable_add_routinity_content"
-                expandable:el_headerLayout="@layout/expandable_add_routinity_header" />
+                expandable:el_contentLayout="@layout/expandable_add_routine_content"
+                expandable:el_headerLayout="@layout/expandable_add_routine_header" />
 
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/routinity_recycler_view"
+            android:id="@+id/routine_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

@@ -21,19 +21,19 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_create_patient_form">Create Patient</string>
-    <string name="select_date_of_birth">Select Patient Date of Birth</string>
+    <string name="select_date_of_birth">Select patient date of birth</string>
     <string name="action_allergy_edit">Edit</string>
     <string name="action_allergy_delete">Delete</string>
     <string name="select_time_add_new_vital">Select the time of which vital is measured</string>
     <string name="add_new_prescription">Add New Prescription</string>
-    <string name="add_new_routinity">Add New Routinity</string>
-    <string name="select_prescription_start_date">Select Prescription Start Date</string>
-    <string name="select_prescription_end_date">Select Prescription End Date</string>
-    <string name="select_routinity_start_date">Select Routinity Start Date</string>
-    <string name="select_routinity_end_date">Select Routinity End Date</string>
+    <string name="add_new_routine">Add New Routine</string>
+    <string name="select_prescription_start_date">Select prescription start date</string>
+    <string name="select_prescription_end_date">Select prescription end date</string>
+    <string name="select_routine_start_date">Select routine start date</string>
+    <string name="select_routine_end_date">Select routine end date</string>
     <string name="select_vital_date">Select date of which vital is measured</string>
-    <string name="select_routinity_start_time">Select routinity start time</string>
-    <string name="select_routinity_end_time">Select routinity end time</string>
+    <string name="select_routine_start_time">Select routine start time</string>
+    <string name="select_routine_end_time">Select routine end time</string>
 
     <string-array name="option_gender">
         <item>Male</item>

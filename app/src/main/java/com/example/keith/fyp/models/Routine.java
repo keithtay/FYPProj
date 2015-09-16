@@ -5,7 +5,7 @@ import org.joda.time.DateTime;
 /**
  * Created by Sutrisno on 13/9/2015.
  */
-public class Routinity {
+public class Routine {
     private String name;
     private String notes;
     private DateTime startDate;
@@ -15,7 +15,7 @@ public class Routinity {
     private Integer everyNumber;
     private String everyLabel;
 
-    public Routinity(String name, String notes, DateTime startDate, DateTime endDate, DateTime startTime, DateTime endTime, Integer everyNumber, String everyLabel) {
+    public Routine(String name, String notes, DateTime startDate, DateTime endDate, DateTime startTime, DateTime endTime, Integer everyNumber, String everyLabel) {
         this.name = name;
         this.notes = notes;
         this.startDate = startDate;

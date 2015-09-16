@@ -30,7 +30,7 @@
                     android:src="@drawable/ic_more_horiz"></ImageView>
 
                 <LinearLayout
-                    android:id="@+id/routinity_item_first_row"
+                    android:id="@+id/routine_item_first_row"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -41,12 +41,12 @@
                         android:layout_weight="1">
 
                         <EditText
-                            android:id="@+id/routinity_item_name_edit_text"
+                            android:id="@+id/routine_item_name_edit_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Name"
                             android:inputType="text"
-                            android:nextFocusDown="@+id/routinity_item_notes_edit_text"/>
+                            android:nextFocusDown="@+id/routine_item_notes_edit_text"/>
                     </android.support.design.widget.TextInputLayout>
 
                     <View
@@ -59,7 +59,7 @@
                         android:layout_weight="1">
 
                         <EditText
-                            android:id="@+id/routinity_item_notes_edit_text"
+                            android:id="@+id/routine_item_notes_edit_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Notes"
@@ -69,8 +69,8 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/routinity_item_second_row"
-                    android:layout_below="@id/routinity_item_first_row"
+                    android:id="@+id/routine_item_second_row"
+                    android:layout_below="@id/routine_item_first_row"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/paper_card_row_spacing"
@@ -82,7 +82,7 @@
                         android:layout_weight="1">
 
                         <EditText
-                            android:id="@+id/routinity_item_start_date_picker"
+                            android:id="@+id/routine_item_start_date_picker"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Start Date"
@@ -99,7 +99,7 @@
                         android:layout_weight="1">
 
                         <EditText
-                            android:id="@+id/routinity_item_end_date_picker"
+                            android:id="@+id/routine_item_end_date_picker"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="End Date"
@@ -109,8 +109,8 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/routinity_item_third_row"
-                    android:layout_below="@id/routinity_item_second_row"
+                    android:id="@+id/routine_item_third_row"
+                    android:layout_below="@id/routine_item_second_row"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/paper_card_row_spacing"
@@ -122,7 +122,7 @@
                         android:layout_weight="1">
 
                         <EditText
-                            android:id="@+id/routinity_item_start_time_picker"
+                            android:id="@+id/routine_item_start_time_picker"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Start Time"
@@ -139,7 +139,7 @@
                         android:layout_weight="1">
 
                         <EditText
-                            android:id="@+id/routinity_item_end_time_picker"
+                            android:id="@+id/routine_item_end_time_picker"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="End Time"
@@ -149,8 +149,8 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/routinity_item_fourth_row"
-                    android:layout_below="@id/routinity_item_third_row"
+                    android:id="@+id/routine_item_fourth_row"
+                    android:layout_below="@id/routine_item_third_row"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -176,14 +176,15 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
                             <EditText
-                                android:id="@+id/routinity_item_every_edit_text"
+                                android:id="@+id/routine_item_every_edit_text"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:inputType="number"
                                 android:layout_gravity="bottom"/>
 
                             <Spinner
-                                android:id="@+id/routinity_item_every_spinner"
+                                android:id="@+id/routine_item_every_spinner"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"/>
@@ -203,11 +204,11 @@
             </RelativeLayout>
 
             <com.andexert.expandablelayout.library.ExpandableLayout xmlns:expandable="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/edit_routinity_expandable_layout"
+                android:id="@+id/edit_routine_expandable_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                expandable:el_contentLayout="@layout/expandable_edit_routinity_content"
-                expandable:el_headerLayout="@layout/expandable_edit_routinity_header" />
+                expandable:el_contentLayout="@layout/expandable_edit_routine_content"
+                expandable:el_headerLayout="@layout/expandable_edit_routine_header" />
 
         </LinearLayout>
 

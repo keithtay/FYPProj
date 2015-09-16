@@ -25,7 +25,7 @@ public class Patient {
     private ArrayList<Allergy> allergyList = new ArrayList<>();
     private ArrayList<Vital> vitalList = new ArrayList<>();
     private ArrayList<Prescription> prescriptionList = new ArrayList<>();
-    private ArrayList<Routinity> routinityList = new ArrayList<>();
+    private ArrayList<Routine> routineList = new ArrayList<>();
     private SocialHistory socialHistory = new SocialHistory();
     private Schedule todaySchedule;
 
@@ -177,12 +177,12 @@ public class Patient {
         this.prescriptionList = prescriptionList;
     }
 
-    public ArrayList<Routinity> getRoutinityList() {
-        return routinityList;
+    public ArrayList<Routine> getRoutineList() {
+        return routineList;
     }
 
-    public void setRoutinityList(ArrayList<Routinity> routinityList) {
-        this.routinityList = routinityList;
+    public void setRoutineList(ArrayList<Routine> routineList) {
+        this.routineList = routineList;
     }
 
     public Schedule getTodaySchedule() {

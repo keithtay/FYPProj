@@ -2,7 +2,7 @@ package com.example.keith.fyp.utils;
 
 import android.app.Fragment;
 
-import com.example.keith.fyp.views.fragments.CreatePatientInfoFormRoutinityFragment;
+import com.example.keith.fyp.views.fragments.CreatePatientInfoFormRoutineFragment;
 import com.example.keith.fyp.views.fragments.CreatePatientInfoFormAllergyFragment;
 import com.example.keith.fyp.views.fragments.CreatePatientInfoFormPrescriptionFragment;
 import com.example.keith.fyp.views.fragments.CreatePatientInfoFormSocialHistoryFragment;
@@ -34,7 +34,7 @@ public class CreatePatientFormFragmentDecoder {
                 fragmentToBeDisplayed = new CreatePatientInfoFormPrescriptionFragment();
                 break;
             case 5:
-                fragmentToBeDisplayed = new CreatePatientInfoFormRoutinityFragment();
+                fragmentToBeDisplayed = new CreatePatientInfoFormRoutineFragment();
                 break;
         }
 

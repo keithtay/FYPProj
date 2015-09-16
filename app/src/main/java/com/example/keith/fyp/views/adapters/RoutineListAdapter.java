@@ -14,9 +14,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
-import com.example.keith.fyp.views.fragments.CreatePatientInfoFormRoutinityFragment;
+import com.example.keith.fyp.models.Routine;
+import com.example.keith.fyp.views.fragments.CreatePatientInfoFormRoutineFragment;
 import com.example.keith.fyp.R;
-import com.example.keith.fyp.models.Routinity;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 
@@ -29,49 +29,49 @@ import java.util.List;
 /**
  * Created by Sutrisno on 13/9/2015.
  */
-public class RoutinityListAdapter extends RecyclerView.Adapter<RoutinityListAdapter.RoutinityListViewHolder> {
+public class RoutineListAdapter extends RecyclerView.Adapter<RoutineListAdapter.RoutineListViewHolder> {
 
     private LayoutInflater inflater;
-    private List<Routinity> routinityList;
-    private CreatePatientInfoFormRoutinityFragment fragment;
+    private List<Routine> routineList;
+    private CreatePatientInfoFormRoutineFragment fragment;
 
-    public RoutinityListAdapter(Context context, CreatePatientInfoFormRoutinityFragment createPatientInfoFormRoutinityFragment, List<Routinity> routinityList) {
+    public RoutineListAdapter(Context context, CreatePatientInfoFormRoutineFragment createPatientInfoFormRoutineFragment, List<Routine> routineList) {
         this.inflater = LayoutInflater.from(context);
-        this.routinityList = routinityList;
-        this.fragment = createPatientInfoFormRoutinityFragment;
+        this.routineList = routineList;
+        this.fragment = createPatientInfoFormRoutineFragment;
     }
 
     @Override
-    public RoutinityListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View rootView = inflater.inflate(R.layout.routinity_card, parent, false);
-        RoutinityListViewHolder viewHolder = new RoutinityListViewHolder(rootView);
+    public RoutineListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View rootView = inflater.inflate(R.layout.routine_card, parent, false);
+        RoutineListViewHolder viewHolder = new RoutineListViewHolder(rootView);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(RoutinityListViewHolder holder, int position) {
-        Routinity routinity = routinityList.get(position);
+    public void onBindViewHolder(RoutineListViewHolder holder, int position) {
+        Routine routine = routineList.get(position);
 
-        holder.nameEditText.setText(routinity.getName());
-        holder.notesEditText.setText(routinity.getNotes());
+        holder.nameEditText.setText(routine.getName());
+        holder.notesEditText.setText(routine.getNotes());
 
-        DateTime startDate = routinity.getStartDate();
+        DateTime startDate = routine.getStartDate();
         if (startDate != null) {
-            String startDateStr = routinity.getStartDate().toString();
+            String startDateStr = routine.getStartDate().toString();
             if (startDateStr != null && !startDateStr.isEmpty()) {
                 holder.startDatePicker.setText(startDate.toString(Global.DATE_FORMAT));
             }
         }
 
-        DateTime endDate = routinity.getEndDate();
+        DateTime endDate = routine.getEndDate();
         if (endDate != null) {
-            String endDateStr = routinity.getEndDate().toString();
+            String endDateStr = routine.getEndDate().toString();
             if (endDateStr != null && !endDateStr.isEmpty()) {
                 holder.endDatePicker.setText(endDate.toString(Global.DATE_FORMAT));
             }
         }
 
-        DateTime startTime = routinity.getStartTime();
+        DateTime startTime = routine.getStartTime();
         if (startTime != null) {
             String startTimeStr = startTime.toString();
             if (startTimeStr != null && !startTimeStr.isEmpty()) {
@@ -79,7 +79,7 @@ public class RoutinityListAdapter extends RecyclerView.Adapter<RoutinityListAdap
             }
         }
 
-        DateTime endTime = routinity.getEndTime();
+        DateTime endTime = routine.getEndTime();
         if (endTime != null) {
             String endTimeStr = endTime.toString();
             if (endTimeStr != null && !endTimeStr.isEmpty()) {
@@ -87,11 +87,11 @@ public class RoutinityListAdapter extends RecyclerView.Adapter<RoutinityListAdap
             }
         }
 
-        if (routinity.getEveryNumber() != null) {
-            holder.everyEditText.setText(Integer.toString(routinity.getEveryNumber()));
+        if (routine.getEveryNumber() != null) {
+            holder.everyEditText.setText(Integer.toString(routine.getEveryNumber()));
         }
 
-        String everyLabelStr = routinity.getEveryLabel();
+        String everyLabelStr = routine.getEveryLabel();
         int idx;
         String[] everyLabelStrArray = fragment.getResources().getStringArray(R.array.option_every_label);
         idx = Arrays.asList(everyLabelStrArray).indexOf(everyLabelStr);
@@ -100,10 +100,10 @@ public class RoutinityListAdapter extends RecyclerView.Adapter<RoutinityListAdap
 
     @Override
     public int getItemCount() {
-        return routinityList.size();
+        return routineList.size();
     }
 
-    class RoutinityListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
+    class RoutineListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 
         EditText nameEditText;
         EditText notesEditText;
@@ -128,22 +128,22 @@ public class RoutinityListAdapter extends RecyclerView.Adapter<RoutinityListAdap
         String oldEveryNum;
         String oldEveryLabel;
 
-        public RoutinityListViewHolder(View itemView) {
+        public RoutineListViewHolder(View itemView) {
             super(itemView);
 
-            nameEditText = (EditText) itemView.findViewById(R.id.routinity_item_name_edit_text);
-            notesEditText = (EditText) itemView.findViewById(R.id.routinity_item_notes_edit_text);
-            startDatePicker = (EditText) itemView.findViewById(R.id.routinity_item_start_date_picker);
-            endDatePicker = (EditText) itemView.findViewById(R.id.routinity_item_end_date_picker);
-            startTimePicker = (EditText) itemView.findViewById(R.id.routinity_item_start_time_picker);
-            endTimePicker = (EditText) itemView.findViewById(R.id.routinity_item_end_time_picker);
-            everyEditText = (EditText) itemView.findViewById(R.id.routinity_item_every_edit_text);
-            everySpinner = (Spinner) itemView.findViewById(R.id.routinity_item_every_spinner);
+            nameEditText = (EditText) itemView.findViewById(R.id.routine_item_name_edit_text);
+            notesEditText = (EditText) itemView.findViewById(R.id.routine_item_notes_edit_text);
+            startDatePicker = (EditText) itemView.findViewById(R.id.routine_item_start_date_picker);
+            endDatePicker = (EditText) itemView.findViewById(R.id.routine_item_end_date_picker);
+            startTimePicker = (EditText) itemView.findViewById(R.id.routine_item_start_time_picker);
+            endTimePicker = (EditText) itemView.findViewById(R.id.routine_item_end_time_picker);
+            everyEditText = (EditText) itemView.findViewById(R.id.routine_item_every_edit_text);
+            everySpinner = (Spinner) itemView.findViewById(R.id.routine_item_every_spinner);
 
-            fragment.setupEditTextToBeDatePicker(startDatePicker, fragment.getString(R.string.select_routinity_start_date));
-            fragment.setupEditTextToBeDatePicker(endDatePicker, fragment.getString(R.string.select_routinity_end_date));
-            fragment.setupEditTextToBeTimePicker(startTimePicker, fragment.getString(R.string.select_routinity_start_time));
-            fragment.setupEditTextToBeTimePicker(endTimePicker, fragment.getString(R.string.select_routinity_end_time));
+            fragment.setupEditTextToBeDatePicker(startDatePicker, fragment.getString(R.string.select_routine_start_date));
+            fragment.setupEditTextToBeDatePicker(endDatePicker, fragment.getString(R.string.select_routine_end_date));
+            fragment.setupEditTextToBeTimePicker(startTimePicker, fragment.getString(R.string.select_routine_start_time));
+            fragment.setupEditTextToBeTimePicker(endTimePicker, fragment.getString(R.string.select_routine_end_time));
 
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(fragment.getActivity(),
                     R.array.option_every_label, android.R.layout.simple_spinner_item);
@@ -153,9 +153,9 @@ public class RoutinityListAdapter extends RecyclerView.Adapter<RoutinityListAdap
             menuButton = (ImageView) itemView.findViewById(R.id.menu_button);
             menuButton.setOnClickListener(this);
 
-            expandableLayout = (ExpandableLayout) itemView.findViewById(R.id.edit_routinity_expandable_layout);
-            cancelButton = (Button) itemView.findViewById(R.id.edit_routinity_cancel_button);
-            saveButton = (Button) itemView.findViewById(R.id.edit_routinity_save_button);
+            expandableLayout = (ExpandableLayout) itemView.findViewById(R.id.edit_routine_expandable_layout);
+            cancelButton = (Button) itemView.findViewById(R.id.edit_routine_cancel_button);
+            saveButton = (Button) itemView.findViewById(R.id.edit_routine_save_button);
 
             setFormEditable(false);
 
@@ -173,38 +173,38 @@ public class RoutinityListAdapter extends RecyclerView.Adapter<RoutinityListAdap
             saveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArrayList<Routinity> routinityList = DataHolder.getCreatedPatient().getRoutinityList();
-                    Routinity routinity = routinityList.get(getAdapterPosition());
+                    ArrayList<Routine> routineList = DataHolder.getCreatedPatient().getRoutineList();
+                    Routine routine = routineList.get(getAdapterPosition());
 
-                    routinity.setName(nameEditText.getText().toString());
-                    routinity.setNotes(notesEditText.getText().toString());
+                    routine.setName(nameEditText.getText().toString());
+                    routine.setNotes(notesEditText.getText().toString());
 
                     String startDateStr = startDatePicker.getText().toString();
                     DateTime startDate = null;
                     if (startDateStr != null && !startDateStr.isEmpty()) {
                         startDate = Global.DATE_FORMAT.parseDateTime(startDateStr);
-                        routinity.setStartDate(startDate);
+                        routine.setStartDate(startDate);
                     }
 
                     String endDateStr = endDatePicker.getText().toString();
                     DateTime endDate = null;
                     if (endDateStr != null && !endDateStr.isEmpty()) {
                         endDate = Global.DATE_FORMAT.parseDateTime(endDateStr);
-                        routinity.setEndDate(endDate);
+                        routine.setEndDate(endDate);
                     }
 
                     String startTimeStr = startTimePicker.getText().toString();
                     DateTime startTime = null;
                     if (startTimeStr != null && !startTimeStr.isEmpty()) {
                         startTime = Global.TIME_FORMAT.parseDateTime(startTimeStr);
-                        routinity.setStartTime(startTime);
+                        routine.setStartTime(startTime);
                     }
 
                     String endTimeStr = endTimePicker.getText().toString();
                     DateTime endTime = null;
                     if (endTimeStr != null && !endTimeStr.isEmpty()) {
                         endTime = Global.TIME_FORMAT.parseDateTime(endTimeStr);
-                        routinity.setEndTime(endTime);
+                        routine.setEndTime(endTime);
                     }
 
                     String everyNumStr = everyEditText.getText().toString();
@@ -212,9 +212,9 @@ public class RoutinityListAdapter extends RecyclerView.Adapter<RoutinityListAdap
                     if (everyNumStr != null && !everyNumStr.isEmpty()) {
                         everyNum = Integer.parseInt(everyNumStr);
                     }
-                    routinity.setEveryNumber(everyNum);
+                    routine.setEveryNumber(everyNum);
 
-                    routinity.setEveryLabel(everySpinner.getSelectedItem().toString());
+                    routine.setEveryLabel(everySpinner.getSelectedItem().toString());
 
                     setFormEditable(false);
                     if (expandableLayout.isOpened()) {
