@@ -1,11 +1,13 @@
 package com.example.keith.fyp.views.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.keith.fyp.EditScheduleActivity;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Event;
 import com.example.keith.fyp.utils.Global;
@@ -143,6 +145,12 @@ public class ViewScheduleActivity extends AppCompatActivity {
         }
 
         return eventView;
+    }
+
+    public void openEditScheduleActivity(View view)
+    {
+        Intent intent = new Intent(ViewScheduleActivity.this, EditScheduleActivity.class);
+        startActivity(intent);
     }
 }
 

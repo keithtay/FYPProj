@@ -14,10 +14,6 @@
             android:label="Pear"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:windowSoftInputMode="adjustResize" >
-            <intent-filter android:label="@string/app_name" >
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".views.activities.PatientActivity"
@@ -28,6 +24,7 @@
             <intent-filter android:label="@string/app_name" >
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -56,6 +53,20 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.activities.PatientListActivity" />
+
+            <intent-filter android:label="@string/app_name" >
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".EditScheduleActivity"
+            android:label="@string/title_activity_edit_schedule" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".views.activities.ViewScheduleActivity" />
+
         </activity>
     </application>
 
