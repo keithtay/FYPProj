@@ -29,23 +29,36 @@
             android:textColor="@color/white" />
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:padding="@dimen/event_detail_padding">
-        <TextView
-            style="@style/typo_title"
-            android:id="@+id/event_title_text_view"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lunch" />
+            android:orientation="vertical">
+            <TextView
+                style="@style/typo_title"
+                android:id="@+id/event_title_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lunch" />
 
-        <TextView
-            style="@style/typo_body1"
-            android:id="@+id/event_description_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Patient is lactose intolerant" />
-    </LinearLayout>
+            <TextView
+                style="@style/typo_body1"
+                android:id="@+id/event_description_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Patient is lactose intolerant" />
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/menu_button"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:padding="10dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_more_horiz"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
 </LinearLayout>

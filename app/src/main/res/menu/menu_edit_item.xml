@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_allergy_edit"
+        android:id="@+id/action_item_edit"
         android:title="@string/action_allergy_edit"
         app:showAsAction="always" />
     <item
-        android:id="@+id/action_allergy_delete"
+        android:id="@+id/action_item_delete"
         android:title="@string/action_allergy_delete"
         app:showAsAction="always" />
 </menu>

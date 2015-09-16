@@ -119,7 +119,7 @@ public class AllergyListAdapter extends RecyclerView.Adapter<AllergyListAdapter.
         public void onClick(View v) {
             if (v == menuButton) {
                 PopupMenu popup = new PopupMenu(v.getContext(), v);
-                popup.inflate(R.menu.menu_allergy_item);
+                popup.inflate(R.menu.menu_edit_item);
                 popup.setOnMenuItemClickListener(this);
                 popup.show();
             }
@@ -128,7 +128,7 @@ public class AllergyListAdapter extends RecyclerView.Adapter<AllergyListAdapter.
         @Override
         public boolean onMenuItemClick(MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.action_allergy_edit:
+                case R.id.action_item_edit:
                     oldAllergyName = allergyName.getText().toString();
                     oldAllergyReaction = allergyReaction.getText().toString();
                     oldAllergyNotes = allergyNotes.getText().toString();
@@ -138,7 +138,7 @@ public class AllergyListAdapter extends RecyclerView.Adapter<AllergyListAdapter.
                     }
                     setFormEditable(true);
                     return true;
-                case R.id.action_allergy_delete:
+                case R.id.action_item_delete:
                     int selectedItemIdx = getAdapterPosition();
                     fragment.deleteItem(selectedItemIdx);
                     return true;

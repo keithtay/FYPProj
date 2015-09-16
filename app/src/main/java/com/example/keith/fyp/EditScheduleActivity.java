@@ -17,8 +17,6 @@ import com.example.keith.fyp.views.adapters.EventArrayAdapter;
 public class EditScheduleActivity extends ScheduleActivity {
 
     private ListView eventListView;
-    private EventArrayAdapter eventListAdapter;
-    private LinearLayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,33 +33,10 @@ public class EditScheduleActivity extends ScheduleActivity {
         EventArrayAdapter customAdapter = new EventArrayAdapter(this, R.layout.event_layout_editable, eventList);
         eventListView .setAdapter(customAdapter);
 
-        UtilsUi.setListViewHeightBasedOnChildren(eventListView);
+        updateScheduleListViewHeight();
     }
 
-    class SpacesEventItemDecoration extends RecyclerView.ItemDecoration {
-        private int space;
-
-        public SpacesEventItemDecoration(int space) {
-            this.space = space;
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view,
-                                   RecyclerView parent, RecyclerView.State state) {
-            outRect.bottom = space;
-            outRect.top = space;
-
-            // First child
-            if(parent.getChildAdapterPosition(view) == 0) {
-                outRect.top = 0;
-            }
-
-            int lastIndex = parent.getChildCount() - 1;
-
-            // Last child
-            if(parent.getChildAdapterPosition(view) == lastIndex) {
-                outRect.bottom = 0;
-            }
-        }
+    public void updateScheduleListViewHeight() {
+        UtilsUi.setListViewHeightBasedOnChildren(eventListView);
     }
 }

@@ -231,7 +231,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         public void onClick(View v) {
             if (v == menuButton) {
                 PopupMenu popup = new PopupMenu(v.getContext(), v);
-                popup.inflate(R.menu.menu_allergy_item);
+                popup.inflate(R.menu.menu_edit_item);
                 popup.setOnMenuItemClickListener(this);
                 popup.show();
             }
@@ -240,7 +240,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         @Override
         public boolean onMenuItemClick(MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.action_allergy_edit:
+                case R.id.action_item_edit:
                     oldName = nameEditText.getText().toString();
                     oldDosage = dosageEditText.getText().toString();
                     oldFreq = freqEditText.getText().toString();
@@ -255,7 +255,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
                     }
                     setFormEditable(true);
                     return true;
-                case R.id.action_allergy_delete:
+                case R.id.action_item_delete:
                     int selectedItemIdx = getAdapterPosition();
                     fragment.deleteItem(selectedItemIdx);
                     return true;

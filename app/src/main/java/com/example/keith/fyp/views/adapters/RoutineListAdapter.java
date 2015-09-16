@@ -258,7 +258,7 @@ public class RoutineListAdapter extends RecyclerView.Adapter<RoutineListAdapter.
         public void onClick(View v) {
             if (v == menuButton) {
                 PopupMenu popup = new PopupMenu(v.getContext(), v);
-                popup.inflate(R.menu.menu_allergy_item);
+                popup.inflate(R.menu.menu_edit_item);
                 popup.setOnMenuItemClickListener(this);
                 popup.show();
             }
@@ -267,7 +267,7 @@ public class RoutineListAdapter extends RecyclerView.Adapter<RoutineListAdapter.
         @Override
         public boolean onMenuItemClick(MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.action_allergy_edit:
+                case R.id.action_item_edit:
                     oldName = nameEditText.getText().toString();
                     oldNotes = notesEditText.getText().toString();
                     oldStartDate = startDatePicker.getText().toString();
@@ -282,7 +282,7 @@ public class RoutineListAdapter extends RecyclerView.Adapter<RoutineListAdapter.
                     }
                     setFormEditable(true);
                     return true;
-                case R.id.action_allergy_delete:
+                case R.id.action_item_delete:
                     int selectedItemIdx = getAdapterPosition();
                     fragment.deleteItem(selectedItemIdx);
                     return true;

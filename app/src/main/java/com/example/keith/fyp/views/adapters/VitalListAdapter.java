@@ -251,7 +251,7 @@ public class VitalListAdapter extends RecyclerView.Adapter<VitalListAdapter.Vita
         public void onClick(View v) {
             if (v == menuButton) {
                 PopupMenu popup = new PopupMenu(v.getContext(), v);
-                popup.inflate(R.menu.menu_allergy_item);
+                popup.inflate(R.menu.menu_edit_item);
                 popup.setOnMenuItemClickListener(this);
                 popup.show();
             }
@@ -260,7 +260,7 @@ public class VitalListAdapter extends RecyclerView.Adapter<VitalListAdapter.Vita
         @Override
         public boolean onMenuItemClick(MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.action_allergy_edit:
+                case R.id.action_item_edit:
                     oldDateTaken = dateTaken.getText().toString();
                     oldTimeTaken = timeTaken.getText().toString();
                     oldBeforeAfterMeal = beforeAfterMeal.getSelectedItem().toString();
@@ -276,7 +276,7 @@ public class VitalListAdapter extends RecyclerView.Adapter<VitalListAdapter.Vita
                     }
                     setFormEditable(true);
                     return true;
-                case R.id.action_allergy_delete:
+                case R.id.action_item_delete:
                     int selectedItemIdx = getAdapterPosition();
                     fragment.deleteItem(selectedItemIdx);
                     return true;
