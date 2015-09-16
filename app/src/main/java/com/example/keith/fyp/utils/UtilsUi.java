@@ -3,7 +3,11 @@ package com.example.keith.fyp.utils;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import com.example.keith.fyp.R;
 import com.mikepenz.crossfader.Crossfader;
@@ -20,10 +24,17 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mikepenz.materialize.util.UIUtils;
 
+import org.joda.time.Duration;
+
 /**
  * Created by Sutrisno on 6/9/2015.
  */
 public class UtilsUi {
+
+    public static String convertDurationToString(Duration duration) {
+        String durationStr = Long.toString(duration.getStandardMinutes()) + " min";
+        return durationStr;
+    }
 
     public static void setNavigationDrawer(Activity activity, Bundle savedInstanceState) {
         Resources resource = activity.getResources();
@@ -95,5 +106,27 @@ public class UtilsUi {
                 .build();
 
         miniDrawer.withCrossFader(new CrossfadeWrapper(crossFader));
+    }
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = listView.getPaddingTop() + listView.getPaddingBottom();
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            if (listItem instanceof ViewGroup) {
+                listItem.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            }
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
     }
 }

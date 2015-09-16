@@ -11,37 +11,35 @@ import com.example.keith.fyp.EditScheduleActivity;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Event;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsUi;
+import com.example.keith.fyp.views.ScheduleActivity;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 
-public class ViewScheduleActivity extends AppCompatActivity {
-
-    private ArrayList<Event> eventList;
-
-    private LinearLayout eventListContainer;
-
-    private int spacingBetweenEventView;
+public class ViewScheduleActivity extends ScheduleActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_schedule);
 
-        eventList = getPatientEventList();
+        init();
+
         eventListContainer = (LinearLayout) findViewById(R.id.event_list_container);
 
         displaySchedule();
     }
 
+    public void openEditScheduleActivity(View view)
+    {
+        Intent intent = new Intent(ViewScheduleActivity.this, EditScheduleActivity.class);
+        startActivity(intent);
+    }
+
     private void displaySchedule() {
-        spacingBetweenEventView = (int) getResources().getDimension(R.dimen.paper_card_padding) / 2;
-
-        // Initialize current time (for display purpose) TODO: change with actual current time
-        DateTime currentTime = Global.TIME_FORMAT.parseDateTime("12:30");
-
         boolean isCurrentTimeMarkHasBeenDisplayed = false;
 
         // Adding event views to the layout
@@ -54,7 +52,7 @@ public class ViewScheduleActivity extends AppCompatActivity {
             DateTime startTime = event.getStartTime();
             DateTime endTime = event.getEndTime();
             String startTimeStr = startTime.toString(Global.TIME_FORMAT);
-            String durationStr = Long.toString(event.getDuration().getStandardMinutes()) + " min";
+            String durationStr = UtilsUi.convertDurationToString(event.getDuration());
 
             if (!isCurrentTimeMarkHasBeenDisplayed && currentTime.isBefore(startTime)) {
                 View currentTimeMarker = getLayoutInflater().inflate(R.layout.current_time_marker, eventListContainer, false);
@@ -68,7 +66,6 @@ public class ViewScheduleActivity extends AppCompatActivity {
             }
 
             int layoutId;
-            // Give left margin for non-current events
             int marginLeft = (int) getResources().getDimension(R.dimen.event_margin_left);
 
             boolean isEventCurrentlyOccurring = (currentTime.isAfter(startTime) && currentTime.isBefore(endTime)) || currentTime.isEqual(startTime);
@@ -93,31 +90,7 @@ public class ViewScheduleActivity extends AppCompatActivity {
         }
     }
 
-    private ArrayList<Event> getPatientEventList() {
-        DateTimeFormatter formatter = Global.TIME_FORMAT;
-
-        DateTime startTime1 = formatter.parseDateTime("12:00");
-        DateTime endTime1 = formatter.parseDateTime("12:30");
-        Event event1 = new Event("Lunch", "Patient is lactose intolerant", startTime1, endTime1);
-
-        DateTime startTime2 = formatter.parseDateTime("12:30");
-        DateTime endTime2 = formatter.parseDateTime("13:30");
-        Event event2 = new Event("Games", "Play memory games", startTime2, endTime2);
-
-        DateTime startTime3 = formatter.parseDateTime("14:30");
-        DateTime endTime3 = formatter.parseDateTime("15:30");
-        Event event3 = new Event("Games", "Play cognitive games", startTime3, endTime3);
-
-        ArrayList<Event> eventList = new ArrayList<>();
-        eventList.add(event1);
-        eventList.add(event2);
-        eventList.add(event3);
-
-        return eventList;
-    }
-
     private View createEventViewWithLayout(int layoutId, String eventTitle, String eventDescription, String startTimeStr, String durationStr, int currentIndex, int lastIndex, int marginLeft) {
-
         View eventView = getLayoutInflater().inflate(layoutId, eventListContainer, false);
 
         TextView titleTextView = (TextView) eventView.findViewById(R.id.event_title_text_view);
@@ -145,12 +118,6 @@ public class ViewScheduleActivity extends AppCompatActivity {
         }
 
         return eventView;
-    }
-
-    public void openEditScheduleActivity(View view)
-    {
-        Intent intent = new Intent(ViewScheduleActivity.this, EditScheduleActivity.class);
-        startActivity(intent);
     }
 }
 

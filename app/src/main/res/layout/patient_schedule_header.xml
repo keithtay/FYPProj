@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <TextView
+        style="@style/typo_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Today's Schedule" />
+
+    <TextView
+        android:id="@+id/today_date"
+        style="@style/typo_subhead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="25 August 2015"
+        android:textColor="@color/primary"></TextView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="@dimen/paper_card_padding"
+        android:layout_marginTop="@dimen/paper_card_padding"
+        android:background="@color/divider"></View>
+
+</LinearLayout>
