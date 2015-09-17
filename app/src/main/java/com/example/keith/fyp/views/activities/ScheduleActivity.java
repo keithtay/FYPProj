@@ -11,6 +11,7 @@ import com.example.keith.fyp.models.Event;
 import com.example.keith.fyp.utils.Global;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class ScheduleActivity extends AppCompatActivity {
         spacingBetweenEventView = (int) getResources().getDimension(R.dimen.paper_card_padding) / 2;
 
         // Initialize current time (for display purpose) TODO: change with actual current time
-        currentTime = Global.TIME_FORMAT.parseDateTime("13:30");
+        currentTime = DateTime.now().withTime(13,30,0,0);
     }
 
     protected void setScheduleDate() {
@@ -45,18 +46,22 @@ public class ScheduleActivity extends AppCompatActivity {
     }
 
     private ArrayList<Event> getPatientEventList() {
-        DateTimeFormatter formatter = Global.TIME_FORMAT;
 
-        DateTime startTime1 = formatter.parseDateTime("12:00");
-        DateTime endTime1 = formatter.parseDateTime("12:30");
+        String dateFormatStr = Global.DATE_FORMAT_STR + " " + Global.TIME_FORMAT_STR;
+        DateTimeFormatter formatter = DateTimeFormat.forPattern(dateFormatStr);
+
+        String todayDateStr = DateTime.now().toString(Global.DATE_FORMAT);
+
+        DateTime startTime1 = formatter.parseDateTime(todayDateStr + " 12:00");
+        DateTime endTime1 = formatter.parseDateTime(todayDateStr + " 12:30");
         Event event1 = new Event("Lunch", "Patient is lactose intolerant", startTime1, endTime1);
 
-        DateTime startTime2 = formatter.parseDateTime("12:30");
-        DateTime endTime2 = formatter.parseDateTime("13:30");
+        DateTime startTime2 = formatter.parseDateTime(todayDateStr + " 12:30");
+        DateTime endTime2 = formatter.parseDateTime(todayDateStr + " 13:30");
         Event event2 = new Event("Games", "Play memory games", startTime2, endTime2);
 
-        DateTime startTime3 = formatter.parseDateTime("14:30");
-        DateTime endTime3 = formatter.parseDateTime("15:30");
+        DateTime startTime3 = formatter.parseDateTime(todayDateStr + " 14:30");
+        DateTime endTime3 = formatter.parseDateTime(todayDateStr + " 15:30");
         Event event3 = new Event("Games", "Play cognitive games", startTime3, endTime3);
 
         ArrayList<Event> eventList = new ArrayList<>();

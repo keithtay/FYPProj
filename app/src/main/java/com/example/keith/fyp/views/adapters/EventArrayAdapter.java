@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.keith.fyp.models.Prescription;
 import com.example.keith.fyp.views.TimeRangePicker;
 import com.example.keith.fyp.views.activities.EditScheduleActivity;
 import com.example.keith.fyp.R;
@@ -23,6 +24,8 @@ import com.example.keith.fyp.views.fragments.TimeRangePickerFragment;
 
 import org.joda.time.DateTime;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -100,48 +103,31 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
                                                     public void timeRangeSet(DateTime startTime, DateTime endTime) {
                                                         event.setStartTime(startTime);
                                                         event.setEndTime(endTime);
+
+                                                        sort(new Comparator<Event>() {
+                                                            @Override
+                                                            public int compare(Event event1, Event event2) {
+                                                                DateTime startTime1 = event1.getStartTime();
+                                                                DateTime startTime2 = event2.getStartTime();
+
+                                                                if (startTime1.isAfter(startTime2)) {
+                                                                    return 1;
+                                                                } else if (startTime1.isBefore(startTime2)) {
+                                                                    return -1;
+                                                                }
+
+                                                                return 0;
+                                                            }
+                                                        });
+
                                                         notifyDataSetChanged();
                                                     }
                                                 },
                                                 fragmentManager
                                         ).show();
 
-                                        // TODO: sort the editted event
+                                        // TODO check new time is not overlapped with existing event
 
-
-//                                        TimeRangePickerDialog.OnTimeRangeSelectedListener timeRangeSelectedListener = new TimeRangePickerDialog.OnTimeRangeSelectedListener() {
-//                                            @Override
-//                                            public void onTimeRangeSelected(int startHour, int startMin, int endHour, int endMin) {
-//
-//                                            }
-//                                        };
-//
-//                                        TimeRangePickerDialog timePickerDialog = TimeRangePickerDialog.newInstance(timeRangeSelectedListener, true);
-//                                        FragmentManager fragmentManager = ((EditScheduleActivity) getContext()).getSupportFragmentManager();
-//
-//                                        timePickerDialog.show(fragmentManager, "asd");
-
-
-//
-//
-//                                        DateTime startTime = event.getStartTime();
-//                                        int mHour = startTime.getHourOfDay();
-//                                        int mMinutes = startTime.getMinuteOfHour();
-//
-//                                        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
-//                                            @Override
-//                                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-//                                                DateTime newStartTime = event.getStartTime();
-//                                                newStartTime = event.getStartTime().withHourOfDay(hourOfDay);
-//                                                newStartTime = event.getStartTime().withMinuteOfHour(minute);
-//                                                event.setStartTime(newStartTime);
-//                                                notifyDataSetChanged();
-//                                            }
-//                                        }, mHour, mMinutes, true);
-//
-//                                        String timePickerTitle = "Change \"" + event.getTitle() + "\" event start time to";
-//                                        timePickerDialog.setTitle(timePickerTitle);
-//                                        timePickerDialog.show();
                                         return true;
                                     case R.id.action_item_delete:
                                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -177,5 +163,10 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         }
 
         return eventView;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
     }
 }

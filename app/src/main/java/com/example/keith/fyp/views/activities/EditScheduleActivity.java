@@ -6,8 +6,13 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.models.Event;
 import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.adapters.EventArrayAdapter;
+
+import org.joda.time.DateTime;
+
+import java.util.Comparator;
 
 public class EditScheduleActivity extends ScheduleActivity {
 
