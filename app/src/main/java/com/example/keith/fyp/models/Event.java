@@ -6,7 +6,7 @@ import org.joda.time.Duration;
 /**
  * Created by Sutrisno on 13/9/2015.
  */
-public class Event {
+public class Event implements Cloneable {
     private String title;
     private String description;
     private DateTime startTime;
@@ -61,5 +61,9 @@ public class Event {
 
     private void recalculateDuration() {
         this.duration = new Duration(this.startTime, this.endTime);
+    }
+
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

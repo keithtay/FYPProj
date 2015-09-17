@@ -27,6 +27,7 @@ import com.example.keith.fyp.views.fragments.TimeRangePickerFragment;
 
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -125,33 +126,20 @@ public class EventArrayAdapter extends BaseAdapter {
                                                 new TimeRangePickerFragment.OnTimeRangeSetListener() {
                                                     @Override
                                                     public void timeRangeSet(DateTime newStartTime, DateTime newEndTime) {
-                                                        boolean isOverlap = false;
-
-                                                        // Check for event overlap
-                                                        for(Event e:eventList) {
-                                                            if(e.equals(event)) {
-                                                                continue;
-                                                            }
-
-                                                            DateTime eStartTime = e.getStartTime();
-                                                            DateTime eEndTime = e.getEndTime();
-
-                                                            if(newStartTime.isAfter(eStartTime) && newStartTime.isBefore(eEndTime)) {
-                                                                isOverlap = true;
-                                                                break;
-                                                            }
-
-                                                            if(newEndTime.isAfter(eStartTime) && newEndTime.isBefore(eEndTime)) {
-                                                                isOverlap = true;
-                                                                break;
-                                                            }
-
-                                                            if(newStartTime.isBefore(eStartTime) && newEndTime.isAfter(eEndTime)) {
-                                                                isOverlap = true;
-                                                                break;
-                                                            }
+                                                        Event newEvent = null;
+                                                        try {
+                                                            newEvent = (Event) event.clone();
+                                                        } catch (CloneNotSupportedException e) {
+                                                            e.printStackTrace();
                                                         }
+                                                        newEvent.setStartTime(newStartTime);
+                                                        newEvent.setEndTime(newEndTime);
 
+                                                        List<Event> eventListWithoutEditedEvent = new ArrayList<>();
+                                                        eventListWithoutEditedEvent.addAll(eventList);
+                                                        eventListWithoutEditedEvent.remove(event);
+
+                                                        boolean isOverlap =  isEventOverlapWithEventInList(newEvent, eventListWithoutEditedEvent);
                                                         if(isOverlap) {
                                                             Toast.makeText(activity, "New event time should not be overlap with the existing event", Toast.LENGTH_SHORT).show();
                                                         } else {
@@ -222,5 +210,32 @@ public class EventArrayAdapter extends BaseAdapter {
                 return 0;
             }
         });
+    }
+
+    private boolean isEventOverlapWithEventInList(Event event, List<Event> eventList) {
+        boolean isOverlap = false;
+        for(Event e:eventList) {
+            DateTime eStartTime = e.getStartTime();
+            DateTime eEndTime = e.getEndTime();
+
+            DateTime newStartTime = event.getStartTime();
+            DateTime newEndTime = event.getEndTime();
+
+            if(newStartTime.isAfter(eStartTime) && newStartTime.isBefore(eEndTime)) {
+                isOverlap = true;
+                break;
+            }
+
+            if(newEndTime.isAfter(eStartTime) && newEndTime.isBefore(eEndTime)) {
+                isOverlap = true;
+                break;
+            }
+
+            if(newStartTime.isBefore(eStartTime) && newEndTime.isAfter(eEndTime)) {
+                isOverlap = true;
+                break;
+            }
+        }
+        return isOverlap;
     }
 }
