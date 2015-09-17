@@ -95,11 +95,10 @@ public class EditScheduleActivity extends ScheduleActivity implements View.OnCli
                 String title = eventTitleEditText.getText().toString();
                 String description = eventDescriptionEditText.getText().toString();
 
-                String todayDateStr = DateTime.now().toString(Global.DATE_FORMAT);
                 String startTimeStr = startTimePicker.getText().toString();
-                DateTime startTime = Global.DATE_TIME_FORMAT.parseDateTime(todayDateStr + " " + startTimeStr);
+                DateTime startTime = UtilsDate.setCurrentDateToTime(startTimeStr);
                 String endTimeStr = endTimePicker.getText().toString();
-                DateTime endTime = Global.DATE_TIME_FORMAT.parseDateTime(todayDateStr + " " + endTimeStr);
+                DateTime endTime = UtilsDate.setCurrentDateToTime(endTimeStr);
 
                 Event newEvent = new Event(title, description, startTime, endTime);
 
