@@ -39,6 +39,17 @@
 
                     <include layout="@layout/patient_schedule_header" />
 
+                    <Button
+                        android:id="@+id/add_event_button"
+                        style="@style/raised_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/paper_card_padding"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:text="Add new event to patient's schedule"
+                        android:textSize="14sp"/>
+
                     <ListView
                         android:id="@+id/event_list_list_view"
                         android:layout_width="match_parent"

@@ -115,14 +115,14 @@
 
                 <Button
                     android:id="@+id/view_more_button"
-                    style="@style/raised_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/patient_info_in_schedule_spacing"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:text="View more patient information"
-                    android:textSize="14sp"/>
+                style="@style/raised_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/patient_info_in_schedule_spacing"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="View more patient information"
+                android:textSize="14sp"/>
             </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>

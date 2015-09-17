@@ -83,5 +83,9 @@
     <string name="title_activity_edit_schedule">Edit Schedule</string>
     <string name="tab_start_time">Start Time</string>
     <string name="tab_end_time">End Time</string>
+    <string name="dialog_title_add_event">Add new event to patient\'s schedule</string>
+    <string name="dialog_button_add">Add</string>
+    <string name="dialog_button_cancel">Cancel</string>
+    <string name="dialog_set_time_range">Set Event Time Range</string>
 
 </resources>
