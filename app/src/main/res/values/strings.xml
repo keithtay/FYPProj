@@ -87,5 +87,6 @@
     <string name="dialog_button_add">Add</string>
     <string name="dialog_button_cancel">Cancel</string>
     <string name="dialog_set_time_range">Set Event Time Range</string>
+    <string name="toast_new_event_overlap">New event time should not be overlap with the existing event</string>
 
 </resources>

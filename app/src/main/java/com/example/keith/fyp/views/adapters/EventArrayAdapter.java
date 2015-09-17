@@ -142,7 +142,7 @@ public class EventArrayAdapter extends BaseAdapter {
 
                                                         boolean isOverlap =  isEventOverlapWithEventInList(newEvent, eventListWithoutEditedEvent);
                                                         if(isOverlap) {
-                                                            Toast.makeText(activity, "New event time should not be overlap with the existing event", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(activity, R.string.toast_new_event_overlap, Toast.LENGTH_SHORT).show();
                                                         } else {
                                                             event.setStartTime(newStartTime);
                                                             event.setEndTime(newEndTime);
@@ -213,7 +213,7 @@ public class EventArrayAdapter extends BaseAdapter {
         });
     }
 
-    private boolean isEventOverlapWithEventInList(Event event, List<Event> eventList) {
+    public boolean isEventOverlapWithEventInList(Event event, List<Event> eventList) {
         boolean isOverlap = false;
         for(Event e:eventList) {
             DateTime eStartTime = e.getStartTime();

@@ -100,10 +100,14 @@ public class EditScheduleActivity extends ScheduleActivity implements View.OnCli
 
                 Event newEvent = new Event(title, description, startTime, endTime);
 
-                eventList.add(newEvent);
-                eventListAdapter.sortEventList();
-                eventListAdapter.notifyDataSetChanged();
-                updateScheduleListViewHeight();
+                if(eventListAdapter.isEventOverlapWithEventInList(newEvent, eventList)) {
+                    Toast.makeText(getApplicationContext(), R.string.toast_new_event_overlap, Toast.LENGTH_SHORT).show();
+                } else {
+                    eventList.add(newEvent);
+                    eventListAdapter.sortEventList();
+                    eventListAdapter.notifyDataSetChanged();
+                    updateScheduleListViewHeight();
+                }
             }
         });
         builder.setNegativeButton(R.string.dialog_button_cancel, new DialogInterface.OnClickListener() {
