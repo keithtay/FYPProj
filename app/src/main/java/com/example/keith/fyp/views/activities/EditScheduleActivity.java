@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Event;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsDate;
+import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.TimeRangePicker;
 import com.example.keith.fyp.views.adapters.EventArrayAdapter;
@@ -25,6 +27,7 @@ import com.example.keith.fyp.views.fragments.TimeRangePickerFragment;
 
 import org.joda.time.DateTime;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -126,15 +129,26 @@ public class EditScheduleActivity extends ScheduleActivity implements View.OnCli
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DateTime currentTime = DateTime.now();
-                DateTime oneHourLater = currentTime.withHourOfDay(currentTime.plusHours(1).getHourOfDay());
+                DateTime startTime;
+                DateTime endTime;
+
+                String prevStartTimeStr = startTimePicker.getText().toString();
+                String prevEndTimeStr = endTimePicker.getText().toString();
+
+                if(UtilsString.isEmpty(prevStartTimeStr) && UtilsString.isEmpty(prevEndTimeStr)) {
+                    startTime = DateTime.now();
+                    endTime = startTime.withHourOfDay(startTime.plusHours(1).getHourOfDay());
+                } else {
+                    startTime = UtilsDate.setCurrentDateToTime(prevStartTimeStr);
+                    endTime = UtilsDate.setCurrentDateToTime(prevEndTimeStr);
+                }
 
                 FragmentManager fragmentManager = getSupportFragmentManager();
 
                 TimeRangePicker.make(
                         title,
-                        currentTime,
-                        oneHourLater,
+                        startTime,
+                        endTime,
                         new TimeRangePickerFragment.OnTimeRangeSetListener() {
                             @Override
                             public void timeRangeSet(DateTime newStartTime, DateTime newEndTime) {
