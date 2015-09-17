@@ -30,7 +30,7 @@ public class EditScheduleActivity extends ScheduleActivity {
         ((ViewGroup) viewMoreButton.getParent()).removeView(viewMoreButton);
 
         eventListView = (ListView) findViewById(R.id.event_list_list_view);
-        EventArrayAdapter customAdapter = new EventArrayAdapter(this, R.layout.event_layout_editable, eventList);
+        EventArrayAdapter customAdapter = new EventArrayAdapter(this, eventList);
         eventListView .setAdapter(customAdapter);
 
         updateScheduleListViewHeight();
