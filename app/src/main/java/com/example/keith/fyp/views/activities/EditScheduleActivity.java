@@ -1,17 +1,12 @@
-package com.example.keith.fyp;
+package com.example.keith.fyp.views.activities;
 
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.example.keith.fyp.R;
 import com.example.keith.fyp.utils.UtilsUi;
-import com.example.keith.fyp.views.ScheduleActivity;
 import com.example.keith.fyp.views.adapters.EventArrayAdapter;
 
 public class EditScheduleActivity extends ScheduleActivity {

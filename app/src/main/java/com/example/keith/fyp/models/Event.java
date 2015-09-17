@@ -43,6 +43,7 @@ public class Event {
 
     public void setEndTime(DateTime endTime) {
         this.endTime = endTime;
+        recalculateDuration();
     }
 
     public Duration getDuration() {
@@ -55,5 +56,10 @@ public class Event {
 
     public void setStartTime(DateTime startTime) {
         this.startTime = startTime;
+        recalculateDuration();
+    }
+
+    private void recalculateDuration() {
+        this.duration = new Duration(this.startTime, this.endTime);
     }
 }

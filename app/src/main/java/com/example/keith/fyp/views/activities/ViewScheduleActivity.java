@@ -1,23 +1,17 @@
 package com.example.keith.fyp.views.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.keith.fyp.EditScheduleActivity;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Event;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsUi;
-import com.example.keith.fyp.views.ScheduleActivity;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
-
-import java.util.ArrayList;
 
 public class ViewScheduleActivity extends ScheduleActivity {
 

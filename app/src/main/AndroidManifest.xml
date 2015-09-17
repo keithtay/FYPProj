@@ -61,7 +61,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".EditScheduleActivity"
+            android:name=".views.activities.EditScheduleActivity"
             android:label="@string/title_activity_edit_schedule" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
