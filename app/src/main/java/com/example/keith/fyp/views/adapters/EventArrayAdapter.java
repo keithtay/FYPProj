@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.keith.fyp.models.Prescription;
 import com.example.keith.fyp.utils.UtilsThread;
@@ -123,18 +124,47 @@ public class EventArrayAdapter extends BaseAdapter {
                                                 event.getEndTime(),
                                                 new TimeRangePickerFragment.OnTimeRangeSetListener() {
                                                     @Override
-                                                    public void timeRangeSet(DateTime startTime, DateTime endTime) {
-                                                        event.setStartTime(startTime);
-                                                        event.setEndTime(endTime);
-                                                        sortEventList();
-                                                        notifyDataSetChanged();
+                                                    public void timeRangeSet(DateTime newStartTime, DateTime newEndTime) {
+                                                        boolean isOverlap = false;
+
+                                                        // Check for event overlap
+                                                        for(Event e:eventList) {
+                                                            if(e.equals(event)) {
+                                                                continue;
+                                                            }
+
+                                                            DateTime eStartTime = e.getStartTime();
+                                                            DateTime eEndTime = e.getEndTime();
+
+                                                            if(newStartTime.isAfter(eStartTime) && newStartTime.isBefore(eEndTime)) {
+                                                                isOverlap = true;
+                                                                break;
+                                                            }
+
+                                                            if(newEndTime.isAfter(eStartTime) && newEndTime.isBefore(eEndTime)) {
+                                                                isOverlap = true;
+                                                                break;
+                                                            }
+
+                                                            if(newStartTime.isBefore(eStartTime) && newEndTime.isAfter(eEndTime)) {
+                                                                isOverlap = true;
+                                                                break;
+                                                            }
+                                                        }
+
+                                                        if(isOverlap) {
+                                                            Toast.makeText(activity, "New event time should not be overlap with the existing event", Toast.LENGTH_SHORT).show();
+                                                        } else {
+                                                            event.setStartTime(newStartTime);
+                                                            event.setEndTime(newEndTime);
+                                                            sortEventList();
+                                                            notifyDataSetChanged();
+                                                        }
                                                     }
                                                 },
                                                 fragmentManager
                                         ).show();
-
-                                        // TODO check new time is not overlapped with existing event
-
+                                        
                                         return true;
                                     case R.id.action_item_delete:
                                         AlertDialog.Builder builder = new AlertDialog.Builder(activity);

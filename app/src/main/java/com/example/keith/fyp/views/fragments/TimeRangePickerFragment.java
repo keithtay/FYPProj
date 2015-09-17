@@ -139,11 +139,11 @@ public class TimeRangePickerFragment extends DialogFragment {
         public void onClick(DialogInterface dialogInterface, int result) {
             // Determine if the user selected Ok
             if (DialogInterface.BUTTON_POSITIVE == result) {
-                DateTime mStartTime = DateTime.now();
+                DateTime mStartTime = DateTime.now().withSecondOfMinute(0).withMillisOfSecond(0);
                 mStartTime = mStartTime.withHourOfDay(mStartTimePicker.getCurrentHour());
                 mStartTime = mStartTime.withMinuteOfHour(mStartTimePicker.getCurrentMinute());
 
-                DateTime mEndTime = DateTime.now();
+                DateTime mEndTime = DateTime.now().withSecondOfMinute(0).withMillisOfSecond(0);
                 mEndTime = mEndTime.withHourOfDay(mEndTimePicker.getCurrentHour());
                 mEndTime = mEndTime.withMinuteOfHour(mEndTimePicker.getCurrentMinute());
 
