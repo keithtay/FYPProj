@@ -13,13 +13,13 @@ import android.widget.ListView;
 
 import com.example.keith.fyp.R;
 
-public class CreatePatientInfoCategListFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class PatientInfoCategListFragment extends Fragment implements AdapterView.OnItemClickListener {
     private ListView infoCategListView;
     private Communicator communicator;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_create_patient_info_categ_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_patient_info_categ_list, container, false);
 
         infoCategListView = (ListView) view.findViewById(R.id.infoCategListView);
 
@@ -29,7 +29,7 @@ public class CreatePatientInfoCategListFragment extends Fragment implements Adap
                 "Vital",
                 "Social History",
                 "Prescription",
-                "Routine",};
+                "Routine"};
 
         ArrayAdapter<String> infoCategAdapter = new ArrayAdapter<>(getActivity(), R.layout.info_categ_list_item, infoCategList);
         infoCategListView.setAdapter(infoCategAdapter);

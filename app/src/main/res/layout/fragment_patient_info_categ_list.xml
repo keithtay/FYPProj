@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.keith.fyp.views.fragments.CreatePatientInfoCategListFragment">
+    tools:context="com.example.keith.fyp.views.fragments.PatientInfoCategListFragment">
 
     <ListView
         android:id="@+id/infoCategListView"

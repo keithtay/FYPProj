@@ -16,11 +16,11 @@ import android.view.inputmethod.InputMethodManager;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.utils.CreatePatientFormFragmentDecoder;
 import com.example.keith.fyp.utils.DataHolder;
-import com.example.keith.fyp.views.fragments.CreatePatientInfoCategListFragment;
+import com.example.keith.fyp.views.fragments.PatientInfoCategListFragment;
 
-public class CreatePatientActivity extends AppCompatActivity implements CreatePatientInfoCategListFragment.Communicator {
+public class CreatePatientActivity extends AppCompatActivity implements PatientInfoCategListFragment.Communicator {
 
-    private CreatePatientInfoCategListFragment infoCategListFragment;
+    private PatientInfoCategListFragment infoCategListFragment;
 
     private FragmentManager fragmentManager;
 
@@ -36,7 +36,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         fragmentManager = getFragmentManager();
-        infoCategListFragment = (CreatePatientInfoCategListFragment) fragmentManager.findFragmentById(R.id.create_patient_info_categ_list_fragment);
+        infoCategListFragment = (PatientInfoCategListFragment) fragmentManager.findFragmentById(R.id.create_patient_info_categ_list_fragment);
         infoCategListFragment.setCommunicator(this);
     }
 

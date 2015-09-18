@@ -3,17 +3,21 @@ package com.example.keith.fyp.views.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.ViewPatientActivity;
 import com.example.keith.fyp.models.Event;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsUi;
 
 import org.joda.time.DateTime;
 
-public class ViewScheduleActivity extends ScheduleActivity {
+public class ViewScheduleActivity extends ScheduleActivity implements View.OnClickListener {
+
+    private Button viewMoreButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +26,10 @@ public class ViewScheduleActivity extends ScheduleActivity {
 
         init();
 
-        eventListContainer = (LinearLayout) findViewById(R.id.event_list_container);
+        viewMoreButton = (Button) findViewById(R.id.view_more_button);
+        viewMoreButton.setOnClickListener(this);
 
+        eventListContainer = (LinearLayout) findViewById(R.id.event_list_container);
         displaySchedule();
     }
 
@@ -112,6 +118,12 @@ public class ViewScheduleActivity extends ScheduleActivity {
         }
 
         return eventView;
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(this, ViewPatientActivity.class);
+        startActivity(intent);
     }
 }
 
