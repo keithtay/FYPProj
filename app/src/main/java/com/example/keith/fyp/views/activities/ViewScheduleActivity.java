@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Event;
+import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsUi;
 
@@ -123,6 +124,12 @@ public class ViewScheduleActivity extends ScheduleActivity implements View.OnCli
     public void onClick(View v) {
         Intent intent = new Intent(this, ViewPatientActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        DataHolder.resetViewedPatient();
     }
 }
 

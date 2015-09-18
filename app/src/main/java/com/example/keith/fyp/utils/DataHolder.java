@@ -9,6 +9,9 @@ public class DataHolder {
     // Patient currently being created
     private static Patient createdPatient;
 
+    // Patient currently being viewed
+    private static Patient viewedPatient;
+
     public static Patient getCreatedPatient() {
         if(createdPatient == null) {
             createdPatient = new Patient();
@@ -18,5 +21,16 @@ public class DataHolder {
 
     public static void resetCreatedPatient() {
         createdPatient = new Patient();
+    }
+
+    public static Patient getViewedPatient() {
+        if(viewedPatient == null) {
+            viewedPatient = new Patient();
+        }
+        return viewedPatient;
+    }
+
+    public static void resetViewedPatient() {
+        viewedPatient = new Patient();
     }
 }

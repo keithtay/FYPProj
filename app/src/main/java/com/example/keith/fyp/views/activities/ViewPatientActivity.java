@@ -6,19 +6,33 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.inputmethod.InputMethodManager;
 
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.models.Allergy;
+import com.example.keith.fyp.models.Patient;
+import com.example.keith.fyp.models.Prescription;
+import com.example.keith.fyp.models.Routine;
+import com.example.keith.fyp.models.SocialHistory;
+import com.example.keith.fyp.models.Vital;
+import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.ViewPatientFormFragmentDecoder;
 import com.example.keith.fyp.views.fragments.PatientInfoCategListFragment;
+
+import org.joda.time.DateTime;
+
+import java.util.ArrayList;
 
 public class ViewPatientActivity extends AppCompatActivity  implements PatientInfoCategListFragment.Communicator {
 
     private PatientInfoCategListFragment infoCategListFragment;
     private FragmentManager fragmentManager;
     private InputMethodManager inputManager;
+    private Patient viewedPatient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +41,60 @@ public class ViewPatientActivity extends AppCompatActivity  implements PatientIn
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        getPatientInfoDetails();
+
         inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         fragmentManager = getFragmentManager();
         infoCategListFragment = (PatientInfoCategListFragment) fragmentManager.findFragmentById(R.id.patient_info_categ_list_fragment);
         infoCategListFragment.setCommunicator(this);
+    }
+
+    private void getPatientInfoDetails() {
+        viewedPatient = DataHolder.getViewedPatient();
+
+        // TODO: replace using backend API to retrieve patient info details
+
+        // Patient's personal info
+        viewedPatient.setFirstName("Andy");
+        viewedPatient.setLastName("Grammer");
+        viewedPatient.setNric("G1162834J");
+        viewedPatient.setAddress("32 Nanyang Lake, Hall of Residence 19 #64-3-1221");
+        viewedPatient.setHomeNumber("+65 8900 9800");
+        viewedPatient.setPhoneNumber("+65 1234 5678");
+        viewedPatient.setGender('M');
+        viewedPatient.setDob(DateTime.now().withYear(1955).withMonthOfYear(3).withDayOfMonth(23));
+        viewedPatient.setGuardianFullName("Bob Grammer");
+        viewedPatient.setGuardianContactNumber("+65 5555 3333");
+        viewedPatient.setGuardianEmail("bobgrammer@gmail.com");
+
+        // Patient's allergy list
+
+        // Patient's vital list
+
+        // Patient's prescription list
+
+        // Patient's routine list
+
+        // Patient's social history
+        SocialHistory socialHistory = new SocialHistory();
+        socialHistory.setLiveWith("Wife and 2 children");
+        socialHistory.setDiet("Vegetarian");
+        socialHistory.setReligion("Christian");
+        socialHistory.setIsSexuallyActive(false);
+        socialHistory.setIsSecondhandSmoker(false);
+        socialHistory.setAlcoholUse("Seldom");
+        socialHistory.setCaffeineUse("Regular");
+        socialHistory.setTobaccoUse("Never");
+        socialHistory.setDrugUse("Never");
+        socialHistory.setPet("2 dogs");
+        socialHistory.setOccupation("Entrepreneur");
+        socialHistory.setLike("Sandwich, salad");
+        socialHistory.setDislike("Soft drinks");
+        socialHistory.setHolidayExperience("2002 - Thailand, 2010 - Balie");
+        socialHistory.setEducation("1990 - Princeton University");
+        socialHistory.setExercise("Tennis, swimming");
+        viewedPatient.setSocialHistory(socialHistory);
     }
 
     @Override
