@@ -34,26 +34,15 @@ import javadz.beanutils.PropertyUtils;
 /**
  * Created by Sutrisno on 9/9/2015.
  */
-public class CreatePatientInfoFormFragment extends Fragment {
-    protected final String TEXT_VIEW = "TextView";
-    protected final String TEXT_VIEW_SOCIAL_HISTORY = "TextViewSocialHistory";
-    protected final String SPINNER_GENDER = "SpinnerGender";
-    protected final String SPINNER_RELIGION = "SpinnerReligion";
-    protected final String SPINNER_YES_NO_SOCIAL_HISTORY = "SpinnerYesNoSocialHistory";
-    protected final String SPINNER_FREQ_SOCIAL_HISTORY = "SpinnerFrequencySocialHistory";
-    protected final String DATE_PICKER = "DatePicker";
+public class CreatePatientInfoFormFragment extends PatientInfoFormFragment {
 
     protected Patient createdPatient;
     protected ArrayList<PatientFormSpec> patientFormSpecs;
 
-    protected Activity activity;
-    protected InputMethodManager inputManager;
-
     public void init() {
+        super.init();
         createdPatient = DataHolder.getCreatedPatient();
         patientFormSpecs = new ArrayList<>();
-        activity = getActivity();
-        inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 
     // Fill the form with the previously inserted value and add listener on change value
@@ -313,11 +302,6 @@ public class CreatePatientInfoFormFragment extends Fragment {
                     break;
             }
         }
-    }
-
-    protected void hideKeyboard() {
-        inputManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),
-                InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     public void setupEditTextToBeDatePicker(final EditText editText, final String title) {

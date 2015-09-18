@@ -21,4 +21,8 @@
 
     <dimen name="event_detail_padding">@dimen/big_spacing</dimen>
     <dimen name="event_margin_left">50dp</dimen>
+
+    <dimen name="patient_info_title_and_value_spacing">@dimen/med_spacing</dimen>
+
+    <dimen name="text_field_padding">@dimen/big_spacing</dimen>
 </resources>

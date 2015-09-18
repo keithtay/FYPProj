@@ -10,6 +10,7 @@
         <item name="android:textViewStyle">@style/MyTextViewStyle</item>
 
         <item name="android:editTextStyle">@style/MyEditTextStyle</item>
+
     </style>
 
     <style name="AppTheme" parent="AppTheme.Base">
@@ -57,5 +58,28 @@
     <style name="raised_button" parent="android:style/Widget.Material.Button">
         <item name="android:background">@color/primary</item>
         <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="raised_button_light" parent="raised_button">
+        <item name="android:background">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="patient_info_row_spacing">
+        <item name="android:layout_marginTop">@dimen/paper_card_padding</item>
+        <item name="android:layout_marginLeft">@dimen/paper_card_padding</item>
+        <item name="android:layout_marginRight">@dimen/paper_card_padding</item>
+    </style>
+
+    <style name="patient_info_row_spacing_sml">
+        <item name="android:layout_marginTop">@dimen/paper_card_padding</item>
+        <item name="android:layout_marginLeft">@dimen/paper_card_padding</item>
+        <item name="android:layout_marginRight">@dimen/paper_card_padding</item>
+    </style>
+
+    <style name="patient_info_value_edit_text" parent="typo_body1">
+        <item name="android:layout_marginLeft">@dimen/patient_info_title_and_value_spacing</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 </resources>

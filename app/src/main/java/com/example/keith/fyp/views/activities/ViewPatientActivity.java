@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -67,6 +68,9 @@ public class ViewPatientActivity extends AppCompatActivity  implements PatientIn
         viewedPatient.setGuardianFullName("Bob Grammer");
         viewedPatient.setGuardianContactNumber("+65 5555 3333");
         viewedPatient.setGuardianEmail("bobgrammer@gmail.com");
+
+        Bitmap photo = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_01);
+        viewedPatient.setPhoto(photo);
 
         // Patient's allergy list
 
