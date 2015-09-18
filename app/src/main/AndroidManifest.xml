@@ -68,11 +68,21 @@
                 android:value=".views.activities.ViewScheduleActivity" />
         </activity>
         <activity
-            android:name=".ViewPatientActivity"
+            android:name=".views.activities.ViewPatientActivity"
             android:label="@string/title_activity_view_patient" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.activities.ViewScheduleActivity" />
+        </activity>
+        <activity
+            android:name=".views.activities.ViewPatientFormActivity"
+            android:label="@string/title_activity_view_patient_form"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:parentActivityName=".views.activities.CreatePatientActivity"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".views.activities.ViewPatientActivity" />
         </activity>
     </application>
 

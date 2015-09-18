@@ -16,7 +16,7 @@ import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.utils.CreatePatientFormFragmentDecoder;
 import com.example.keith.fyp.utils.DataHolder;
 
-public class CreatePatientFormActivity extends AppCompatActivity {
+public class CreatePatientFormActivity extends PatientFormActivity {
 
     private FragmentManager fragmentManager;
 
@@ -62,15 +62,5 @@ public class CreatePatientFormActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            // Go back to parent activity since this activity is mainly for portrait
-            NavUtils.navigateUpFromSameTask(this);
-        }
     }
 }

@@ -8,7 +8,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.keith.fyp.R;
-import com.example.keith.fyp.ViewPatientActivity;
 import com.example.keith.fyp.models.Event;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsUi;
