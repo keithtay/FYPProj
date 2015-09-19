@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="TextField">
+    <declare-styleable name="CustomField">
         <attr name="alwaysEditable" format="boolean" />
         <attr name="fieldTitle" format="string" />
         <attr name="showTopBorder" format="boolean" />
         <attr name="showBottomBorder" format="boolean" />
         <attr name="containerPadding" format="dimension" />
-        <attr name="android:inputType" />
         <attr name="transitionDuration" format="integer" />
+        <attr name="android:inputType" />
     </declare-styleable>
 </resources>

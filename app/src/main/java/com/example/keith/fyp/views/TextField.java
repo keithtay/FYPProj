@@ -27,11 +27,6 @@ public class TextField extends CustomField {
         super(context, attrs, defStyleAttr);
     }
 
-    protected void initializeViews(Context context) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.view_text_field, this);
-    }
-
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();

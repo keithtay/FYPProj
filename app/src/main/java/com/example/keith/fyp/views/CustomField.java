@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.TransitionDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -68,40 +69,43 @@ public class CustomField extends LinearLayout {
         initializeViews(context, attrs);
     }
 
-    protected void initializeViews(Context context) {}
+    protected void initializeViews(Context context) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater.inflate(R.layout.view_custom_field, this);
+    }
 
     protected void initializeViews(Context context, AttributeSet attrs) {
         initializeViews(context);
 
-        typedArray = context.obtainStyledAttributes(attrs, R.styleable.TextField);
+        typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomField);
 
         int n = typedArray.getIndexCount();
         for (int i = 0; i < n; i++) {
             int attr = typedArray.getIndex(i);
             switch (attr) {
-                case R.styleable.TextField_alwaysEditable:
+                case R.styleable.CustomField_alwaysEditable:
                     alwaysEditable = typedArray.getBoolean(attr, false);
                     break;
-                case R.styleable.TextField_fieldTitle:
+                case R.styleable.CustomField_fieldTitle:
                     fieldTitleStr = typedArray.getString(attr);
                     if (UtilsString.isEmpty(fieldTitleStr)) {
                         fieldTitleStr = "Field Name";
                     }
                     break;
-                case R.styleable.TextField_showTopBorder:
+                case R.styleable.CustomField_showTopBorder:
                     showTopBorder = typedArray.getBoolean(attr, true);
                     break;
-                case R.styleable.TextField_showBottomBorder:
+                case R.styleable.CustomField_showBottomBorder:
                     showBottomBorder = typedArray.getBoolean(attr, true);
                     break;
-                case R.styleable.TextField_containerPadding:
+                case R.styleable.CustomField_containerPadding:
                     float defaultPadding = getResources().getDimension(R.dimen.text_field_padding);
                     containerPadding = typedArray.getDimension(attr, defaultPadding);
                     break;
-                case R.styleable.TextField_transitionDuration:
+                case R.styleable.CustomField_transitionDuration:
                     transitionDuration = typedArray.getInt(attr, 350);
                     break;
-                case R.styleable.TextField_android_inputType:
+                case R.styleable.CustomField_android_inputType:
                     inputType = typedArray.getInt(attr, EditorInfo.TYPE_TEXT_VARIATION_NORMAL);
                     break;
                 default:
