@@ -181,7 +181,7 @@ public class CustomField extends LinearLayout {
         }
     }
 
-    private void enableEditTextField(boolean enable) {
+    protected void enableEditTextField(boolean enable) {
         fieldValueEditText.setFocusable(enable);
         fieldValueEditText.setFocusableInTouchMode(enable);
     }
@@ -297,6 +297,10 @@ public class CustomField extends LinearLayout {
 
     public String getText() {
         return this.fieldValueEditText.getText().toString();
+    }
+
+    public void changeDisplayedText(String text) {
+        this.fieldValueEditText.setText(text);
     }
 
     public interface OnCustomFieldSaveListener {

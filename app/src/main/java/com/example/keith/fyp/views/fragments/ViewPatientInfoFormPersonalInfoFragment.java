@@ -25,9 +25,13 @@ import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.PatientFormSpec;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.views.CustomField;
+import com.example.keith.fyp.views.SpinnerField;
 import com.example.keith.fyp.views.TextField;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 
@@ -40,6 +44,7 @@ public class ViewPatientInfoFormPersonalInfoFragment extends ViewPatientInfoForm
     private ImageView photoView;
 
     private TextField firstNameTextField;
+    private SpinnerField genderSpinnerField;
 
     private boolean initialDisplay = true;
 
@@ -102,6 +107,10 @@ public class ViewPatientInfoFormPersonalInfoFragment extends ViewPatientInfoForm
 
 
 
+
+
+
+
         firstNameTextField = (TextField) rootView.findViewById(R.id.first_name_text_field);
         firstNameTextField.setText(viewedPatient.getFirstName());
         firstNameTextField.setOnCustomFieldSaveListener(new CustomField.OnCustomFieldSaveListener() {
@@ -112,6 +121,50 @@ public class ViewPatientInfoFormPersonalInfoFragment extends ViewPatientInfoForm
         });
 
 
+
+
+
+
+
+
+
+        genderSpinnerField = (SpinnerField) rootView.findViewById(R.id.gender_spinner_field);
+        char genderShort = viewedPatient.getGender();
+        String[] genderShortArray = getResources().getStringArray(R.array.option_gender_short);
+        final ArrayList<String> genderShortArrayList = new ArrayList<String>(Arrays.asList(genderShortArray));
+        int index = genderShortArrayList.indexOf(String.valueOf(genderShort));
+
+        String[] genderArray = getResources().getStringArray(R.array.option_gender);
+        final ArrayList<String> genderArrayList = new ArrayList<String>(Arrays.asList(genderArray));
+        String genderStr = genderArrayList.get(index);
+        genderSpinnerField.setText(genderStr);
+        genderSpinnerField.setSpinnerItems(getResources().getStringArray(R.array.option_gender));
+
+        genderSpinnerField.setSpinnerFieldItemSelectedListener(new SpinnerField.OnSpinnerFieldItemSelectedListener() {
+            @Override
+            public void spinnerFieldItemSelected(int index) {
+                genderSpinnerField.changeDisplayedText(genderArrayList.get(index));
+            }
+        });
+
+        genderSpinnerField.setOnCustomFieldSaveListener(new CustomField.OnCustomFieldSaveListener() {
+            @Override
+            public void textFieldSaved(String newValue) {
+                int index = genderArrayList.indexOf(newValue);
+                viewedPatient.setGender(genderShortArrayList.get(index).charAt(0));
+            }
+        });
+
+
+
+
+
+
+        TextField lastNameTextField = (TextField) rootView.findViewById(R.id.last_name_text_field);
+        TextField nricTextField = (TextField) rootView.findViewById(R.id.nric_text_field);
+        TextField addressTextField = (TextField) rootView.findViewById(R.id.address_text_field);
+        TextField homeNumberTextField = (TextField) rootView.findViewById(R.id.home_number_text_field);
+        TextField phoneNumberTextField = (TextField) rootView.findViewById(R.id.phone_number_text_field);
 
 
 

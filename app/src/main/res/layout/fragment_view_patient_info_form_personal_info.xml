@@ -85,8 +85,8 @@
                         customfield:fieldTitle="Phone Number"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.TextField
-                        android:id="@+id/gender_text_field"
+                    <com.example.keith.fyp.views.SpinnerField
+                        android:id="@+id/gender_spinner_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="phone"

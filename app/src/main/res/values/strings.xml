@@ -35,6 +35,11 @@
     <string name="select_routine_start_time">Select routine start time</string>
     <string name="select_routine_end_time">Select routine end time</string>
 
+    <string-array name="option_gender_short">
+        <item>M</item>
+        <item>F</item>
+    </string-array>
+
     <string-array name="option_gender">
         <item>Male</item>
         <item>Female</item>

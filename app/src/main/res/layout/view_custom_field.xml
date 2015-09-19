@@ -29,7 +29,7 @@
                 <TextView
                     android:id="@+id/field_title"
                     style="@style/typo_body2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="170dp"
                     android:layout_height="wrap_content"
                     android:text="Field Name" />
 
