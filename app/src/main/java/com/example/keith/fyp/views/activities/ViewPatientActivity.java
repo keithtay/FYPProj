@@ -131,7 +131,7 @@ public class ViewPatientActivity extends AppCompatActivity  implements PatientIn
         socialHistory.setOccupation("Entrepreneur");
         socialHistory.setLike("Sandwich, salad");
         socialHistory.setDislike("Soft drinks");
-        socialHistory.setHolidayExperience("2002 - Thailand, 2010 - Balie");
+        socialHistory.setHolidayExperience("2002 - Thailand, 2010 - Bali");
         socialHistory.setEducation("1990 - Princeton University");
         socialHistory.setExercise("Tennis, swimming");
         viewedPatient.setSocialHistory(socialHistory);

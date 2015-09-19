@@ -22,8 +22,12 @@ public class PatientInfoFormFragment extends Fragment {
     protected final String DATE_PICKER = "DatePicker";
 
     protected final String TEXT_FIELD = "TextField";
+    protected final String TEXT_FIELD_SOCIAL_HISTORY = "TextFieldSocialHistory";
     protected final String SPINNER_FIELD_GENDER = "SpinnerFieldGender";
     protected final String DATE_FIELD = "DateField";
+    protected final String SPINNER_FIELD_RELIGION = "SpinnerFieldReligion";
+    protected final String SPINNER_FIELD_YES_NO_SOCIAL_HISTORY = "SpinnerFieldYesNoSocialHistory";
+    protected final String SPINNER_FIELD_FREQ_SOCIAL_HISTORY = "SpinnerFieldFrequencySocialHistory";
 
     protected Activity activity;
     protected InputMethodManager inputManager;

@@ -58,6 +58,25 @@ public class ViewPatientInfoFormFragment extends PatientInfoFormFragment {
                         }
                     });
                     break;
+                case TEXT_FIELD_SOCIAL_HISTORY:
+                    TextField textFieldSocHis = (TextField) rootView.findViewById(spec.getViewId());
+                    String attributeValueSocHis = (String) PropertyUtils.getProperty(viewedPatient.getSocialHistory(), attributeName);
+                    textFieldSocHis.setText(attributeValueSocHis);
+                    textFieldSocHis.setOnCustomFieldSaveListener(new CustomField.OnCustomFieldSaveListener() {
+                        @Override
+                        public void onCustomFieldSave(String newValue) {
+                            try {
+                                PropertyUtils.setProperty(viewedPatient.getSocialHistory(), attributeName, newValue);
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
+                            } catch (NoSuchMethodException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    break;
                 case SPINNER_FIELD_GENDER:
                     final SpinnerField genderSpinnerField = (SpinnerField) rootView.findViewById(spec.getViewId());
 
@@ -84,6 +103,101 @@ public class ViewPatientInfoFormFragment extends PatientInfoFormFragment {
                         public void onCustomFieldSave(String newValue) {
                             int index = genderArrayList.indexOf(newValue);
                             viewedPatient.setGender(genderShortArrayList.get(index).charAt(0));
+                        }
+                    });
+                    break;
+                case SPINNER_FIELD_RELIGION:
+                    final SpinnerField religionSpinnerField = (SpinnerField) rootView.findViewById(spec.getViewId());
+                    religionSpinnerField.setText(viewedPatient.getSocialHistory().getReligion());
+                    religionSpinnerField.setSpinnerItems(getResources().getStringArray(R.array.option_religion));
+
+                    String[] religionArray = getResources().getStringArray(R.array.option_religion);
+                    final ArrayList<String> religionArrayList = new ArrayList<String>(Arrays.asList(religionArray));
+
+                    religionSpinnerField.setSpinnerFieldItemSelectedListener(new SpinnerField.OnSpinnerFieldItemSelectedListener() {
+                        @Override
+                        public void onSpinnerFieldItemSelected(int index) {
+                            religionSpinnerField.changeDisplayedText(religionArrayList.get(index));
+                        }
+                    });
+
+                    religionSpinnerField.setOnCustomFieldSaveListener(new CustomField.OnCustomFieldSaveListener() {
+                        @Override
+                        public void onCustomFieldSave(String newValue) {
+                            viewedPatient.getSocialHistory().setReligion(newValue);
+                        }
+                    });
+                    break;
+                case SPINNER_FIELD_YES_NO_SOCIAL_HISTORY:
+                    final SpinnerField yesNoSpinnerField = (SpinnerField) rootView.findViewById(spec.getViewId());
+                    Boolean bool = (Boolean) PropertyUtils.getProperty(viewedPatient.getSocialHistory(), spec.getAttributeName());
+
+                    String[] yesNoArray = getResources().getStringArray(R.array.option_yes_no);
+                    final ArrayList<String> yesNoArrayList = new ArrayList<String>(Arrays.asList(yesNoArray));
+
+                    if(bool != null) {
+                        if(bool) {
+                            yesNoSpinnerField.setText(yesNoArray[0]);
+                        } else {
+                            yesNoSpinnerField.setText(yesNoArray[1]);
+                        }
+                    }
+
+                    yesNoSpinnerField.setSpinnerItems(getResources().getStringArray(R.array.option_yes_no));
+
+                    yesNoSpinnerField.setSpinnerFieldItemSelectedListener(new SpinnerField.OnSpinnerFieldItemSelectedListener() {
+                        @Override
+                        public void onSpinnerFieldItemSelected(int index) {
+                            yesNoSpinnerField.changeDisplayedText(yesNoArrayList.get(index));
+                        }
+                    });
+
+                    yesNoSpinnerField.setOnCustomFieldSaveListener(new CustomField.OnCustomFieldSaveListener() {
+                        @Override
+                        public void onCustomFieldSave(String newValue) {
+                            int index = yesNoArrayList.indexOf(newValue);
+                            boolean value = index == 0 ? true : false;
+                            try {
+                                PropertyUtils.setProperty(viewedPatient.getSocialHistory(), spec.getAttributeName(), value);
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
+                            } catch (NoSuchMethodException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    break;
+                case SPINNER_FIELD_FREQ_SOCIAL_HISTORY:
+                    final SpinnerField freqSpinnerField = (SpinnerField) rootView.findViewById(spec.getViewId());
+
+                    String freqValue = (String) PropertyUtils.getProperty(viewedPatient.getSocialHistory(), spec.getAttributeName());
+                    freqSpinnerField.setText(freqValue);
+                    freqSpinnerField.setSpinnerItems(getResources().getStringArray(R.array.option_frequency));
+
+                    String[] freqArray = getResources().getStringArray(R.array.option_frequency);
+                    final ArrayList<String> freqArrayList = new ArrayList<String>(Arrays.asList(freqArray));
+
+                    freqSpinnerField.setSpinnerFieldItemSelectedListener(new SpinnerField.OnSpinnerFieldItemSelectedListener() {
+                        @Override
+                        public void onSpinnerFieldItemSelected(int index) {
+                            freqSpinnerField.changeDisplayedText(freqArrayList.get(index));
+                        }
+                    });
+
+                    freqSpinnerField.setOnCustomFieldSaveListener(new CustomField.OnCustomFieldSaveListener() {
+                        @Override
+                        public void onCustomFieldSave(String newValue) {
+                            try {
+                                PropertyUtils.setProperty(viewedPatient.getSocialHistory(), spec.getAttributeName(), newValue);
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
+                            } catch (NoSuchMethodException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                     break;
