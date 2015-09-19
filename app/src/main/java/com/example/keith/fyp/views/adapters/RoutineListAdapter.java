@@ -183,7 +183,7 @@ public class RoutineListAdapter extends RecyclerView.Adapter<RoutineListAdapter.
             saveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArrayList<Routine> routineList = DataHolder.getCreatedPatient().getRoutineList();
+                    ArrayList<Routine> routineList = patient.getRoutineList();
                     Routine routine = routineList.get(getAdapterPosition());
 
                     routine.setName(nameEditText.getText().toString());

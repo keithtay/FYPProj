@@ -167,7 +167,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
             saveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArrayList<Prescription> prescriptionList = DataHolder.getCreatedPatient().getPrescriptionList();
+                    ArrayList<Prescription> prescriptionList = patient.getPrescriptionList();
                     Prescription prescription = prescriptionList.get(getAdapterPosition());
 
                     String startDateStr = startDatePicker.getText().toString();
