@@ -20,6 +20,7 @@ import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Prescription;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.adapters.PrescriptionListAdapter;
 import com.example.keith.fyp.views.decorators.SpacesCardItemDecoration;
 
@@ -72,8 +73,8 @@ public class CreatePatientInfoFormPrescriptionFragment extends CreatePatientInfo
         notesEditText = (EditText) rootView.findViewById(R.id.presc_notes_edit_text);
         beforeAfterMealSpinner = (MaterialSpinner) rootView.findViewById(R.id.before_after_meal_spinner);
 
-        setupEditTextToBeDatePicker(startDatePicker, getString(R.string.select_prescription_start_date));
-        setupEditTextToBeDatePicker(endDatePicker, getString(R.string.select_prescription_end_date));
+        UtilsUi.setupEditTextToBeDatePicker(startDatePicker, getString(R.string.select_prescription_start_date));
+        UtilsUi.setupEditTextToBeDatePicker(endDatePicker, getString(R.string.select_prescription_end_date));
 
         prescriptionList = DataHolder.getCreatedPatient().getPrescriptionList();
         prescriptionListAdapter = new PrescriptionListAdapter(getActivity(), this, prescriptionList);

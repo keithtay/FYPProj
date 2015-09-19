@@ -17,6 +17,7 @@ import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Prescription;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.fragments.CreatePatientInfoFormPrescriptionFragment;
 
 import org.joda.time.DateTime;
@@ -123,9 +124,9 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
             instructionEditText = (EditText) itemView.findViewById(R.id.prescription_item_instruction_edit_text);
 
             startDatePicker = (EditText) itemView.findViewById(R.id.prescription_item_start_date_picker);
-            fragment.setupEditTextToBeDatePicker(startDatePicker, fragment.getString(R.string.select_prescription_start_date));
+            UtilsUi.setupEditTextToBeDatePicker(startDatePicker, fragment.getString(R.string.select_prescription_start_date));
             endDatePicker = (EditText) itemView.findViewById(R.id.prescription_item_end_date_picker);
-            fragment.setupEditTextToBeDatePicker(endDatePicker, fragment.getString(R.string.select_prescription_end_date));
+            UtilsUi.setupEditTextToBeDatePicker(endDatePicker, fragment.getString(R.string.select_prescription_end_date));
 
             notesEditText = (EditText) itemView.findViewById(R.id.prescription_item_notes_edit_text);
 

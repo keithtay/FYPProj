@@ -57,6 +57,6 @@ public class DateField extends CustomField implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        UtilsUi.openDatePickerOnEditTextClick(fieldValueEditText, getContext(), dialogTitle);
+        UtilsUi.openDatePickerOnEditTextClick(fieldValueEditText, dialogTitle);
     }
 }

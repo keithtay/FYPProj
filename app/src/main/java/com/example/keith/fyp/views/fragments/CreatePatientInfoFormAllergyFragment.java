@@ -1,6 +1,5 @@
 package com.example.keith.fyp.views.fragments;
 
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,12 +17,8 @@ import android.widget.TextView;
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Allergy;
-import com.example.keith.fyp.models.Patient;
-import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.views.adapters.AllergyListAdapter;
 import com.example.keith.fyp.views.decorators.SpacesCardItemDecoration;
-
-import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 
@@ -48,7 +43,7 @@ public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormF
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.init();
 
-        rootView = (LinearLayout) inflater.inflate(R.layout.fragment_create_patient_info_form_allergy, container, false);
+        rootView = (LinearLayout) inflater.inflate(R.layout.fragment_patient_info_form_allergy, container, false);
 
         allergyList = createdPatient.getAllergyList();
         allergyListAdapter = new AllergyListAdapter(getActivity(), this, allergyList, createdPatient);

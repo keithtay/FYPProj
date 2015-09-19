@@ -84,6 +84,13 @@ public class ViewPatientActivity extends AppCompatActivity  implements PatientIn
         viewedPatient.setAllergyList(allergyList);
 
         // Patient's vital list
+        ArrayList<Vital> vitalList = new ArrayList<>();
+
+        Vital vital1 = new Vital(DateTime.now(), true, 34f, 120f, 80f, 189f, 70f, "");
+
+        vitalList.add(vital1);
+
+        viewedPatient.setVitalList(vitalList);
 
         // Patient's prescription list
 

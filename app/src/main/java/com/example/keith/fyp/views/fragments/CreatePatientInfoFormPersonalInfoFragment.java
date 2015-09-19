@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.PatientFormSpec;
 import com.example.keith.fyp.utils.DataHolder;
+import com.example.keith.fyp.utils.UtilsUi;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -72,7 +73,7 @@ public class CreatePatientInfoFormPersonalInfoFragment extends CreatePatientInfo
         }
 
         dobTextView = (EditText) rootView.findViewById(R.id.dob_date_picker);
-        setupEditTextToBeDatePicker(dobTextView, getString(R.string.select_date_of_birth));
+        UtilsUi.setupEditTextToBeDatePicker(dobTextView, getString(R.string.select_date_of_birth));
 
         genderSpinner = (MaterialSpinner) rootView.findViewById(R.id.gender_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity,

@@ -15,6 +15,7 @@ import android.widget.Spinner;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.models.Routine;
+import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.fragments.CreatePatientInfoFormRoutineFragment;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.utils.DataHolder;
@@ -140,10 +141,11 @@ public class RoutineListAdapter extends RecyclerView.Adapter<RoutineListAdapter.
             everyEditText = (EditText) itemView.findViewById(R.id.routine_item_every_edit_text);
             everySpinner = (Spinner) itemView.findViewById(R.id.routine_item_every_spinner);
 
-            fragment.setupEditTextToBeDatePicker(startDatePicker, fragment.getString(R.string.select_routine_start_date));
-            fragment.setupEditTextToBeDatePicker(endDatePicker, fragment.getString(R.string.select_routine_end_date));
-            fragment.setupEditTextToBeTimePicker(startTimePicker, fragment.getString(R.string.select_routine_start_time));
-            fragment.setupEditTextToBeTimePicker(endTimePicker, fragment.getString(R.string.select_routine_end_time));
+
+            UtilsUi.setupEditTextToBeDatePicker(startDatePicker, fragment.getString(R.string.select_routine_start_date));
+            UtilsUi.setupEditTextToBeDatePicker(endDatePicker, fragment.getString(R.string.select_routine_end_date));
+            UtilsUi.setupEditTextToBeTimePicker(startTimePicker, fragment.getString(R.string.select_routine_start_time));
+            UtilsUi.setupEditTextToBeTimePicker(endTimePicker, fragment.getString(R.string.select_routine_end_time));
 
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(fragment.getActivity(),
                     R.array.option_every_label, android.R.layout.simple_spinner_item);

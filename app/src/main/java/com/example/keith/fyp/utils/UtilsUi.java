@@ -2,6 +2,7 @@ package com.example.keith.fyp.utils;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TimePicker;
 
 import com.example.keith.fyp.R;
 import com.mikepenz.crossfader.Crossfader;
@@ -137,7 +139,7 @@ public class UtilsUi {
         listView.setLayoutParams(params);
     }
 
-    public static void openDatePickerOnEditTextClick(final EditText editText, Context context, String title) {
+    public static void openDatePickerOnEditTextClick(final EditText editText, String title) {
         int mYear;
         int mMonth;
         int mDay;
@@ -156,7 +158,7 @@ public class UtilsUi {
             mDay = date.getDayOfMonth();
         }
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(editText.getContext(), new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker datepicker, int selectedYear, int selectedMonth, int selectedDay) {
                 DateTime date = DateTime.now();
 
@@ -170,5 +172,55 @@ public class UtilsUi {
         }, mYear, mMonth, mDay);
         datePickerDialog.setTitle(title);
         datePickerDialog.show();
+    }
+
+    public static void setupEditTextToBeDatePicker(final EditText editText, final String title) {
+        editText.setFocusable(false);
+        editText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDatePickerOnEditTextClick(editText, title);
+            }
+        });
+    }
+
+
+    public static void setupEditTextToBeTimePicker(final EditText editText, final String title) {
+        editText.setFocusable(false);
+        editText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int mHour;
+                int mMinutes;
+
+                String prevSelectedTimeStr = editText.getText().toString();
+
+                if (prevSelectedTimeStr == null || prevSelectedTimeStr.isEmpty()) {
+                    Calendar mCurrentTime = Calendar.getInstance();
+                    mHour = mCurrentTime.get(Calendar.HOUR_OF_DAY);
+                    mMinutes = mCurrentTime.get(Calendar.MINUTE);
+                } else {
+                    DateTime time = Global.TIME_FORMAT.parseDateTime(prevSelectedTimeStr);
+                    mHour = time.getHourOfDay();
+                    mMinutes = time.getMinuteOfHour();
+                }
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(editText.getContext(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        DateTime time = DateTime.now();
+
+                        time = time.withHourOfDay(hourOfDay);
+                        time = time.withMinuteOfHour(minute);
+
+                        String selectedTimeStr = time.toString(Global.TIME_FORMAT);
+                        editText.setText(selectedTimeStr);
+                    }
+                }, mHour, mMinutes, true);
+
+                timePickerDialog.setTitle(title);
+                timePickerDialog.show();
+            }
+        });
     }
 }

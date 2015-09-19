@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
-import com.example.keith.fyp.models.Allergy;
 import com.example.keith.fyp.models.Vital;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
@@ -27,15 +26,14 @@ import com.example.keith.fyp.views.decorators.SpacesCardItemDecoration;
 
 import org.joda.time.DateTime;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 /**
- * Created by Sutrisno on 9/9/2015.
+ * Created by Sutrisno on 20/9/2015.
  */
-public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFragment implements PatientInfoFormListFragment {
+public class ViewPatientInfoFormVitalFragment extends ViewPatientInfoFormFragment implements PatientInfoFormListFragment {
     private LinearLayout rootView;
     private LinearLayout addNewVitalHeaderContainer;
     private ExpandableLayout addVitalExpandable;
@@ -114,8 +112,8 @@ public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFra
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         vitalLabelSpinner.setAdapter(adapter);
 
-        vitalList = createdPatient.getVitalList();
-        vitalListAdapter = new VitalListAdapter(getActivity(), this, vitalList, createdPatient);
+        vitalList = viewedPatient.getVitalList();
+        vitalListAdapter = new VitalListAdapter(getActivity(), this, vitalList, viewedPatient);
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 

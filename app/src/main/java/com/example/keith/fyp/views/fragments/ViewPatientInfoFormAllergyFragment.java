@@ -1,12 +1,6 @@
 package com.example.keith.fyp.views.fragments;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -17,20 +11,15 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Allergy;
-import com.example.keith.fyp.models.PatientFormSpec;
-import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.views.adapters.AllergyListAdapter;
 import com.example.keith.fyp.views.decorators.SpacesCardItemDecoration;
-import com.example.keith.fyp.views.fragments.ViewPatientInfoFormFragment;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 public class ViewPatientInfoFormAllergyFragment extends ViewPatientInfoFormFragment implements PatientInfoFormListFragment {
@@ -52,7 +41,7 @@ public class ViewPatientInfoFormAllergyFragment extends ViewPatientInfoFormFragm
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.init();
 
-        rootView = (LinearLayout) inflater.inflate(R.layout.fragment_create_patient_info_form_allergy, container, false);
+        rootView = (LinearLayout) inflater.inflate(R.layout.fragment_patient_info_form_allergy, container, false);
 
         allergyList = viewedPatient.getAllergyList();
         allergyListAdapter = new AllergyListAdapter(getActivity(), this, allergyList, viewedPatient);

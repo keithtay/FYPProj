@@ -14,10 +14,13 @@ import android.widget.ImageView;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.Vital;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.fragments.CreatePatientInfoFormVitalFragment;
+import com.example.keith.fyp.views.fragments.PatientInfoFormListFragment;
 
 import org.joda.time.DateTime;
 
@@ -33,12 +36,14 @@ public class VitalListAdapter extends RecyclerView.Adapter<VitalListAdapter.Vita
 
     private LayoutInflater inflater;
     private List<Vital> vitalList;
-    private CreatePatientInfoFormVitalFragment fragment;
+    private PatientInfoFormListFragment fragment;
+    private Patient patient;
 
-    public VitalListAdapter(Context context, CreatePatientInfoFormVitalFragment createPatientInfoFormVitalFragment, List<Vital> vitalList) {
+    public VitalListAdapter(Context context, PatientInfoFormListFragment createPatientInfoFormVitalFragment, List<Vital> vitalList, Patient patient) {
         this.inflater = LayoutInflater.from(context);
         this.vitalList = vitalList;
         this.fragment = createPatientInfoFormVitalFragment;
+        this.patient = patient;
     }
 
     @Override
@@ -121,14 +126,16 @@ public class VitalListAdapter extends RecyclerView.Adapter<VitalListAdapter.Vita
         public VitalListViewHolder(View itemView) {
             super(itemView);
 
+            Context context = itemView.getContext();
+
             dateTaken = (EditText) itemView.findViewById(R.id.vital_item_date_picker);
-            fragment.setupEditTextToBeDatePicker(dateTaken, fragment.getString(R.string.select_vital_date));
+            UtilsUi.setupEditTextToBeDatePicker(dateTaken, context.getString(R.string.select_vital_date));
 
             timeTaken = (EditText) itemView.findViewById(R.id.vital_item_time_picker);
-            fragment.setupEditTextToBeTimePicker(timeTaken, fragment.getString(R.string.select_time_add_new_vital));
+            UtilsUi.setupEditTextToBeTimePicker(timeTaken, context.getString(R.string.select_time_add_new_vital));
 
             beforeAfterMeal = (MaterialSpinner) itemView.findViewById(R.id.vital_item_label_spinner);
-            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(fragment.getActivity(),
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
                     R.array.option_vital_label, android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             beforeAfterMeal.setAdapter(adapter);
@@ -163,7 +170,7 @@ public class VitalListAdapter extends RecyclerView.Adapter<VitalListAdapter.Vita
             saveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArrayList<Vital> vitalList = DataHolder.getCreatedPatient().getVitalList();
+                    ArrayList<Vital> vitalList = patient.getVitalList();
                     Vital vital = vitalList.get(getAdapterPosition());
 
                     DateTime date = Global.DATE_FORMAT.parseDateTime(dateTaken.getText().toString());

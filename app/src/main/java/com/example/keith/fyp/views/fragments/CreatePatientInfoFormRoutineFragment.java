@@ -18,6 +18,7 @@ import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Routine;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.adapters.RoutineListAdapter;
 import com.example.keith.fyp.views.decorators.SpacesCardItemDecoration;
 
@@ -68,10 +69,10 @@ public class CreatePatientInfoFormRoutineFragment extends CreatePatientInfoFormF
         everyEditText = (EditText) rootView.findViewById(R.id.routine_every_edit_text);
         everySpinner = (Spinner) rootView.findViewById(R.id.routine_every_spinner);
 
-        setupEditTextToBeDatePicker(startDatePicker, getString(R.string.select_routine_start_date));
-        setupEditTextToBeDatePicker(endDatePicker, getString(R.string.select_routine_end_date));
-        setupEditTextToBeTimePicker(startTimePicker, getString(R.string.select_routine_start_time));
-        setupEditTextToBeTimePicker(endTimePicker, getString(R.string.select_routine_end_time));
+        UtilsUi.setupEditTextToBeDatePicker(startDatePicker, getString(R.string.select_routine_start_date));
+        UtilsUi.setupEditTextToBeDatePicker(endDatePicker, getString(R.string.select_routine_end_date));
+        UtilsUi.setupEditTextToBeTimePicker(startTimePicker, getString(R.string.select_routine_start_time));
+        UtilsUi.setupEditTextToBeTimePicker(endTimePicker, getString(R.string.select_routine_end_time));
 
         routineList = DataHolder.getCreatedPatient().getRoutineList();
         routineListAdapter = new RoutineListAdapter(getActivity(), this, routineList);
