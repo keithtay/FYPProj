@@ -37,6 +37,7 @@
                         android:background="@drawable/add_photo"></ImageView>
 
                     <com.example.keith.fyp.views.TextField
+                        android:id="@+id/first_name_text_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         textfield:alwaysEditable="false"
@@ -44,41 +45,8 @@
                         textfield:showTopBorder="false"
                         textfield:showBottomBorder="true"
                         textfield:containerPadding="@dimen/text_field_padding"
-                        android:inputType="textEmailAddress"
+                        android:inputType="textCapWords"
                         textfield:transitionDuration="350"/>
-
-                    <LinearLayout
-                        style="@style/patient_info_row_spacing"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            style="@style/typo_body2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="First Name" />
-
-                        <EditText
-                            android:id="@+id/first_name_edit_text"
-                            style="@style/patient_info_value_edit_text"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:inputType="textCapWords"
-                            android:nextFocusDown="@+id/last_name_edit_text" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_mode_edit_green_24px"/>
-                    </LinearLayout>
-
-                    <View
-                        style="@style/patient_info_row_spacing_sml"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/divider"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"

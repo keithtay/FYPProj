@@ -3,8 +3,12 @@ package com.example.keith.fyp.views;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.TransitionDrawable;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.SparseArray;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +25,13 @@ import android.widget.TextView;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.utils.UtilsString;
 
+import org.joda.time.DateTime;
+
 /**
  * Created by Sutrisno on 18/9/2015.
  */
 public class TextField extends LinearLayout {
+    private static String TAG = "TextField";
 
     private LinearLayout rootContainer;
     private TextView fieldTitleTextView;
@@ -41,6 +48,7 @@ public class TextField extends LinearLayout {
     private boolean isExpanded;
     private int controlContainerHeight;
     private InputMethodManager imm;
+    private OnTextFieldSaveListener onTextFieldSaveListener;
 
     private boolean alwaysEditable;
     private String fieldTitleStr;
@@ -107,7 +115,7 @@ public class TextField extends LinearLayout {
                     transitionDuration = typedArray.getInt(attr, 350);
                     break;
                 default:
-                    Log.d("TAG", "Unknown attribute for " + getClass().toString() + ": " + attr);
+                    Log.d(TAG, "Unknown attribute for " + getClass().toString() + ": " + attr);
                     break;
             }
         }
@@ -148,8 +156,22 @@ public class TextField extends LinearLayout {
         controlContainerHeight =  110;
         isExpanded = false;
 
-        fieldValueEditText.setFocusable(false);
-        fieldValueEditText.setFocusableInTouchMode(false);
+        enableEditTextField(false);
+        fieldValueEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        fieldValueEditText.setImeActionLabel("Save", EditorInfo.IME_ACTION_DONE);
+        fieldValueEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    saveValue();
+                    handled = true;
+                }
+
+                return handled;
+            }
+        });
 
         editButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -164,6 +186,13 @@ public class TextField extends LinearLayout {
                 toggleMode();
             }
         });
+
+        saveButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveValue();
+            }
+        });
     }
 
     private void toggleMode() {
@@ -174,11 +203,10 @@ public class TextField extends LinearLayout {
             controlContainer.startAnimation(a);
 
             backgroundTransition.reverseTransition(transitionDuration);
-            fieldValueEditText.setFocusable(false);
-            fieldValueEditText.setFocusableInTouchMode(false);
+            enableEditTextField(false);
 
             fieldValueEditText.setBackgroundResource(R.color.transparent);
-            
+
             fieldValueEditText.setText(oldValue);
             imm.hideSoftInputFromWindow(fieldValueEditText.getWindowToken(), 0);
         } else {
@@ -189,8 +217,7 @@ public class TextField extends LinearLayout {
             controlContainer.startAnimation(a);
 
             backgroundTransition.startTransition(transitionDuration);
-            fieldValueEditText.setFocusable(true);
-            fieldValueEditText.setFocusableInTouchMode(true);
+            enableEditTextField(true);
 
             fieldValueEditText.setBackgroundResource(R.drawable.bottom_border);
 
@@ -198,6 +225,27 @@ public class TextField extends LinearLayout {
             imm.showSoftInput(fieldValueEditText, InputMethodManager.SHOW_IMPLICIT);
         }
         isExpanded = !isExpanded;
+    }
+
+    private void enableEditTextField(boolean enable) {
+        fieldValueEditText.setFocusable(enable);
+        fieldValueEditText.setFocusableInTouchMode(enable);
+    }
+
+    private void saveValue() {
+        String newValue = fieldValueEditText.getText().toString();
+        oldValue = newValue;
+        toggleMode();
+
+        if(this.onTextFieldSaveListener != null) {
+            this.onTextFieldSaveListener.textFieldSave(newValue);
+        } else {
+            Log.e(TAG, "OnTextFieldSaveListener should be set");
+        }
+    }
+
+    public void setOnTextFieldSaveListener(OnTextFieldSaveListener onTextFieldSaveListener) {
+        this.onTextFieldSaveListener = onTextFieldSaveListener;
     }
 
     public class ExpandHeightAnimation extends Animation {
@@ -267,5 +315,9 @@ public class TextField extends LinearLayout {
 
     public int getFieldTitleWidth() {
         return this.fieldTitleTextView.getLayoutParams().width;
+    }
+
+    public interface OnTextFieldSaveListener {
+        public void textFieldSave(String newValue);
     }
 }

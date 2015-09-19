@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.PatientFormSpec;
 import com.example.keith.fyp.utils.DataHolder;
+import com.example.keith.fyp.views.TextField;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -34,6 +35,8 @@ public class ViewPatientInfoFormPersonalInfoFragment extends ViewPatientInfoForm
     private EditText phoneNumberTextView;
     private EditText dobTextView;
     private ImageView photoView;
+
+    private TextField firstNameTextField;
 
     private boolean initialDisplay = true;
 
@@ -92,6 +95,21 @@ public class ViewPatientInfoFormPersonalInfoFragment extends ViewPatientInfoForm
                 return true;
             }
         });
+
+
+
+
+        firstNameTextField = (TextField) rootView.findViewById(R.id.first_name_text_field);
+        firstNameTextField.setText(viewedPatient.getFirstName());
+        firstNameTextField.setOnTextFieldSaveListener(new TextField.OnTextFieldSaveListener() {
+            @Override
+            public void textFieldSave(String newValue) {
+                viewedPatient.setFirstName(newValue);
+            }
+        });
+
+
+
 
 //        // Fill the form with the previously added content
 //        try {
