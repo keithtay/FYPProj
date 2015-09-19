@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:textfield="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -37,7 +38,14 @@
 
                     <com.example.keith.fyp.views.TextField
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        textfield:alwaysEditable="false"
+                        textfield:fieldTitle="First Name"
+                        textfield:showTopBorder="false"
+                        textfield:showBottomBorder="true"
+                        textfield:containerPadding="@dimen/text_field_padding"
+                        android:inputType="textEmailAddress"
+                        textfield:transitionDuration="350"/>
 
                     <LinearLayout
                         style="@style/patient_info_row_spacing"
