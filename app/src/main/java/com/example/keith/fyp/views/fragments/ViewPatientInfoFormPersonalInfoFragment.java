@@ -42,15 +42,6 @@ public class ViewPatientInfoFormPersonalInfoFragment extends ViewPatientInfoForm
     private LinearLayout rootView;
     private ImageView photoView;
 
-    private TextField firstNameTextField;
-    private TextField lastNameTextField;
-    private TextField nricTextField;
-    private TextField addressTextField;
-    private TextField homeNumberTextField;
-    private TextField phoneNumberTextField;
-    private SpinnerField genderSpinnerField;
-    private DateField dobDateField;
-
     private static final int SELECT_PICTURE = 1;
     private static final int CROP_PICTURE = 2;
 
@@ -152,5 +143,4 @@ public class ViewPatientInfoFormPersonalInfoFragment extends ViewPatientInfoForm
                 DataHolder.getViewedPatient().setPhoto(croppedImageBitmap);
         }
     }
-
 }

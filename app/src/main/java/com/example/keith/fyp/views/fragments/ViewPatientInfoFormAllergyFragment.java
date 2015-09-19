@@ -1,7 +1,12 @@
 package com.example.keith.fyp.views.fragments;
 
-import android.graphics.Rect;
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.app.Fragment;
+import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -12,25 +17,24 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Allergy;
-import com.example.keith.fyp.models.Patient;
+import com.example.keith.fyp.models.PatientFormSpec;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.views.adapters.AllergyListAdapter;
 import com.example.keith.fyp.views.decorators.SpacesCardItemDecoration;
+import com.example.keith.fyp.views.fragments.ViewPatientInfoFormFragment;
 
-import org.joda.time.DateTime;
-
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
-/**
- * Created by Sutrisno on 11/9/2015.
- */
-public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormFragment implements PatientInfoFormListFragment {
+public class ViewPatientInfoFormAllergyFragment extends ViewPatientInfoFormFragment implements PatientInfoFormListFragment {
+
     private LinearLayout rootView;
     private LinearLayout addNewAllergyHeaderContainer;
     private RecyclerView allergyRecyclerView;
@@ -50,8 +54,8 @@ public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormF
 
         rootView = (LinearLayout) inflater.inflate(R.layout.fragment_create_patient_info_form_allergy, container, false);
 
-        allergyList = createdPatient.getAllergyList();
-        allergyListAdapter = new AllergyListAdapter(getActivity(), this, allergyList, createdPatient);
+        allergyList = viewedPatient.getAllergyList();
+        allergyListAdapter = new AllergyListAdapter(getActivity(), this, allergyList, viewedPatient);
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 

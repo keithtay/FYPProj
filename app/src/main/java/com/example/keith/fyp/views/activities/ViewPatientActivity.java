@@ -73,6 +73,15 @@ public class ViewPatientActivity extends AppCompatActivity  implements PatientIn
         viewedPatient.setPhoto(photo);
 
         // Patient's allergy list
+        ArrayList<Allergy> allergyList = new ArrayList<>();
+
+        Allergy allergy1 = new Allergy("Cheese", "Swolen lips", "Take 5mg Paracetamol");
+        Allergy allergy2 = new Allergy("Peanut", "Itchy skin", "Wash the skin with cold cloth");
+
+        allergyList.add(allergy1);
+        allergyList.add(allergy2);
+
+        viewedPatient.setAllergyList(allergyList);
 
         // Patient's vital list
 
