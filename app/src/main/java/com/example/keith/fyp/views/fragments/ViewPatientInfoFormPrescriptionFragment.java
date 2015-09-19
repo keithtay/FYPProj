@@ -30,9 +30,9 @@ import java.util.ArrayList;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 /**
- * Created by Sutrisno on 12/9/2015.
+ * Created by Sutrisno on 20/9/2015.
  */
-public class CreatePatientInfoFormPrescriptionFragment extends CreatePatientInfoFormFragment implements PatientInfoFormListFragment {
+public class ViewPatientInfoFormPrescriptionFragment extends ViewPatientInfoFormFragment implements PatientInfoFormListFragment {
     private LinearLayout rootView;
 
     private ExpandableLayout addPrescriptionExpandable;
@@ -75,8 +75,8 @@ public class CreatePatientInfoFormPrescriptionFragment extends CreatePatientInfo
         UtilsUi.setupEditTextToBeDatePicker(startDatePicker, getString(R.string.select_prescription_start_date));
         UtilsUi.setupEditTextToBeDatePicker(endDatePicker, getString(R.string.select_prescription_end_date));
 
-        prescriptionList = createdPatient.getPrescriptionList();
-        prescriptionListAdapter = new PrescriptionListAdapter(getActivity(), this, prescriptionList, createdPatient);
+        prescriptionList = viewedPatient.getPrescriptionList();
+        prescriptionListAdapter = new PrescriptionListAdapter(getActivity(), this, prescriptionList, viewedPatient);
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 

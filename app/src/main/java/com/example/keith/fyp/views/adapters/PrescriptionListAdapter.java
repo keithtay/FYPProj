@@ -14,11 +14,13 @@ import android.widget.ImageView;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.Prescription;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.fragments.CreatePatientInfoFormPrescriptionFragment;
+import com.example.keith.fyp.views.fragments.PatientInfoFormListFragment;
 
 import org.joda.time.DateTime;
 
@@ -35,12 +37,14 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
 
     private LayoutInflater inflater;
     private List<Prescription> prescriptionList;
-    private CreatePatientInfoFormPrescriptionFragment fragment;
+    private PatientInfoFormListFragment fragment;
+    private Patient patient;
 
-    public PrescriptionListAdapter(Context context, CreatePatientInfoFormPrescriptionFragment createPatientInfoFormPrescriptionFragment, List<Prescription> prescriptionList) {
+    public PrescriptionListAdapter(Context context, PatientInfoFormListFragment createPatientInfoFormPrescriptionFragment, List<Prescription> prescriptionList, Patient patient) {
         this.inflater = LayoutInflater.from(context);
         this.prescriptionList = prescriptionList;
         this.fragment = createPatientInfoFormPrescriptionFragment;
+        this.patient = patient;
     }
 
     @Override
@@ -52,6 +56,8 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
 
     @Override
     public void onBindViewHolder(PrescriptionListViewHolder holder, int position) {
+        Context context = holder.nameEditText.getContext();
+
         Prescription prescription = prescriptionList.get(position);
 
         holder.nameEditText.setText(prescription.getName());
@@ -80,7 +86,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         holder.notesEditText.setText(prescription.getNotes());
         String beforeAfterMealStr = prescription.getBeforeAfterMeal();
         int idx = 0;
-        String[] religionStrArray = fragment.getResources().getStringArray(R.array.option_prescription_before_after_meal);
+        String[] religionStrArray = context.getResources().getStringArray(R.array.option_prescription_before_after_meal);
         idx = Arrays.asList(religionStrArray).indexOf(beforeAfterMealStr);
         holder.beforeAfterMealSpinner.setSelection(idx + 1);
     }
@@ -118,20 +124,22 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         public PrescriptionListViewHolder(View itemView) {
             super(itemView);
 
+            Context context = itemView.getContext();
+
             nameEditText = (EditText) itemView.findViewById(R.id.prescription_item_name_edit_text);
             dosageEditText = (EditText) itemView.findViewById(R.id.prescription_item_dosage_edit_text);
             freqEditText = (EditText) itemView.findViewById(R.id.prescription_item_freq_edit_text);
             instructionEditText = (EditText) itemView.findViewById(R.id.prescription_item_instruction_edit_text);
 
             startDatePicker = (EditText) itemView.findViewById(R.id.prescription_item_start_date_picker);
-            UtilsUi.setupEditTextToBeDatePicker(startDatePicker, fragment.getString(R.string.select_prescription_start_date));
+            UtilsUi.setupEditTextToBeDatePicker(startDatePicker, context.getString(R.string.select_prescription_start_date));
             endDatePicker = (EditText) itemView.findViewById(R.id.prescription_item_end_date_picker);
-            UtilsUi.setupEditTextToBeDatePicker(endDatePicker, fragment.getString(R.string.select_prescription_end_date));
+            UtilsUi.setupEditTextToBeDatePicker(endDatePicker, context.getString(R.string.select_prescription_end_date));
 
             notesEditText = (EditText) itemView.findViewById(R.id.prescription_item_notes_edit_text);
 
             beforeAfterMealSpinner = (MaterialSpinner) itemView.findViewById(R.id.prescription_item_before_after_meal_spinner);
-            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(fragment.getActivity(),
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
                     R.array.option_prescription_before_after_meal, android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             beforeAfterMealSpinner.setAdapter(adapter);

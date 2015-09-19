@@ -93,7 +93,16 @@ public class ViewPatientActivity extends AppCompatActivity  implements PatientIn
         viewedPatient.setVitalList(vitalList);
 
         // Patient's prescription list
+        ArrayList<Prescription> prescriptionList = new ArrayList<>();
 
+        Prescription prescription1 = new Prescription("Panadol", "1 tablet", 2, "Drink a lot of water", DateTime.now(), DateTime.now(), "Before meal", "N/A");
+        Prescription prescription2 = new Prescription("Paracetamol", "2 tbps", 3, "Drink with tea", DateTime.now(), DateTime.now(), "No preferences", "N/A");
+
+        prescriptionList.add(prescription1);
+        prescriptionList.add(prescription2);
+
+        viewedPatient.setPrescriptionList(prescriptionList);
+        
         // Patient's routine list
 
         // Patient's social history
