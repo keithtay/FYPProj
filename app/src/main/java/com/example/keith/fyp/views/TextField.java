@@ -52,13 +52,11 @@ public class TextField extends CustomField {
 
     public void collapse() {
         super.collapse();
-        fieldValueEditText.setBackgroundResource(R.color.transparent);
         imm.hideSoftInputFromWindow(fieldValueEditText.getWindowToken(), 0);
     }
 
     public void expand() {
         super.expand();
-        fieldValueEditText.setBackgroundResource(R.drawable.bottom_border);
         fieldValueEditText.requestFocus();
         imm.showSoftInput(fieldValueEditText, InputMethodManager.SHOW_IMPLICIT);
     }

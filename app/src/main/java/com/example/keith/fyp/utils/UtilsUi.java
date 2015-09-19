@@ -1,11 +1,15 @@
 package com.example.keith.fyp.utils;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -24,7 +28,10 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mikepenz.materialize.util.UIUtils;
 
+import org.joda.time.DateTime;
 import org.joda.time.Duration;
+
+import java.util.Calendar;
 
 /**
  * Created by Sutrisno on 6/9/2015.
@@ -128,5 +135,40 @@ public class UtilsUi {
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
+    }
+
+    public static void openDatePickerOnEditTextClick(final EditText editText, Context context, String title) {
+        int mYear;
+        int mMonth;
+        int mDay;
+
+        String prevSelectedDateStr = editText.getText().toString();
+
+        if (UtilsString.isEmpty(prevSelectedDateStr)) {
+            Calendar mcurrentDate = Calendar.getInstance();
+            mYear = mcurrentDate.get(Calendar.YEAR);
+            mMonth = mcurrentDate.get(Calendar.MONTH);
+            mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+        } else {
+            DateTime date = Global.DATE_FORMAT.parseDateTime(prevSelectedDateStr);
+            mYear = date.getYear();
+            mMonth = date.getMonthOfYear() - 1;
+            mDay = date.getDayOfMonth();
+        }
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+            public void onDateSet(DatePicker datepicker, int selectedYear, int selectedMonth, int selectedDay) {
+                DateTime date = DateTime.now();
+
+                date = date.withDayOfMonth(selectedDay);
+                date = date.withMonthOfYear(selectedMonth+1);
+                date = date.withYear(selectedYear);
+
+                String selectedDateStr = date.toString(Global.DATE_FORMAT);
+                editText.setText(selectedDateStr);
+            }
+        }, mYear, mMonth, mDay);
+        datePickerDialog.setTitle(title);
+        datePickerDialog.show();
     }
 }

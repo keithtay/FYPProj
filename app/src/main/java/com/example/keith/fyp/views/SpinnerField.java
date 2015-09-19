@@ -5,14 +5,7 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
-
-import com.example.keith.fyp.R;
 
 /**
  * Created by Sutrisno on 19/9/2015.
@@ -43,17 +36,16 @@ public class SpinnerField extends CustomField implements View.OnClickListener {
 
     public void collapse() {
         super.collapse();
-        fieldValueEditText.setBackgroundResource(R.color.transparent);
 
         fieldValueEditText.setOnClickListener(null);
     }
 
     public void expand() {
         super.expand();
-        fieldValueEditText.setBackgroundResource(R.drawable.bottom_border);
 
         enableEditTextField(false);
         fieldValueEditText.setOnClickListener(this);
+        fieldValueEditText.performClick();
     }
 
     @Override
@@ -69,7 +61,7 @@ public class SpinnerField extends CustomField implements View.OnClickListener {
                     if(onSpinnerFieldItemSelectedListener == null) {
                         Log.d(TAG, "Please set OnSpinnerFieldItemSelectedListener beforehand");
                     } else {
-                        onSpinnerFieldItemSelectedListener.spinnerFieldItemSelected(index);
+                        onSpinnerFieldItemSelectedListener.onSpinnerFieldItemSelected(index);
                     }
                 }
 
@@ -87,6 +79,6 @@ public class SpinnerField extends CustomField implements View.OnClickListener {
     }
 
     public interface OnSpinnerFieldItemSelectedListener {
-        public void spinnerFieldItemSelected(int index);
+        public void onSpinnerFieldItemSelected(int index);
     }
 }

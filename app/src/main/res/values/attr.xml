@@ -8,5 +8,6 @@
         <attr name="containerPadding" format="dimension" />
         <attr name="transitionDuration" format="integer" />
         <attr name="android:inputType" />
+        <attr name="dialogTitle" format="string" />
     </declare-styleable>
 </resources>

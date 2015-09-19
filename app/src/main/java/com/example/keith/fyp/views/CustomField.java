@@ -51,6 +51,7 @@ public class CustomField extends LinearLayout {
     private boolean showBottomBorder = true;
     private float containerPadding = getResources().getDimension(R.dimen.text_field_padding);
     private int transitionDuration = 350;
+    protected String dialogTitle;
 
     private String oldValue;
 
@@ -107,6 +108,9 @@ public class CustomField extends LinearLayout {
                     break;
                 case R.styleable.CustomField_android_inputType:
                     inputType = typedArray.getInt(attr, EditorInfo.TYPE_TEXT_VARIATION_NORMAL);
+                    break;
+                case R.styleable.CustomField_dialogTitle:
+                    dialogTitle = typedArray.getString(attr);
                     break;
                 default:
                     Log.d(TAG, "Unknown attribute for " + getClass().toString() + ": " + attr);
@@ -187,6 +191,8 @@ public class CustomField extends LinearLayout {
     }
 
     public void collapse() {
+        fieldValueEditText.setBackgroundResource(R.color.transparent);
+
         editButton.setImageResource(R.drawable.ic_mode_edit_green_24px);
 
         ExpandHeightAnimation a = new ExpandHeightAnimation(controlContainer, transitionDuration, ExpandHeightAnimation.COLLAPSE);
@@ -201,6 +207,8 @@ public class CustomField extends LinearLayout {
     }
 
     public void expand() {
+        fieldValueEditText.setBackgroundResource(R.drawable.bottom_border);
+
         editButton.setImageResource(R.drawable.ic_clear_green_24px);
 
         ExpandHeightAnimation a = new ExpandHeightAnimation(controlContainer, transitionDuration, ExpandHeightAnimation.EXPAND);
@@ -284,7 +292,7 @@ public class CustomField extends LinearLayout {
         toggleMode();
 
         if (this.onCustomFieldSaveListener != null) {
-            this.onCustomFieldSaveListener.textFieldSaved(newValue);
+            this.onCustomFieldSaveListener.onCustomFieldSave(newValue);
         } else {
             Log.d(TAG, "OnCustomFieldSaveListener should be set");
         }
@@ -304,7 +312,7 @@ public class CustomField extends LinearLayout {
     }
 
     public interface OnCustomFieldSaveListener {
-        public void textFieldSaved(String newValue);
+        public void onCustomFieldSave(String newValue);
     }
 
     public void setOnCustomFieldSaveListener(OnCustomFieldSaveListener onCustomFieldSaveListener) {
