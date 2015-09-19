@@ -1,12 +1,14 @@
 package com.example.keith.fyp.views.fragments;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.PatientFormSpec;
 import com.example.keith.fyp.utils.DataHolder;
+import com.example.keith.fyp.views.CustomField;
 import com.example.keith.fyp.views.TextField;
 
 import java.lang.reflect.InvocationTargetException;
@@ -101,12 +104,13 @@ public class ViewPatientInfoFormPersonalInfoFragment extends ViewPatientInfoForm
 
         firstNameTextField = (TextField) rootView.findViewById(R.id.first_name_text_field);
         firstNameTextField.setText(viewedPatient.getFirstName());
-        firstNameTextField.setOnTextFieldSaveListener(new TextField.OnTextFieldSaveListener() {
+        firstNameTextField.setOnCustomFieldSaveListener(new CustomField.OnCustomFieldSaveListener() {
             @Override
-            public void textFieldSave(String newValue) {
+            public void textFieldSaved(String newValue) {
                 viewedPatient.setFirstName(newValue);
             }
         });
+
 
 
 
