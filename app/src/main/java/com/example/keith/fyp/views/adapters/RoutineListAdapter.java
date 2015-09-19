@@ -14,12 +14,14 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
+import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.Routine;
 import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.fragments.CreatePatientInfoFormRoutineFragment;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.views.fragments.PatientInfoFormListFragment;
 
 import org.joda.time.DateTime;
 
@@ -34,12 +36,14 @@ public class RoutineListAdapter extends RecyclerView.Adapter<RoutineListAdapter.
 
     private LayoutInflater inflater;
     private List<Routine> routineList;
-    private CreatePatientInfoFormRoutineFragment fragment;
+    private PatientInfoFormListFragment fragment;
+    private Patient patient;
 
-    public RoutineListAdapter(Context context, CreatePatientInfoFormRoutineFragment createPatientInfoFormRoutineFragment, List<Routine> routineList) {
+    public RoutineListAdapter(Context context, PatientInfoFormListFragment fragment, List<Routine> routineList, Patient patient) {
         this.inflater = LayoutInflater.from(context);
         this.routineList = routineList;
-        this.fragment = createPatientInfoFormRoutineFragment;
+        this.fragment = fragment;
+        this.patient = patient;
     }
 
     @Override
@@ -51,6 +55,8 @@ public class RoutineListAdapter extends RecyclerView.Adapter<RoutineListAdapter.
 
     @Override
     public void onBindViewHolder(RoutineListViewHolder holder, int position) {
+        Context context = holder.nameEditText.getContext();
+
         Routine routine = routineList.get(position);
 
         holder.nameEditText.setText(routine.getName());
@@ -94,7 +100,7 @@ public class RoutineListAdapter extends RecyclerView.Adapter<RoutineListAdapter.
 
         String everyLabelStr = routine.getEveryLabel();
         int idx;
-        String[] everyLabelStrArray = fragment.getResources().getStringArray(R.array.option_every_label);
+        String[] everyLabelStrArray = context.getResources().getStringArray(R.array.option_every_label);
         idx = Arrays.asList(everyLabelStrArray).indexOf(everyLabelStr);
         holder.everySpinner.setSelection(idx);
     }
@@ -132,6 +138,8 @@ public class RoutineListAdapter extends RecyclerView.Adapter<RoutineListAdapter.
         public RoutineListViewHolder(View itemView) {
             super(itemView);
 
+            Context context = itemView.getContext();
+
             nameEditText = (EditText) itemView.findViewById(R.id.routine_item_name_edit_text);
             notesEditText = (EditText) itemView.findViewById(R.id.routine_item_notes_edit_text);
             startDatePicker = (EditText) itemView.findViewById(R.id.routine_item_start_date_picker);
@@ -142,12 +150,12 @@ public class RoutineListAdapter extends RecyclerView.Adapter<RoutineListAdapter.
             everySpinner = (Spinner) itemView.findViewById(R.id.routine_item_every_spinner);
 
 
-            UtilsUi.setupEditTextToBeDatePicker(startDatePicker, fragment.getString(R.string.select_routine_start_date));
-            UtilsUi.setupEditTextToBeDatePicker(endDatePicker, fragment.getString(R.string.select_routine_end_date));
-            UtilsUi.setupEditTextToBeTimePicker(startTimePicker, fragment.getString(R.string.select_routine_start_time));
-            UtilsUi.setupEditTextToBeTimePicker(endTimePicker, fragment.getString(R.string.select_routine_end_time));
+            UtilsUi.setupEditTextToBeDatePicker(startDatePicker, context.getString(R.string.select_routine_start_date));
+            UtilsUi.setupEditTextToBeDatePicker(endDatePicker, context.getString(R.string.select_routine_end_date));
+            UtilsUi.setupEditTextToBeTimePicker(startTimePicker, context.getString(R.string.select_routine_start_time));
+            UtilsUi.setupEditTextToBeTimePicker(endTimePicker, context.getString(R.string.select_routine_end_time));
 
-            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(fragment.getActivity(),
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
                     R.array.option_every_label, android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             everySpinner.setAdapter(adapter);

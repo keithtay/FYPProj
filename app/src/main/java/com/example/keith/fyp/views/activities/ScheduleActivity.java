@@ -47,8 +47,7 @@ public class ScheduleActivity extends AppCompatActivity {
 
     private ArrayList<Event> getPatientEventList() {
 
-        String dateFormatStr = Global.DATE_FORMAT_STR + " " + Global.TIME_FORMAT_STR;
-        DateTimeFormatter formatter = DateTimeFormat.forPattern(dateFormatStr);
+        DateTimeFormatter formatter = Global.DATE_TIME_FORMAT;
 
         String todayDateStr = DateTime.now().toString(Global.DATE_FORMAT);
 

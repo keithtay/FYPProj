@@ -26,9 +26,9 @@ import org.joda.time.DateTime;
 import java.util.ArrayList;
 
 /**
- * Created by Sutrisno on 13/9/2015.
+ * Created by Sutrisno on 20/9/2015.
  */
-public class CreatePatientInfoFormRoutineFragment extends CreatePatientInfoFormFragment implements PatientInfoFormListFragment {
+public class ViewPatientInfoFormRoutineFragment extends ViewPatientInfoFormFragment implements PatientInfoFormListFragment {
     private LinearLayout rootView;
 
     private ExpandableLayout addRoutineExpandable;
@@ -73,8 +73,8 @@ public class CreatePatientInfoFormRoutineFragment extends CreatePatientInfoFormF
         UtilsUi.setupEditTextToBeTimePicker(startTimePicker, getString(R.string.select_routine_start_time));
         UtilsUi.setupEditTextToBeTimePicker(endTimePicker, getString(R.string.select_routine_end_time));
 
-        routineList = createdPatient.getRoutineList();
-        routineListAdapter = new RoutineListAdapter(getActivity(), this, routineList, createdPatient);
+        routineList = viewedPatient.getRoutineList();
+        routineListAdapter = new RoutineListAdapter(getActivity(), this, routineList, viewedPatient);
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 

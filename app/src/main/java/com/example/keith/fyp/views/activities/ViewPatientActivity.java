@@ -15,17 +15,21 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Allergy;
+import com.example.keith.fyp.models.Event;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.Prescription;
 import com.example.keith.fyp.models.Routine;
 import com.example.keith.fyp.models.SocialHistory;
 import com.example.keith.fyp.models.Vital;
 import com.example.keith.fyp.utils.DataHolder;
+import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.ViewPatientFormFragmentDecoder;
 import com.example.keith.fyp.views.fragments.PatientInfoCategListFragment;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 public class ViewPatientActivity extends AppCompatActivity  implements PatientInfoCategListFragment.Communicator {
@@ -102,8 +106,15 @@ public class ViewPatientActivity extends AppCompatActivity  implements PatientIn
         prescriptionList.add(prescription2);
 
         viewedPatient.setPrescriptionList(prescriptionList);
-        
+
         // Patient's routine list
+        ArrayList<Routine> routineList = new ArrayList<>();
+
+        Routine routine1 = new Routine("Swimming", "Provision", DateTime.now(), DateTime.now(), DateTime.now(), DateTime.now(), 3, "Week");
+
+        routineList.add(routine1);
+
+        viewedPatient.setRoutineList(routineList);
 
         // Patient's social history
         SocialHistory socialHistory = new SocialHistory();
