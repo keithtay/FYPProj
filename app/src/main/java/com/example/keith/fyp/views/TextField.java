@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -39,6 +40,7 @@ public class TextField extends LinearLayout {
 
     private boolean isExpanded;
     private int controlContainerHeight;
+    private InputMethodManager imm;
 
     private boolean alwaysEditable;
     private String fieldTitleStr;
@@ -47,6 +49,8 @@ public class TextField extends LinearLayout {
     private float containerPadding;
     private int inputType;
     private int transitionDuration;
+
+    private String oldValue;
 
     public TextField(Context context) {
         super(context);
@@ -115,6 +119,8 @@ public class TextField extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
+        imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+
         rootContainer = (LinearLayout) findViewById(R.id.root_container);
         fieldTitleTextView = (TextView) findViewById(R.id.field_title);
         fieldValueEditText = (EditText) findViewById(R.id.field_value);
@@ -172,9 +178,9 @@ public class TextField extends LinearLayout {
             fieldValueEditText.setFocusableInTouchMode(false);
 
             fieldValueEditText.setBackgroundResource(R.color.transparent);
-            // TODO: revert back to old value
-
-            // TODO: hide keyboard
+            
+            fieldValueEditText.setText(oldValue);
+            imm.hideSoftInputFromWindow(fieldValueEditText.getWindowToken(), 0);
         } else {
             editButton.setImageResource(R.drawable.ic_clear_green_24px);
 
@@ -187,9 +193,9 @@ public class TextField extends LinearLayout {
             fieldValueEditText.setFocusableInTouchMode(true);
 
             fieldValueEditText.setBackgroundResource(R.drawable.bottom_border);
-            // TODO: focus on text field
 
-            // TODO: make sure text field can be seen
+            fieldValueEditText.requestFocus();
+            imm.showSoftInput(fieldValueEditText, InputMethodManager.SHOW_IMPLICIT);
         }
         isExpanded = !isExpanded;
     }
@@ -247,7 +253,8 @@ public class TextField extends LinearLayout {
     }
 
     public void setText(String text) {
-        this.fieldValueEditText.setText(text);;
+        this.fieldValueEditText.setText(text);
+        oldValue = text;
     }
 
     public String getText() {
