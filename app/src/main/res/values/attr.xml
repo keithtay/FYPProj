@@ -3,9 +3,14 @@
     <declare-styleable name="CustomField">
         <attr name="alwaysEditable" format="boolean" />
         <attr name="fieldTitle" format="string" />
+        <attr name="fieldTitleWidth" format="dimension" />
         <attr name="showTopBorder" format="boolean" />
         <attr name="showBottomBorder" format="boolean" />
         <attr name="containerPadding" format="dimension" />
+        <attr name="containerPaddingTop" format="dimension" />
+        <attr name="containerPaddingRight" format="dimension" />
+        <attr name="containerPaddingBottom" format="dimension" />
+        <attr name="containerPaddingLeft" format="dimension" />
         <attr name="transitionDuration" format="integer" />
         <attr name="android:inputType" />
         <attr name="dialogTitle" format="string" />

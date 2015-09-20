@@ -91,4 +91,15 @@
         <item name="android:layout_marginLeft">@dimen/patient_info_title_and_value_spacing</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
+
+    <style name="custom_field_in_dialog">
+        <item name="containerPaddingLeft">0dp</item>
+        <item name="containerPaddingRight">0dp</item>
+        <item name="containerPaddingTop">24dp</item>
+        <item name="containerPaddingBottom">24dp</item>
+    </style>
+
+    <style name="custom_field_in_log_problem_dialog" parent="custom_field_in_dialog">
+        <item name="fieldTitleWidth">80dp</item>
+    </style>
 </resources>

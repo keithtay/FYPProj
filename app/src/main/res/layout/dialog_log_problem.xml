@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:customfield="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/paper_card_padding"
+    android:paddingTop="@dimen/paper_card_padding"
+    android:paddingRight="@dimen/paper_card_padding"
+    android:paddingBottom="0dp">
+
+    <!-- Dummy view to prevent soft-keyboard open -->
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
+
+    <com.example.keith.fyp.views.SpinnerField
+        android:id="@+id/problem_log_category"
+        style="@style/custom_field_in_log_problem_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        customfield:alwaysEditable="true"
+        customfield:fieldTitle="Category"
+        customfield:showBottomBorder="false"
+        customfield:showTopBorder="false"
+        customfield:containerPaddingTop="0dp"/>
+
+    <com.example.keith.fyp.views.TextField
+        android:id="@+id/problem_log_notes"
+        style="@style/custom_field_in_log_problem_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textCapSentences"
+        customfield:alwaysEditable="true"
+        customfield:fieldTitle="Notes"
+        customfield:showBottomBorder="false"
+        customfield:showTopBorder="false"
+        customfield:containerPaddingBottom="0dp"/>
+
+</LinearLayout>

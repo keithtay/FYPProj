@@ -84,6 +84,17 @@
         <item>Month</item>
         <item>Year</item>
     </string-array>
+
+    <string-array name="option_problem_log_category">
+        <item>Communication</item>
+        <item>Behavior</item>
+        <item>Emotion</item>
+        <item>Memory</item>
+        <item>Delusion</item>
+        <item>Sleep</item>
+        <item>Other</item>
+    </string-array>
+
     <string name="title_activity_view_schedule">Patient Schedule</string>
     <string name="title_activity_edit_schedule">Edit Schedule</string>
     <string name="tab_start_time">Start Time</string>
@@ -97,5 +108,6 @@
     <string name="title_activity_view_patient_form">Patient Information</string>
     <string name="view_more_patient_info">VIEW MORE INFORMATION</string>
     <string name="log_problem">LOG PROBLEM</string>
+    <string name="dialog_title_add_new_problem_log">Add new problem log</string>
 
 </resources>

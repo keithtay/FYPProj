@@ -223,4 +223,8 @@ public class UtilsUi {
             }
         });
     }
+
+    public static void removeView(View view) {
+        ((ViewGroup) view.getParent()).removeView(view);
+    }
 }

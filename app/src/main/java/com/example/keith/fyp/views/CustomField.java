@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.utils.UtilsString;
+import com.example.keith.fyp.utils.UtilsUi;
 
 /**
  * Created by Sutrisno on 19/9/2015.
@@ -44,13 +45,18 @@ public class CustomField extends LinearLayout {
     private OnCustomFieldSaveListener onCustomFieldSaveListener;
     protected TypedArray typedArray;
 
-    private boolean alwaysEditable = false;
+    protected boolean alwaysEditable;
     private String fieldTitleStr;
-    protected int inputType = EditorInfo.TYPE_TEXT_VARIATION_NORMAL;
-    private boolean showTopBorder = true;
-    private boolean showBottomBorder = true;
-    private float containerPadding = getResources().getDimension(R.dimen.text_field_padding);
-    private int transitionDuration = 350;
+    private float fieldTitleWidth;
+    protected int inputType;
+    private boolean showTopBorder;
+    private boolean showBottomBorder;
+    private float containerPadding;
+    private float containerPaddingTop;
+    private float containerPaddingRight;
+    private float containerPaddingBottom;
+    private float containerPaddingLeft;
+    private int transitionDuration;
     protected String dialogTitle;
 
     private String oldValue;
@@ -80,43 +86,30 @@ public class CustomField extends LinearLayout {
 
         typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomField);
 
-        int n = typedArray.getIndexCount();
-        for (int i = 0; i < n; i++) {
-            int attr = typedArray.getIndex(i);
-            switch (attr) {
-                case R.styleable.CustomField_alwaysEditable:
-                    alwaysEditable = typedArray.getBoolean(attr, false);
-                    break;
-                case R.styleable.CustomField_fieldTitle:
-                    fieldTitleStr = typedArray.getString(attr);
-                    if (UtilsString.isEmpty(fieldTitleStr)) {
-                        fieldTitleStr = "Field Name";
-                    }
-                    break;
-                case R.styleable.CustomField_showTopBorder:
-                    showTopBorder = typedArray.getBoolean(attr, true);
-                    break;
-                case R.styleable.CustomField_showBottomBorder:
-                    showBottomBorder = typedArray.getBoolean(attr, true);
-                    break;
-                case R.styleable.CustomField_containerPadding:
-                    float defaultPadding = getResources().getDimension(R.dimen.text_field_padding);
-                    containerPadding = typedArray.getDimension(attr, defaultPadding);
-                    break;
-                case R.styleable.CustomField_transitionDuration:
-                    transitionDuration = typedArray.getInt(attr, 350);
-                    break;
-                case R.styleable.CustomField_android_inputType:
-                    inputType = typedArray.getInt(attr, EditorInfo.TYPE_TEXT_VARIATION_NORMAL);
-                    break;
-                case R.styleable.CustomField_dialogTitle:
-                    dialogTitle = typedArray.getString(attr);
-                    break;
-                default:
-                    Log.d(TAG, "Unknown attribute for " + getClass().toString() + ": " + attr);
-                    break;
-            }
+        alwaysEditable = typedArray.getBoolean(R.styleable.CustomField_alwaysEditable, false);
+
+        fieldTitleStr = typedArray.getString(R.styleable.CustomField_fieldTitle);
+        if (UtilsString.isEmpty(fieldTitleStr)) {
+            fieldTitleStr = "Field Name";
         }
+
+        fieldTitleWidth = typedArray.getDimension(R.styleable.CustomField_fieldTitleWidth, getResources().getDimension(R.dimen.text_field_title_default_width));
+
+        showTopBorder = typedArray.getBoolean(R.styleable.CustomField_showTopBorder, true);
+        showBottomBorder = typedArray.getBoolean(R.styleable.CustomField_showBottomBorder, true);
+
+        float defaultPadding = getResources().getDimension(R.dimen.text_field_padding);
+        containerPadding = typedArray.getDimension(R.styleable.CustomField_containerPadding, defaultPadding);
+        containerPaddingTop = typedArray.getDimension(R.styleable.CustomField_containerPaddingTop, -1);
+        containerPaddingRight = typedArray.getDimension(R.styleable.CustomField_containerPaddingRight, -1);
+        containerPaddingBottom = typedArray.getDimension(R.styleable.CustomField_containerPaddingBottom, -1);
+        containerPaddingLeft = typedArray.getDimension(R.styleable.CustomField_containerPaddingLeft, -1);
+
+        transitionDuration = typedArray.getInt(R.styleable.CustomField_transitionDuration, 350);
+
+        inputType = typedArray.getInt(R.styleable.CustomField_android_inputType, EditorInfo.TYPE_TEXT_VARIATION_NORMAL);
+
+        dialogTitle = typedArray.getString(R.styleable.CustomField_dialogTitle);
 
         typedArray.recycle();
     }
@@ -145,36 +138,43 @@ public class CustomField extends LinearLayout {
         if (!showBottomBorder) {
             ((ViewGroup) bottomBorder.getParent()).removeView(bottomBorder);
         }
-        int padding = (int) containerPadding;
-        rootContainer.setPadding(padding, padding, padding, padding);
-
-        enableEditTextField(false);
+        fieldTitleTextView.setWidth((int) fieldTitleWidth);
+        int allPadding = (int) containerPadding;
+        int leftPadding = containerPaddingLeft >= 0 ? (int) containerPaddingLeft : allPadding;
+        int topPadding = containerPaddingTop >= 0 ? (int) containerPaddingTop : allPadding;
+        int rightPadding = containerPaddingRight >= 0 ? (int) containerPaddingRight : allPadding;
+        int bottomPadding = containerPaddingBottom >= 0 ? (int) containerPaddingBottom : allPadding;
+        rootContainer.setPadding(leftPadding, topPadding, rightPadding, bottomPadding);
 
         backgroundTransition = (TransitionDrawable) rootContainer.getBackground();
 
         controlContainerHeight = 110;
         isExpanded = false;
 
-        editButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleMode();
-            }
-        });
-
-        cancelButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleMode();
-            }
-        });
-
-        saveButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveValue();
-            }
-        });
+        if(alwaysEditable) {
+            UtilsUi.removeView(editButton);
+            fieldValueEditText.setBackgroundResource(R.drawable.bottom_border);
+        } else {
+            enableEditTextField(false);
+            editButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toggleMode();
+                }
+            });
+            cancelButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toggleMode();
+                }
+            });
+            saveButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    saveValue();
+                }
+            });
+        }
     }
 
     private void toggleMode() {

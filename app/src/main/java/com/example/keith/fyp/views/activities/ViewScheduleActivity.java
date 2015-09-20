@@ -1,25 +1,39 @@
 package com.example.keith.fyp.views.activities;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Event;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsDate;
 import com.example.keith.fyp.utils.UtilsUi;
+import com.example.keith.fyp.views.SpinnerField;
+import com.example.keith.fyp.views.TextField;
 
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import mehdi.sakout.fancybuttons.FancyButton;
 
-public class ViewScheduleActivity extends ScheduleActivity implements View.OnClickListener {
+public class ViewScheduleActivity extends ScheduleActivity {
 
     private FancyButton viewMoreButton;
+    private FancyButton logProblemButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +43,77 @@ public class ViewScheduleActivity extends ScheduleActivity implements View.OnCli
         init();
 
         viewMoreButton = (FancyButton) findViewById(R.id.view_more_button);
-        viewMoreButton.setOnClickListener(this);
+        viewMoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ViewScheduleActivity.this, ViewPatientActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        logProblemButton = (FancyButton) findViewById(R.id.log_problem_button);
+        logProblemButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ViewScheduleActivity.this);
+
+                builder.setTitle(R.string.dialog_title_add_new_problem_log);
+
+                LayoutInflater inflater = getLayoutInflater();
+                View rootView = inflater.inflate(R.layout.dialog_log_problem, null);
+
+                final SpinnerField categorySpinnerField = (SpinnerField) rootView.findViewById(R.id.problem_log_category);
+                TextField notesTextField = (TextField) rootView.findViewById(R.id.problem_log_notes);
+
+                String[] problemLogCategoryArray = getResources().getStringArray(R.array.option_problem_log_category);
+                final ArrayList<String> problemLogCategoryList = new ArrayList<String>(Arrays.asList(problemLogCategoryArray));
+
+                categorySpinnerField.setSpinnerItems(problemLogCategoryArray);
+                categorySpinnerField.setSpinnerFieldItemSelectedListener(new SpinnerField.OnSpinnerFieldItemSelectedListener() {
+                    @Override
+                    public void onSpinnerFieldItemSelected(int index) {
+                        String selectedCategoryStr = problemLogCategoryList.get(index);
+                        categorySpinnerField.changeDisplayedText(selectedCategoryStr);
+                    }
+                });
+
+                builder.setView(rootView);
+
+                builder.setPositiveButton(R.string.dialog_button_add, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // TODO: check for field values
+
+//                        String title = eventTitleEditText.getText().toString();
+//                        String description = eventDescriptionEditText.getText().toString();
+//
+//                        String startTimeStr = startTimePicker.getText().toString();
+//                        DateTime startTime = UtilsDate.setCurrentDateToTime(startTimeStr);
+//                        String endTimeStr = endTimePicker.getText().toString();
+//                        DateTime endTime = UtilsDate.setCurrentDateToTime(endTimeStr);
+//
+//                        Event newEvent = new Event(title, description, startTime, endTime);
+//
+//                        if(eventListAdapter.isEventOverlapWithEventInList(newEvent, eventList)) {
+//                            Toast.makeText(getApplicationContext(), R.string.toast_new_event_overlap, Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            eventList.add(newEvent);
+//                            eventListAdapter.sortEventList();
+//                            eventListAdapter.notifyDataSetChanged();
+//                            updateScheduleListViewHeight();
+//                        }
+                    }
+                });
+                builder.setNegativeButton(R.string.dialog_button_cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+
+                dialog.show();
+            }
+        });
 
         eventListContainer = (LinearLayout) findViewById(R.id.event_list_container);
         displaySchedule();
@@ -120,12 +204,6 @@ public class ViewScheduleActivity extends ScheduleActivity implements View.OnCli
         }
 
         return eventView;
-    }
-
-    @Override
-    public void onClick(View v) {
-        Intent intent = new Intent(this, ViewPatientActivity.class);
-        startActivity(intent);
     }
 
     @Override
