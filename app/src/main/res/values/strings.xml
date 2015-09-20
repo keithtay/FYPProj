@@ -95,5 +95,7 @@
     <string name="toast_new_event_overlap">New event time should not be overlap with the existing event</string>
     <string name="title_activity_view_patient">Patient Information</string>
     <string name="title_activity_view_patient_form">Patient Information</string>
+    <string name="view_more_patient_info">VIEW MORE INFORMATION</string>
+    <string name="log_problem">LOG PROBLEM</string>
 
 </resources>

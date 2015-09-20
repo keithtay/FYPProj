@@ -50,9 +50,9 @@ public class EditScheduleActivity extends ScheduleActivity implements View.OnCli
 
         init();
 
-        // Hide the more patient info button
-        View viewMoreButton = findViewById(R.id.view_more_button);
-        ((ViewGroup) viewMoreButton.getParent()).removeView(viewMoreButton);
+        // Hide the container of schedule  action buttons
+        View actionContainer = findViewById(R.id.schedule_action_container);
+        ((ViewGroup) actionContainer.getParent()).removeView(actionContainer);
 
         eventListView = (ListView) findViewById(R.id.event_list_list_view);
         eventListAdapter = new EventArrayAdapter(this, eventList);

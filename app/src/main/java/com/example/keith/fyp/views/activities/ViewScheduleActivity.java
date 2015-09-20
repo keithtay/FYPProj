@@ -15,9 +15,11 @@ import com.example.keith.fyp.utils.UtilsUi;
 
 import org.joda.time.DateTime;
 
+import mehdi.sakout.fancybuttons.FancyButton;
+
 public class ViewScheduleActivity extends ScheduleActivity implements View.OnClickListener {
 
-    private Button viewMoreButton;
+    private FancyButton viewMoreButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +28,7 @@ public class ViewScheduleActivity extends ScheduleActivity implements View.OnCli
 
         init();
 
-        viewMoreButton = (Button) findViewById(R.id.view_more_button);
+        viewMoreButton = (FancyButton) findViewById(R.id.view_more_button);
         viewMoreButton.setOnClickListener(this);
 
         eventListContainer = (LinearLayout) findViewById(R.id.event_list_container);
