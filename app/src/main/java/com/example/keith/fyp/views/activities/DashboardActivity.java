@@ -20,13 +20,12 @@ import com.example.keith.fyp.utils.ViewPatientFormFragmentDecoder;
 import com.example.keith.fyp.views.EmptyAndAutofitRecyclerView;
 import com.example.keith.fyp.views.PatientListFragment;
 import com.example.keith.fyp.views.adapters.PatientListAdapter;
+import com.mikepenz.materialdrawer.Drawer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
-
-    private View fragmentContainer;
 
     private FragmentManager fragmentManager;
 
@@ -35,15 +34,14 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        fragmentContainer = findViewById(R.id.dashboard_fragment_container);
+//        fragmentManager = getFragmentManager();
+//        Fragment fragmentToBeDisplayed = new PatientListFragment();
+//        FragmentTransaction transaction = fragmentManager.beginTransaction();
+//        transaction.replace(R.id.dashboard_fragment_container, fragmentToBeDisplayed);
+//        transaction.addToBackStack(null);
+//        transaction.commit();
 
-        fragmentManager = getFragmentManager();
-        Fragment fragmentToBeDisplayed = new PatientListFragment();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.dashboard_fragment_container, fragmentToBeDisplayed);
-        transaction.addToBackStack(null);
-        transaction.commit();
-
-        UtilsUi.setNavigationDrawer(this, savedInstanceState);
+        Drawer navDrawer = UtilsUi.setNavigationDrawer(this, savedInstanceState);
+        navDrawer.setSelection(1);
     }
 }

@@ -2,6 +2,9 @@ package com.example.keith.fyp.utils;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -14,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TimePicker;
 
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.views.PatientListFragment;
 import com.mikepenz.crossfader.Crossfader;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -43,7 +47,7 @@ public class UtilsUi {
         return durationStr;
     }
 
-    public static void setNavigationDrawer(Activity activity, Bundle savedInstanceState) {
+    public static Drawer setNavigationDrawer(final Activity activity, Bundle savedInstanceState) {
         Resources resource = activity.getResources();
         final IProfile profile = new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").withIcon(resource.getDrawable(R.drawable.avatar1));
 
@@ -88,7 +92,29 @@ public class UtilsUi {
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        // do something with the clicked item :D
+                        FragmentManager fragmentManager = activity.getFragmentManager();
+                        Fragment fragmentToBeDisplayed = null;
+
+                        switch (drawerItem.getIdentifier()) {
+                            case 1:
+                                fragmentToBeDisplayed = new PatientListFragment();
+                                break;
+                            case 2:
+                                fragmentToBeDisplayed = new PatientListFragment();
+                                break;
+                            case 3:
+                                fragmentToBeDisplayed = new PatientListFragment();
+                                break;
+                            case 4:
+                                fragmentToBeDisplayed = new PatientListFragment();
+                                break;
+                        }
+
+                        FragmentTransaction transaction = fragmentManager.beginTransaction();
+                        transaction.replace(R.id.dashboard_fragment_container, fragmentToBeDisplayed);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+
                         return true;
                     }
                 })
@@ -113,6 +139,8 @@ public class UtilsUi {
                 .build();
 
         miniDrawer.withCrossFader(new CrossfadeWrapper(crossFader));
+
+        return navigationDrawer;
     }
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
