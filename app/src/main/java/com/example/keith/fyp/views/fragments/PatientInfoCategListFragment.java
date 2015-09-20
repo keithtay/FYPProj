@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.views.activities.CreatePatientActivity;
 
 public class PatientInfoCategListFragment extends Fragment implements AdapterView.OnItemClickListener {
     private ListView infoCategListView;
@@ -23,13 +24,14 @@ public class PatientInfoCategListFragment extends Fragment implements AdapterVie
 
         infoCategListView = (ListView) view.findViewById(R.id.infoCategListView);
 
-        String[] infoCategList = {
-                "Personal Information",
-                "Allergy",
-                "Vital",
-                "Social History",
-                "Prescription",
-                "Routine"};
+        String[] infoCategList;
+
+        if(getActivity() instanceof CreatePatientActivity) {
+            infoCategList = getResources().getStringArray(R.array.info_category_create_patient);
+        } else {
+            infoCategList = getResources().getStringArray(R.array.info_category_view_patient);
+        }
+
 
         ArrayAdapter<String> infoCategAdapter = new ArrayAdapter<>(getActivity(), R.layout.info_categ_list_item, infoCategList);
         infoCategListView.setAdapter(infoCategAdapter);

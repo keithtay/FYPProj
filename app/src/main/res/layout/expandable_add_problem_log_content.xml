@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
+    xmlns:customfield="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/paper_card_row_spacing">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/list_item_divider"></View>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/paper_card_padding"
+                android:paddingRight="@dimen/paper_card_padding"
+                android:paddingTop="@dimen/paper_card_padding">
+
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/add_problem_log_category_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-8dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    app:ms_alignLabels="false"
+                    app:ms_arrowColor="@color/text_color_light"
+                    app:ms_arrowSize="12dp"
+                    app:ms_baseColor="@color/text_color_light"
+                    app:ms_errorColor="@color/text_color_error"
+                    app:ms_floatingLabelColor="@color/text_color_light"
+                    app:ms_floatingLabelText="Category"
+                    app:ms_hint="Category"
+                    app:ms_multiline="false" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/paper_card_row_spacing">
+                    <EditText
+                        android:id="@+id/add_problem_log_notes_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Notes"
+                        android:inputType="text"
+                        android:imeOptions="actionDone"/>
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/paper_card_padding"
+                android:background="@color/list_item_divider"></View>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/paper_card_row_spacing"
+                android:paddingLeft="@dimen/paper_card_padding"
+                android:paddingRight="@dimen/paper_card_padding">
+
+                <Button
+                    android:id="@+id/cancel_add_problem_log_button"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/add_new_problem_log_button"
+                    android:paddingLeft="@dimen/padding_flat_button"
+                    android:paddingRight="@dimen/padding_flat_button"
+                    android:text="Cancel"
+                    android:textAllCaps="true"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/add_new_problem_log_button"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="@dimen/padding_flat_button"
+                    android:paddingRight="@dimen/padding_flat_button"
+                    android:text="Add"
+                    android:textAllCaps="true"
+                    android:textColor="@color/primary"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

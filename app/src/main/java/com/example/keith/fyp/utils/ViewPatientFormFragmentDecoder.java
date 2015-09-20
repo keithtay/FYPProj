@@ -11,6 +11,7 @@ import com.example.keith.fyp.views.fragments.CreatePatientInfoFormVitalFragment;
 import com.example.keith.fyp.views.fragments.ViewPatientInfoFormAllergyFragment;
 import com.example.keith.fyp.views.fragments.ViewPatientInfoFormPersonalInfoFragment;
 import com.example.keith.fyp.views.fragments.ViewPatientInfoFormPrescriptionFragment;
+import com.example.keith.fyp.views.fragments.ViewPatientInfoFormProblemLogFragment;
 import com.example.keith.fyp.views.fragments.ViewPatientInfoFormRoutineFragment;
 import com.example.keith.fyp.views.fragments.ViewPatientInfoFormSocialHistoryFragment;
 import com.example.keith.fyp.views.fragments.ViewPatientInfoFormVitalFragment;
@@ -41,6 +42,9 @@ public class ViewPatientFormFragmentDecoder {
                 break;
             case 5:
                 fragmentToBeDisplayed = new ViewPatientInfoFormRoutineFragment();
+                break;
+            case 6:
+                fragmentToBeDisplayed = new ViewPatientInfoFormProblemLogFragment();
                 break;
         }
 
