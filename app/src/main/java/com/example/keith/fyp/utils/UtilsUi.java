@@ -3,10 +3,8 @@ package com.example.keith.fyp.utils;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
@@ -105,7 +103,7 @@ public class UtilsUi {
         int first = (int) UIUtils.convertDpToPixel(300, activity);
         int second = (int) UIUtils.convertDpToPixel(72, activity);
 
-        View contentWrapper = activity.findViewById(R.id.contentWrapper);
+        View contentWrapper = activity.findViewById(R.id.dashboard_fragment_container);
 
         Crossfader crossFader = new Crossfader()
                 .withContent(contentWrapper)

@@ -1,7 +1,6 @@
 package com.example.keith.fyp.views;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -88,7 +87,7 @@ public class EmptyAndAutofitRecyclerView extends RecyclerView {
 
             String noSearchResultFormat = getResources().getString(R.string.no_search_patient_result_notif);
             String noSearchResultMsg = String.format(noSearchResultFormat, queryStr);
-            TextView noSearchResultTextView = (TextView) noSearchResultView.findViewById(R.id.noSearchResultNotif);
+            TextView noSearchResultTextView = (TextView) noSearchResultView.findViewById(R.id.no_search_result_notif);
             noSearchResultTextView.setText(noSearchResultMsg);
 
             noSearchResultView.setVisibility(emptyViewVisible && isQueryExist ? VISIBLE : GONE);

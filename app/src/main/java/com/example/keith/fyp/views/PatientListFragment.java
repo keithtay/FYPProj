@@ -1,47 +1,60 @@
-package com.example.keith.fyp.views.activities;
+package com.example.keith.fyp.views;
 
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.support.v7.widget.SearchView;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Patient;
-import com.example.keith.fyp.utils.UtilsUi;
-import com.example.keith.fyp.views.EmptyAndAutofitRecyclerView;
+import com.example.keith.fyp.views.activities.CreatePatientActivity;
 import com.example.keith.fyp.views.adapters.PatientListAdapter;
+import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatientListActivity extends AppCompatActivity {
+public class PatientListFragment extends Fragment {
 
+    private View rootView;
     private EmptyAndAutofitRecyclerView patientListRecyclerView;
     private PatientListAdapter patientListAdapter;
+    private FloatingActionButton createPatientFab;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patientlist);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_patient_list, container, false);
+
+        setHasOptionsMenu(true);
 
         // ================
         // Prepare the patient list
         // ================
-        patientListAdapter = new PatientListAdapter(this, getPatientList());
+        patientListAdapter = new PatientListAdapter(getActivity(), getPatientList());
 
-        patientListRecyclerView = (EmptyAndAutofitRecyclerView) findViewById(R.id.patientListGrid);
+        patientListRecyclerView = (EmptyAndAutofitRecyclerView) rootView.findViewById(R.id.patient_list_grid);
         patientListRecyclerView.setAdapter(patientListAdapter);
-        patientListRecyclerView.setNoSearchResultView(findViewById(R.id.noSearchResultContainer));
-        patientListRecyclerView.setNoPatientView(findViewById(R.id.noPatientContainer));
+        patientListRecyclerView.setNoSearchResultView(rootView.findViewById(R.id.no_search_result_container));
+        patientListRecyclerView.setNoPatientView(rootView.findViewById(R.id.no_patient_container));
         patientListRecyclerView.addItemDecoration(
                 new SpacesItemDecoration((int) getResources().getDimension(R.dimen.activity_content_container_padding)));
 
-        UtilsUi.setNavigationDrawer(this, savedInstanceState);
+        createPatientFab = (FloatingActionButton) rootView.findViewById(R.id.create_patient_fab);
+        createPatientFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openCreatePatientActivity();
+            }
+        });
+
+        return rootView;
     }
 
     // TODO: Receive patient data from database, instead of using hardcoded data
@@ -120,10 +133,10 @@ public class PatientListActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_patientlist, menu);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        getActivity().getMenuInflater().inflate(R.menu.menu_patientlist, menu);
 
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setQueryHint(getString(R.string.action_patient_search));
@@ -144,25 +157,6 @@ public class PatientListActivity extends AppCompatActivity {
         };
 
         searchView.setOnQueryTextListener(queryTextListener);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_search) {
-
-            return true;
-            //testing
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     class SpacesItemDecoration extends RecyclerView.ItemDecoration {
@@ -197,9 +191,9 @@ public class PatientListActivity extends AppCompatActivity {
         }
     }
 
-    public void openCreatePatientActivity(View view)
+    public void openCreatePatientActivity()
     {
-        Intent intent = new Intent(PatientListActivity.this, CreatePatientActivity.class);
+        Intent intent = new Intent(getActivity(), CreatePatientActivity.class);
         startActivity(intent);
     }
 }
