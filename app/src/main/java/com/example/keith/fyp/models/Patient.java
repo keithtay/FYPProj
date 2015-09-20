@@ -26,6 +26,7 @@ public class Patient {
     private ArrayList<Vital> vitalList = new ArrayList<>();
     private ArrayList<Prescription> prescriptionList = new ArrayList<>();
     private ArrayList<Routine> routineList = new ArrayList<>();
+    private ArrayList<ProblemLog> problemLogList = new ArrayList<>();
     private SocialHistory socialHistory = new SocialHistory();
     private Schedule todaySchedule;
 
@@ -191,5 +192,13 @@ public class Patient {
 
     public void setTodaySchedule(Schedule todaySchedule) {
         this.todaySchedule = todaySchedule;
+    }
+
+    public ArrayList<ProblemLog> getProblemLogList() {
+        return problemLogList;
+    }
+
+    public void setProblemLogList(ArrayList<ProblemLog> problemLogList) {
+        this.problemLogList = problemLogList;
     }
 }

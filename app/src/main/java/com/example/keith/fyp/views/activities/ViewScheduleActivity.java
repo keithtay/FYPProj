@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Event;
+import com.example.keith.fyp.models.ProblemLog;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsDate;
@@ -63,7 +64,7 @@ public class ViewScheduleActivity extends ScheduleActivity {
                 View rootView = inflater.inflate(R.layout.dialog_log_problem, null);
 
                 final SpinnerField categorySpinnerField = (SpinnerField) rootView.findViewById(R.id.problem_log_category);
-                TextField notesTextField = (TextField) rootView.findViewById(R.id.problem_log_notes);
+                final TextField notesTextField = (TextField) rootView.findViewById(R.id.problem_log_notes);
 
                 String[] problemLogCategoryArray = getResources().getStringArray(R.array.option_problem_log_category);
                 final ArrayList<String> problemLogCategoryList = new ArrayList<String>(Arrays.asList(problemLogCategoryArray));
@@ -83,24 +84,13 @@ public class ViewScheduleActivity extends ScheduleActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         // TODO: check for field values
 
-//                        String title = eventTitleEditText.getText().toString();
-//                        String description = eventDescriptionEditText.getText().toString();
-//
-//                        String startTimeStr = startTimePicker.getText().toString();
-//                        DateTime startTime = UtilsDate.setCurrentDateToTime(startTimeStr);
-//                        String endTimeStr = endTimePicker.getText().toString();
-//                        DateTime endTime = UtilsDate.setCurrentDateToTime(endTimeStr);
-//
-//                        Event newEvent = new Event(title, description, startTime, endTime);
-//
-//                        if(eventListAdapter.isEventOverlapWithEventInList(newEvent, eventList)) {
-//                            Toast.makeText(getApplicationContext(), R.string.toast_new_event_overlap, Toast.LENGTH_SHORT).show();
-//                        } else {
-//                            eventList.add(newEvent);
-//                            eventListAdapter.sortEventList();
-//                            eventListAdapter.notifyDataSetChanged();
-//                            updateScheduleListViewHeight();
-//                        }
+                        DateTime creationDate = DateTime.now();
+                        String category = categorySpinnerField.getText();
+                        String notes = notesTextField.getText();
+
+                        ProblemLog newProblemLog = new ProblemLog(creationDate, category, notes);
+
+                        DataHolder.getViewedPatient().getProblemLogList().add(newProblemLog);
                     }
                 });
                 builder.setNegativeButton(R.string.dialog_button_cancel, new DialogInterface.OnClickListener() {
