@@ -130,5 +130,6 @@
     <string name="log_problem">LOG PROBLEM</string>
     <string name="dialog_title_add_new_problem_log">Add new problem log</string>
     <string name="add_new_problem_log">Create New Problem Log</string>
+    <string name="empty_notification_list">You have no notification</string>
 
 </resources>

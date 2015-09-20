@@ -1,0 +1,24 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:superlistview="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.keith.fyp.views.fragments.NotificationListFragment">
+
+    <com.quentindommerc.superlistview.SuperListview
+        android:id="@+id/notification_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        superlistview:superlv__empty="@layout/empty_notification_list"
+        superlistview:superlv__listClipToPadding="false"
+        superlistview:superlv__listDivider="@color/divider"
+        superlistview:superlv__listDividerHeight="1dp"
+        superlistview:superlv__scrollbarStyle="outsideOverlay" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true" />
+
+</FrameLayout>

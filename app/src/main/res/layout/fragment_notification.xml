@@ -1,0 +1,29 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.keith.fyp.views.activities.CreatePatientActivity">
+
+    <fragment
+        android:id="@+id/notification_list_fragment"
+        android:name="com.example.keith.fyp.views.fragments.NotificationListFragment"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/fragment_notification_list" />
+
+    <View
+        android:id="@+id/list_shadow"
+        android:layout_width="10dp"
+        android:layout_height="fill_parent"
+        android:layout_toRightOf="@id/notification_list_fragment"
+        android:background="@drawable/shadow_right"/>
+
+    <fragment
+        android:id="@+id/notification_detail_fragment"
+        android:name="com.example.keith.fyp.views.fragments.NotificationDetailFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/list_shadow"
+        tools:layout="@layout/fragment_notification_detail" />
+
+</RelativeLayout>

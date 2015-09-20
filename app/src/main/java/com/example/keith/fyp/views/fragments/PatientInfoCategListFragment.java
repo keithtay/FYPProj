@@ -22,7 +22,7 @@ public class PatientInfoCategListFragment extends Fragment implements AdapterVie
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_patient_info_categ_list, container, false);
 
-        infoCategListView = (ListView) view.findViewById(R.id.infoCategListView);
+        infoCategListView = (ListView) view.findViewById(R.id.info_categ_list_view);
 
         String[] infoCategList;
 

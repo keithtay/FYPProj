@@ -4,7 +4,7 @@
     android:id="@+id/content_wrapper"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.keith.fyp.views.PatientListFragment">
+    tools:context="com.example.keith.fyp.views.fragments.PatientListFragment">
 
     <com.example.keith.fyp.views.EmptyAndAutofitRecyclerView
         android:id="@+id/patient_list_grid"
