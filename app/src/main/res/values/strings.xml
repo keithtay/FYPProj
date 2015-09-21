@@ -7,7 +7,7 @@
     <string name="sign_in">Sign In</string>
     <string name="password">Password</string>
     <string name="username">Username</string>
-    <string name="title_activity_patientlist">Patient List</string>
+    <string name="title_fragment_patientlist">Patient List</string>
     <string name="action_setting">Setting</string>
     <string name="action_patient_search">Search Patient</string>
     <string name="no_search_patient_result_notif">There is currently no patient with \'%1$s\' in their firstName</string>
@@ -131,5 +131,6 @@
     <string name="dialog_title_add_new_problem_log">Add new problem log</string>
     <string name="add_new_problem_log">Create New Problem Log</string>
     <string name="empty_notification_list">You have no notification</string>
+    <string name="title_fragment_notification">Notification</string>
 
 </resources>

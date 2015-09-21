@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
@@ -33,7 +34,11 @@ public class PatientListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_patient_list, container, false);
 
+        // To be able to change the menu in action bar
         setHasOptionsMenu(true);
+
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_fragment_patientlist);
 
         // ================
         // Prepare the patient list
