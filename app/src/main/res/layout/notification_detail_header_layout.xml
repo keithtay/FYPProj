@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/paper_card_padding">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/notification_sender_photo_image_view"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:src="@drawable/avatar_01"
+            android:layout_marginRight="24dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/notification_date_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/typo_subhead"
+                android:textColor="@color/primary"
+                android:text="12 March 2004, 13:55"/>
+            <TextView
+                android:id="@+id/notification_sender_name_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/typo_headline"
+                android:text="Sender name"/>
+            <TextView
+                android:id="@+id/notification_summary_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/typo_body1"
+                android:text="notification summary"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider"/>
+
+</LinearLayout>

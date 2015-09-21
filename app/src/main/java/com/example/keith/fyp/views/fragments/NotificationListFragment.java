@@ -82,18 +82,36 @@ public class NotificationListFragment extends Fragment implements AdapterView.On
         Bitmap avatar2 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_02);
         Bitmap avatar3 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_03);
 
+        DateTime date1 = DateTime.now();
+        DateTime date2 = DateTime.now().minusDays(2).minusHours(2);
+        DateTime date3 = DateTime.now().minusDays(5).plusHours(1);
+
+        String name1 = "John Doe";
+        String name2 = "Jane Doe";
+        String name3 = "Jonathan Lee";
+
+        String summary1 = "Updated information of patient Jane Doe";
+        String summary2 = "Create new patient Alice Lee";
+        String summary3 = "Log new problem for patient Bob Tan";
+
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         BackgroundRenderer backgroundRenderer = new BackgroundRenderer(inflater);
-        HeaderRenderer headerRenderer = new HeaderRenderer(inflater);
+
+        HeaderRenderer headerRenderer1 = new HeaderRenderer(inflater, avatar1, name1, date1, summary1);
+        HeaderRenderer headerRenderer2 = new HeaderRenderer(inflater, avatar2, name2, date2, summary2);
+        HeaderRenderer headerRenderer3 = new HeaderRenderer(inflater, avatar3, name3, date3, summary3);
 
         ContentRenderer contentRenderer = null;
         ActionRenderer actionRenderer = null;
 
-        NotificationRenderer renderer1 = new NotificationRenderer(inflater, backgroundRenderer, headerRenderer, contentRenderer, actionRenderer);
-        Notification notification1 = new Notification(DateTime.now(), "John Doe", avatar1, "Updated information of patient Jane Doe", "Read", renderer1);
-        Notification notification2 = new Notification(DateTime.now(), "Jane Doe", avatar2, "Create new patient Alice Lee", "Read", renderer1);
-        Notification notification3 = new Notification(DateTime.now(), "Jonathan Lee", avatar3, "Log new problem for patient Bob Tan", "Read", renderer1);
+        NotificationRenderer renderer1 = new NotificationRenderer(inflater, backgroundRenderer, headerRenderer1, contentRenderer, actionRenderer);
+        NotificationRenderer renderer2 = new NotificationRenderer(inflater, backgroundRenderer, headerRenderer2, contentRenderer, actionRenderer);
+        NotificationRenderer renderer3 = new NotificationRenderer(inflater, backgroundRenderer, headerRenderer3, contentRenderer, actionRenderer);
+
+        Notification notification1 = new Notification(date1, name1, avatar1, summary1, "Read", renderer1);
+        Notification notification2 = new Notification(date2, name2, avatar2, summary2, "Read", renderer2);
+        Notification notification3 = new Notification(date3, name3, avatar3, summary3, "Read", renderer3);
 
         notificationList.add(notification1);
         notificationList.add(notification2);

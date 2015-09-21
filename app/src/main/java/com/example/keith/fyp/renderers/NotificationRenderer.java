@@ -3,6 +3,9 @@ package com.example.keith.fyp.renderers;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+
+import com.example.keith.fyp.R;
 
 /**
  * Created by Sutrisno on 21/9/2015.
@@ -25,6 +28,12 @@ public class NotificationRenderer extends Renderer {
     @Override
     public View render() {
         View background = backgroundRenderer.render();
+
+        ViewGroup contentContainer = (ViewGroup) background.findViewById(R.id.notification_detail_container);
+
+        View header = headerRenderer.render();
+
+        contentContainer.addView(header);
 
         return background;
     }
