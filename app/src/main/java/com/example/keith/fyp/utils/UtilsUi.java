@@ -43,6 +43,9 @@ import java.util.Calendar;
  */
 public class UtilsUi {
 
+    // Indicate which page of the navigation option is currently displayed
+    private static int current_displayed_page_identifier;
+
     public static String convertDurationToString(Duration duration) {
         String durationStr = Long.toString(duration.getStandardMinutes()) + " min";
         return durationStr;
@@ -93,28 +96,35 @@ public class UtilsUi {
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        FragmentManager fragmentManager = activity.getFragmentManager();
-                        Fragment fragmentToBeDisplayed = null;
+                        int selectedIdentifier = drawerItem.getIdentifier();
 
-                        switch (drawerItem.getIdentifier()) {
-                            case 1:
-                                fragmentToBeDisplayed = new PatientListFragment();
-                                break;
-                            case 2:
-                                fragmentToBeDisplayed = new NotificationFragment();
-                                break;
-                            case 3:
-                                fragmentToBeDisplayed = new PatientListFragment();
-                                break;
-                            case 4:
-                                fragmentToBeDisplayed = new PatientListFragment();
-                                break;
+                        // Change fragment when the selected navigation is not the one currently being displayed
+                        if (selectedIdentifier != current_displayed_page_identifier) {
+                            FragmentManager fragmentManager = activity.getFragmentManager();
+                            Fragment fragmentToBeDisplayed = null;
+
+                            switch (selectedIdentifier) {
+                                case 1:
+                                    fragmentToBeDisplayed = new PatientListFragment();
+                                    break;
+                                case 2:
+                                    fragmentToBeDisplayed = new NotificationFragment();
+                                    break;
+                                case 3:
+                                    fragmentToBeDisplayed = new PatientListFragment();
+                                    break;
+                                case 4:
+                                    fragmentToBeDisplayed = new PatientListFragment();
+                                    break;
+                            }
+
+                            FragmentTransaction transaction = fragmentManager.beginTransaction();
+                            transaction.replace(R.id.dashboard_fragment_container, fragmentToBeDisplayed);
+                            transaction.addToBackStack(null);
+                            transaction.commit();
+
+                            current_displayed_page_identifier = selectedIdentifier;
                         }
-
-                        FragmentTransaction transaction = fragmentManager.beginTransaction();
-                        transaction.replace(R.id.dashboard_fragment_container, fragmentToBeDisplayed);
-                        transaction.addToBackStack(null);
-                        transaction.commit();
 
                         return true;
                     }
