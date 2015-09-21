@@ -18,10 +18,12 @@ import android.widget.AdapterView;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.Communicator;
+import com.example.keith.fyp.interfaces.NotificationCommunicator;
+import com.example.keith.fyp.models.Notification;
 import com.example.keith.fyp.utils.CreatePatientFormFragmentDecoder;
 import com.example.keith.fyp.views.activities.CreatePatientFormActivity;
 
-public class NotificationFragment extends Fragment implements Communicator {
+public class NotificationFragment extends Fragment implements NotificationCommunicator {
 
     private View rootView;
 
@@ -59,14 +61,14 @@ public class NotificationFragment extends Fragment implements Communicator {
     }
 
     @Override
-    public void respond(int index) {
+    public void respond(Notification notification) {
         int screenOrientation = getResources().getConfiguration().orientation;
 
         if(screenOrientation == Configuration.ORIENTATION_LANDSCAPE) {
             // In landscape orientation
 
             // Display the notification detail
-            notificationDetailFragment.renderDetail();
+            notificationDetailFragment.renderDetail(notification);
         } else {
             // In portrait orientation
 

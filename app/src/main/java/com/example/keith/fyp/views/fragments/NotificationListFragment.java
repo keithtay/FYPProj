@@ -1,5 +1,6 @@
 package com.example.keith.fyp.views.fragments;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,7 +15,13 @@ import android.widget.AdapterView;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.Communicator;
+import com.example.keith.fyp.interfaces.NotificationCommunicator;
 import com.example.keith.fyp.models.Notification;
+import com.example.keith.fyp.renderers.ActionRenderer;
+import com.example.keith.fyp.renderers.BackgroundRenderer;
+import com.example.keith.fyp.renderers.ContentRenderer;
+import com.example.keith.fyp.renderers.HeaderRenderer;
+import com.example.keith.fyp.renderers.NotificationRenderer;
 import com.example.keith.fyp.views.adapters.NotificationListAdapter;
 import com.quentindommerc.superlistview.SuperListview;
 
@@ -29,7 +36,8 @@ public class NotificationListFragment extends Fragment implements AdapterView.On
     private SuperListview notificationListView;
     private NotificationListAdapter notificationListAdapter;
 
-    private Communicator communicator;
+    private  ArrayList<Notification> notificationList;
+    private NotificationCommunicator communicator;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,7 +46,7 @@ public class NotificationListFragment extends Fragment implements AdapterView.On
 
         notificationListView = (SuperListview) rootView.findViewById(R.id.notification_recycler_view);
 
-        final ArrayList<Notification> notificationList = getNotificationList();
+        notificationList = getNotificationList();
 
         notificationListAdapter = new NotificationListAdapter(getActivity(), notificationList);
         notificationListView.setAdapter(notificationListAdapter);
@@ -74,9 +82,18 @@ public class NotificationListFragment extends Fragment implements AdapterView.On
         Bitmap avatar2 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_02);
         Bitmap avatar3 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_03);
 
-        Notification notification1 = new Notification(DateTime.now(), "John Doe", avatar1, "Updated information of patient Jane Doe", "Read");
-        Notification notification2 = new Notification(DateTime.now(), "Jane Doe", avatar2, "Create new patient Alice Lee", "Read");
-        Notification notification3 = new Notification(DateTime.now(), "Jonathan Lee", avatar3, "Log new problem for patient Bob Tan", "Read");
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+
+        BackgroundRenderer backgroundRenderer = new BackgroundRenderer(inflater);
+        HeaderRenderer headerRenderer = new HeaderRenderer(inflater);
+
+        ContentRenderer contentRenderer = null;
+        ActionRenderer actionRenderer = null;
+
+        NotificationRenderer renderer1 = new NotificationRenderer(inflater, backgroundRenderer, headerRenderer, contentRenderer, actionRenderer);
+        Notification notification1 = new Notification(DateTime.now(), "John Doe", avatar1, "Updated information of patient Jane Doe", "Read", renderer1);
+        Notification notification2 = new Notification(DateTime.now(), "Jane Doe", avatar2, "Create new patient Alice Lee", "Read", renderer1);
+        Notification notification3 = new Notification(DateTime.now(), "Jonathan Lee", avatar3, "Log new problem for patient Bob Tan", "Read", renderer1);
 
         notificationList.add(notification1);
         notificationList.add(notification2);
@@ -87,10 +104,10 @@ public class NotificationListFragment extends Fragment implements AdapterView.On
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        communicator.respond(position);
+        communicator.respond(notificationList.get(position));
     }
 
-    public void setCommunicator(Communicator communicator) {
+    public void setCommunicator(NotificationCommunicator communicator) {
         this.communicator = communicator;
     }
 }

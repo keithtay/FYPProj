@@ -2,6 +2,8 @@ package com.example.keith.fyp.models;
 
 import android.graphics.Bitmap;
 
+import com.example.keith.fyp.renderers.NotificationRenderer;
+
 import org.joda.time.DateTime;
 
 /**
@@ -13,13 +15,15 @@ public class Notification {
     private Bitmap senderPhoto;
     private String summary;
     private String status;
+    private NotificationRenderer notificationRenderer;
 
-    public Notification(DateTime creationDate, String senderName, Bitmap senderPhoto, String summary, String status) {
+    public Notification(DateTime creationDate, String senderName, Bitmap senderPhoto, String summary, String status, NotificationRenderer notificationRenderer) {
         this.creationDate = creationDate;
         this.senderName = senderName;
         this.senderPhoto = senderPhoto;
         this.summary = summary;
         this.status = status;
+        this.notificationRenderer = notificationRenderer;
     }
 
     public String getStatus() {
@@ -60,5 +64,13 @@ public class Notification {
 
     public void setSummary(String summary) {
         this.summary = summary;
+    }
+
+    public NotificationRenderer getNotificationRenderer() {
+        return notificationRenderer;
+    }
+
+    public void setNotificationRenderer(NotificationRenderer notificationRenderer) {
+        this.notificationRenderer = notificationRenderer;
     }
 }
