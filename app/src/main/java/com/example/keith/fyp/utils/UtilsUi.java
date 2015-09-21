@@ -98,8 +98,9 @@ public class UtilsUi {
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         int selectedIdentifier = drawerItem.getIdentifier();
 
-                        // Change fragment when the selected navigation is not the one currently being displayed
-                        if (selectedIdentifier != current_displayed_page_identifier) {
+                        // Change fragment when the selected navigation is not
+                        // the one currently being displayed
+                        if (selectedIdentifier != current_displayed_page_identifier || selectedIdentifier == 1) {
                             FragmentManager fragmentManager = activity.getFragmentManager();
                             Fragment fragmentToBeDisplayed = null;
 

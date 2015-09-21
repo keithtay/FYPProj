@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.interfaces.Communicator;
 import com.example.keith.fyp.views.activities.CreatePatientActivity;
 
 public class PatientInfoCategListFragment extends Fragment implements AdapterView.OnItemClickListener {
@@ -63,9 +64,5 @@ public class PatientInfoCategListFragment extends Fragment implements AdapterVie
 
     public void setCommunicator(Communicator communicator) {
         this.communicator = communicator;
-    }
-
-    public interface Communicator {
-        public void respond(int index);
     }
 }

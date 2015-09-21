@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.inputmethod.InputMethodManager;
 
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.interfaces.Communicator;
 import com.example.keith.fyp.models.Allergy;
 import com.example.keith.fyp.models.Event;
 import com.example.keith.fyp.models.Patient;
@@ -32,7 +33,7 @@ import org.joda.time.format.DateTimeFormatter;
 import java.sql.Date;
 import java.util.ArrayList;
 
-public class ViewPatientActivity extends AppCompatActivity  implements PatientInfoCategListFragment.Communicator {
+public class ViewPatientActivity extends AppCompatActivity  implements Communicator {
 
     private PatientInfoCategListFragment infoCategListFragment;
     private FragmentManager fragmentManager;

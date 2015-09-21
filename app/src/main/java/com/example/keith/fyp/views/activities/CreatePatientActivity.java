@@ -14,11 +14,12 @@ import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.interfaces.Communicator;
 import com.example.keith.fyp.utils.CreatePatientFormFragmentDecoder;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.views.fragments.PatientInfoCategListFragment;
 
-public class CreatePatientActivity extends AppCompatActivity implements PatientInfoCategListFragment.Communicator {
+public class CreatePatientActivity extends AppCompatActivity implements Communicator {
 
     private PatientInfoCategListFragment infoCategListFragment;
 
