@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TimePicker;
 
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.views.fragments.HomeScheduleFragment;
 import com.example.keith.fyp.views.fragments.NotificationFragment;
 import com.example.keith.fyp.views.fragments.PatientListFragment;
 import com.mikepenz.crossfader.Crossfader;
@@ -112,7 +113,7 @@ public class UtilsUi {
                                     fragmentToBeDisplayed = new NotificationFragment();
                                     break;
                                 case 3:
-                                    fragmentToBeDisplayed = new PatientListFragment();
+                                    fragmentToBeDisplayed = new HomeScheduleFragment();
                                     break;
                                 case 4:
                                     fragmentToBeDisplayed = new PatientListFragment();
