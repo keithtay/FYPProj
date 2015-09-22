@@ -67,7 +67,7 @@ public class ScheduleActivity extends AppCompatActivity {
         eventList.add(event1);
         eventList.add(event2);
         eventList.add(event3);
-        
+
 
         return eventList;
     }
