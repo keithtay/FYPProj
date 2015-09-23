@@ -1,25 +1,19 @@
 package com.example.keith.fyp.views.activities;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Event;
 import com.example.keith.fyp.models.ProblemLog;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
-import com.example.keith.fyp.utils.UtilsDate;
 import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.SpinnerField;
 import com.example.keith.fyp.views.TextField;
@@ -150,7 +144,7 @@ public class ViewScheduleActivity extends ScheduleActivity {
                 isCurrentTimeMarkHasBeenDisplayed = true;
                 marginLeft = 0;
             } else {
-                layoutId = R.layout.event_layout;
+                layoutId = R.layout.notification_detail_content_game_recommendation_layout;
             }
 
             View eventView = createEventViewWithLayout(layoutId, eventTitle, eventDescription, startTimeStr, durationStr, i, lastIndex, marginLeft);

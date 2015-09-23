@@ -28,12 +28,13 @@ public class NotificationRenderer extends Renderer {
     @Override
     public View render() {
         View background = backgroundRenderer.render();
-
         ViewGroup contentContainer = (ViewGroup) background.findViewById(R.id.notification_detail_container);
 
         View header = headerRenderer.render();
-
         contentContainer.addView(header);
+
+        View content = contentRenderer.render();
+        contentContainer.addView(content);
 
         return background;
     }

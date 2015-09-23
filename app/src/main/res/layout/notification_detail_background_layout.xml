@@ -16,12 +16,17 @@
             android:orientation="vertical">
 
             <android.support.v7.widget.CardView
-                android:id="@+id/notification_detail_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/activity_content_container_padding"
                 app:cardElevation="5dp">
+                <LinearLayout
+                    android:id="@+id/notification_detail_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
+                </LinearLayout>
             </android.support.v7.widget.CardView>
 
             <!-- Make sure there is spacing between the card and the container-->
