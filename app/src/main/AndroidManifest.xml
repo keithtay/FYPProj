@@ -81,6 +81,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.activities.ViewPatientActivity" />
         </activity>
+
     </application>
 
 </manifest>
