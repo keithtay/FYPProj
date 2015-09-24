@@ -1,11 +1,16 @@
 package com.example.keith.fyp.models;
 
+import com.example.keith.fyp.interfaces.ObjectToAttributeValueTransformer;
+import com.example.keith.fyp.utils.Global;
+
 import org.joda.time.DateTime;
+
+import java.util.ArrayList;
 
 /**
  * Created by Sutrisno on 12/9/2015.
  */
-public class Vital {
+public class Vital implements ObjectToAttributeValueTransformer {
     private DateTime dateTimeTaken;
     private Boolean isBeforeMeal;
     private Float temperature;
@@ -88,5 +93,25 @@ public class Vital {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    @Override
+    public ArrayList<AttributeValuePair> transform() {
+        ArrayList<AttributeValuePair> list = new ArrayList<>();
+
+        list.add(new AttributeValuePair("Date and time taken", dateTimeTaken.toString(Global.DATE_TIME_FORMAT_STR)));
+        String beforeAfterMealStr = "Before meal";
+        if(!isBeforeMeal()) {
+            beforeAfterMealStr = "After meal";
+        }
+        list.add(new AttributeValuePair("Before/after meal", beforeAfterMealStr));
+        list.add(new AttributeValuePair("Temperature", Float.toString(temperature)));
+        list.add(new AttributeValuePair("Blood pressure (systol)", Float.toString(bloodPressureSystol)));
+        list.add(new AttributeValuePair("Blood pressure (diastol)", Float.toString(bloodPressureDiastol)));
+        list.add(new AttributeValuePair("Height", Float.toString(height)));
+        list.add(new AttributeValuePair("Weight", Float.toString(weight)));
+        list.add(new AttributeValuePair("Notes", notes));
+
+        return list;
     }
 }

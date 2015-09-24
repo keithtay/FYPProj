@@ -1,11 +1,15 @@
 package com.example.keith.fyp.models;
 
+import com.example.keith.fyp.interfaces.ObjectToAttributeValueTransformer;
+
 import org.joda.time.DateTime;
+
+import java.util.ArrayList;
 
 /**
  * Created by Sutrisno on 20/9/2015.
  */
-public class ProblemLog {
+public class ProblemLog implements ObjectToAttributeValueTransformer {
     private DateTime creationDate;
     private String category;
     private String notes;
@@ -38,5 +42,13 @@ public class ProblemLog {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    @Override
+    public ArrayList<AttributeValuePair> transform() {
+        ArrayList<AttributeValuePair> list = new ArrayList<>();
+        list.add(new AttributeValuePair("Category", getCategory()));
+        list.add(new AttributeValuePair("Notes", getNotes()));
+        return list;
     }
 }

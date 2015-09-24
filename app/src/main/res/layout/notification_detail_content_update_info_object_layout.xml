@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="@dimen/paper_card_padding">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/border_divider_bg"
+        android:orientation="vertical">
+        <ListView
+            android:id="@+id/old_object_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/transparent"
+            android:dividerHeight="@dimen/sml_spacing"
+            android:padding="@dimen/med_spacing" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/med_spacing"
+        android:layout_marginRight="@dimen/med_spacing"
+        android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/border_divider_bg"
+        android:orientation="vertical">
+        <ListView
+            android:id="@+id/new_object_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/transparent"
+            android:dividerHeight="@dimen/sml_spacing"
+            android:padding="@dimen/med_spacing" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/sml_spacing"
+    android:layout_marginTop="@dimen/sml_spacing"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/attribute_name_text_view"
+        style="@style/typo_body2"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="Attribute name" />
+
+    <TextView
+        android:id="@+id/attribute_value_text_view"
+        style="@style/typo_body1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/med_spacing"
+        android:text="Attribute value" />
+</LinearLayout>

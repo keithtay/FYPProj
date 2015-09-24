@@ -5,11 +5,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:fillViewport="true">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,5 +29,5 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/activity_content_container_padding" />
         </LinearLayout>
-    </ScrollView>
+
 </LinearLayout>

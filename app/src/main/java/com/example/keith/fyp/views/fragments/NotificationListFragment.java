@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.Communicator;
 import com.example.keith.fyp.interfaces.NotificationCommunicator;
+import com.example.keith.fyp.models.Allergy;
 import com.example.keith.fyp.models.Notification;
 import com.example.keith.fyp.models.ProblemLog;
 import com.example.keith.fyp.renderers.ActionRenderer;
@@ -24,6 +25,7 @@ import com.example.keith.fyp.renderers.ContentGameRecommendationRenderer;
 import com.example.keith.fyp.renderers.ContentNewLogRenderer;
 import com.example.keith.fyp.renderers.ContentRenderer;
 import com.example.keith.fyp.renderers.ContentUpdateInfoFieldRenderer;
+import com.example.keith.fyp.renderers.ContentUpdateInfoObjectRenderer;
 import com.example.keith.fyp.renderers.HeaderRenderer;
 import com.example.keith.fyp.renderers.NotificationRenderer;
 import com.example.keith.fyp.views.adapters.NotificationListAdapter;
@@ -124,16 +126,19 @@ public class NotificationListFragment extends Fragment implements AdapterView.On
         ActionRenderer actionRenderer = null;
 
         ProblemLog problemLog = new ProblemLog(DateTime.now(), "Emotion", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu odio diam. Morbi sit amet erat at libero ullamcorper mollis et at turpis. Nam consequat ex sem, non ultricies risus molestie vel. Aenean placerat bibendum ipsum, eu volutpat sem pharetra sit amet. Proin metus nisi, lacinia id pharetra a, sollicitudin sit amet sapien. Vestibulum vehicula magna sit amet justo convallis tempor");
+        Allergy oldAllergy = new Allergy("Milk", "Itchy skin", "");
+        Allergy newAllergy = new Allergy("Milk", "Itchy skin", "Wash the skin with cold cloth");
 
         ContentUpdateInfoFieldRenderer contentRenderer1 = new ContentUpdateInfoFieldRenderer(inflater, "Personal Information", "Address", "32 Nanyang Avenue #12-7-23", "32 Nanyang Avenue #12-7-24");
         ContentNewLogRenderer contentRenderer3 = new ContentNewLogRenderer(inflater, problemLog);
         ContentGameRecommendationRenderer contentRenderer4 = new ContentGameRecommendationRenderer(inflater);
+        ContentUpdateInfoObjectRenderer contentRenderer5 = new ContentUpdateInfoObjectRenderer(inflater, oldAllergy, newAllergy);
 
         NotificationRenderer renderer1 = new NotificationRenderer(inflater, backgroundRenderer, headerRenderer1, contentRenderer1, actionRenderer);
         NotificationRenderer renderer2 = new NotificationRenderer(inflater, backgroundRenderer, headerRenderer2, contentRenderer, actionRenderer);
         NotificationRenderer renderer3 = new NotificationRenderer(inflater, backgroundRenderer, headerRenderer3, contentRenderer3, actionRenderer);
         NotificationRenderer renderer4 = new NotificationRenderer(inflater, backgroundRenderer, headerRenderer4, contentRenderer4, actionRenderer);
-        NotificationRenderer renderer5 = new NotificationRenderer(inflater, backgroundRenderer, headerRenderer5, contentRenderer, actionRenderer);
+        NotificationRenderer renderer5 = new NotificationRenderer(inflater, backgroundRenderer, headerRenderer5, contentRenderer5, actionRenderer);
 
         Notification notification1 = new Notification(date1, name1, avatar1, summary1, "Read", renderer1);
         Notification notification2 = new Notification(date2, name2, avatar2, summary2, "Read", renderer2);

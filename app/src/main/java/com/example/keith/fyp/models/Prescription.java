@@ -1,14 +1,19 @@
 package com.example.keith.fyp.models;
 
+import com.example.keith.fyp.interfaces.ObjectToAttributeValueTransformer;
+import com.example.keith.fyp.utils.Global;
+
 import org.joda.time.DateTime;
+
+import java.util.ArrayList;
 
 /**
  * Created by Sutrisno on 12/9/2015.
  */
-public class Prescription {
+public class Prescription implements ObjectToAttributeValueTransformer {
     private String name;
-    private String dosage;
-    private Integer freqPerDay;
+    private String dosage; // Dosage per take
+    private Integer freqPerDay; // Time taken per day
     private String instruction;
     private DateTime startDate;
     private DateTime endDate;
@@ -88,5 +93,19 @@ public class Prescription {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    @Override
+    public ArrayList<AttributeValuePair> transform() {
+        ArrayList<AttributeValuePair> list = new ArrayList<>();
+        list.add(new AttributeValuePair("Name", getName()));
+        list.add(new AttributeValuePair("Dosage per take", getDosage()));
+        list.add(new AttributeValuePair("Time taken per day", Integer.toString(getFreqPerDay())));
+        list.add(new AttributeValuePair("Instruction", getInstruction()));
+        list.add(new AttributeValuePair("Start Date", getStartDate().toString(Global.DATE_FORMAT)));
+        list.add(new AttributeValuePair("End Date", getEndDate().toString(Global.DATE_FORMAT)));
+        list.add(new AttributeValuePair("Before/after meal", getBeforeAfterMeal()));
+        list.add(new AttributeValuePair("Notes", getNotes()));
+        return list;
     }
 }

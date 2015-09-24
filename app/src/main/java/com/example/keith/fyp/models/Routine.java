@@ -1,11 +1,16 @@
 package com.example.keith.fyp.models;
 
+import com.example.keith.fyp.interfaces.ObjectToAttributeValueTransformer;
+import com.example.keith.fyp.utils.Global;
+
 import org.joda.time.DateTime;
+
+import java.util.ArrayList;
 
 /**
  * Created by Sutrisno on 13/9/2015.
  */
-public class Routine {
+public class Routine implements ObjectToAttributeValueTransformer {
     private String name;
     private String notes;
     private DateTime startDate;
@@ -88,5 +93,25 @@ public class Routine {
 
     public void setEveryLabel(String everyLabel) {
         this.everyLabel = everyLabel;
+    }
+
+    @Override
+    public ArrayList<AttributeValuePair> transform() {
+        ArrayList<AttributeValuePair> list = new ArrayList<>();
+
+        list.add(new AttributeValuePair("Name", getName()));
+        list.add(new AttributeValuePair("Notes", getNotes()));
+
+        String startDateStr = startDate.toString(Global.DATE_FORMAT);
+        String endDateStr = endDate.toString(Global.DATE_FORMAT);
+        String startTimeStr = startTime.toString(Global.TIME_FORMAT);
+        String endTimeStr = endTime.toString(Global.TIME_FORMAT);
+        String everyStr = Integer.toString(everyNumber) + " " + everyLabel;
+
+        list.add(new AttributeValuePair("Date range", startDateStr + " to " + endDateStr));
+        list.add(new AttributeValuePair("Time", startTimeStr + " to " + endTimeStr));
+        list.add(new AttributeValuePair("Every", everyStr));
+
+        return list;
     }
 }
