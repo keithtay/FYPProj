@@ -30,7 +30,6 @@ import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.MiniDrawer;
 import com.mikepenz.materialdrawer.holder.BadgeStyle;
-import com.mikepenz.materialdrawer.holder.StringHolder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
@@ -45,13 +44,17 @@ import java.util.Comparator;
 
 public class DashboardActivity extends AppCompatActivity implements OnNotificationUpdateListener {
 
+    private final int NAVIGATION_PATIENT_LIST_ID = 1;
+    private final int NAVIGATION_NOTIFICATION_ID = 2;
+    private final int NAVIGATION_CARE_CENTER_CONFIG_ID = 4;
+    private final String STATE_LAST_DISPLAYED_FRAGMENT_ID = "LAST_DISPLAYED_FRAGMENT_ID";
     private Drawer navDrawer;
     private MiniDrawer miniDrawer;
 
     private NotificationUpdateReceiver notificationUpdateReceiver;
 
     // Indicate which page of the navigation option is currently displayed
-    private int current_displayed_page_identifier;
+    private int currentDisplayedFragmentId;
 
     private BadgeStyle visibleStyle;
     private BadgeStyle invisibleStyle;
@@ -70,9 +73,20 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         invisibleStyle.withTextColor(getResources().getColor(R.color.transparent));
 
         setNavigationDrawer(savedInstanceState);
-        navDrawer.setSelection(1);
+        if(savedInstanceState != null && savedInstanceState.containsKey(STATE_LAST_DISPLAYED_FRAGMENT_ID)) {
+            int lastFragmentId = savedInstanceState.getInt(STATE_LAST_DISPLAYED_FRAGMENT_ID);
+            navDrawer.setSelection(lastFragmentId);
+        } else {
+            navDrawer.setSelection(NAVIGATION_PATIENT_LIST_ID);
+        }
 
         notificationUpdateReceiver = new NotificationUpdateReceiver(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(STATE_LAST_DISPLAYED_FRAGMENT_ID, currentDisplayedFragmentId);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -173,14 +187,14 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         PrimaryDrawerItem homeDrawerItem = new PrimaryDrawerItem()
                 .withName(R.string.nav_patient_list)
                 .withIcon(GoogleMaterial.Icon.gmd_home)
-                .withIdentifier(1);
+                .withIdentifier(NAVIGATION_PATIENT_LIST_ID);
         String notificationCount = Integer.toString(UtilsUi.countUnacceptedAndUnrejectedNotification());
         PrimaryDrawerItem notificationDrawerItem = new PrimaryDrawerItem()
                 .withName(R.string.nav_notification)
                 .withIcon(GoogleMaterial.Icon.gmd_notifications)
                 .withBadge(notificationCount)
                 .withBadgeStyle(visibleStyle)
-                .withIdentifier(2);
+                .withIdentifier(NAVIGATION_NOTIFICATION_ID);
         PrimaryDrawerItem accountDrawerItem = new PrimaryDrawerItem()
                 .withName(R.string.nav_account)
                 .withIcon(GoogleMaterial.Icon.gmd_person)
@@ -188,7 +202,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         PrimaryDrawerItem settingsDrawerItem = new PrimaryDrawerItem()
                 .withName(R.string.nav_settings)
                 .withIcon(GoogleMaterial.Icon.gmd_settings)
-                .withIdentifier(4);
+                .withIdentifier(NAVIGATION_CARE_CENTER_CONFIG_ID);
 
         Drawer navigationDrawer = new DrawerBuilder()
                 .withActivity(this)
@@ -207,21 +221,21 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
 
                         // Change fragment when the selected navigation is not
                         // the one currently being displayed
-                        if (selectedIdentifier != current_displayed_page_identifier || selectedIdentifier == 1) {
+                        if (selectedIdentifier != currentDisplayedFragmentId || selectedIdentifier == 1) {
                             FragmentManager fragmentManager = getFragmentManager();
                             Fragment fragmentToBeDisplayed = null;
 
                             switch (selectedIdentifier) {
-                                case 1:
+                                case NAVIGATION_PATIENT_LIST_ID:
                                     fragmentToBeDisplayed = new PatientListFragment();
                                     break;
-                                case 2:
+                                case NAVIGATION_NOTIFICATION_ID:
                                     fragmentToBeDisplayed = new NotificationFragment();
                                     break;
                                 case 3:
                                     fragmentToBeDisplayed = new HomeScheduleFragment();
                                     break;
-                                case 4:
+                                case NAVIGATION_CARE_CENTER_CONFIG_ID:
                                     fragmentToBeDisplayed = new PatientListFragment();
                                     break;
                             }
@@ -231,7 +245,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
                             transaction.addToBackStack(null);
                             transaction.commit();
 
-                            current_displayed_page_identifier = selectedIdentifier;
+                            currentDisplayedFragmentId = selectedIdentifier;
                         }
 
                         return true;

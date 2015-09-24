@@ -4,26 +4,22 @@
     android:layout_height="match_parent"
     tools:context="com.example.keith.fyp.views.activities.CreatePatientActivity">
 
-    <fragment
-        android:id="@+id/notification_list_fragment"
-        android:name="com.example.keith.fyp.views.fragments.NotificationListFragment"
+    <LinearLayout
+        android:id="@+id/notification_list_fragment_container"
         android:layout_width="400dp"
-        android:layout_height="wrap_content"
-        tools:layout="@layout/fragment_notification_list" />
+        android:layout_height="wrap_content" />
 
     <View
         android:id="@+id/list_shadow"
         android:layout_width="10dp"
         android:layout_height="fill_parent"
-        android:layout_toRightOf="@id/notification_list_fragment"
-        android:background="@drawable/shadow_right"/>
+        android:layout_toRightOf="@id/notification_list_fragment_container"
+        android:background="@drawable/shadow_right" />
 
-    <fragment
-        android:id="@+id/notification_detail_fragment"
-        android:name="com.example.keith.fyp.views.fragments.NotificationDetailFragment"
+    <LinearLayout
+        android:id="@+id/notification_detail_fragment_container"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/list_shadow"
-        tools:layout="@layout/fragment_notification_detail" />
+        android:layout_toRightOf="@id/list_shadow" />
 
 </RelativeLayout>

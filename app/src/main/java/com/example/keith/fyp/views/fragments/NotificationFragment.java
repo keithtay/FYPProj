@@ -1,11 +1,13 @@
 package com.example.keith.fyp.views.fragments;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +34,7 @@ public class NotificationFragment extends Fragment implements NotificationCommun
 
     private FragmentManager fragmentManager;
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,11 +42,15 @@ public class NotificationFragment extends Fragment implements NotificationCommun
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_fragment_notification);
 
-        fragmentManager = getFragmentManager();
-        notificationListFragment = (NotificationListFragment) fragmentManager.findFragmentById(R.id.notification_list_fragment);
-        notificationListFragment.setCommunicator(this);
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-        notificationDetailFragment = (NotificationDetailFragment) fragmentManager.findFragmentById(R.id.notification_detail_fragment);
+        notificationListFragment = new NotificationListFragment();
+        notificationListFragment.setCommunicator(this);
+        notificationDetailFragment = new NotificationDetailFragment();
+
+        transaction.add(R.id.notification_list_fragment_container, notificationListFragment);
+        transaction.add(R.id.notification_detail_fragment_container, notificationDetailFragment);
+        transaction.commit();
 
         return rootView;
     }
@@ -51,13 +58,6 @@ public class NotificationFragment extends Fragment implements NotificationCommun
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Fragment notifListFragment = (getFragmentManager().findFragmentById(R.id.notification_list_fragment));
-        FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
-        ft.remove(notifListFragment);
-
-        Fragment notifDetailFragment = (getFragmentManager().findFragmentById(R.id.notification_detail_fragment));
-        ft.remove(notifDetailFragment);
-        ft.commit();
     }
 
     @Override
