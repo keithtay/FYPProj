@@ -8,6 +8,7 @@ import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
@@ -17,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TimePicker;
 
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.models.Notification;
 import com.example.keith.fyp.views.fragments.HomeScheduleFragment;
 import com.example.keith.fyp.views.fragments.NotificationFragment;
 import com.example.keith.fyp.views.fragments.PatientListFragment;
@@ -37,6 +39,7 @@ import com.mikepenz.materialize.util.UIUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -44,116 +47,9 @@ import java.util.Calendar;
  */
 public class UtilsUi {
 
-    // Indicate which page of the navigation option is currently displayed
-    private static int current_displayed_page_identifier;
-
     public static String convertDurationToString(Duration duration) {
         String durationStr = Long.toString(duration.getStandardMinutes()) + " min";
         return durationStr;
-    }
-
-    public static Drawer setNavigationDrawer(final Activity activity, Bundle savedInstanceState) {
-        Resources resource = activity.getResources();
-        final IProfile profile = new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").withIcon(resource.getDrawable(R.drawable.avatar1));
-
-        AccountHeader accountHeader = new AccountHeaderBuilder()
-                .withActivity(activity)
-                .withHeaderBackground(R.drawable.account_header)
-                .withTranslucentStatusBar(false)
-                .addProfiles(profile)
-                .withSavedInstance(savedInstanceState)
-                .build();
-
-        PrimaryDrawerItem homeDrawerItem = new PrimaryDrawerItem()
-                .withName(R.string.nav_patient_list)
-                .withIcon(GoogleMaterial.Icon.gmd_home)
-                .withIdentifier(1);
-        PrimaryDrawerItem notificationDrawerItem = new PrimaryDrawerItem()
-                .withName(R.string.nav_notification)
-                .withIcon(GoogleMaterial.Icon.gmd_notifications)
-                .withBadge("2")
-                .withBadgeStyle(new BadgeStyle(resource.getColor(R.color.red_100),
-                        resource.getColor(R.color.red_100)))
-                .withIdentifier(2);
-        PrimaryDrawerItem accountDrawerItem = new PrimaryDrawerItem()
-                .withName(R.string.nav_account)
-                .withIcon(GoogleMaterial.Icon.gmd_person)
-                .withIdentifier(3);
-        PrimaryDrawerItem settingsDrawerItem = new PrimaryDrawerItem()
-                .withName(R.string.nav_settings)
-                .withIcon(GoogleMaterial.Icon.gmd_settings)
-                .withIdentifier(4);
-
-        Drawer navigationDrawer = new DrawerBuilder()
-                .withActivity(activity)
-                .withTranslucentStatusBar(false)
-                .withAccountHeader(accountHeader)
-                .addDrawerItems(
-                        homeDrawerItem,
-                        notificationDrawerItem,
-                        accountDrawerItem,
-                        settingsDrawerItem
-                )
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        int selectedIdentifier = drawerItem.getIdentifier();
-
-                        // Change fragment when the selected navigation is not
-                        // the one currently being displayed
-                        if (selectedIdentifier != current_displayed_page_identifier || selectedIdentifier == 1) {
-                            FragmentManager fragmentManager = activity.getFragmentManager();
-                            Fragment fragmentToBeDisplayed = null;
-
-                            switch (selectedIdentifier) {
-                                case 1:
-                                    fragmentToBeDisplayed = new PatientListFragment();
-                                    break;
-                                case 2:
-                                    fragmentToBeDisplayed = new NotificationFragment();
-                                    break;
-                                case 3:
-                                    fragmentToBeDisplayed = new HomeScheduleFragment();
-                                    break;
-                                case 4:
-                                    fragmentToBeDisplayed = new PatientListFragment();
-                                    break;
-                            }
-
-                            FragmentTransaction transaction = fragmentManager.beginTransaction();
-                            transaction.replace(R.id.dashboard_fragment_container, fragmentToBeDisplayed);
-                            transaction.addToBackStack(null);
-                            transaction.commit();
-
-                            current_displayed_page_identifier = selectedIdentifier;
-                        }
-
-                        return true;
-                    }
-                })
-                .withSavedInstance(savedInstanceState)
-                .buildView();
-
-        MiniDrawer miniDrawer = new MiniDrawer()
-                .withDrawer(navigationDrawer)
-                .withInnerShadow(true)
-                .withAccountHeader(accountHeader);
-
-        int first = (int) UIUtils.convertDpToPixel(300, activity);
-        int second = (int) UIUtils.convertDpToPixel(72, activity);
-
-        View contentWrapper = activity.findViewById(R.id.dashboard_fragment_container);
-
-        Crossfader crossFader = new Crossfader()
-                .withContent(contentWrapper)
-                .withFirst(navigationDrawer.getSlider(), first)
-                .withSecond(miniDrawer.build(activity), second)
-                .withSavedInstance(savedInstanceState)
-                .build();
-
-        miniDrawer.withCrossFader(new CrossfadeWrapper(crossFader));
-
-        return navigationDrawer;
     }
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
@@ -265,5 +161,19 @@ public class UtilsUi {
 
     public static void removeView(View view) {
         ((ViewGroup) view.getParent()).removeView(view);
+    }
+
+    public static int countUnacceptedAndUnrejectedNotification() {
+        ArrayList<Notification> notificationList = DataHolder.getNotificationList();
+
+        int count = 0;
+
+        for(Notification notification : notificationList) {
+            if(notification.getStatus() == Notification.STATUS_NONE) {
+                count++;
+            }
+        }
+
+        return count;
     }
 }

@@ -1,6 +1,9 @@
 package com.example.keith.fyp.utils;
 
+import com.example.keith.fyp.models.Notification;
 import com.example.keith.fyp.models.Patient;
+
+import java.util.ArrayList;
 
 /**
  * Created by Sutrisno on 9/9/2015.
@@ -11,6 +14,8 @@ public class DataHolder {
 
     // Patient currently being viewed
     private static Patient viewedPatient;
+
+    private static ArrayList<Notification> notificationList = new ArrayList<>();
 
     public static Patient getCreatedPatient() {
         if(createdPatient == null) {
@@ -32,5 +37,13 @@ public class DataHolder {
 
     public static void resetViewedPatient() {
         viewedPatient = new Patient();
+    }
+
+    public static ArrayList<Notification> getNotificationList() {
+        return notificationList;
+    }
+
+    public static void setNotificationList(ArrayList<Notification> notificationList) {
+        DataHolder.notificationList = notificationList;
     }
 }
