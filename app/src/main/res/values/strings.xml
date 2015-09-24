@@ -133,5 +133,9 @@
     <string name="add_new_problem_log">Create New Problem Log</string>
     <string name="empty_notification_list">You have no notification</string>
     <string name="title_fragment_notification">Notification</string>
+    <string name="reject">Reject</string>
+    <string name="accept">Accept</string>
+    <string name="accepted">Accepted</string>
+    <string name="rejected">Rejected</string>
 
 </resources>

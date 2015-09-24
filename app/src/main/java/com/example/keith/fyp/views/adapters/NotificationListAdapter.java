@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
@@ -82,6 +83,11 @@ public class NotificationListAdapter extends BaseAdapter {
             TextView senderNameTextView = (TextView) notificationItemView.findViewById(R.id.notification_sender_name_text_view);
             TextView summaryTextView = (TextView) notificationItemView.findViewById(R.id.notification_summary_text_view);
             TextView dateTextView = (TextView) notificationItemView.findViewById(R.id.notification_date_text_view);
+
+            if(notification.getStatus() != Notification.STATUS_NONE) {
+                senderNameTextView.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                dateTextView.setTextColor(context.getResources().getColor(R.color.text_color_default));
+            }
 
             if (senderPhotoImageView != null) {
                 senderPhotoImageView.setImageBitmap(notification.getSenderPhoto());

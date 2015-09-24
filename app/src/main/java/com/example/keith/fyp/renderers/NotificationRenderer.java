@@ -1,11 +1,11 @@
 package com.example.keith.fyp.renderers;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.models.Notification;
 
 /**
  * Created by Sutrisno on 21/9/2015.
@@ -16,13 +16,17 @@ public class NotificationRenderer extends Renderer {
     private HeaderRenderer headerRenderer;
     private ContentRenderer contentRenderer;
     private ActionRenderer actionRenderer;
+    private Notification notification;
 
-    public NotificationRenderer(LayoutInflater inflater, BackgroundRenderer backgroundRenderer, HeaderRenderer headerRenderer, ContentRenderer contentRenderer, ActionRenderer actionRenderer) {
+    public NotificationRenderer(LayoutInflater inflater, BackgroundRenderer backgroundRenderer, HeaderRenderer headerRenderer, ContentRenderer contentRenderer, ActionRenderer actionRenderer, Notification notification) {
         super(inflater);
         this.backgroundRenderer = backgroundRenderer;
         this.headerRenderer = headerRenderer;
+        contentRenderer.setNotification(notification);
         this.contentRenderer = contentRenderer;
+        actionRenderer.setNotification(notification);
         this.actionRenderer = actionRenderer;
+        this.notification = notification;
     }
 
     @Override
@@ -35,6 +39,9 @@ public class NotificationRenderer extends Renderer {
 
         View content = contentRenderer.render();
         contentContainer.addView(content);
+
+        View actionFooter = actionRenderer.render();
+        contentContainer.addView(actionFooter);
 
         return background;
     }

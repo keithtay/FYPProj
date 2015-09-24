@@ -2,37 +2,44 @@ package com.example.keith.fyp.models;
 
 import android.graphics.Bitmap;
 
-import com.example.keith.fyp.renderers.NotificationRenderer;
-
 import org.joda.time.DateTime;
-
-import java.util.Comparator;
 
 /**
  * Created by Sutrisno on 20/9/2015.
  */
 public class Notification {
+
+    public static final int TYPE_GAME_RECOMMENDATION = 0;
+    public static final int TYPE_NEW_LOG = 1;
+    public static final int TYPE_NEW_PATIENT = 2;
+    public static final int TYPE_UPDATE_INFO_FIELD = 3;
+    public static final int TYPE_UPDATE_INFO_OBJECT = 4;
+
+    public static final int STATUS_NONE = 0;
+    public static final int STATUS_ACCEPTED = 1;
+    public static final int STATUS_REJECTED = 2;
+
     private DateTime creationDate;
     private String senderName;
     private Bitmap senderPhoto;
     private String summary;
-    private String status;
-    private NotificationRenderer notificationRenderer;
+    private int status;
+    private int type;
 
-    public Notification(DateTime creationDate, String senderName, Bitmap senderPhoto, String summary, String status, NotificationRenderer notificationRenderer) {
+    public Notification(DateTime creationDate, String senderName, Bitmap senderPhoto, String summary, int status, int type) {
         this.creationDate = creationDate;
         this.senderName = senderName;
         this.senderPhoto = senderPhoto;
         this.summary = summary;
         this.status = status;
-        this.notificationRenderer = notificationRenderer;
+        this.type = type;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -68,11 +75,11 @@ public class Notification {
         this.summary = summary;
     }
 
-    public NotificationRenderer getNotificationRenderer() {
-        return notificationRenderer;
+    public int getType() {
+        return type;
     }
 
-    public void setNotificationRenderer(NotificationRenderer notificationRenderer) {
-        this.notificationRenderer = notificationRenderer;
+    public void setType(int type) {
+        this.type = type;
     }
 }
