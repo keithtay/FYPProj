@@ -1,8 +1,10 @@
 package com.example.keith.fyp.views.activities;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -48,6 +50,8 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
     private final int NAVIGATION_NOTIFICATION_ID = 2;
     private final int NAVIGATION_CARE_CENTER_CONFIG_ID = 4;
     private final String STATE_LAST_DISPLAYED_FRAGMENT_ID = "LAST_DISPLAYED_FRAGMENT_ID";
+    public static final String EXTRA_FROM_NOTIFICATION_DETAIL_ACTIVITY = "EXTRA_FROM_NOTIFICATION_DETAIL_ACTIVITY";
+
     private Drawer navDrawer;
     private MiniDrawer miniDrawer;
 
@@ -76,8 +80,10 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         if(savedInstanceState != null && savedInstanceState.containsKey(STATE_LAST_DISPLAYED_FRAGMENT_ID)) {
             int lastFragmentId = savedInstanceState.getInt(STATE_LAST_DISPLAYED_FRAGMENT_ID);
             navDrawer.setSelection(lastFragmentId);
+            miniDrawer.updateItem(lastFragmentId);
         } else {
             navDrawer.setSelection(NAVIGATION_PATIENT_LIST_ID);
+            miniDrawer.updateItem(NAVIGATION_PATIENT_LIST_ID);
         }
 
         notificationUpdateReceiver = new NotificationUpdateReceiver(this);
@@ -274,5 +280,22 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         miniDrawer.withCrossFader(new CrossfadeWrapper(crossFader));
 
         this.navDrawer = navigationDrawer;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (NotificationFragment.REQUEST_OPEN_NOTIFICATION_DETAIL) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    boolean isFromNotificationDetailActivity = data.getBooleanExtra(EXTRA_FROM_NOTIFICATION_DETAIL_ACTIVITY, false);
+                    if(isFromNotificationDetailActivity) {
+                        navDrawer.setSelection(NAVIGATION_NOTIFICATION_ID);
+                        miniDrawer.updateItem(NAVIGATION_NOTIFICATION_ID);
+                    }
+                }
+                break;
+            }
+        }
     }
 }

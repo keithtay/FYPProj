@@ -1,31 +1,23 @@
 package com.example.keith.fyp.views.fragments;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 
+import com.example.keith.fyp.NotificationDetailActivity;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.Communicator;
-import com.example.keith.fyp.interfaces.NotificationCommunicator;
-import com.example.keith.fyp.models.Notification;
-import com.example.keith.fyp.utils.CreatePatientFormFragmentDecoder;
-import com.example.keith.fyp.views.activities.CreatePatientFormActivity;
 
-public class NotificationFragment extends Fragment implements NotificationCommunicator {
+public class NotificationFragment extends Fragment implements Communicator {
 
     private View rootView;
 
@@ -33,6 +25,8 @@ public class NotificationFragment extends Fragment implements NotificationCommun
     private NotificationDetailFragment notificationDetailFragment;
 
     private FragmentManager fragmentManager;
+
+    public static final int REQUEST_OPEN_NOTIFICATION_DETAIL = 0;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -49,7 +43,9 @@ public class NotificationFragment extends Fragment implements NotificationCommun
         notificationDetailFragment = new NotificationDetailFragment();
 
         transaction.add(R.id.notification_list_fragment_container, notificationListFragment);
-        transaction.add(R.id.notification_detail_fragment_container, notificationDetailFragment);
+        if(rootView.findViewById(R.id.notification_detail_fragment_container) != null) {
+            transaction.add(R.id.notification_detail_fragment_container, notificationDetailFragment);
+        }
         transaction.commit();
 
         return rootView;
@@ -61,20 +57,20 @@ public class NotificationFragment extends Fragment implements NotificationCommun
     }
 
     @Override
-    public void respond(Notification notification) {
+    public void respond(int position) {
         int screenOrientation = getResources().getConfiguration().orientation;
 
         if(screenOrientation == Configuration.ORIENTATION_LANDSCAPE) {
             // In landscape orientation
 
             // Display the notification detail
-            notificationDetailFragment.renderDetail(notification);
+            notificationDetailFragment.renderDetail(position);
         } else {
             // In portrait orientation
 
-//            Intent intent = new Intent(this, CreatePatientFormActivity.class);
-//            intent.putExtra("selectedCategory", index);
-//            startActivity(intent);
+            Intent intent = new Intent(getActivity(), NotificationDetailActivity.class);
+            intent.putExtra("selectedIndex", position);
+            startActivityForResult(intent, REQUEST_OPEN_NOTIFICATION_DETAIL);
         }
     }
 }

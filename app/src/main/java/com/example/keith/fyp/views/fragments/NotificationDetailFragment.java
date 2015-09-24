@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Notification;
 import com.example.keith.fyp.renderers.NotificationRenderer;
+import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.NotificationToRendererConverter;
 
 public class NotificationDetailFragment extends Fragment {
@@ -22,9 +23,10 @@ public class NotificationDetailFragment extends Fragment {
         return rootView;
     }
 
-    public void renderDetail(Notification notification) {
+    public void renderDetail(int position) {
         removeAllViewsViewInLayout();
 
+        Notification notification = DataHolder.getNotificationList().get(position);
         NotificationRenderer renderer = NotificationToRendererConverter.convert(getActivity(), notification);
         View view = renderer.render();
         ((ViewGroup) rootView).addView(view);

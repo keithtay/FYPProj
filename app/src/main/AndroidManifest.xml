@@ -24,6 +24,7 @@
             <intent-filter android:label="@string/app_name" >
                 <action android:name="android.intent.action.SEARCH" />
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
@@ -66,22 +67,28 @@
         <activity
             android:name=".views.activities.ViewPatientActivity"
             android:label="@string/title_activity_view_patient"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.activities.ViewScheduleActivity" />
         </activity>
         <activity
             android:name=".views.activities.ViewPatientFormActivity"
-            android:label="@string/title_activity_view_patient_form"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_view_patient_form"
             android:parentActivityName=".views.activities.CreatePatientActivity"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.activities.ViewPatientActivity" />
         </activity>
-
+        <activity
+            android:name=".NotificationDetailActivity"
+            android:label="@string/title_activity_notification_detail" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".views.activities.DashboardActivity" />
+        </activity>
     </application>
 
 </manifest>

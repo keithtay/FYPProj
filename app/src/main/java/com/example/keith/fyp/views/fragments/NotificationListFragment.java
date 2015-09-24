@@ -3,8 +3,6 @@ package com.example.keith.fyp.views.fragments;
 import android.app.Fragment;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +13,7 @@ import android.widget.AdapterView;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.broadcastreceiver.NotificationUpdateReceiver;
-import com.example.keith.fyp.interfaces.NotificationCommunicator;
+import com.example.keith.fyp.interfaces.Communicator;
 import com.example.keith.fyp.interfaces.OnNotificationUpdateListener;
 import com.example.keith.fyp.models.Notification;
 import com.example.keith.fyp.utils.DataHolder;
@@ -23,11 +21,7 @@ import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.views.adapters.NotificationListAdapter;
 import com.quentindommerc.superlistview.SuperListview;
 
-import org.joda.time.DateTime;
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 
 public class NotificationListFragment extends Fragment implements AdapterView.OnItemClickListener, OnNotificationUpdateListener {
@@ -36,7 +30,7 @@ public class NotificationListFragment extends Fragment implements AdapterView.On
     private NotificationListAdapter notificationListAdapter;
 
     private ArrayList<Notification> notificationList;
-    private NotificationCommunicator communicator;
+    private Communicator communicator;
     private NotificationUpdateReceiver notificationUpdateReceiver;
 
     @Override
@@ -87,10 +81,10 @@ public class NotificationListFragment extends Fragment implements AdapterView.On
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        communicator.respond(notificationList.get(position));
+        communicator.respond(position);
     }
 
-    public void setCommunicator(NotificationCommunicator communicator) {
+    public void setCommunicator(Communicator communicator) {
         this.communicator = communicator;
     }
 
