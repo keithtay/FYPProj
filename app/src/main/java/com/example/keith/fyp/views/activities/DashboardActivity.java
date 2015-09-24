@@ -246,6 +246,8 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
                                     break;
                             }
 
+                            miniDrawer.updateItem(currentDisplayedFragmentId);
+                            
                             FragmentTransaction transaction = fragmentManager.beginTransaction();
                             transaction.replace(R.id.dashboard_fragment_container, fragmentToBeDisplayed);
                             transaction.addToBackStack(null);
