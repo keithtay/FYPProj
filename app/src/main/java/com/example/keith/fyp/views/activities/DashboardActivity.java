@@ -62,7 +62,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
 
         setNavigationDrawer(savedInstanceState);
         navDrawer.setSelection(1);
-        
+
         notificationUpdateReceiver = new NotificationUpdateReceiver(this);
     }
 

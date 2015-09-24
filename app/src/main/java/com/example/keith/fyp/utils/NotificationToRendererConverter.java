@@ -12,7 +12,7 @@ import com.example.keith.fyp.models.ProblemLog;
 import com.example.keith.fyp.renderers.ActionRenderer;
 import com.example.keith.fyp.renderers.BackgroundRenderer;
 import com.example.keith.fyp.renderers.ContentGameRecommendationRenderer;
-import com.example.keith.fyp.renderers.ContentNewLogRenderer;
+import com.example.keith.fyp.renderers.ContentNewInfoObjectRenderer;
 import com.example.keith.fyp.renderers.ContentNewPatientRenderer;
 import com.example.keith.fyp.renderers.ContentRenderer;
 import com.example.keith.fyp.renderers.ContentUpdateInfoFieldRenderer;
@@ -43,7 +43,7 @@ public class NotificationToRendererConverter {
                 break;
             case Notification.TYPE_NEW_LOG:
                 ProblemLog problemLog = new ProblemLog(DateTime.now(), "Emotion", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu odio diam. Morbi sit amet erat at libero ullamcorper mollis et at turpis. Nam consequat ex sem, non ultricies risus molestie vel. Aenean placerat bibendum ipsum, eu volutpat sem pharetra sit amet. Proin metus nisi, lacinia id pharetra a, sollicitudin sit amet sapien. Vestibulum vehicula magna sit amet justo convallis tempor");
-                contentRenderer = new ContentNewLogRenderer(inflater, problemLog);
+                contentRenderer = new ContentNewInfoObjectRenderer(inflater, problemLog);
                 break;
             case Notification.TYPE_NEW_PATIENT:
                 Patient newPatient = new Patient();
