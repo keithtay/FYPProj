@@ -53,12 +53,21 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
     // Indicate which page of the navigation option is currently displayed
     private int current_displayed_page_identifier;
 
+    private BadgeStyle visibleStyle;
+    private BadgeStyle invisibleStyle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
         retrieveNotification();
+
+        // Style of notification count badge (navigation drawer)
+        visibleStyle = new BadgeStyle(getResources().getColor(R.color.red_100), getResources().getColor(R.color.red_100));
+        visibleStyle.withTextColor(getResources().getColor(R.color.text_color_default));
+        invisibleStyle = new BadgeStyle(getResources().getColor(R.color.transparent), getResources().getColor(R.color.transparent));
+        invisibleStyle.withTextColor(getResources().getColor(R.color.transparent));
 
         setNavigationDrawer(savedInstanceState);
         navDrawer.setSelection(1);
@@ -134,8 +143,18 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
 
     @Override
     public void onNotificationUpdate() {
-        StringHolder notificationCount = new StringHolder(Integer.toString(UtilsUi.countUnacceptedAndUnrejectedNotification()));
-        navDrawer.updateBadge(2, notificationCount);
+        int notificationCount = UtilsUi.countUnacceptedAndUnrejectedNotification();
+
+        PrimaryDrawerItem notificationNav = (PrimaryDrawerItem) navDrawer.getDrawerItem(2);
+
+        if(notificationCount == 0) {
+            notificationNav = notificationNav.withBadgeStyle(invisibleStyle);
+        } else {
+            String notificationCountStr = Integer.toString(notificationCount);
+            notificationNav = notificationNav.withBadgeStyle(visibleStyle);
+            notificationNav = notificationNav.withBadge(notificationCountStr);
+        }
+        navDrawer.setItemAtPosition(notificationNav, 2);
         miniDrawer.updateItem(2);
     }
 
@@ -160,8 +179,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
                 .withName(R.string.nav_notification)
                 .withIcon(GoogleMaterial.Icon.gmd_notifications)
                 .withBadge(notificationCount)
-                .withBadgeStyle(new BadgeStyle(resource.getColor(R.color.red_100),
-                        resource.getColor(R.color.red_100)))
+                .withBadgeStyle(visibleStyle)
                 .withIdentifier(2);
         PrimaryDrawerItem accountDrawerItem = new PrimaryDrawerItem()
                 .withName(R.string.nav_account)
