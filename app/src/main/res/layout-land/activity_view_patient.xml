@@ -18,25 +18,13 @@
         android:layout_width="10dp"
         android:layout_height="fill_parent"
         android:layout_toRightOf="@id/patient_info_categ_list_fragment"
-        android:background="@drawable/shadow_right"></View>
+        android:background="@drawable/shadow_right" />
 
     <LinearLayout
         android:id="@+id/view_patient_info_form_fragment_container"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_toRightOf="@id/patient_info_categ_list_shadow"
-        android:orientation="vertical"></LinearLayout>
-
-    <com.melnykov.fab.FloatingActionButton
-        android:id="@+id/save_new_patient_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_save_white_24dp"
-        fab:fab_colorNormal="@color/primary"
-        fab:fab_colorPressed="@color/primary_pressed"
-        fab:fab_colorRipple="@color/ripple"/>
+        android:orientation="vertical" />
 
 </RelativeLayout>
