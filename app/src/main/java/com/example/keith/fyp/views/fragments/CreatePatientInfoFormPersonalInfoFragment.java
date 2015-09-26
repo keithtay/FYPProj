@@ -18,22 +18,33 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.PatientFormSpec;
 import com.example.keith.fyp.utils.DataHolder;
+import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsUi;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class CreatePatientInfoFormPersonalInfoFragment extends CreatePatientInfoFormFragment {
 
     private LinearLayout rootView;
+    private EditText firstNameEditText;
+    private EditText lastNameEditText;
+    private EditText nricEditText;
+    private EditText addressEditText;
+    private EditText homeNumberEditText;
+    private EditText phoneNumberEditText;
     private MaterialSpinner genderSpinner;
-    private EditText phoneNumberTextView;
-    private EditText dobTextView;
+    private EditText dobEditText;
+    private EditText guardianNameEditText;
+    private EditText guardianContactNumberEditText;
+    private EditText guardianEmailEditText;
     private ImageView photoView;
 
     private static final int SELECT_PICTURE = 1;
@@ -44,6 +55,16 @@ public class CreatePatientInfoFormPersonalInfoFragment extends CreatePatientInfo
         super.init();
 
         rootView = (LinearLayout) inflater.inflate(R.layout.fragment_create_patient_info_form_personal_info, container, false);
+
+        firstNameEditText = (EditText) rootView.findViewById(R.id.first_name_edit_text);
+        lastNameEditText = (EditText) rootView.findViewById(R.id.last_name_edit_text);
+        nricEditText = (EditText) rootView.findViewById(R.id.nric_edit_text);
+        addressEditText = (EditText) rootView.findViewById(R.id.address_edit_text);
+        homeNumberEditText = (EditText) rootView.findViewById(R.id.home_number_edit_text);
+
+        guardianNameEditText = (EditText) rootView.findViewById(R.id.guardian_full_name_edit_text);
+        guardianContactNumberEditText = (EditText) rootView.findViewById(R.id.guardian_contact_number_edit_text);
+        guardianEmailEditText = (EditText) rootView.findViewById(R.id.guardian_email_edit_text);
 
         photoView = (ImageView) rootView.findViewById(R.id.photo_image_view);
         photoView.setOnTouchListener(new View.OnTouchListener() {
@@ -68,12 +89,12 @@ public class CreatePatientInfoFormPersonalInfoFragment extends CreatePatientInfo
             }
         });
         Bitmap photoBitmap = DataHolder.getCreatedPatient().getPhoto();
-        if(photoBitmap != null) {
+        if (photoBitmap != null) {
             photoView.setImageBitmap(photoBitmap);
         }
 
-        dobTextView = (EditText) rootView.findViewById(R.id.dob_date_picker);
-        UtilsUi.setupEditTextToBeDatePicker(dobTextView, getString(R.string.select_date_of_birth));
+        dobEditText = (EditText) rootView.findViewById(R.id.dob_date_picker);
+        UtilsUi.setupEditTextToBeDatePicker(dobEditText, getString(R.string.select_date_of_birth));
 
         genderSpinner = (MaterialSpinner) rootView.findViewById(R.id.gender_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity,
@@ -81,8 +102,8 @@ public class CreatePatientInfoFormPersonalInfoFragment extends CreatePatientInfo
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         genderSpinner.setAdapter(adapter);
 
-        phoneNumberTextView = (EditText) rootView.findViewById(R.id.phone_number_edit_text);
-        phoneNumberTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        phoneNumberEditText = (EditText) rootView.findViewById(R.id.phone_number_edit_text);
+        phoneNumberEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_NEXT) {
@@ -94,6 +115,11 @@ public class CreatePatientInfoFormPersonalInfoFragment extends CreatePatientInfo
                 return true;
             }
         });
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            highlightEmptyField(bundle);
+        }
 
         // Fill the form with the previously added content
         try {
@@ -120,6 +146,47 @@ public class CreatePatientInfoFormPersonalInfoFragment extends CreatePatientInfo
         }
 
         return rootView;
+    }
+
+    private void highlightEmptyField(Bundle bundle) {
+        ArrayList<Integer> emptyFieldIdList = bundle.getIntegerArrayList(Global.EXTRA_EMPTY_FIELD_ID_LIST);
+
+        if (emptyFieldIdList.contains(Global.PHOTO)) {
+            Toast.makeText(getActivity(), R.string.error_msg_no_photo, Toast.LENGTH_SHORT).show();
+        }
+        if (emptyFieldIdList.contains(Global.FIRST_NAME_FIELD)) {
+            firstNameEditText.setError(activity.getString(R.string.error_msg_field_required));
+        }
+        if (emptyFieldIdList.contains(Global.LAST_NAME_FIELD)) {
+            lastNameEditText.setError(activity.getString(R.string.error_msg_field_required));
+        }
+        if (emptyFieldIdList.contains(Global.NRIC_FIELD)) {
+            nricEditText.setError(activity.getString(R.string.error_msg_field_required));
+        }
+        if (emptyFieldIdList.contains(Global.ADDRESS_FIELD)) {
+            addressEditText.setError(activity.getString(R.string.error_msg_field_required));
+        }
+        if (emptyFieldIdList.contains(Global.HOME_NUMBER_FIELD)) {
+            homeNumberEditText.setError(activity.getString(R.string.error_msg_field_required));
+        }
+        if (emptyFieldIdList.contains(Global.PHONE_NUMBER_FIELD)) {
+            phoneNumberEditText.setError(activity.getString(R.string.error_msg_field_required));
+        }
+        if (emptyFieldIdList.contains(Global.GENDER_FIELD)) {
+            genderSpinner.setError(R.string.error_msg_field_required);
+        }
+        if (emptyFieldIdList.contains(Global.DOB_FIELD)) {
+            dobEditText.setError(activity.getString(R.string.error_msg_field_required));
+        }
+        if (emptyFieldIdList.contains(Global.GUARDIAN_NAME_FIELD)) {
+            guardianNameEditText.setError(activity.getString(R.string.error_msg_field_required));
+        }
+        if (emptyFieldIdList.contains(Global.GUARDIAN_CONTACT_NUMBER_FIELD)) {
+            guardianContactNumberEditText.setError(activity.getString(R.string.error_msg_field_required));
+        }
+        if (emptyFieldIdList.contains(Global.GUARDIAN_EMAIL_FIELD)) {
+            guardianEmailEditText.setError(activity.getString(R.string.error_msg_field_required));
+        }
     }
 
     @Override

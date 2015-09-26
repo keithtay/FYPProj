@@ -15,6 +15,9 @@ import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.utils.CreatePatientFormFragmentDecoder;
 import com.example.keith.fyp.utils.DataHolder;
+import com.example.keith.fyp.utils.Global;
+
+import java.util.ArrayList;
 
 public class CreatePatientFormActivity extends PatientFormActivity {
 
@@ -32,8 +35,15 @@ public class CreatePatientFormActivity extends PatientFormActivity {
         createdPatient = DataHolder.getCreatedPatient();
 
         Intent intent = getIntent();
-        int selectedCategoryIndex = intent.getIntExtra("selectedCategory",0);
+        int selectedCategoryIndex = intent.getIntExtra(Global.EXTRA_SELECTED_CATEGORY, 0);
         Fragment fragmentToBeDisplayed = CreatePatientFormFragmentDecoder.getFragment(selectedCategoryIndex);
+
+        ArrayList<Integer> emptyFieldIdList = intent.getIntegerArrayListExtra(Global.EXTRA_EMPTY_FIELD_ID_LIST);
+        if(emptyFieldIdList.size() > 0) {
+            Bundle bundle = new Bundle();
+            bundle.putIntegerArrayList(Global.EXTRA_EMPTY_FIELD_ID_LIST, emptyFieldIdList);
+            fragmentToBeDisplayed.setArguments(bundle);
+        }
 
         fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();

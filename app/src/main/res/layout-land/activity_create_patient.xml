@@ -17,14 +17,14 @@
         android:layout_width="10dp"
         android:layout_height="fill_parent"
         android:layout_toRightOf="@id/create_patient_info_categ_list_fragment"
-        android:background="@drawable/shadow_right"></View>
+        android:background="@drawable/shadow_right" />
 
     <LinearLayout
         android:id="@+id/create_patient_info_form_fragment_container"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_toRightOf="@id/info_categ_list_shadow"
-        android:orientation="vertical"></LinearLayout>
+        android:orientation="vertical" />
 
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/save_new_patient_fab"

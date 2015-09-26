@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.Communicator;
+import com.example.keith.fyp.interfaces.CreatePatientCommunicator;
 import com.example.keith.fyp.models.Allergy;
 import com.example.keith.fyp.models.Event;
 import com.example.keith.fyp.models.Patient;
@@ -33,7 +34,7 @@ import org.joda.time.format.DateTimeFormatter;
 import java.sql.Date;
 import java.util.ArrayList;
 
-public class ViewPatientActivity extends AppCompatActivity  implements Communicator {
+public class ViewPatientActivity extends AppCompatActivity  implements CreatePatientCommunicator {
 
     private PatientInfoCategListFragment infoCategListFragment;
     private FragmentManager fragmentManager;
@@ -163,5 +164,10 @@ public class ViewPatientActivity extends AppCompatActivity  implements Communica
             intent.putExtra("selectedCategory", index);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void respond(int index, ArrayList<Integer> emptyFieldIdList) {
+
     }
 }

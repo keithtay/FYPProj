@@ -161,5 +161,7 @@
     <string name="button_add">Add</string>
     <string name="button_save">Save</string>
     <string name="title_activity_care_center_config_detail">@string/title_fragment_care_center_config</string>
+    <string name="error_msg_field_required">This field is required</string>
+    <string name="error_msg_no_photo">Please provide a patient photo</string>
 
 </resources>

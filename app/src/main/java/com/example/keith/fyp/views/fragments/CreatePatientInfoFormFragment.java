@@ -89,13 +89,15 @@ public class CreatePatientInfoFormFragment extends PatientInfoFormFragment {
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             try {
                                 String selectedGender = spinner.getSelectedItem().toString();
-                                char toStoreValue = ' ';
+                                char toStoreValue = 0;
                                 if (selectedGender.equals("Male")) {
                                     toStoreValue = 'M';
                                 } else if (selectedGender.equals("Female")) {
                                     toStoreValue = 'F';
                                 }
-                                PropertyUtils.setProperty(createdPatient, spec.getAttributeName(), toStoreValue);
+                                if(toStoreValue != 0) {
+                                    PropertyUtils.setProperty(createdPatient, spec.getAttributeName(), toStoreValue);
+                                }
                             } catch (IllegalAccessException e) {
                                 e.printStackTrace();
                             } catch (InvocationTargetException e) {
@@ -115,7 +117,7 @@ public class CreatePatientInfoFormFragment extends PatientInfoFormFragment {
                     if (Character.isLetter(patientGender)) {
                         if (patientGender == 'M') {
                             spinner.setSelection(1);
-                        } else {
+                        } else if (patientGender == 'F') {
                             spinner.setSelection(2);
                         }
                     }

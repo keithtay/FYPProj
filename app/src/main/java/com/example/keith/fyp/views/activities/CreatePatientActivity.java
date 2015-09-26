@@ -11,20 +11,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.Communicator;
+import com.example.keith.fyp.interfaces.CreatePatientCommunicator;
+import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.utils.CreatePatientFormFragmentDecoder;
 import com.example.keith.fyp.utils.DataHolder;
+import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.views.fragments.PatientInfoCategListFragment;
+import com.melnykov.fab.FloatingActionButton;
 
-public class CreatePatientActivity extends AppCompatActivity implements Communicator {
+import java.util.ArrayList;
+
+public class CreatePatientActivity extends AppCompatActivity implements CreatePatientCommunicator {
 
     private PatientInfoCategListFragment infoCategListFragment;
+    private Fragment fragmentDisplayed;
 
     private FragmentManager fragmentManager;
-
     private InputMethodManager inputManager;
 
     @Override
@@ -39,6 +48,22 @@ public class CreatePatientActivity extends AppCompatActivity implements Communic
         fragmentManager = getFragmentManager();
         infoCategListFragment = (PatientInfoCategListFragment) fragmentManager.findFragmentById(R.id.create_patient_info_categ_list_fragment);
         infoCategListFragment.setCommunicator(this);
+
+        FloatingActionButton createNewPatientFab = (FloatingActionButton) findViewById(R.id.save_new_patient_fab);
+        if (createNewPatientFab != null) {
+            createNewPatientFab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO: check the required field
+                    checkRequiredFields();
+                }
+            });
+        }
+    }
+
+    private void checkRequiredFields() {
+        Intent intent = new Intent(Global.ACTION_CREATE_NEW_PATIENT);
+        sendBroadcast(intent);
     }
 
     @Override
@@ -67,27 +92,64 @@ public class CreatePatientActivity extends AppCompatActivity implements Communic
     public void respond(int index) {
         int screenOrientation = getResources().getConfiguration().orientation;
 
-        if(screenOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (screenOrientation == Configuration.ORIENTATION_LANDSCAPE) {
             // In landscape orientation
 
             // Hide keyboard
-            if(getCurrentFocus() != null) {
+            if (getCurrentFocus() != null) {
                 inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
             }
 
-            // Change fragment
-            Fragment fragmentToBeDisplayed = CreatePatientFormFragmentDecoder.getFragment(index);
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.create_patient_info_form_fragment_container, fragmentToBeDisplayed);
-            transaction.addToBackStack(null);
-            transaction.commit();
+            changeFragment(index);
         } else {
             // In portrait orientation
             Intent intent = new Intent(this, CreatePatientFormActivity.class);
             intent.putExtra("selectedCategory", index);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void respond(int index, ArrayList<Integer> emptyFieldIdList) {
+        int screenOrientation = getResources().getConfiguration().orientation;
+
+        if (screenOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+            // In landscape orientation
+
+            // Hide keyboard
+            if (getCurrentFocus() != null) {
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+
+            changeFragment(index, emptyFieldIdList);
+        } else {
+            // In portrait orientation
+            Intent intent = new Intent(this, CreatePatientFormActivity.class);
+            intent.putExtra(Global.EXTRA_SELECTED_CATEGORY, index);
+            intent.putIntegerArrayListExtra(Global.EXTRA_EMPTY_FIELD_ID_LIST, emptyFieldIdList);
+            startActivity(intent);
+        }
+    }
+
+    private void changeFragment(int index) {
+        fragmentDisplayed = CreatePatientFormFragmentDecoder.getFragment(index);
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.create_patient_info_form_fragment_container, fragmentDisplayed);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    private void changeFragment(int index, ArrayList<Integer> emptyFieldIdList) {
+        fragmentDisplayed = CreatePatientFormFragmentDecoder.getFragment(index);
+        Bundle bundle = new Bundle();
+        bundle.putIntegerArrayList(Global.EXTRA_EMPTY_FIELD_ID_LIST, emptyFieldIdList);
+        fragmentDisplayed.setArguments(bundle);
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.create_patient_info_form_fragment_container, fragmentDisplayed);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @Override
