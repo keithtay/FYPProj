@@ -173,8 +173,9 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
             String notificationCountStr = Integer.toString(notificationCount);
             notificationNav = notificationNav.withBadgeStyle(visibleStyle);
             notificationNav = notificationNav.withBadge(notificationCountStr);
+
         }
-        navDrawer.setItemAtPosition(notificationNav, 2);
+        navDrawer.updateItem(notificationNav);
         miniDrawer.updateItem(2);
     }
 
@@ -247,7 +248,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
                             }
 
                             miniDrawer.updateItem(currentDisplayedFragmentId);
-                            
+
                             FragmentTransaction transaction = fragmentManager.beginTransaction();
                             transaction.replace(R.id.dashboard_fragment_container, fragmentToBeDisplayed);
                             transaction.addToBackStack(null);
