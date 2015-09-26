@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.keith.fyp.R;
 
 import org.joda.time.DateTime;
+import org.joda.time.Duration;
 
 import java.util.Date;
 
@@ -110,15 +111,52 @@ public class TimeRangePickerFragment extends DialogFragment {
 
         DateTime mStartTime = (DateTime) mArgument.getSerializable(KEY_INIT_START_TIME);
         DateTime mEndTime = (DateTime) mArgument.getSerializable(KEY_INIT_END_TIME);
+        final Duration duration = new Duration(mStartTime, mEndTime);
 
         // Initialize Date and Time Pickers
         mStartTimePicker = (TimePicker) mView.findViewById(R.id.start_time_picker);
         mStartTimePicker.setCurrentHour(mStartTime.getHourOfDay());
         mStartTimePicker.setCurrentMinute(mStartTime.getMinuteOfHour());
+        mStartTimePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                DateTime now = DateTime.now();
+
+                int endHour = mEndTimePicker.getCurrentHour();
+                int endMinute = mEndTimePicker.getCurrentMinute();
+
+                DateTime endTime = now.withHourOfDay(endHour).withMinuteOfHour(endMinute);
+                DateTime startTime = now.withHourOfDay(hourOfDay).withMinuteOfHour(minute);
+
+                if (startTime.isAfter(endTime)) {
+                    endTime = startTime.withDurationAdded(duration, 1);
+                    mEndTimePicker.setCurrentHour(endTime.getHourOfDay());
+                    mEndTimePicker.setCurrentMinute(endTime.getMinuteOfHour());
+                }
+            }
+        });
 
         mEndTimePicker = (TimePicker) mView.findViewById(R.id.end_time_picker);
         mEndTimePicker.setCurrentHour(mEndTime.getHourOfDay());
         mEndTimePicker.setCurrentMinute(mEndTime.getMinuteOfHour());
+        mEndTimePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                DateTime now = DateTime.now();
+
+                int startHour = mStartTimePicker.getCurrentHour();
+                int startMinute = mStartTimePicker.getCurrentMinute();
+
+                DateTime startTime = now.withHourOfDay(startHour).withMinuteOfHour(startMinute);
+                DateTime endTime = now.withHourOfDay(hourOfDay).withMinuteOfHour(minute);
+
+                if (endTime.isBefore(startTime)) {
+                    startTime = endTime.withDurationAdded(duration, -1);
+                    mStartTimePicker.setCurrentHour(startTime.getHourOfDay());
+                    mStartTimePicker.setCurrentMinute(startTime.getMinuteOfHour());
+                }
+            }
+        });
 
         // Return created view
         return mView;
