@@ -6,31 +6,22 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.keith.fyp.R;
-import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.Schedule;
-import com.example.keith.fyp.views.EmptyAndAutofitRecyclerView;
-import com.example.keith.fyp.views.ScheduleRecycleView;
+import com.example.keith.fyp.views.customviews.ScheduleRecycleView;
 import com.example.keith.fyp.views.adapters.HomeScheduleAdapter;
-import com.example.keith.fyp.views.adapters.PatientListAdapter;
-import com.melnykov.fab.FloatingActionButton;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 /**
  * Created by Keith on 22/9/2015.

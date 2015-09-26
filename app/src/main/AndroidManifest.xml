@@ -83,7 +83,7 @@
                 android:value=".views.activities.ViewPatientActivity" />
         </activity>
         <activity
-            android:name=".NotificationDetailActivity"
+            android:name=".views.activities.NotificationDetailActivity"
             android:label="@string/title_activity_notification_detail" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -247,16 +247,16 @@ public class RoutineListAdapter extends RecyclerView.Adapter<RoutineListAdapter.
 
             switch (oldEveryLabel) {
                 case "Day":
-                    everySpinner.setSelection(1);
+                    everySpinner.setSelection(0);
                     break;
                 case "Week":
-                    everySpinner.setSelection(2);
+                    everySpinner.setSelection(1);
                     break;
                 case "Month":
-                    everySpinner.setSelection(3);
+                    everySpinner.setSelection(2);
                     break;
                 case "Year":
-                    everySpinner.setSelection(4);
+                    everySpinner.setSelection(3);
                     break;
                 default:
                     everySpinner.setSelection(0);

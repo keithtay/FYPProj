@@ -1,41 +1,23 @@
 package com.example.keith.fyp.views.fragments;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.provider.MediaStore;
-import android.support.v7.app.AlertDialog;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.PatientFormSpec;
 import com.example.keith.fyp.utils.DataHolder;
-import com.example.keith.fyp.utils.Global;
-import com.example.keith.fyp.views.CustomField;
-import com.example.keith.fyp.views.DateField;
-import com.example.keith.fyp.views.SpinnerField;
-import com.example.keith.fyp.views.TextField;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class ViewPatientInfoFormPersonalInfoFragment extends ViewPatientInfoFormFragment {
 

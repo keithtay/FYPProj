@@ -15,8 +15,8 @@ import com.example.keith.fyp.models.ProblemLog;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsUi;
-import com.example.keith.fyp.views.SpinnerField;
-import com.example.keith.fyp.views.TextField;
+import com.example.keith.fyp.views.customviews.SpinnerField;
+import com.example.keith.fyp.views.customviews.TextField;
 
 import org.joda.time.DateTime;
 

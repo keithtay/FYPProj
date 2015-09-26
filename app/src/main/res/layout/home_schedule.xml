@@ -123,13 +123,13 @@
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center">
-    <com.example.keith.fyp.views.ScheduleRecycleView
+    <com.example.keith.fyp.views.customviews.ScheduleRecycleView
         android:id="@+id/test"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:columnWidth="900dp"
         android:paddingLeft="@dimen/activity_content_container_padding"
-        android:paddingRight="@dimen/activity_content_container_padding"></com.example.keith.fyp.views.ScheduleRecycleView>
+        android:paddingRight="@dimen/activity_content_container_padding"></com.example.keith.fyp.views.customviews.ScheduleRecycleView>
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"

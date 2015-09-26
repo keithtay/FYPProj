@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Patient;
-import com.example.keith.fyp.views.EmptyAndAutofitRecyclerView;
+import com.example.keith.fyp.views.customviews.EmptyAndAutofitRecyclerView;
 import com.example.keith.fyp.views.activities.CreatePatientActivity;
 import com.example.keith.fyp.views.adapters.PatientListAdapter;
 import com.melnykov.fab.FloatingActionButton;

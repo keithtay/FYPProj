@@ -1,4 +1,4 @@
-package com.example.keith.fyp.views;
+package com.example.keith.fyp.views.customviews;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,8 +7,6 @@ import android.support.v4.app.FragmentTransaction;
 import com.example.keith.fyp.views.fragments.TimeRangePickerFragment;
 
 import org.joda.time.DateTime;
-
-import java.util.Date;
 
 public class TimeRangePicker {
 

@@ -1,4 +1,4 @@
-package com.example.keith.fyp.views;
+package com.example.keith.fyp.views.customviews;
 
 import android.content.Context;
 import android.content.res.TypedArray;

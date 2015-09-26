@@ -21,6 +21,7 @@ import com.example.keith.fyp.utils.CrossfadeWrapper;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsUi;
+import com.example.keith.fyp.views.fragments.CareCenterConfigFragment;
 import com.example.keith.fyp.views.fragments.HomeScheduleFragment;
 import com.example.keith.fyp.views.fragments.NotificationFragment;
 import com.example.keith.fyp.views.fragments.PatientListFragment;
@@ -244,7 +245,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
                                     fragmentToBeDisplayed = new HomeScheduleFragment();
                                     break;
                                 case NAVIGATION_CARE_CENTER_CONFIG_ID:
-                                    fragmentToBeDisplayed = new PatientListFragment();
+                                    fragmentToBeDisplayed = new CareCenterConfigFragment();
                                     break;
                             }
 

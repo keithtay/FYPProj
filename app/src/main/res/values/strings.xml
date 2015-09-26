@@ -57,6 +57,16 @@
         <item>No preferences</item>
     </string-array>
 
+    <string-array name="option_day">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+
     <string-array name="option_religion">
         <item>Christian</item>
         <item>Catholic</item>
@@ -115,6 +125,9 @@
         <item>Problem Log</item>
     </string-array>
 
+    <string-array name="care_center_config_category">
+        <item>Default Schedule</item>
+    </string-array>
 
     <string name="title_activity_view_schedule">Patient Schedule</string>
     <string name="title_activity_edit_schedule">Edit Schedule</string>
@@ -138,5 +151,14 @@
     <string name="accepted">Accepted</string>
     <string name="rejected">Rejected</string>
     <string name="title_activity_notification_detail">Notification</string>
+    <string name="title_fragment_care_center_config">Care Center Configuration</string>
+    <string name="add_new_default_schedule">Add New Default Schedule</string>
+    <string name="name">Name</string>
+    <string name="repeat_every">Repeat Every</string>
+    <string name="start_time">Start Time</string>
+    <string name="end_time">End Time</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_add">Add</string>
+    <string name="button_save">Save</string>
 
 </resources>

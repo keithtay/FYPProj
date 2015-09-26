@@ -1,21 +1,10 @@
-package com.example.keith.fyp.views;
+package com.example.keith.fyp.views.customviews;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
-import android.widget.DatePicker;
 
-import com.example.keith.fyp.R;
-import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsUi;
-
-import org.joda.time.DateTime;
-
-import java.util.Calendar;
 
 /**
  * Created by Sutrisno on 19/9/2015.

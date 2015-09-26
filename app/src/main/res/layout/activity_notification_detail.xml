@@ -3,6 +3,6 @@
     android:id="@+id/notification_detail_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.keith.fyp.NotificationDetailActivity">
+    tools:context="com.example.keith.fyp.views.activities.NotificationDetailActivity">
 
 </RelativeLayout>

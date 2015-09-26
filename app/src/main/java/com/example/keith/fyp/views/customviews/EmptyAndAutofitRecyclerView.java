@@ -1,4 +1,4 @@
-package com.example.keith.fyp.views;
+package com.example.keith.fyp.views.customviews;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -6,24 +6,24 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.keith.fyp.R;
 
 /**
- * Created by Keith on 23/9/2015.
+ * Created by Sutrisno on 5/9/2015.
+ * Empty: Give the RecyclerView and empty state (i.e. display specific view when it is empty)
+ * Autofit: Each column item has a fixed width
  */
-public class ScheduleRecycleView extends RecyclerView {
-
+public class EmptyAndAutofitRecyclerView extends RecyclerView {
     private View noSearchResultView;
-//    private View noPatientView;
+    private View noPatientView;
     private SearchView searchFieldView;
 
     private int columnWidth;
     private GridLayoutManager manager;
+
     final private AdapterDataObserver observer = new AdapterDataObserver() {
         @Override
         public void onChanged() {
@@ -41,11 +41,11 @@ public class ScheduleRecycleView extends RecyclerView {
         }
     };
 
-    public ScheduleRecycleView(Context context) {
+    public EmptyAndAutofitRecyclerView(Context context) {
         super(context);
     }
 
-    public ScheduleRecycleView(Context context, AttributeSet attrs) {
+    public EmptyAndAutofitRecyclerView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         if (attrs != null) {
@@ -62,7 +62,7 @@ public class ScheduleRecycleView extends RecyclerView {
         setLayoutManager(manager);
     }
 
-    public ScheduleRecycleView(Context context, AttributeSet attrs, int defStyle) {
+    public EmptyAndAutofitRecyclerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
@@ -78,20 +78,20 @@ public class ScheduleRecycleView extends RecyclerView {
     void checkIfEmpty() {
         if (noSearchResultView != null &&
                 getAdapter() != null &&
-
+                noPatientView != null &&
                 searchFieldView != null) {
             final boolean emptyViewVisible = getAdapter().getItemCount() == 0;
             String queryStr = searchFieldView.getQuery().toString();
             final boolean isQueryExist = queryStr != null && !queryStr.isEmpty();
 
 
-            String noSearchResultFormat = getResources().getString(R.string.no_search_patient_result_notif1);
+            String noSearchResultFormat = getResources().getString(R.string.no_search_patient_result_notif);
             String noSearchResultMsg = String.format(noSearchResultFormat, queryStr);
-            TextView noSearchResultTextView = (TextView) noSearchResultView.findViewById(R.id.no_search_result_notif1);
+            TextView noSearchResultTextView = (TextView) noSearchResultView.findViewById(R.id.no_search_result_notif);
             noSearchResultTextView.setText(noSearchResultMsg);
 
             noSearchResultView.setVisibility(emptyViewVisible && isQueryExist ? VISIBLE : GONE);
-//            noPatientView.setVisibility(emptyViewVisible && !isQueryExist ? VISIBLE : GONE);
+            noPatientView.setVisibility(emptyViewVisible && !isQueryExist ? VISIBLE : GONE);
             setVisibility(emptyViewVisible ? GONE : VISIBLE);
         }
     }
@@ -120,8 +120,8 @@ public class ScheduleRecycleView extends RecyclerView {
         checkIfEmpty();
     }
 
-//    public void setNoPatientView(View noPatientView) {
-//        this.noPatientView = noPatientView;
-//        checkIfEmpty();
-//    }
+    public void setNoPatientView(View noPatientView) {
+        this.noPatientView = noPatientView;
+        checkIfEmpty();
+    }
 }

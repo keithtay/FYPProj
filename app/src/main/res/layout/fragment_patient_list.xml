@@ -6,13 +6,13 @@
     android:layout_height="match_parent"
     tools:context="com.example.keith.fyp.views.fragments.PatientListFragment">
 
-    <com.example.keith.fyp.views.EmptyAndAutofitRecyclerView
+    <com.example.keith.fyp.views.customviews.EmptyAndAutofitRecyclerView
         android:id="@+id/patient_list_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:columnWidth="300dp"
         android:paddingLeft="@dimen/activity_content_container_padding"
-        android:paddingRight="@dimen/activity_content_container_padding"></com.example.keith.fyp.views.EmptyAndAutofitRecyclerView>
+        android:paddingRight="@dimen/activity_content_container_padding"></com.example.keith.fyp.views.customviews.EmptyAndAutofitRecyclerView>
 
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/create_patient_fab"

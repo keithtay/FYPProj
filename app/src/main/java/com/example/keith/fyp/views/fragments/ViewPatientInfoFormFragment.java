@@ -7,15 +7,14 @@ import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.PatientFormSpec;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
-import com.example.keith.fyp.views.CustomField;
-import com.example.keith.fyp.views.DateField;
-import com.example.keith.fyp.views.SpinnerField;
-import com.example.keith.fyp.views.TextField;
+import com.example.keith.fyp.views.customviews.CustomField;
+import com.example.keith.fyp.views.customviews.DateField;
+import com.example.keith.fyp.views.customviews.SpinnerField;
+import com.example.keith.fyp.views.customviews.TextField;
 
 import org.joda.time.DateTime;
 
 import java.lang.reflect.InvocationTargetException;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 

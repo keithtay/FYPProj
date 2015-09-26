@@ -27,7 +27,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <com.example.keith.fyp.views.TextField
+                    <com.example.keith.fyp.views.customviews.TextField
                         android:id="@+id/live_with_text_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
                         customfield:fieldTitle="Live With"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.TextField
+                    <com.example.keith.fyp.views.customviews.TextField
                         android:id="@+id/diet_text_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -43,56 +43,56 @@
                         customfield:fieldTitle="Diet"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.SpinnerField
+                    <com.example.keith.fyp.views.customviews.SpinnerField
                         android:id="@+id/religion_spinner_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         customfield:fieldTitle="Religion"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.SpinnerField
+                    <com.example.keith.fyp.views.customviews.SpinnerField
                         android:id="@+id/sexually_active_spinner_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         customfield:fieldTitle="Sexually Active"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.SpinnerField
+                    <com.example.keith.fyp.views.customviews.SpinnerField
                         android:id="@+id/secondhand_smoker_spinner_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         customfield:fieldTitle="Secondhand Smoker"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.SpinnerField
+                    <com.example.keith.fyp.views.customviews.SpinnerField
                         android:id="@+id/alcohol_use_spinner_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         customfield:fieldTitle="Alcohol Use"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.SpinnerField
+                    <com.example.keith.fyp.views.customviews.SpinnerField
                         android:id="@+id/caffeine_use_spinner_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         customfield:fieldTitle="Caffeine Use"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.SpinnerField
+                    <com.example.keith.fyp.views.customviews.SpinnerField
                         android:id="@+id/tobacco_use_spinner_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         customfield:fieldTitle="Tobacco Use"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.SpinnerField
+                    <com.example.keith.fyp.views.customviews.SpinnerField
                         android:id="@+id/drug_use_spinner_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         customfield:fieldTitle="Drug Use"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.TextField
+                    <com.example.keith.fyp.views.customviews.TextField
                         android:id="@+id/pet_text_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
                         customfield:fieldTitle="Pet"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.TextField
+                    <com.example.keith.fyp.views.customviews.TextField
                         android:id="@+id/occupation_text_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -108,7 +108,7 @@
                         customfield:fieldTitle="Occupation"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.TextField
+                    <com.example.keith.fyp.views.customviews.TextField
                         android:id="@+id/like_text_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
                         customfield:fieldTitle="Like"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.TextField
+                    <com.example.keith.fyp.views.customviews.TextField
                         android:id="@+id/dislike_text_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -124,7 +124,7 @@
                         customfield:fieldTitle="Dislike"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.TextField
+                    <com.example.keith.fyp.views.customviews.TextField
                         android:id="@+id/hobby_text_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
                         customfield:fieldTitle="Hobby"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.TextField
+                    <com.example.keith.fyp.views.customviews.TextField
                         android:id="@+id/habbit_text_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -140,7 +140,7 @@
                         customfield:fieldTitle="Habbit"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.TextField
+                    <com.example.keith.fyp.views.customviews.TextField
                         android:id="@+id/holiday_experience_text_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -148,7 +148,7 @@
                         customfield:fieldTitle="Holiday Experience"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.TextField
+                    <com.example.keith.fyp.views.customviews.TextField
                         android:id="@+id/education_text_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -156,7 +156,7 @@
                         customfield:fieldTitle="Education"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.TextField
+                    <com.example.keith.fyp.views.customviews.TextField
                         android:id="@+id/exercise_text_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

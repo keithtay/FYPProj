@@ -34,7 +34,7 @@ public class PatientInfoCategListFragment extends Fragment implements AdapterVie
         }
 
 
-        ArrayAdapter<String> infoCategAdapter = new ArrayAdapter<>(getActivity(), R.layout.info_categ_list_item, infoCategList);
+        ArrayAdapter<String> infoCategAdapter = new ArrayAdapter<>(getActivity(), R.layout.text_list_item_layout, infoCategList);
         infoCategListView.setAdapter(infoCategAdapter);
         infoCategListView.setOnItemClickListener(this);
 

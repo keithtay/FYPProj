@@ -1,6 +1,5 @@
 package com.example.keith.fyp.views.activities;
 
-import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -11,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.keith.fyp.R;
@@ -21,17 +18,11 @@ import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsDate;
 import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
-import com.example.keith.fyp.views.TimeRangePicker;
+import com.example.keith.fyp.views.customviews.TimeRangePicker;
 import com.example.keith.fyp.views.adapters.EventArrayAdapter;
 import com.example.keith.fyp.views.fragments.TimeRangePickerFragment;
 
 import org.joda.time.DateTime;
-
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.List;
 
 public class EditScheduleActivity extends ScheduleActivity implements View.OnClickListener {
 

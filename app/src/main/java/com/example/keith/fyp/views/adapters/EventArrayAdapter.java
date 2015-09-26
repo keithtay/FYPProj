@@ -1,7 +1,6 @@
 package com.example.keith.fyp.views.adapters;
 
 import android.support.v4.app.FragmentManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
@@ -9,16 +8,13 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.keith.fyp.models.Prescription;
 import com.example.keith.fyp.utils.UtilsThread;
-import com.example.keith.fyp.views.TimeRangePicker;
+import com.example.keith.fyp.views.customviews.TimeRangePicker;
 import com.example.keith.fyp.views.activities.EditScheduleActivity;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Event;
@@ -31,7 +27,6 @@ import org.joda.time.DateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 /**

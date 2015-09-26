@@ -13,7 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.keith.fyp.NotificationDetailActivity;
+import com.example.keith.fyp.views.activities.NotificationDetailActivity;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.Communicator;
 

@@ -37,7 +37,7 @@
                         android:scaleType="centerCrop"
                         android:background="@drawable/add_photo"></ImageView>
 
-                    <com.example.keith.fyp.views.TextField
+                    <com.example.keith.fyp.views.customviews.TextField
                         android:id="@+id/first_name_text_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
                         customfield:fieldTitle="First Name"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.TextField
+                    <com.example.keith.fyp.views.customviews.TextField
                         android:id="@+id/last_name_text_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
                         customfield:fieldTitle="Last Name"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.TextField
+                    <com.example.keith.fyp.views.customviews.TextField
                         android:id="@+id/nric_text_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
                         customfield:fieldTitle="NRIC"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.TextField
+                    <com.example.keith.fyp.views.customviews.TextField
                         android:id="@+id/address_text_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
                         customfield:fieldTitle="Address"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.TextField
+                    <com.example.keith.fyp.views.customviews.TextField
                         android:id="@+id/home_number_text_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
                         customfield:fieldTitle="Home Number"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.TextField
+                    <com.example.keith.fyp.views.customviews.TextField
                         android:id="@+id/phone_number_text_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
                         customfield:fieldTitle="Phone Number"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.SpinnerField
+                    <com.example.keith.fyp.views.customviews.SpinnerField
                         android:id="@+id/gender_spinner_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
                         customfield:fieldTitle="Gender"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.DateField
+                    <com.example.keith.fyp.views.customviews.DateField
                         android:id="@+id/dob_date_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
                         customfield:showTopBorder="false"
                         customfield:dialogTitle="Select Date of Birth"/>
 
-                    <com.example.keith.fyp.views.TextField
+                    <com.example.keith.fyp.views.customviews.TextField
                         android:id="@+id/guardian_full_name_text_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
                         customfield:fieldTitle="Guardian Full Name"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.TextField
+                    <com.example.keith.fyp.views.customviews.TextField
                         android:id="@+id/guardian_contact_number_text_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -119,7 +119,7 @@
                         customfield:fieldTitle="Guardian Contact Number"
                         customfield:showTopBorder="false" />
 
-                    <com.example.keith.fyp.views.TextField
+                    <com.example.keith.fyp.views.customviews.TextField
                         android:id="@+id/guardian_email_text_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

@@ -16,7 +16,7 @@
         android:focusable="true"
         android:focusableInTouchMode="true" />
 
-    <com.example.keith.fyp.views.SpinnerField
+    <com.example.keith.fyp.views.customviews.SpinnerField
         android:id="@+id/problem_log_category"
         style="@style/custom_field_in_log_problem_dialog"
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
         customfield:showTopBorder="false"
         customfield:containerPaddingTop="0dp"/>
 
-    <com.example.keith.fyp.views.TextField
+    <com.example.keith.fyp.views.customviews.TextField
         android:id="@+id/problem_log_notes"
         style="@style/custom_field_in_log_problem_dialog"
         android:layout_width="match_parent"
