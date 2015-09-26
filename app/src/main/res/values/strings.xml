@@ -163,5 +163,9 @@
     <string name="title_activity_care_center_config_detail">@string/title_fragment_care_center_config</string>
     <string name="error_msg_field_required">This field is required</string>
     <string name="error_msg_no_photo">Please provide a patient photo</string>
+    <string name="patient_has_no_allergy">Patient has no allergy</string>
+    <string name="patient_has_allergy">Patient has allergy</string>
+    <string name="error_msg_no_required_allergy">Please indicate whether or not the patient has allergy</string>
+    <string name="error_msg_fill_in_all_personal_info">Please fill in all the patient\'s personal information</string>
 
 </resources>

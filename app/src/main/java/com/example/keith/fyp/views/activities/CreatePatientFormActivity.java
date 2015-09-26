@@ -10,16 +10,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.utils.CreatePatientFormFragmentDecoder;
+import com.example.keith.fyp.utils.CreatedPatientEmptyFieldChecker;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
+import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 
 public class CreatePatientFormActivity extends PatientFormActivity {
+
+    private FloatingActionButton saveNewPatientFab;
 
     private FragmentManager fragmentManager;
 
@@ -39,7 +45,7 @@ public class CreatePatientFormActivity extends PatientFormActivity {
         Fragment fragmentToBeDisplayed = CreatePatientFormFragmentDecoder.getFragment(selectedCategoryIndex);
 
         ArrayList<Integer> emptyFieldIdList = intent.getIntegerArrayListExtra(Global.EXTRA_EMPTY_FIELD_ID_LIST);
-        if(emptyFieldIdList.size() > 0) {
+        if(emptyFieldIdList != null && emptyFieldIdList.size() > 0) {
             Bundle bundle = new Bundle();
             bundle.putIntegerArrayList(Global.EXTRA_EMPTY_FIELD_ID_LIST, emptyFieldIdList);
             fragmentToBeDisplayed.setArguments(bundle);
@@ -50,6 +56,20 @@ public class CreatePatientFormActivity extends PatientFormActivity {
         transaction.replace(R.id.create_patient_info_form_fragment_container, fragmentToBeDisplayed);
         transaction.addToBackStack(null);
         transaction.commit();
+
+        saveNewPatientFab = (FloatingActionButton) findViewById(R.id.save_new_patient_fab);
+        saveNewPatientFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<Integer> emptyFieldIdList = CreatedPatientEmptyFieldChecker.checkPersonalInfo();
+
+                if (emptyFieldIdList.size() > 0) {
+                    Toast.makeText(CreatePatientFormActivity.this, R.string.error_msg_fill_in_all_personal_info, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(CreatePatientFormActivity.this, R.string.error_msg_no_required_allergy, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override

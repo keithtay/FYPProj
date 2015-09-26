@@ -37,4 +37,5 @@ public class Global {
     public static final Integer GUARDIAN_NAME_FIELD = 8;
     public static final Integer GUARDIAN_CONTACT_NUMBER_FIELD = 9;
     public static final Integer GUARDIAN_EMAIL_FIELD = 10;
+    public static final Integer HAS_ALLERGY_RADIO_GROUP = 11;
 }

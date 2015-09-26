@@ -20,6 +20,7 @@ import com.example.keith.fyp.interfaces.Communicator;
 import com.example.keith.fyp.interfaces.CreatePatientCommunicator;
 import com.example.keith.fyp.interfaces.OnCreateNewPatientListener;
 import com.example.keith.fyp.models.Patient;
+import com.example.keith.fyp.utils.CreatedPatientEmptyFieldChecker;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsString;
@@ -90,61 +91,17 @@ public class PatientInfoCategListFragment extends Fragment implements AdapterVie
     public void onCreateNewPatient() {
         Patient createdPatient = DataHolder.getCreatedPatient();
 
-        ArrayList<Integer> emptyFieldIdList = new ArrayList<>();
-
-        if (UtilsString.isEmpty(createdPatient.getFirstName())) {
-            emptyFieldIdList.add(Global.FIRST_NAME_FIELD);
-        }
-
-        if (UtilsString.isEmpty(createdPatient.getLastName())) {
-            emptyFieldIdList.add(Global.LAST_NAME_FIELD);
-        }
-
-        if (UtilsString.isEmpty(createdPatient.getNric())) {
-            emptyFieldIdList.add(Global.NRIC_FIELD);
-        }
-
-        if (UtilsString.isEmpty(createdPatient.getAddress())) {
-            emptyFieldIdList.add(Global.ADDRESS_FIELD);
-        }
-
-        if (UtilsString.isEmpty(createdPatient.getHomeNumber())) {
-            emptyFieldIdList.add(Global.HOME_NUMBER_FIELD);
-        }
-
-        if (UtilsString.isEmpty(createdPatient.getPhoneNumber())) {
-            emptyFieldIdList.add(Global.PHONE_NUMBER_FIELD);
-        }
-
-        if (createdPatient.getGender() == 0) {
-            emptyFieldIdList.add(Global.GENDER_FIELD);
-        }
-
-        if (createdPatient.getDob() == null) {
-            emptyFieldIdList.add(Global.DOB_FIELD);
-        }
-
-        if (UtilsString.isEmpty(createdPatient.getGuardianFullName())) {
-            emptyFieldIdList.add(Global.GUARDIAN_NAME_FIELD);
-        }
-
-        if (UtilsString.isEmpty(createdPatient.getGuardianContactNumber())) {
-            emptyFieldIdList.add(Global.GUARDIAN_CONTACT_NUMBER_FIELD);
-        }
-
-        if (UtilsString.isEmpty(createdPatient.getGuardianEmail())) {
-            emptyFieldIdList.add(Global.GUARDIAN_EMAIL_FIELD);
-        }
-
-        if (createdPatient.getPhoto() == null) {
-            emptyFieldIdList.add(Global.PHOTO);
-        }
+        ArrayList<Integer> emptyFieldIdList = CreatedPatientEmptyFieldChecker.checkPersonalInfo();
 
         if (emptyFieldIdList.size() > 0) {
             infoCategListView.setItemChecked(0,true);
             communicator.respond(0, emptyFieldIdList);
         } else {
-            // TODO: check if allergy has been filled
+            emptyFieldIdList = CreatedPatientEmptyFieldChecker.checkAllergy();
+            if(emptyFieldIdList.size() > 0) {
+                infoCategListView.setItemChecked(1,true);
+                communicator.respond(1, emptyFieldIdList);
+            }
         }
     }
 

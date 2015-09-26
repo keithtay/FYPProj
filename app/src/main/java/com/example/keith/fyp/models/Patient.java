@@ -22,6 +22,7 @@ public class Patient {
     private String guardianFullName;
     private String guardianContactNumber;
     private String guardianEmail;
+    private Boolean hasAllergy;
     private ArrayList<Allergy> allergyList = new ArrayList<>();
     private ArrayList<Vital> vitalList = new ArrayList<>();
     private ArrayList<Prescription> prescriptionList = new ArrayList<>();
@@ -200,5 +201,13 @@ public class Patient {
 
     public void setProblemLogList(ArrayList<ProblemLog> problemLogList) {
         this.problemLogList = problemLogList;
+    }
+
+    public Boolean getHasAllergy() {
+        return hasAllergy;
+    }
+
+    public void setHasAllergy(Boolean hasAllergy) {
+        this.hasAllergy = hasAllergy;
     }
 }

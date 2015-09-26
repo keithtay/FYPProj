@@ -12,11 +12,16 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Allergy;
+import com.example.keith.fyp.utils.DataHolder;
+import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.views.adapters.AllergyListAdapter;
 import com.example.keith.fyp.views.decorators.SpacesCardItemDecoration;
 
@@ -37,6 +42,12 @@ public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormF
     private EditText newAllergyReactionEditText;
     private EditText newAllergyNotesEditText;
     private ExpandableLayout addAllergyExpandableLayout;
+
+    private View addAllergyForm;
+    private RadioGroup allergyRadioGroup;
+    private RadioButton hasAllergyRadioButton;
+    private RadioButton hasNoAllergyRadioButton;
+
     private ArrayList<Allergy> allergyList;
 
     @Override
@@ -49,6 +60,35 @@ public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormF
         allergyListAdapter = new AllergyListAdapter(getActivity(), this, allergyList, createdPatient);
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        addAllergyForm = rootView.findViewById(R.id.add_new_allergy_form);
+        allergyRadioGroup = (RadioGroup) rootView.findViewById(R.id.allergy_option_radio_group);
+        hasAllergyRadioButton = (RadioButton) rootView.findViewById(R.id.has_allergy_radio_button);
+        hasNoAllergyRadioButton = (RadioButton) rootView.findViewById(R.id.has_no_allergy_radio_button);
+
+        allergyRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId == R.id.has_allergy_radio_button) {
+                    addAllergyForm.setVisibility(View.VISIBLE);
+                    createdPatient.setHasAllergy(true);
+                } else {
+                    addAllergyForm.setVisibility(View.GONE);
+                    createdPatient.setHasAllergy(false);
+                    createdPatient.getAllergyList().clear();
+                }
+            }
+        });
+
+        if(createdPatient.getHasAllergy() == null) {
+
+        } else {
+            if(createdPatient.getHasAllergy()) {
+                hasAllergyRadioButton.setChecked(true);
+            } else {
+                hasNoAllergyRadioButton.setChecked(true);
+            }
+        }
 
         allergyRecyclerView = (RecyclerView) rootView.findViewById(R.id.allergy_recycler_view);
         allergyRecyclerView.setLayoutManager(layoutManager);
@@ -101,7 +141,20 @@ public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormF
             }
         });
 
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            highlightEmptyField(bundle);
+        }
+
         return rootView;
+    }
+
+    private void highlightEmptyField(Bundle bundle) {
+        ArrayList<Integer> emptyFieldIdList = bundle.getIntegerArrayList(Global.EXTRA_EMPTY_FIELD_ID_LIST);
+
+        if (emptyFieldIdList.contains(Global.HAS_ALLERGY_RADIO_GROUP)) {
+            Toast.makeText(getActivity(), R.string.error_msg_no_required_allergy, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void createAndAddAllergy() {

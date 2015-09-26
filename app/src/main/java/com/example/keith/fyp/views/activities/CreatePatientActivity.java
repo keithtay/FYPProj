@@ -2,27 +2,23 @@ package com.example.keith.fyp.views.activities;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
-import android.app.FragmentTransaction;
 import android.content.res.Configuration;
+import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 
 import com.example.keith.fyp.R;
-import com.example.keith.fyp.interfaces.Communicator;
 import com.example.keith.fyp.interfaces.CreatePatientCommunicator;
-import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.utils.CreatePatientFormFragmentDecoder;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
-import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.views.fragments.PatientInfoCategListFragment;
 import com.melnykov.fab.FloatingActionButton;
 
@@ -105,7 +101,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         } else {
             // In portrait orientation
             Intent intent = new Intent(this, CreatePatientFormActivity.class);
-            intent.putExtra("selectedCategory", index);
+            intent.putExtra(Global.EXTRA_SELECTED_CATEGORY, index);
             startActivity(intent);
         }
     }
