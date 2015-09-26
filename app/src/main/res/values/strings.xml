@@ -16,7 +16,7 @@
     <string name="nav_patient_list">Patient List</string>
     <string name="nav_notification">Notification</string>
     <string name="nav_account">Account</string>
-    <string name="nav_settings">Settings</string>
+    <string name="nav_care_center_config">Care Center Configuration</string>
     <string name="title_activity_create_patient">Create Patient</string>
 
 <!-- TODO: Remove or change this placeholder text -->

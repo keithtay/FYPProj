@@ -25,6 +25,7 @@ import com.example.keith.fyp.views.fragments.HomeScheduleFragment;
 import com.example.keith.fyp.views.fragments.NotificationFragment;
 import com.example.keith.fyp.views.fragments.PatientListFragment;
 import com.mikepenz.crossfader.Crossfader;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -193,7 +194,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
 
         PrimaryDrawerItem homeDrawerItem = new PrimaryDrawerItem()
                 .withName(R.string.nav_patient_list)
-                .withIcon(GoogleMaterial.Icon.gmd_home)
+                .withIcon(GoogleMaterial.Icon.gmd_supervisor_account)
                 .withIdentifier(NAVIGATION_PATIENT_LIST_ID);
         String notificationCount = Integer.toString(UtilsUi.countUnacceptedAndUnrejectedNotification());
         PrimaryDrawerItem notificationDrawerItem = new PrimaryDrawerItem()
@@ -207,8 +208,8 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
                 .withIcon(GoogleMaterial.Icon.gmd_person)
                 .withIdentifier(3);
         PrimaryDrawerItem settingsDrawerItem = new PrimaryDrawerItem()
-                .withName(R.string.nav_settings)
-                .withIcon(GoogleMaterial.Icon.gmd_settings)
+                .withName(R.string.nav_care_center_config)
+                .withIcon(FontAwesome.Icon.faw_building)
                 .withIdentifier(NAVIGATION_CARE_CENTER_CONFIG_ID);
 
         Drawer navigationDrawer = new DrawerBuilder()
