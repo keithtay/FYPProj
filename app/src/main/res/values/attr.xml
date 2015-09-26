@@ -14,5 +14,6 @@
         <attr name="transitionDuration" format="integer" />
         <attr name="android:inputType" />
         <attr name="dialogTitle" format="string" />
+        <attr name="isRequired" format="boolean" />
     </declare-styleable>
 </resources>

@@ -38,7 +38,7 @@ public class TextField extends CustomField {
                 boolean handled = false;
 
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    saveValue();
+                    checkAndSaveValue();
                     handled = true;
                 }
 

@@ -58,6 +58,7 @@ public class CustomField extends LinearLayout {
     private float containerPaddingLeft;
     private int transitionDuration;
     protected String dialogTitle;
+    protected boolean isRequired;
 
     private String oldValue;
 
@@ -111,6 +112,8 @@ public class CustomField extends LinearLayout {
 
         dialogTitle = typedArray.getString(R.styleable.CustomField_dialogTitle);
 
+        isRequired = typedArray.getBoolean(R.styleable.CustomField_isRequired, false);
+
         typedArray.recycle();
     }
 
@@ -151,7 +154,7 @@ public class CustomField extends LinearLayout {
         controlContainerHeight = 110;
         isExpanded = false;
 
-        if(alwaysEditable) {
+        if (alwaysEditable) {
             UtilsUi.removeView(editButton);
             fieldValueEditText.setBackgroundResource(R.drawable.bottom_border);
         } else {
@@ -171,9 +174,22 @@ public class CustomField extends LinearLayout {
             saveButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    saveValue();
+                    checkAndSaveValue();
                 }
             });
+        }
+    }
+
+    protected void checkAndSaveValue() {
+        if (isRequired) {
+            if (UtilsString.isEmpty(getText())) {
+                String errorMessage = getResources().getString(R.string.error_msg_field_required);
+                fieldValueEditText.setError(errorMessage);
+            } else {
+                saveValue();
+            }
+        } else {
+            saveValue();
         }
     }
 
@@ -204,6 +220,8 @@ public class CustomField extends LinearLayout {
         fieldValueEditText.setText(oldValue);
 
         isExpanded = false;
+
+        fieldValueEditText.setError(null);
     }
 
     public void expand() {

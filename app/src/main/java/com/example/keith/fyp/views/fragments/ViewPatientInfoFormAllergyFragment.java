@@ -1,6 +1,8 @@
 package com.example.keith.fyp.views.fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -12,6 +14,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
@@ -35,6 +39,12 @@ public class ViewPatientInfoFormAllergyFragment extends ViewPatientInfoFormFragm
     private EditText newAllergyReactionEditText;
     private EditText newAllergyNotesEditText;
     private ExpandableLayout addAllergyExpandableLayout;
+
+    private View addAllergyForm;
+    private RadioGroup allergyRadioGroup;
+    private RadioButton hasAllergyRadioButton;
+    private RadioButton hasNoAllergyRadioButton;
+
     private ArrayList<Allergy> allergyList;
 
     @Override
@@ -47,6 +57,50 @@ public class ViewPatientInfoFormAllergyFragment extends ViewPatientInfoFormFragm
         allergyListAdapter = new AllergyListAdapter(getActivity(), this, allergyList, viewedPatient);
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        addAllergyForm = rootView.findViewById(R.id.add_new_allergy_form);
+        allergyRadioGroup = (RadioGroup) rootView.findViewById(R.id.allergy_option_radio_group);
+        hasAllergyRadioButton = (RadioButton) rootView.findViewById(R.id.has_allergy_radio_button);
+        hasNoAllergyRadioButton = (RadioButton) rootView.findViewById(R.id.has_no_allergy_radio_button);
+
+        allergyRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.has_allergy_radio_button) {
+                    addAllergyForm.setVisibility(View.VISIBLE);
+                    viewedPatient.setHasAllergy(true);
+                } else {
+                    if (allergyList.size() > 0) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setMessage("Are you sure you want that the patient has no allergy? Once confirmed, the patient allergy list will be cleared.")
+                                .setPositiveButton(R.string.button_yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        addAllergyForm.setVisibility(View.GONE);
+                                        viewedPatient.setHasAllergy(false);
+                                        viewedPatient.getAllergyList().clear();
+                                    }
+                                })
+                                .setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                    }
+                                });
+                        builder.show();
+                    } else {
+                        addAllergyForm.setVisibility(View.GONE);
+                        viewedPatient.setHasAllergy(false);
+                        viewedPatient.getAllergyList().clear();
+                    }
+                }
+            }
+        });
+
+        if (viewedPatient.getHasAllergy() != null) {
+            if (viewedPatient.getHasAllergy()) {
+                hasAllergyRadioButton.setChecked(true);
+            } else {
+                hasNoAllergyRadioButton.setChecked(true);
+            }
+        }
 
         allergyRecyclerView = (RecyclerView) rootView.findViewById(R.id.allergy_recycler_view);
         allergyRecyclerView.setLayoutManager(layoutManager);

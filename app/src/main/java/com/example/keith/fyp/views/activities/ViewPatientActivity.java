@@ -88,6 +88,7 @@ public class ViewPatientActivity extends AppCompatActivity  implements CreatePat
         allergyList.add(allergy2);
 
         viewedPatient.setAllergyList(allergyList);
+        viewedPatient.setHasAllergy(true);
 
         // Patient's vital list
         ArrayList<Vital> vitalList = new ArrayList<>();

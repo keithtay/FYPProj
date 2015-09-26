@@ -80,9 +80,7 @@ public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormF
             }
         });
 
-        if(createdPatient.getHasAllergy() == null) {
-
-        } else {
+        if(createdPatient.getHasAllergy() != null) {
             if(createdPatient.getHasAllergy()) {
                 hasAllergyRadioButton.setChecked(true);
             } else {
