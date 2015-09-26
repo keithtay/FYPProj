@@ -17,6 +17,7 @@ import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.Communicator;
 import com.example.keith.fyp.utils.CareCenterConfigFragmentDecoder;
 import com.example.keith.fyp.utils.CreatePatientFormFragmentDecoder;
+import com.example.keith.fyp.views.CareCenterConfigDetailActivity;
 import com.example.keith.fyp.views.activities.CreatePatientFormActivity;
 
 
@@ -60,9 +61,9 @@ public class CareCenterConfigFragment extends Fragment implements Communicator {
             transaction.commit();
         } else {
             // In portrait orientation
-//            Intent intent = new Intent(this, CreatePatientFormActivity.class);
-//            intent.putExtra("selectedCategory", index);
-//            startActivity(intent);
+            Intent intent = new Intent(getActivity(), CareCenterConfigDetailActivity.class);
+            intent.putExtra("selectedCategory", index);
+            startActivity(intent);
         }
     }
 }

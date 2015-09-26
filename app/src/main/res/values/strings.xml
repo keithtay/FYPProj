@@ -160,5 +160,6 @@
     <string name="button_cancel">Cancel</string>
     <string name="button_add">Add</string>
     <string name="button_save">Save</string>
+    <string name="title_activity_care_center_config_detail">@string/title_fragment_care_center_config</string>
 
 </resources>

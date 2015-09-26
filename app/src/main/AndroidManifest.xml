@@ -89,6 +89,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.activities.DashboardActivity" />
         </activity>
+        <activity
+            android:name=".views.CareCenterConfigDetailActivity"
+            android:label="@string/title_activity_care_center_config_detail" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".views.activities.DashboardActivity" />
+        </activity>
     </application>
 
 </manifest>
