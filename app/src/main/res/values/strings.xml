@@ -170,5 +170,6 @@
     <string name="button_yes">Yes</string>
     <string name="button_add_problem_log_anyway">Add anyway</string>
     <string name="button_view_similar_log">View similar log</string>
+    <string name="button_delete">Delete</string>
 
 </resources>

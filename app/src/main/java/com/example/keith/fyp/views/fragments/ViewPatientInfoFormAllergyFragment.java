@@ -1,8 +1,6 @@
 package com.example.keith.fyp.views.fragments;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -18,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Allergy;
@@ -71,19 +70,21 @@ public class ViewPatientInfoFormAllergyFragment extends ViewPatientInfoFormFragm
                     viewedPatient.setHasAllergy(true);
                 } else {
                     if (allergyList.size() > 0) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setMessage("Are you sure you want that the patient has no allergy? Once confirmed, the patient allergy list will be cleared.")
-                                .setPositiveButton(R.string.button_yes, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        addAllergyForm.setVisibility(View.GONE);
-                                        viewedPatient.setHasAllergy(false);
-                                        viewedPatient.getAllergyList().clear();
-                                    }
-                                })
-                                .setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                    }
-                                });
+                        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+                        builder.content("Are you sure you want that the patient has no allergy? Once confirmed, the patient allergy list will be cleared.");
+
+                        builder.positiveText(R.string.button_yes);
+                        builder.negativeText(R.string.button_cancel);
+
+                        builder.callback(new MaterialDialog.ButtonCallback() {
+                            @Override
+                            public void onPositive(MaterialDialog dialog) {
+                                super.onPositive(dialog);
+                                addAllergyForm.setVisibility(View.GONE);
+                                viewedPatient.setHasAllergy(false);
+                                viewedPatient.getAllergyList().clear();
+                            }
+                        });
                         builder.show();
                     } else {
                         addAllergyForm.setVisibility(View.GONE);

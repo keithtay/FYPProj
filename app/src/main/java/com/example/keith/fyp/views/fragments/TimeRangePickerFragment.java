@@ -1,16 +1,12 @@
 package com.example.keith.fyp.views.fragments;
 
-import android.content.DialogInterface;
-
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.TabHost;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -20,8 +16,6 @@ import com.example.keith.fyp.R;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
-
-import java.util.Date;
 
 public class TimeRangePickerFragment extends DialogFragment {
     public static final String TAG_FRAG_TIME_RANGE = "fragTimeRange";

@@ -1,8 +1,6 @@
 package com.example.keith.fyp.views.fragments;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -17,10 +15,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.ProblemLog;
-import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.adapters.ProblemLogListAdapter;
@@ -153,18 +151,25 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
     }
 
     private void openSimilarProblemLogDialog(final ProblemLog newProblemLog, ProblemLog similarLog) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         DateTime shownDate = similarLog.getCreationDate();
         if(similarLog.getToDate() != null) {
             shownDate = similarLog.getToDate();
         }
         String message = "On " + shownDate.toString(Global.DATE_FORMAT) + " the patient have a similar problem with the " + similarLog.getCategory() + " category. Are you sure you want to add this log?";
-        builder.setMessage(message);
-        builder.setPositiveButton(R.string.button_add_problem_log_anyway, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
+        builder.content(message);
+
+        builder.positiveText(R.string.button_add_problem_log_anyway);
+        builder.negativeText(R.string.button_cancel);
+        
+        builder.callback(new MaterialDialog.ButtonCallback() {
+            @Override
+            public void onPositive(MaterialDialog dialog) {
+                super.onPositive(dialog);
                 addProblemLog(newProblemLog);
             }
         });
+
         builder.show();
     }
 

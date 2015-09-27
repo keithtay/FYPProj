@@ -1,8 +1,6 @@
 package com.example.keith.fyp.views.adapters;
 
 import android.support.v4.app.FragmentManager;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -13,13 +11,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.keith.fyp.utils.UtilsThread;
-import com.example.keith.fyp.views.customviews.TimeRangePicker;
-import com.example.keith.fyp.views.activities.EditScheduleActivity;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Event;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsThread;
 import com.example.keith.fyp.utils.UtilsUi;
+import com.example.keith.fyp.views.activities.EditScheduleActivity;
+import com.example.keith.fyp.views.customviews.TimeRangePicker;
 import com.example.keith.fyp.views.fragments.TimeRangePickerFragment;
 
 import org.joda.time.DateTime;
@@ -151,24 +150,24 @@ public class EventArrayAdapter extends BaseAdapter {
                                         
                                         return true;
                                     case R.id.action_item_delete:
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                                        MaterialDialog.Builder builder = new MaterialDialog.Builder(activity);
 
                                         String dialogMessage = "Confirm to remove the \"" + event.getTitle() + "\" event at " + event.getStartTime().toString(Global.TIME_FORMAT) + "?";
-                                        builder.setMessage(dialogMessage);
+                                        builder.content(dialogMessage);
 
-                                        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
+                                        builder.positiveText(R.string.button_delete);
+                                        builder.negativeText(R.string.button_cancel);
+
+                                        builder.callback(new MaterialDialog.ButtonCallback() {
+                                            @Override
+                                            public void onPositive(MaterialDialog dialog) {
+                                                super.onPositive(dialog);
                                                 eventList.remove(position);
                                                 activity.updateScheduleListViewHeight();
                                             }
                                         });
-                                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                            }
-                                        });
 
-                                        AlertDialog dialog = builder.create();
-                                        dialog.show();
+                                        builder.show();
 
                                         return true;
                                     default:
