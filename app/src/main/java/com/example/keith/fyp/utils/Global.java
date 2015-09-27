@@ -1,5 +1,7 @@
 package com.example.keith.fyp.utils;
 
+import android.os.Environment;
+
 import com.example.keith.fyp.views.adapters.NotificationListAdapter;
 
 import org.joda.time.format.DateTimeFormat;
@@ -16,10 +18,15 @@ public class Global {
     public static final DateTimeFormatter TIME_FORMAT = DateTimeFormat.forPattern(TIME_FORMAT_STR);
     public static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormat.forPattern(DATE_TIME_FORMAT_STR);
 
-    // Bundle keys
+    // OCR related
+    public static final String DATA_PATH = Environment.getExternalStorageDirectory().toString() + "/PearPCC/";
+    public static final String LANG = "eng";
+
+    // Bundle keys / Intent extras
     public static final String EXTRA_EMPTY_FIELD_ID_LIST = "EXTRA_EMPTY_FIELD_ID_LIST";
     public static final String EXTRA_SELECTED_CATEGORY = "EXTRA_SELECTED_CATEGORY";
     public static final String EXTRA_OPEN_PROBLEM_LOG_TAB = "EXTRA_OPEN_PROBLEM_LOG_TAB";
+    public static final String EXTRA_RECOGNIZED_TEXT = "EXTRA_RECOGNIZED_TEXT";
 
     // Event list for broadcast receiver
     public static final String ACTION_NOTIFICATION_UPDATE = "ACTION_NOTIFICATION_UPDATE";

@@ -11,14 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.Communicator;
 import com.example.keith.fyp.utils.CareCenterConfigFragmentDecoder;
-import com.example.keith.fyp.utils.CreatePatientFormFragmentDecoder;
-import com.example.keith.fyp.views.CareCenterConfigDetailActivity;
-import com.example.keith.fyp.views.activities.CreatePatientFormActivity;
+import com.example.keith.fyp.views.activities.CareCenterConfigDetailActivity;
 
 
 public class CareCenterConfigFragment extends Fragment implements Communicator {

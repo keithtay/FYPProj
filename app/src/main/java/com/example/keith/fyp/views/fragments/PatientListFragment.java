@@ -18,6 +18,7 @@ import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.views.customviews.EmptyAndAutofitRecyclerView;
 import com.example.keith.fyp.views.activities.CreatePatientActivity;
 import com.example.keith.fyp.views.adapters.PatientListAdapter;
+import com.googlecode.tesseract.android.TessBaseAPI;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -36,7 +37,6 @@ public class PatientListFragment extends Fragment {
 
         // To be able to change the menu in action bar
         setHasOptionsMenu(true);
-
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_fragment_patientlist);
 
