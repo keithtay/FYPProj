@@ -19,6 +19,7 @@ import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Prescription;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.adapters.PrescriptionListAdapter;
 import com.example.keith.fyp.views.decorators.SpacesCardItemDecoration;
@@ -119,6 +120,13 @@ public class ViewPatientInfoFormPrescriptionFragment extends ViewPatientInfoForm
             public void onClick(View v) {
                 closeExpandableAddPrescription();
                 resetNewPrescriptionFields();
+
+                nameEditText.setError(null);
+                dosageEditText.setError(null);
+                freqEditText.setError(null);
+                startDatePicker.setError(null);
+                endDatePicker.setError(null);
+                beforeAfterMealSpinner.setError(null);
             }
         });
 
@@ -134,8 +142,6 @@ public class ViewPatientInfoFormPrescriptionFragment extends ViewPatientInfoForm
     }
 
     private void createAndAddPrescription() {
-        // TODO: check for valid entry
-
         String name = nameEditText.getText().toString();
         String dosage = dosageEditText.getText().toString();
 
@@ -166,14 +172,58 @@ public class ViewPatientInfoFormPrescriptionFragment extends ViewPatientInfoForm
 
         String notes = notesEditText.getText().toString();
 
-        Prescription newPrescription = new Prescription(name, dosage, freqPerDay, instruction, startDate, endDate, beforeAfterMealStr, notes);
-        prescriptionList.add(0, newPrescription);
-        prescriptionListAdapter.notifyItemInserted(0);
 
-        resetNewPrescriptionFields();
+        // Input checking
+        boolean isValidForm = true;
+        String errorMessage = getResources().getString(R.string.error_msg_field_required);
 
-        closeExpandableAddPrescription();
-        hideKeyboard();
+        if(UtilsString.isEmpty(name)) {
+            nameEditText.setError(errorMessage);
+            isValidForm = false;
+        }
+
+        if(UtilsString.isEmpty(dosage)) {
+            dosageEditText.setError(errorMessage);
+            isValidForm = false;
+        }
+
+        if(UtilsString.isEmpty(freqStr)) {
+            freqEditText.setError(errorMessage);
+            isValidForm = false;
+        }
+
+        if(UtilsString.isEmpty(startDateStr)) {
+            startDatePicker.setError(errorMessage);
+            isValidForm = false;
+        }
+
+        if(UtilsString.isEmpty(endDateStr)) {
+            endDatePicker.setError(errorMessage);
+            isValidForm = false;
+        }
+
+        if(UtilsString.isEmpty(beforeAfterMealStr)) {
+            beforeAfterMealSpinner.setError(errorMessage);
+            isValidForm = false;
+        }
+
+        if(startDate != null && endDate != null) {
+            if(startDate.isAfter(endDate)) {
+                endDatePicker.setError(activity.getString(R.string.error_msg_end_date_must_be_after_start_date));
+                isValidForm = false;
+            }
+        }
+
+        if(isValidForm) {
+            Prescription newPrescription = new Prescription(name, dosage, freqPerDay, instruction, startDate, endDate, beforeAfterMealStr, notes);
+            prescriptionList.add(0, newPrescription);
+            prescriptionListAdapter.notifyItemInserted(0);
+
+            resetNewPrescriptionFields();
+
+            closeExpandableAddPrescription();
+            hideKeyboard();
+        }
     }
 
     private void resetNewPrescriptionFields() {

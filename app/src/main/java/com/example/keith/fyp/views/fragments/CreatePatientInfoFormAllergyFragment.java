@@ -114,6 +114,7 @@ public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormF
             public void onClick(View v) {
                 closeExpandableAddAllergy();
                 resetNewAllergyFields();
+
                 newAllergyNameEditText.setError(null);
                 newAllergyReactionEditText.setError(null);
             }
