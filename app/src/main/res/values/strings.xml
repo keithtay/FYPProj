@@ -133,7 +133,7 @@
     <string name="title_activity_edit_schedule">Edit Schedule</string>
     <string name="tab_start_time">Start Time</string>
     <string name="tab_end_time">End Time</string>
-    <string name="dialog_title_add_event">Add new event to patient\'s schedule</string>
+    <string name="dialog_title_add_event">Add New Event to Patient\'s Schedule</string>
     <string name="dialog_button_add">Add</string>
     <string name="dialog_button_cancel">Cancel</string>
     <string name="dialog_set_time_range">Set Event Time Range</string>
@@ -142,7 +142,7 @@
     <string name="title_activity_view_patient_form">Patient Information</string>
     <string name="view_more_patient_info">VIEW MORE INFORMATION</string>
     <string name="log_problem">LOG PROBLEM</string>
-    <string name="dialog_title_add_new_problem_log">Add new problem log</string>
+    <string name="dialog_title_add_new_problem_log">Add New Problem Log</string>
     <string name="add_new_problem_log">Create New Problem Log</string>
     <string name="empty_notification_list">You have no notification</string>
     <string name="title_fragment_notification">Notification</string>

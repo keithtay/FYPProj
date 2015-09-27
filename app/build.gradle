@@ -48,4 +48,12 @@ dependencies {
     compile 'com.github.medyo:fancybuttons:1.4@aar'
     compile 'com.quentindommerc.superlistview:library:1.5.2'
     compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile('com.afollestad.material-dialogs:core:0.8.1.0@aar') {
+        transitive = true
+    }
+}
+
+repositories {
+    jcenter()
+    maven { url "https://jitpack.io" }
 }

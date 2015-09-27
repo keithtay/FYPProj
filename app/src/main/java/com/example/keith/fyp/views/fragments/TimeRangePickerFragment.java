@@ -15,6 +15,7 @@ import android.widget.TabHost;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.keith.fyp.R;
 
 import org.joda.time.DateTime;
@@ -30,7 +31,6 @@ public class TimeRangePickerFragment extends DialogFragment {
     private static final String TAG_START_TIME = "startTime";
     private static final String TAG_END_TIME = "endTime";
     private Context mContext;
-    private ButtonClickListener mButtonClickListener;
     private OnTimeRangeSetListener mOnTimeRangeSetListener;
     private Bundle mArgument;
     private TimePicker mStartTimePicker;
@@ -44,7 +44,6 @@ public class TimeRangePickerFragment extends DialogFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mContext = activity;
-        mButtonClickListener = new ButtonClickListener();
     }
 
     /**
@@ -70,17 +69,36 @@ public class TimeRangePickerFragment extends DialogFragment {
         // Retrieve Argument passed to the constructor
         mArgument = getArguments();
         // Use an AlertDialog Builder to initially create the Dialog
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(mContext);
+        MaterialDialog.Builder mBuilder = new MaterialDialog.Builder(mContext);
         // Setup the Dialog
-        mBuilder.setTitle(mArgument.getCharSequence(KEY_DIALOG_TITLE));
-        mBuilder.setNegativeButton(android.R.string.no, mButtonClickListener);
-        mBuilder.setPositiveButton(android.R.string.yes, mButtonClickListener);
+        mBuilder.title(mArgument.getCharSequence(KEY_DIALOG_TITLE));
+        mBuilder.negativeText(android.R.string.no);
+        mBuilder.positiveText(android.R.string.yes);
+
+        mBuilder.callback(new MaterialDialog.ButtonCallback() {
+            @Override
+            public void onPositive(MaterialDialog dialog) {
+                super.onPositive(dialog);
+                DateTime mStartTime = DateTime.now().withSecondOfMinute(0).withMillisOfSecond(0);
+                mStartTime = mStartTime.withHourOfDay(mStartTimePicker.getCurrentHour());
+                mStartTime = mStartTime.withMinuteOfHour(mStartTimePicker.getCurrentMinute());
+
+                DateTime mEndTime = DateTime.now().withSecondOfMinute(0).withMillisOfSecond(0);
+                mEndTime = mEndTime.withHourOfDay(mEndTimePicker.getCurrentHour());
+                mEndTime = mEndTime.withMinuteOfHour(mEndTimePicker.getCurrentMinute());
+
+                if (mStartTime.isAfter(mEndTime) || mStartTime.isEqual(mEndTime)) {
+                    Toast.makeText(getActivity(), "Start time should be before the end time", Toast.LENGTH_SHORT).show();
+                } else {
+                    mOnTimeRangeSetListener.timeRangeSet(mStartTime, mEndTime);
+                }
+            }
+        });
+
+        mBuilder.customView(createDateTimeView(((Activity) mContext).getLayoutInflater()), false);
         // Create the Alert Dialog
-        AlertDialog mDialog = mBuilder.create();
-        // Set the View to the Dialog
-        mDialog.setView(
-                createDateTimeView(mDialog.getLayoutInflater())
-        );
+        MaterialDialog mDialog = mBuilder.build();
+
         // Return the Dialog created
         return mDialog;
     }
@@ -170,28 +188,6 @@ public class TimeRangePickerFragment extends DialogFragment {
      */
     public void setOnTimeRangeSetListener(OnTimeRangeSetListener onTimeRangeSetListener) {
         mOnTimeRangeSetListener = onTimeRangeSetListener;
-    }
-
-    private class ButtonClickListener implements DialogInterface.OnClickListener {
-        @Override
-        public void onClick(DialogInterface dialogInterface, int result) {
-            // Determine if the user selected Ok
-            if (DialogInterface.BUTTON_POSITIVE == result) {
-                DateTime mStartTime = DateTime.now().withSecondOfMinute(0).withMillisOfSecond(0);
-                mStartTime = mStartTime.withHourOfDay(mStartTimePicker.getCurrentHour());
-                mStartTime = mStartTime.withMinuteOfHour(mStartTimePicker.getCurrentMinute());
-
-                DateTime mEndTime = DateTime.now().withSecondOfMinute(0).withMillisOfSecond(0);
-                mEndTime = mEndTime.withHourOfDay(mEndTimePicker.getCurrentHour());
-                mEndTime = mEndTime.withMinuteOfHour(mEndTimePicker.getCurrentMinute());
-
-                if (mStartTime.isAfter(mEndTime) || mStartTime.isEqual(mEndTime)) {
-                    Toast.makeText(getActivity(), "Start time should be before the end time", Toast.LENGTH_SHORT).show();
-                } else {
-                    mOnTimeRangeSetListener.timeRangeSet(mStartTime, mEndTime);
-                }
-            }
-        }
     }
 
     /**

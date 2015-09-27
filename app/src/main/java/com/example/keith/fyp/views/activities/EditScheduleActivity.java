@@ -1,9 +1,7 @@
 package com.example.keith.fyp.views.activities;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +10,15 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Event;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsDate;
 import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
-import com.example.keith.fyp.views.customviews.TimeRangePicker;
 import com.example.keith.fyp.views.adapters.EventArrayAdapter;
+import com.example.keith.fyp.views.customviews.TimeRangePicker;
 import com.example.keith.fyp.views.fragments.TimeRangePickerFragment;
 
 import org.joda.time.DateTime;
@@ -61,9 +60,9 @@ public class EditScheduleActivity extends ScheduleActivity implements View.OnCli
 
     @Override
     public void onClick(View v) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(this);
 
-        builder.setTitle(R.string.dialog_title_add_event);
+        builder.title(R.string.dialog_title_add_event);
 
         LayoutInflater inflater = getLayoutInflater();
         View rootView = inflater.inflate(R.layout.dialog_add_event, null);
@@ -77,10 +76,15 @@ public class EditScheduleActivity extends ScheduleActivity implements View.OnCli
         setupEditTextToBeTimeRangePicker(startTimePicker, dialogTitle);
         setupEditTextToBeTimeRangePicker(endTimePicker, dialogTitle);
 
-        builder.setView(rootView);
+        builder.customView(rootView, false);
 
-        builder.setPositiveButton(R.string.dialog_button_add, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
+        builder.positiveText(R.string.dialog_button_add);
+        builder.negativeText(R.string.dialog_button_cancel);
+
+        builder.callback(new MaterialDialog.ButtonCallback() {
+            @Override
+            public void onPositive(MaterialDialog dialog) {
+                super.onPositive(dialog);
                 // TODO: check for field values
 
                 String title = eventTitleEditText.getText().toString();
@@ -93,7 +97,7 @@ public class EditScheduleActivity extends ScheduleActivity implements View.OnCli
 
                 Event newEvent = new Event(title, description, startTime, endTime);
 
-                if(eventListAdapter.isEventOverlapWithEventInList(newEvent, eventList)) {
+                if (eventListAdapter.isEventOverlapWithEventInList(newEvent, eventList)) {
                     Toast.makeText(getApplicationContext(), R.string.toast_new_event_overlap, Toast.LENGTH_SHORT).show();
                 } else {
                     eventList.add(newEvent);
@@ -103,15 +107,8 @@ public class EditScheduleActivity extends ScheduleActivity implements View.OnCli
                 }
             }
         });
-        builder.setNegativeButton(R.string.dialog_button_cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
 
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-
-        dialog.show();
+        builder.show();
     }
 
     private void setupEditTextToBeTimeRangePicker(final EditText editText, final String title) {

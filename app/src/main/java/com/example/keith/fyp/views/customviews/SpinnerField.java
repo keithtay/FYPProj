@@ -7,6 +7,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 /**
  * Created by Sutrisno on 19/9/2015.
  */
@@ -58,18 +60,18 @@ public class SpinnerField extends CustomField implements View.OnClickListener {
         if(spinnerItems.length <= 0) {
             Log.d(TAG, "Please set spinner items beforehand");
         } else {
-            AlertDialog.Builder spinnerDialog = new AlertDialog.Builder(getContext());
-            spinnerDialog.setItems(spinnerItems, new DialogInterface.OnClickListener() {
+            MaterialDialog.Builder spinnerDialog = new MaterialDialog.Builder(getContext());
+            spinnerDialog.items(spinnerItems);
+            spinnerDialog.itemsCallback(new MaterialDialog.ListCallback() {
                 @Override
-                public void onClick(DialogInterface dialog, int index) {
-                    dialog.dismiss();
+                public void onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
+                    materialDialog.dismiss();
                     if(onSpinnerFieldItemSelectedListener == null) {
                         Log.d(TAG, "Please set OnSpinnerFieldItemSelectedListener beforehand");
                     } else {
-                        onSpinnerFieldItemSelectedListener.onSpinnerFieldItemSelected(index);
+                        onSpinnerFieldItemSelectedListener.onSpinnerFieldItemSelected(i);
                     }
                 }
-
             });
             spinnerDialog.show();
         }

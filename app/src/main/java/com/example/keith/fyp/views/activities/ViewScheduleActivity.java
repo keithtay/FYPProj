@@ -1,28 +1,24 @@
 package com.example.keith.fyp.views.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Event;
-import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.ProblemLog;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
-import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.customviews.DateField;
 import com.example.keith.fyp.views.customviews.SpinnerField;
 import com.example.keith.fyp.views.customviews.TextField;
 
 import org.joda.time.DateTime;
-import org.joda.time.Duration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,9 +66,9 @@ public class ViewScheduleActivity extends ScheduleActivity {
     }
 
     private void openProblemLogFormDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(ViewScheduleActivity.this);
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(ViewScheduleActivity.this);
 
-        builder.setTitle(R.string.dialog_title_add_new_problem_log);
+        builder.title(R.string.dialog_title_add_new_problem_log);
 
         LayoutInflater inflater = getLayoutInflater();
         View rootView = inflater.inflate(R.layout.dialog_log_problem, null);
@@ -95,10 +91,15 @@ public class ViewScheduleActivity extends ScheduleActivity {
             }
         });
 
-        builder.setView(rootView);
+        builder.customView(rootView, false);
 
-        builder.setPositiveButton(R.string.dialog_button_add, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
+        builder.positiveText(R.string.dialog_button_add);
+        builder.negativeText(R.string.dialog_button_cancel);
+
+        builder.callback(new MaterialDialog.ButtonCallback() {
+            @Override
+            public void onPositive(MaterialDialog dialog) {
+                super.onPositive(dialog);
                 // TODO: check for field values
 
                 DateTime creationDate = Global.DATE_FORMAT.parseDateTime(fromDateDateField.getText().toString());
@@ -115,37 +116,42 @@ public class ViewScheduleActivity extends ScheduleActivity {
                 }
             }
         });
-        builder.setNegativeButton(R.string.dialog_button_cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
 
-            }
-        });
+        builder.show();
 
-        AlertDialog dialog = builder.create();
-
-        dialog.show();
+//        dialog.show();
     }
 
     private void openSimilarProblemLogDialog(final ProblemLog newProblemLog, ProblemLog similarLog) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(this);
+
         DateTime shownDate = similarLog.getCreationDate();
         if(similarLog.getToDate() != null) {
             shownDate = similarLog.getToDate();
         }
         String message = "On " + shownDate.toString(Global.DATE_FORMAT) + " the patient have a similar problem with the " + similarLog.getCategory() + " category. Are you sure you want to add this log?";
-        builder.setMessage(message);
-        builder.setPositiveButton(R.string.button_add_problem_log_anyway, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
+        builder.content(message);
+
+        builder.positiveText(R.string.button_add_problem_log_anyway);
+        builder.neutralText(R.string.button_view_similar_log);
+        builder.negativeText(R.string.button_cancel);
+
+        builder.callback(new MaterialDialog.ButtonCallback() {
+            @Override
+            public void onPositive(MaterialDialog dialog) {
+                super.onPositive(dialog);
                 DataHolder.getViewedPatient().getProblemLogList().add(0, newProblemLog);
             }
-        });
-        builder.setNegativeButton(R.string.button_view_similar_log, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
+
+            @Override
+            public void onNeutral(MaterialDialog dialog) {
+                super.onNegative(dialog);
                 Bundle bundle = new Bundle();
                 bundle.putBoolean(Global.EXTRA_OPEN_PROBLEM_LOG_TAB, true);
                 openViewPatientInfoActivity(bundle);
             }
         });
+
         builder.show();
     }
 
