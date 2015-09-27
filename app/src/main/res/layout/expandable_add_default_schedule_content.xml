@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <View
@@ -44,50 +44,30 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/name"
                             android:inputType="text"
-                            android:nextFocusDown="@+id/default_schedule_every_edit_text"/>
+                            android:nextFocusDown="@+id/default_schedule_every_edit_text" />
                     </android.support.design.widget.TextInputLayout>
 
                     <View
                         android:layout_width="@dimen/paper_card_row_spacing"
                         android:layout_height="0dp" />
 
-                    <LinearLayout
+                    <fr.ganfra.materialspinner.MaterialSpinner
+                        android:id="@+id/default_schedule_start_day_spinner"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="-8dp"
                         android:layout_weight="1"
-                        android:layout_marginTop="@dimen/paper_card_row_spacing"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="22dp"
-                            android:text="@string/repeat_every"
-                            style="@style/typo_body1"
-                            android:textColor="@color/black_57"
-                            android:textSize="18sp"
-                            android:layout_marginLeft="4dp"
-                            android:layout_marginBottom="8dp"/>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-                            <EditText
-                                android:id="@+id/default_schedule_every_edit_text"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:inputType="number"
-                                android:layout_weight="1"
-                                android:layout_gravity="bottom"/>
-
-                            <Spinner
-                                android:id="@+id/default_schedule_every_spinner"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"/>
-                        </LinearLayout>
-
-                    </LinearLayout>
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        app:ms_alignLabels="false"
+                        app:ms_arrowColor="@color/text_color_light"
+                        app:ms_arrowSize="12dp"
+                        app:ms_baseColor="@color/text_color_light"
+                        app:ms_errorColor="@color/text_color_error"
+                        app:ms_floatingLabelColor="@color/text_color_light"
+                        app:ms_floatingLabelText="Start Day"
+                        app:ms_hint="Start Day"
+                        app:ms_multiline="false" />
 
                 </LinearLayout>
 
@@ -135,23 +115,44 @@
                     android:layout_marginTop="@dimen/paper_card_row_spacing"
                     android:orientation="horizontal">
 
-                    <fr.ganfra.materialspinner.MaterialSpinner
-                        android:id="@+id/default_schedule_start_day_spinner"
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="-8dp"
+                        android:layout_marginTop="@dimen/paper_card_row_spacing"
                         android:layout_weight="1"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        app:ms_alignLabels="false"
-                        app:ms_arrowColor="@color/text_color_light"
-                        app:ms_arrowSize="12dp"
-                        app:ms_baseColor="@color/text_color_light"
-                        app:ms_errorColor="@color/text_color_error"
-                        app:ms_floatingLabelColor="@color/text_color_light"
-                        app:ms_floatingLabelText="Start Day"
-                        app:ms_hint="Start Day"
-                        app:ms_multiline="false" />
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/typo_body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="22dp"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginLeft="4dp"
+                            android:text="@string/repeat_every"
+                            android:textColor="@color/black_57"
+                            android:textSize="18sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/default_schedule_every_edit_text"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom"
+                                android:layout_weight="1"
+                                android:inputType="number" />
+
+                            <Spinner
+                                android:id="@+id/default_schedule_every_spinner"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                     <View
                         android:layout_width="@dimen/paper_card_row_spacing"
@@ -175,9 +176,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/paper_card_row_spacing"
+                android:paddingBottom="@dimen/paper_card_row_spacing"
                 android:paddingLeft="@dimen/paper_card_padding"
-                android:paddingRight="@dimen/paper_card_padding"
-                android:paddingBottom="@dimen/paper_card_row_spacing">
+                android:paddingRight="@dimen/paper_card_padding">
 
                 <Button
                     android:id="@+id/cancel_add_default_schedule_button"

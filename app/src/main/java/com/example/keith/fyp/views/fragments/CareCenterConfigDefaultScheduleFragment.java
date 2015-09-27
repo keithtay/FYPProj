@@ -111,6 +111,12 @@ public class CareCenterConfigDefaultScheduleFragment extends Fragment {
             public void onClick(View v) {
                 closeExpandableAddDefaultSchedule();
                 resetNewDefaultScheduleFields();
+
+                nameEditText.setError(null);
+                startDaySpinner.setError(null);
+                startTimePicker.setError(null);
+                endTimePicker.setError(null);
+                everyEditText.setError(null);
             }
         });
 
@@ -126,39 +132,67 @@ public class CareCenterConfigDefaultScheduleFragment extends Fragment {
     }
 
     private void createAndAddDefaultSchedule() {
-        // TODO: check for valid entry
-
         String name = nameEditText.getText().toString();
-
         String startTimeStr = startTimePicker.getText().toString();
+        String endTimeStr = endTimePicker.getText().toString();
+        String everyNumStr = everyEditText.getText().toString();
+        String everyLabel = everySpinner.getSelectedItem().toString();
+        int startDayPosition = startDaySpinner.getSelectedItemPosition();
+        String startDay = startDaySpinner.getSelectedItem().toString();
+
+        // Input checking
+        boolean isValidForm = true;
+        String errorMsg = getResources().getString(R.string.error_msg_field_required);
+
+        if (UtilsString.isEmpty(name)) {
+            nameEditText.setError(errorMsg);
+            isValidForm = false;
+        }
+
+        if (startDayPosition == 0) {
+            startDaySpinner.setError(errorMsg);
+            isValidForm = false;
+        }
+
         DateTime startTime = null;
-        if(!UtilsString.isEmpty(startTimeStr)) {
+        if (UtilsString.isEmpty(startTimeStr)) {
+            startTimePicker.setError(errorMsg);
+            isValidForm = false;
+        } else {
             startTime = Global.TIME_FORMAT.parseDateTime(startTimeStr);
         }
 
-        String endTimeStr = endTimePicker.getText().toString();
         DateTime endTime = null;
-        if(!UtilsString.isEmpty(endTimeStr)) {
+        if (UtilsString.isEmpty(endTimeStr)) {
+            endTimePicker.setError(errorMsg);
+            isValidForm = false;
+        } else {
             endTime = Global.TIME_FORMAT.parseDateTime(endTimeStr);
         }
 
-        Integer everyNum = null;
-        String everyNumStr = everyEditText.getText().toString();
-        if (!UtilsString.isEmpty(everyNumStr)) {
-            everyNum = Integer.parseInt(everyNumStr);
+        if (UtilsString.isEmpty(everyNumStr)) {
+            everyEditText.setError(errorMsg);
+            isValidForm = false;
         }
 
-        String everyLabel = everySpinner.getSelectedItem().toString();
-        String startDay = startDaySpinner.getSelectedItem().toString();
+        if (startTime != null && endTime != null) {
+            if (startTime.isAfter(endTime)) {
+                endTimePicker.setError(getResources().getString(R.string.error_msg_end_time_must_be_after_start_time));
+            }
+        }
 
-        DefaultSchedule newDefaultSchedule = new DefaultSchedule(name, startTime, endTime, everyNum, everyLabel, startDay);
-        defaultScheduleList.add(0, newDefaultSchedule);
-        defaultScheduleListAdapter.notifyItemInserted(0);
+        if (isValidForm) {
+            Integer everyNum = Integer.parseInt(everyNumStr);
 
-        resetNewDefaultScheduleFields();
+            DefaultSchedule newDefaultSchedule = new DefaultSchedule(name, startTime, endTime, everyNum, everyLabel, startDay);
+            defaultScheduleList.add(0, newDefaultSchedule);
+            defaultScheduleListAdapter.notifyItemInserted(0);
 
-        closeExpandableAddDefaultSchedule();
-        hideKeyboard();
+            resetNewDefaultScheduleFields();
+
+            closeExpandableAddDefaultSchedule();
+            hideKeyboard();
+        }
     }
 
     private void hideKeyboard() {
@@ -190,7 +224,7 @@ public class CareCenterConfigDefaultScheduleFragment extends Fragment {
     public ArrayList<DefaultSchedule> getDefaultScheduleList() {
         ArrayList<DefaultSchedule> defaultScheduleList = DataHolder.getDefaultScheduleList();
 
-        if(defaultScheduleList == null) {
+        if (defaultScheduleList == null) {
             defaultScheduleList = new ArrayList<>();
 
             defaultScheduleList.add(new DefaultSchedule("Lunch",

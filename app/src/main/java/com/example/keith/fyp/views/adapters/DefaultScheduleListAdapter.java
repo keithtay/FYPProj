@@ -1,6 +1,7 @@
 package com.example.keith.fyp.views.adapters;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -162,43 +163,84 @@ public class DefaultScheduleListAdapter extends RecyclerView.Adapter<DefaultSche
                         expandableLayout.hide();
                     }
                     restoreOldFieldsValue();
+
+                    nameEditText.setError(null);
+                    startDaySpinner.setError(null);
+                    startTimePicker.setError(null);
+                    endTimePicker.setError(null);
+                    everyEditText.setError(null);
                 }
             });
 
             saveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArrayList<DefaultSchedule> defaultScheduleList = DataHolder.getDefaultScheduleList();
-                    DefaultSchedule defaultSchedule = defaultScheduleList.get(getAdapterPosition());
-
-                    defaultSchedule.setName(nameEditText.getText().toString());
-
+                    String nameStr = nameEditText.getText().toString();
                     String startTimeStr = startTimePicker.getText().toString();
-                    if (!UtilsString.isEmpty(startTimeStr)) {
-                        DateTime  startTime = Global.TIME_FORMAT.parseDateTime(startTimeStr);
-                        defaultSchedule.setStartTime(startTime);
-                    }
-
                     String endTimeStr = endTimePicker.getText().toString();
-                    if (!UtilsString.isEmpty(endTimeStr)) {
-                        DateTime endTime = Global.TIME_FORMAT.parseDateTime(endTimeStr);
-                        defaultSchedule.setEndTime(endTime);
-                    }
-
                     String everyNumStr = everyEditText.getText().toString();
-                    Integer everyNum = null;
-                    if (!UtilsString.isEmpty(everyNumStr)) {
-                        everyNum = Integer.parseInt(everyNumStr);
+                    String everyLabelStr = everySpinner.getSelectedItem().toString();
+                    int startDayPosition = startDaySpinner.getSelectedItemPosition();
+                    String startDayStr = startDaySpinner.getSelectedItem().toString();
+
+                    // Input checking
+                    boolean isValidForm = true;
+                    Resources resources = v.getResources();
+                    String errorMsg = resources.getString(R.string.error_msg_field_required);
+
+                    if (UtilsString.isEmpty(nameStr)) {
+                        nameEditText.setError(errorMsg);
+                        isValidForm = false;
                     }
-                    defaultSchedule.setEveryNumber(everyNum);
 
-                    defaultSchedule.setEveryLabel(everySpinner.getSelectedItem().toString());
+                    if (startDayPosition == 0) {
+                        startDaySpinner.setError(errorMsg);
+                        isValidForm = false;
+                    }
 
-                    defaultSchedule.setStartDay(startDaySpinner.getSelectedItem().toString());
+                    DateTime startTime = null;
+                    if (UtilsString.isEmpty(startTimeStr)) {
+                        startTimePicker.setError(errorMsg);
+                        isValidForm = false;
+                    } else {
+                        startTime = Global.TIME_FORMAT.parseDateTime(startTimeStr);
+                    }
 
-                    setFormEditable(false);
-                    if (expandableLayout.isOpened()) {
-                        expandableLayout.hide();
+                    DateTime endTime = null;
+                    if (UtilsString.isEmpty(endTimeStr)) {
+                        endTimePicker.setError(errorMsg);
+                        isValidForm = false;
+                    } else {
+                        endTime = Global.TIME_FORMAT.parseDateTime(endTimeStr);
+                    }
+
+                    if (UtilsString.isEmpty(everyNumStr)) {
+                        everyEditText.setError(errorMsg);
+                        isValidForm = false;
+                    }
+
+                    if (startTime != null && endTime != null) {
+                        if (startTime.isAfter(endTime)) {
+                            endTimePicker.setError(resources.getString(R.string.error_msg_end_time_must_be_after_start_time));
+                        }
+                    }
+
+                    if (isValidForm) {
+                        ArrayList<DefaultSchedule> defaultScheduleList = DataHolder.getDefaultScheduleList();
+                        DefaultSchedule defaultSchedule = defaultScheduleList.get(getAdapterPosition());
+                        Integer everyNum = Integer.parseInt(everyNumStr);
+
+                        defaultSchedule.setName(nameStr);
+                        defaultSchedule.setStartTime(startTime);
+                        defaultSchedule.setEndTime(endTime);
+                        defaultSchedule.setEveryNumber(everyNum);
+                        defaultSchedule.setEveryLabel(everyLabelStr);
+                        defaultSchedule.setStartDay(startDayStr);
+
+                        setFormEditable(false);
+                        if (expandableLayout.isOpened()) {
+                            expandableLayout.hide();
+                        }
                     }
                 }
             });
