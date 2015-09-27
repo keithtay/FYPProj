@@ -50,7 +50,6 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
             createNewPatientFab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO: check the required field
                     checkRequiredFields();
                 }
             });

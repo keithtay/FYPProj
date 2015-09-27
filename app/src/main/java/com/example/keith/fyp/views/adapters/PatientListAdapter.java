@@ -44,7 +44,6 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
         rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO:
                 Intent intent = new Intent(context, ViewScheduleActivity.class);
                 context.startActivity(intent);
             }

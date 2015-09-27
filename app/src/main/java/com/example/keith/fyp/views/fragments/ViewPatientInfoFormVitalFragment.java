@@ -167,8 +167,6 @@ public class ViewPatientInfoFormVitalFragment extends ViewPatientInfoFormFragmen
     }
 
     private void createAndAddVital() {
-        // TODO: check for valid entry
-
         String dateTakenStr = vitalDateTakenEditText.getText().toString();
         String timeTakenStr = vitalTimeTakenEditText.getText().toString();
 

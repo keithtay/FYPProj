@@ -169,8 +169,6 @@ public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFra
     }
 
     private void createAndAddVital() {
-        // TODO: check for valid entry
-
         String dateTakenStr = vitalDateTakenEditText.getText().toString();
         String timeTakenStr = vitalTimeTakenEditText.getText().toString();
 

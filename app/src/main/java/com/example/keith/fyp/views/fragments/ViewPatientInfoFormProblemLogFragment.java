@@ -127,8 +127,6 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
         String category = newProblemLogCategorySpinner.getSelectedItem().toString();
         String notes = newProblemLogNotesEditText.getText().toString();
 
-        // TODO: check for valid entry
-
         ProblemLog newProblemLog = new ProblemLog(creationDate, category, notes);
 
         ProblemLog similarLog = UtilsUi.isSimilarProblemLogExist(newProblemLog);
