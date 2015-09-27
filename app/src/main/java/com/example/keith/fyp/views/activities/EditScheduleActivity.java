@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Event;
@@ -81,34 +82,56 @@ public class EditScheduleActivity extends ScheduleActivity implements View.OnCli
         builder.positiveText(R.string.dialog_button_add);
         builder.negativeText(R.string.dialog_button_cancel);
 
-        builder.callback(new MaterialDialog.ButtonCallback() {
+        final MaterialDialog dialog = builder.show();
+        dialog.getActionButton(DialogAction.POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onPositive(MaterialDialog dialog) {
-                super.onPositive(dialog);
-                // TODO: check for field values
-
+            public void onClick(View v) {
                 String title = eventTitleEditText.getText().toString();
                 String description = eventDescriptionEditText.getText().toString();
-
                 String startTimeStr = startTimePicker.getText().toString();
-                DateTime startTime = UtilsDate.setCurrentDateToTime(startTimeStr);
                 String endTimeStr = endTimePicker.getText().toString();
-                DateTime endTime = UtilsDate.setCurrentDateToTime(endTimeStr);
 
-                Event newEvent = new Event(title, description, startTime, endTime);
+                // Input checking
+                boolean isValidForm = true;
+                String errorMsg = EditScheduleActivity.this.getResources().getString(R.string.error_msg_field_required);
 
-                if (eventListAdapter.isEventOverlapWithEventInList(newEvent, eventList)) {
-                    Toast.makeText(getApplicationContext(), R.string.toast_new_event_overlap, Toast.LENGTH_SHORT).show();
-                } else {
-                    eventList.add(newEvent);
-                    eventListAdapter.sortEventList();
-                    eventListAdapter.notifyDataSetChanged();
-                    updateScheduleListViewHeight();
+                if(UtilsString.isEmpty(title)) {
+                    eventTitleEditText.setError(errorMsg);
+                    isValidForm = false;
                 }
+
+                if(UtilsString.isEmpty(description)) {
+                    eventDescriptionEditText.setError(errorMsg);
+                    isValidForm = false;
+                }
+
+                if(UtilsString.isEmpty(startTimeStr)) {
+                    startTimePicker.setError(errorMsg);
+                    isValidForm = false;
+                }
+
+                if(UtilsString.isEmpty(endTimeStr)) {
+                    endTimePicker.setError(errorMsg);
+                    isValidForm = false;
+                }
+
+                if(isValidForm) {
+                    DateTime startTime = UtilsDate.setCurrentDateToTime(startTimeStr);
+                    DateTime endTime = UtilsDate.setCurrentDateToTime(endTimeStr);
+                    Event newEvent = new Event(title, description, startTime, endTime);
+
+                    if (eventListAdapter.isEventOverlapWithEventInList(newEvent, eventList)) {
+                        Toast.makeText(getApplicationContext(), R.string.toast_new_event_overlap, Toast.LENGTH_SHORT).show();
+                    } else {
+                        eventList.add(newEvent);
+                        eventListAdapter.sortEventList();
+                        eventListAdapter.notifyDataSetChanged();
+                        updateScheduleListViewHeight();
+                    }
+                }
+
             }
         });
-
-        builder.show();
     }
 
     private void setupEditTextToBeTimeRangePicker(final EditText editText, final String title) {
