@@ -68,6 +68,7 @@ public class SpinnerField extends CustomField implements View.OnClickListener {
                         Log.d(TAG, "Please set OnSpinnerFieldItemSelectedListener beforehand");
                     } else {
                         onSpinnerFieldItemSelectedListener.onSpinnerFieldItemSelected(i);
+                        fieldValueEditText.setError(null);
                     }
                 }
             });

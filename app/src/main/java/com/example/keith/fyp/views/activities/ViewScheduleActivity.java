@@ -7,12 +7,14 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Event;
 import com.example.keith.fyp.models.ProblemLog;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.customviews.DateField;
 import com.example.keith.fyp.views.customviews.SpinnerField;
@@ -96,30 +98,35 @@ public class ViewScheduleActivity extends ScheduleActivity {
         builder.positiveText(R.string.dialog_button_add);
         builder.negativeText(R.string.dialog_button_cancel);
 
-        builder.callback(new MaterialDialog.ButtonCallback() {
+        final MaterialDialog dialog = builder.show();
+        dialog.getActionButton(DialogAction.POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onPositive(MaterialDialog dialog) {
-                super.onPositive(dialog);
-                // TODO: check for field values
+            public void onClick(View v) {
+                String categoryStr = categorySpinnerField.getText();
 
-                DateTime creationDate = Global.DATE_FORMAT.parseDateTime(fromDateDateField.getText().toString());
-                String category = categorySpinnerField.getText();
-                String notes = notesTextField.getText();
-                ProblemLog newProblemLog = new ProblemLog(creationDate, category, notes);
+                boolean isValidForm = true;
+                if (UtilsString.isEmpty(categoryStr)) {
+                    categorySpinnerField.setError(ViewScheduleActivity.this.getResources().getString(R.string.error_msg_field_required));
+                    isValidForm = false;
+                }
 
-                ProblemLog similarLog = UtilsUi.isSimilarProblemLogExist(newProblemLog);
+                if (isValidForm) {
+                    DateTime creationDate = Global.DATE_FORMAT.parseDateTime(fromDateDateField.getText().toString());
+                    String category = categoryStr;
+                    String notes = notesTextField.getText();
+                    ProblemLog newProblemLog = new ProblemLog(creationDate, category, notes);
 
-                if (similarLog != null) {
-                    openSimilarProblemLogDialog(newProblemLog, similarLog);
-                } else {
-                    DataHolder.getViewedPatient().getProblemLogList().add(0, newProblemLog);
+                    ProblemLog similarLog = UtilsUi.isSimilarProblemLogExist(newProblemLog);
+
+                    if (similarLog != null) {
+                        openSimilarProblemLogDialog(newProblemLog, similarLog);
+                    } else {
+                        DataHolder.getViewedPatient().getProblemLogList().add(0, newProblemLog);
+                        dialog.dismiss();
+                    }
                 }
             }
         });
-
-        builder.show();
-
-//        dialog.show();
     }
 
     private void openSimilarProblemLogDialog(final ProblemLog newProblemLog, ProblemLog similarLog) {

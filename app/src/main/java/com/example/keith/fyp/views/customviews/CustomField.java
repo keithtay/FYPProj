@@ -336,4 +336,8 @@ public class CustomField extends LinearLayout {
     public void setOnCustomFieldSaveListener(OnCustomFieldSaveListener onCustomFieldSaveListener) {
         this.onCustomFieldSaveListener = onCustomFieldSaveListener;
     }
+
+    public void setError(String errorMsg) {
+        fieldValueEditText.setError(errorMsg);
+    }
 }
