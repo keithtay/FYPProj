@@ -15,8 +15,10 @@ import android.widget.Spinner;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.models.Prescription;
 import com.example.keith.fyp.models.Routine;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.adapters.RoutineListAdapter;
 import com.example.keith.fyp.views.decorators.SpacesCardItemDecoration;
@@ -106,6 +108,13 @@ public class CreatePatientInfoFormRoutineFragment extends CreatePatientInfoFormF
             public void onClick(View v) {
                 closeExpandableAddRoutine();
                 resetNewRoutineFields();
+
+                nameEditText.setError(null);
+                startDatePicker.setError(null);
+                endDatePicker.setError(null);
+                startTimePicker.setError(null);
+                endTimePicker.setError(null);
+                everyEditText.setError(null);
             }
         });
 
@@ -121,51 +130,88 @@ public class CreatePatientInfoFormRoutineFragment extends CreatePatientInfoFormF
     }
 
     private void createAndAddRoutine() {
-        // TODO: check for valid entry
-
         String name = nameEditText.getText().toString();
         String notes = notesEditText.getText().toString();
-
         String startDateStr = startDatePicker.getText().toString();
+        String endDateStr = endDatePicker.getText().toString();
+        String startTimeStr = startTimePicker.getText().toString();
+        String endTimeStr = endTimePicker.getText().toString();
+        String everyNumStr = everyEditText.getText().toString();
+        String everyLabel = everySpinner.getSelectedItem().toString();
+
+        // Input checking
+        boolean isValidForm = true;
+        String errorMessage = getResources().getString(R.string.error_msg_field_required);
+
+        if(UtilsString.isEmpty(name)) {
+            nameEditText.setError(errorMessage);
+            isValidForm = false;
+        }
+
         DateTime startDate = null;
-        if(startDateStr != null && !startDateStr.isEmpty()) {
+        if(UtilsString.isEmpty(startDateStr)) {
+            startDatePicker.setError(errorMessage);
+            isValidForm = false;
+        } else {
             startDate = Global.DATE_FORMAT.parseDateTime(startDateStr);
         }
 
-        String endDateStr = endDatePicker.getText().toString();
         DateTime endDate = null;
-        if(endDateStr != null && !endDateStr.isEmpty()) {
+        if(UtilsString.isEmpty(endDateStr)) {
+            endDatePicker.setError(errorMessage);
+            isValidForm = false;
+        } else {
             endDate = Global.DATE_FORMAT.parseDateTime(endDateStr);
         }
 
-        String startTimeStr = startTimePicker.getText().toString();
         DateTime startTime = null;
-        if(startTimeStr != null && !startTimeStr.isEmpty()) {
+        if(UtilsString.isEmpty(startTimeStr)) {
+            startTimePicker.setError(errorMessage);
+            isValidForm = false;
+        } else {
             startTime = Global.TIME_FORMAT.parseDateTime(startTimeStr);
         }
 
-        String endTimeStr = endTimePicker.getText().toString();
         DateTime endTime = null;
-        if(endTimeStr != null && !endTimeStr.isEmpty()) {
+        if(UtilsString.isEmpty(endTimeStr)) {
+            endTimePicker.setError(errorMessage);
+            isValidForm = false;
+        } else {
             endTime = Global.TIME_FORMAT.parseDateTime(endTimeStr);
         }
 
         Integer everyNum = null;
-        String everyNumStr = everyEditText.getText().toString();
-        if (everyNumStr != null && !everyNumStr.isEmpty()) {
+        if(UtilsString.isEmpty(everyNumStr)) {
+            everyEditText.setError(errorMessage);
+            isValidForm = false;
+        } else {
             everyNum = Integer.parseInt(everyNumStr);
         }
 
-        String everyLabel = everySpinner.getSelectedItem().toString();
+        if(startDate != null && endDate != null) {
+            if(startDate.isAfter(endDate)) {
+                endDatePicker.setError(activity.getString(R.string.error_msg_end_date_must_be_after_start_date));
+                isValidForm = false;
+            }
+        }
 
-        Routine newRoutine = new Routine(name, notes, startDate, endDate, startTime, endTime, everyNum, everyLabel);
-        routineList.add(0, newRoutine);
-        routineListAdapter.notifyItemInserted(0);
+        if(startTime != null && endTime != null) {
+            if(startTime.isAfter(endTime)) {
+                endTimePicker.setError(activity.getString(R.string.error_msg_end_time_must_be_after_start_time));
+                isValidForm = false;
+            }
+        }
 
-        resetNewRoutineFields();
+        if(isValidForm) {
+            Routine newRoutine = new Routine(name, notes, startDate, endDate, startTime, endTime, everyNum, everyLabel);
+            routineList.add(0, newRoutine);
+            routineListAdapter.notifyItemInserted(0);
 
-        closeExpandableAddRoutine();
-        hideKeyboard();
+            resetNewRoutineFields();
+
+            closeExpandableAddRoutine();
+            hideKeyboard();
+        }
     }
 
     public void deleteItem(int selectedItemIdx) {

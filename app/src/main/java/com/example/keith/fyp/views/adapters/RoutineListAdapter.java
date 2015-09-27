@@ -1,6 +1,7 @@
 package com.example.keith.fyp.views.adapters;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.widget.Spinner;
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.Routine;
+import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.fragments.CreatePatientInfoFormRoutineFragment;
 import com.example.keith.fyp.R;
@@ -138,7 +140,7 @@ public class RoutineListAdapter extends RecyclerView.Adapter<RoutineListAdapter.
         public RoutineListViewHolder(View itemView) {
             super(itemView);
 
-            Context context = itemView.getContext();
+            final Context context = itemView.getContext();
 
             nameEditText = (EditText) itemView.findViewById(R.id.routine_item_name_edit_text);
             notesEditText = (EditText) itemView.findViewById(R.id.routine_item_notes_edit_text);
@@ -177,58 +179,110 @@ public class RoutineListAdapter extends RecyclerView.Adapter<RoutineListAdapter.
                         expandableLayout.hide();
                     }
                     restoreOldFieldsValue();
+
+                    nameEditText.setError(null);
+                    startDatePicker.setError(null);
+                    endDatePicker.setError(null);
+                    startTimePicker.setError(null);
+                    endTimePicker.setError(null);
+                    everyEditText.setError(null);
                 }
             });
 
             saveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArrayList<Routine> routineList = patient.getRoutineList();
-                    Routine routine = routineList.get(getAdapterPosition());
-
-                    routine.setName(nameEditText.getText().toString());
-                    routine.setNotes(notesEditText.getText().toString());
-
+                    String nameStr = nameEditText.getText().toString();
+                    String notesStr = notesEditText.getText().toString();
                     String startDateStr = startDatePicker.getText().toString();
-                    DateTime startDate = null;
-                    if (startDateStr != null && !startDateStr.isEmpty()) {
-                        startDate = Global.DATE_FORMAT.parseDateTime(startDateStr);
-                        routine.setStartDate(startDate);
-                    }
-
                     String endDateStr = endDatePicker.getText().toString();
-                    DateTime endDate = null;
-                    if (endDateStr != null && !endDateStr.isEmpty()) {
-                        endDate = Global.DATE_FORMAT.parseDateTime(endDateStr);
-                        routine.setEndDate(endDate);
-                    }
-
                     String startTimeStr = startTimePicker.getText().toString();
-                    DateTime startTime = null;
-                    if (startTimeStr != null && !startTimeStr.isEmpty()) {
-                        startTime = Global.TIME_FORMAT.parseDateTime(startTimeStr);
-                        routine.setStartTime(startTime);
-                    }
-
                     String endTimeStr = endTimePicker.getText().toString();
-                    DateTime endTime = null;
-                    if (endTimeStr != null && !endTimeStr.isEmpty()) {
-                        endTime = Global.TIME_FORMAT.parseDateTime(endTimeStr);
-                        routine.setEndTime(endTime);
+                    String everyNumStr = everyEditText.getText().toString();
+                    String everyLabelStr = everySpinner.getSelectedItem().toString();
+
+
+                    // Input checking
+                    Resources resources = context.getResources();
+                    boolean isValidForm = true;
+                    String errorMessage = resources.getString(R.string.error_msg_field_required);
+
+                    if (UtilsString.isEmpty(nameStr)) {
+                        nameEditText.setError(errorMessage);
+                        isValidForm = false;
                     }
 
-                    String everyNumStr = everyEditText.getText().toString();
+                    DateTime startDate = null;
+                    if (UtilsString.isEmpty(startDateStr)) {
+                        startDatePicker.setError(errorMessage);
+                        isValidForm = false;
+                    } else {
+                        startDate = Global.DATE_FORMAT.parseDateTime(startDateStr);
+                    }
+
+                    DateTime endDate = null;
+                    if (UtilsString.isEmpty(endDateStr)) {
+                        endDatePicker.setError(errorMessage);
+                        isValidForm = false;
+                    } else {
+                        endDate = Global.DATE_FORMAT.parseDateTime(endDateStr);
+                    }
+
+                    DateTime startTime = null;
+                    if (UtilsString.isEmpty(startTimeStr)) {
+                        startTimePicker.setError(errorMessage);
+                        isValidForm = false;
+                    } else {
+                        startTime = Global.TIME_FORMAT.parseDateTime(startTimeStr);
+                    }
+
+                    DateTime endTime = null;
+                    if (UtilsString.isEmpty(endTimeStr)) {
+                        endTimePicker.setError(errorMessage);
+                        isValidForm = false;
+                    } else {
+                        endTime = Global.TIME_FORMAT.parseDateTime(endTimeStr);
+                    }
+
                     Integer everyNum = null;
-                    if (everyNumStr != null && !everyNumStr.isEmpty()) {
+                    if (UtilsString.isEmpty(everyNumStr)) {
+                        everyEditText.setError(errorMessage);
+                        isValidForm = false;
+                    } else {
                         everyNum = Integer.parseInt(everyNumStr);
                     }
-                    routine.setEveryNumber(everyNum);
 
-                    routine.setEveryLabel(everySpinner.getSelectedItem().toString());
+                    if (startDate != null && endDate != null) {
+                        if (startDate.isAfter(endDate)) {
+                            endDatePicker.setError(resources.getString(R.string.error_msg_end_date_must_be_after_start_date));
+                            isValidForm = false;
+                        }
+                    }
 
-                    setFormEditable(false);
-                    if (expandableLayout.isOpened()) {
-                        expandableLayout.hide();
+                    if (startTime != null && endTime != null) {
+                        if (startTime.isAfter(endTime)) {
+                            endTimePicker.setError(resources.getString(R.string.error_msg_end_time_must_be_after_start_time));
+                            isValidForm = false;
+                        }
+                    }
+
+                    if (isValidForm) {
+                        ArrayList<Routine> routineList = patient.getRoutineList();
+                        Routine routine = routineList.get(getAdapterPosition());
+
+                        routine.setName(nameStr);
+                        routine.setNotes(notesStr);
+                        routine.setStartDate(startDate);
+                        routine.setEndDate(endDate);
+                        routine.setStartTime(startTime);
+                        routine.setEndTime(endTime);
+                        routine.setEveryNumber(everyNum);
+                        routine.setEveryLabel(everyLabelStr);
+
+                        setFormEditable(false);
+                        if (expandableLayout.isOpened()) {
+                            expandableLayout.hide();
+                        }
                     }
                 }
             });

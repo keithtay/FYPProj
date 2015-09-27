@@ -172,5 +172,6 @@
     <string name="button_view_similar_log">View similar log</string>
     <string name="button_delete">Delete</string>
     <string name="error_msg_end_date_must_be_after_start_date">End date must be after start date</string>
+    <string name="error_msg_end_time_must_be_after_start_time">End time must be after start time</string>
 
 </resources>

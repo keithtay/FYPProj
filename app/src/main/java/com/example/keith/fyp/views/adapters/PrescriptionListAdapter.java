@@ -126,7 +126,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         public PrescriptionListViewHolder(View itemView) {
             super(itemView);
 
-            Context context = itemView.getContext();
+            final Context context = itemView.getContext();
 
             nameEditText = (EditText) itemView.findViewById(R.id.prescription_item_name_edit_text);
             dosageEditText = (EditText) itemView.findViewById(R.id.prescription_item_dosage_edit_text);
@@ -189,7 +189,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
                     String notesStr = notesEditText.getText().toString();
 
                     // Input checking
-                    Resources resources = v.getContext().getResources();
+                    Resources resources = context.getResources();
                     boolean isValidForm = true;
                     String errorMessage = resources.getString(R.string.error_msg_field_required);
 
