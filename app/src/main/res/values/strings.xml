@@ -171,5 +171,6 @@
     <string name="button_add_problem_log_anyway">Add anyway</string>
     <string name="button_view_similar_log">View similar log</string>
     <string name="button_delete">Delete</string>
+    <string name="error_msg_end_date_must_be_after_start_date">End date must be after start date</string>
 
 </resources>

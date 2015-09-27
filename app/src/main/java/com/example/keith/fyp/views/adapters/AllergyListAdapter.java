@@ -106,8 +106,8 @@ public class AllergyListAdapter extends RecyclerView.Adapter<AllergyListAdapter.
                     String allergyReactionStr = allergyReaction.getText().toString();
                     String allergyNotesStr = allergyNotes.getText().toString();
 
+                    // Inout checking
                     boolean isValidForm = true;
-
                     String errorMessage = v.getContext().getResources().getString(R.string.error_msg_field_required);
 
                     if(UtilsString.isEmpty(allergyNameStr)) {

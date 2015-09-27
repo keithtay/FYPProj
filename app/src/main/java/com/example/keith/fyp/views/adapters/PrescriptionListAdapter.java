@@ -1,6 +1,7 @@
 package com.example.keith.fyp.views.adapters;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.Prescription;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.fragments.CreatePatientInfoFormPrescriptionFragment;
 import com.example.keith.fyp.views.fragments.PatientInfoFormListFragment;
@@ -161,50 +163,96 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
                         expandableLayout.hide();
                     }
                     restoreOldFieldsValue();
+
+                    nameEditText.setError(null);
+                    dosageEditText.setError(null);
+                    freqEditText.setError(null);
+                    startDatePicker.setError(null);
+                    endDatePicker.setError(null);
+                    beforeAfterMealSpinner.setError(null);
                 }
             });
 
             saveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArrayList<Prescription> prescriptionList = patient.getPrescriptionList();
-                    Prescription prescription = prescriptionList.get(getAdapterPosition());
-
-                    String startDateStr = startDatePicker.getText().toString();
-                    DateTime startDate = null;
-                    if(startDateStr != null && !startDateStr.isEmpty()) {
-                        startDate = Global.DATE_FORMAT.parseDateTime(startDateStr);
-                        prescription.setStartDate(startDate);
-                    }
-
-                    String endDateStr = endDatePicker.getText().toString();
-                    DateTime endDate = null;
-                    if(endDateStr != null && !endDateStr.isEmpty()) {
-                        endDate = Global.DATE_FORMAT.parseDateTime(endDateStr);
-                        prescription.setEndDate(endDate);
-                    }
-
-                    if(beforeAfterMealSpinner.getSelectedItemPosition() != 0) {
-                        String beforeOrAfterMeal = beforeAfterMealSpinner.getSelectedItem().toString();
-                        prescription.setBeforeAfterMeal(beforeOrAfterMeal);
-                    } else {
-                        prescription.setBeforeAfterMeal(null);
-                    }
-
-                    prescription.setName(nameEditText.getText().toString());
-                    prescription.setDosage(dosageEditText.getText().toString());
-
+                    String nameStr = nameEditText.getText().toString();
+                    String dosageStr = dosageEditText.getText().toString();
                     String freqStr = freqEditText.getText().toString();
-                    if (freqStr != null && !freqStr.isEmpty()) {
-                        prescription.setFreqPerDay(Integer.getInteger(freqStr));
+                    String instructionStr = instructionEditText.getText().toString();
+                    String startDateStr = startDatePicker.getText().toString();
+                    String endDateStr = endDatePicker.getText().toString();
+
+                    int beforeOrAfterMealPosition = beforeAfterMealSpinner.getSelectedItemPosition();
+                    String beforeOrAfterMealStr = beforeAfterMealSpinner.getSelectedItem().toString();
+
+                    String notesStr = notesEditText.getText().toString();
+
+                    // Input checking
+                    Resources resources = v.getContext().getResources();
+                    boolean isValidForm = true;
+                    String errorMessage = resources.getString(R.string.error_msg_field_required);
+
+                    if(UtilsString.isEmpty(nameStr)) {
+                        nameEditText.setError(errorMessage);
+                        isValidForm = false;
                     }
 
-                    prescription.setInstruction(instructionEditText.getText().toString());
-                    prescription.setNotes(notesEditText.getText().toString());
+                    if(UtilsString.isEmpty(dosageStr)) {
+                        dosageEditText.setError(errorMessage);
+                        isValidForm = false;
+                    }
 
-                    setFormEditable(false);
-                    if (expandableLayout.isOpened()) {
-                        expandableLayout.hide();
+                    if(UtilsString.isEmpty(freqStr)) {
+                        freqEditText.setError(errorMessage);
+                        isValidForm = false;
+                    }
+
+                    DateTime startDate = null;
+                    if(UtilsString.isEmpty(startDateStr)) {
+                        startDatePicker.setError(errorMessage);
+                        isValidForm = false;
+                    } else {
+                        startDate = Global.DATE_FORMAT.parseDateTime(startDateStr);
+                    }
+
+                    DateTime endDate = null;
+                    if(UtilsString.isEmpty(endDateStr)) {
+                        endDatePicker.setError(errorMessage);
+                        isValidForm = false;
+                    } else {
+                        endDate = Global.DATE_FORMAT.parseDateTime(endDateStr);
+                    }
+
+                    if(beforeOrAfterMealPosition == 0) {
+                        beforeAfterMealSpinner.setError(errorMessage);
+                        isValidForm = false;
+                    }
+
+                    if(startDate != null && endDate != null) {
+                        if(startDate.isAfter(endDate)) {
+                            endDatePicker.setError(resources.getString(R.string.error_msg_end_date_must_be_after_start_date));
+                            isValidForm = false;
+                        }
+                    }
+
+                    if(isValidForm) {
+                        ArrayList<Prescription> prescriptionList = patient.getPrescriptionList();
+                        Prescription prescription = prescriptionList.get(getAdapterPosition());
+
+                        prescription.setName(nameStr);
+                        prescription.setDosage(dosageStr);
+                        prescription.setFreqPerDay(Integer.getInteger(freqStr));
+                        prescription.setInstruction(instructionStr);
+                        prescription.setStartDate(startDate);
+                        prescription.setEndDate(endDate);
+                        prescription.setNotes(notesStr);
+                        prescription.setBeforeAfterMeal(beforeOrAfterMealStr);
+
+                        setFormEditable(false);
+                        if (expandableLayout.isOpened()) {
+                            expandableLayout.hide();
+                        }
                     }
                 }
             });

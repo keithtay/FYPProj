@@ -163,11 +163,10 @@ public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormF
         String allergyReaction = newAllergyReactionEditText.getText().toString();
         String allergyNotes = newAllergyNotesEditText.getText().toString();
 
-        // TODO: check for valid entry
-
+        // Input checking
         boolean isValidForm = true;
-
         String errorMessage = getResources().getString(R.string.error_msg_field_required);
+
         if(UtilsString.isEmpty(allergyName)) {
             newAllergyNameEditText.setError(errorMessage);
             isValidForm = false;

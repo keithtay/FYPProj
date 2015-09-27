@@ -100,10 +100,11 @@ public class UtilsUi {
                 DateTime date = DateTime.now();
 
                 date = date.withDayOfMonth(selectedDay);
-                date = date.withMonthOfYear(selectedMonth+1);
+                date = date.withMonthOfYear(selectedMonth + 1);
                 date = date.withYear(selectedYear);
 
                 String selectedDateStr = date.toString(Global.DATE_FORMAT);
+                editText.setError(null);
                 editText.setText(selectedDateStr);
             }
         }, mYear, mMonth, mDay);
@@ -151,6 +152,7 @@ public class UtilsUi {
                         time = time.withMinuteOfHour(minute);
 
                         String selectedTimeStr = time.toString(Global.TIME_FORMAT);
+                        editText.setError(null);
                         editText.setText(selectedTimeStr);
                     }
                 }, mHour, mMinutes, true);
