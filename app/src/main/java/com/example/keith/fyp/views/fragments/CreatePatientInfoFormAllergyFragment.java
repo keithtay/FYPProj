@@ -22,6 +22,7 @@ import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Allergy;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.views.adapters.AllergyListAdapter;
 import com.example.keith.fyp.views.decorators.SpacesCardItemDecoration;
 
@@ -113,6 +114,8 @@ public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormF
             public void onClick(View v) {
                 closeExpandableAddAllergy();
                 resetNewAllergyFields();
+                newAllergyNameEditText.setError(null);
+                newAllergyReactionEditText.setError(null);
             }
         });
 
@@ -162,14 +165,29 @@ public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormF
 
         // TODO: check for valid entry
 
-        Allergy newAllergy = new Allergy(allergyName, allergyReaction, allergyNotes);
-        allergyList.add(0, newAllergy);
-        allergyListAdapter.notifyItemInserted(0);
+        boolean isValidForm = true;
 
-        resetNewAllergyFields();
+        String errorMessage = getResources().getString(R.string.error_msg_field_required);
+        if(UtilsString.isEmpty(allergyName)) {
+            newAllergyNameEditText.setError(errorMessage);
+            isValidForm = false;
+        }
 
-        closeExpandableAddAllergy();
-        hideKeyboard();
+        if(UtilsString.isEmpty(allergyReaction)) {
+            newAllergyReactionEditText.setError(errorMessage);
+            isValidForm = false;
+        }
+
+        if(isValidForm) {
+            Allergy newAllergy = new Allergy(allergyName, allergyReaction, allergyNotes);
+            allergyList.add(0, newAllergy);
+            allergyListAdapter.notifyItemInserted(0);
+
+            resetNewAllergyFields();
+
+            closeExpandableAddAllergy();
+            hideKeyboard();
+        }
     }
 
     private void resetNewAllergyFields() {

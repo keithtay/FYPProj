@@ -16,6 +16,7 @@ import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Allergy;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.utils.DataHolder;
+import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.views.fragments.CreatePatientInfoFormAllergyFragment;
 import com.example.keith.fyp.views.fragments.PatientInfoFormListFragment;
 
@@ -92,6 +93,8 @@ public class AllergyListAdapter extends RecyclerView.Adapter<AllergyListAdapter.
                     if (expandableLayout.isOpened()) {
                         expandableLayout.hide();
                     }
+                    allergyName.setError(null);
+                    allergyReaction.setError(null);
                     restoreOldFieldsValue();
                 }
             });
@@ -99,15 +102,35 @@ public class AllergyListAdapter extends RecyclerView.Adapter<AllergyListAdapter.
             saveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArrayList<Allergy> allergyList = patient.getAllergyList();
-                    Allergy allergy = allergyList.get(getAdapterPosition());
-                    allergy.setName(allergyName.getText().toString());
-                    allergy.setReaction(allergyReaction.getText().toString());
-                    allergy.setNotes(allergyNotes.getText().toString());
+                    String allergyNameStr = allergyName.getText().toString();
+                    String allergyReactionStr = allergyReaction.getText().toString();
+                    String allergyNotesStr = allergyNotes.getText().toString();
 
-                    setFormEditable(false);
-                    if (expandableLayout.isOpened()) {
-                        expandableLayout.hide();
+                    boolean isValidForm = true;
+
+                    String errorMessage = v.getContext().getResources().getString(R.string.error_msg_field_required);
+
+                    if(UtilsString.isEmpty(allergyNameStr)) {
+                        allergyName.setError(errorMessage);
+                        isValidForm = false;
+                    }
+
+                    if(UtilsString.isEmpty(allergyReactionStr)) {
+                        allergyReaction.setError(errorMessage);
+                        isValidForm = false;
+                    }
+
+                    if(isValidForm) {
+                        ArrayList<Allergy> allergyList = patient.getAllergyList();
+                        Allergy allergy = allergyList.get(getAdapterPosition());
+                        allergy.setName(allergyNameStr);
+                        allergy.setReaction(allergyReactionStr);
+                        allergy.setNotes(allergyNotesStr);
+
+                        setFormEditable(false);
+                        if (expandableLayout.isOpened()) {
+                            expandableLayout.hide();
+                        }
                     }
                 }
             });

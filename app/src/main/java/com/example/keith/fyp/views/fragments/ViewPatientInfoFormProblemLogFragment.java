@@ -161,7 +161,7 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
 
         builder.positiveText(R.string.button_add_problem_log_anyway);
         builder.negativeText(R.string.button_cancel);
-        
+
         builder.callback(new MaterialDialog.ButtonCallback() {
             @Override
             public void onPositive(MaterialDialog dialog) {
