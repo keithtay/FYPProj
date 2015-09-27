@@ -16,6 +16,17 @@
         android:focusable="true"
         android:focusableInTouchMode="true" />
 
+    <com.example.keith.fyp.views.customviews.DateField
+        android:id="@+id/problem_log_from_date"
+        style="@style/custom_field_in_log_problem_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        customfield:alwaysEditable="true"
+        customfield:fieldTitle="From Date"
+        customfield:showBottomBorder="false"
+        customfield:showTopBorder="false"
+        customfield:containerPaddingTop="0dp"/>
+
     <com.example.keith.fyp.views.customviews.SpinnerField
         android:id="@+id/problem_log_category"
         style="@style/custom_field_in_log_problem_dialog"
@@ -24,8 +35,7 @@
         customfield:alwaysEditable="true"
         customfield:fieldTitle="Category"
         customfield:showBottomBorder="false"
-        customfield:showTopBorder="false"
-        customfield:containerPaddingTop="0dp"/>
+        customfield:showTopBorder="false" />
 
     <com.example.keith.fyp.views.customviews.TextField
         android:id="@+id/problem_log_notes"

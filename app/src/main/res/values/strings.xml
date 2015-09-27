@@ -168,5 +168,7 @@
     <string name="error_msg_no_required_allergy">Please indicate whether or not the patient has allergy</string>
     <string name="error_msg_fill_in_all_personal_info">Please fill in all the patient\'s personal information</string>
     <string name="button_yes">Yes</string>
+    <string name="button_add_problem_log_anyway">Add anyway</string>
+    <string name="button_view_similar_log">View similar log</string>
 
 </resources>

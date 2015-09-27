@@ -8,16 +8,13 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.inputmethod.InputMethodManager;
 
 import com.example.keith.fyp.R;
-import com.example.keith.fyp.interfaces.Communicator;
 import com.example.keith.fyp.interfaces.CreatePatientCommunicator;
 import com.example.keith.fyp.models.Allergy;
-import com.example.keith.fyp.models.Event;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.Prescription;
 import com.example.keith.fyp.models.Routine;
@@ -29,9 +26,7 @@ import com.example.keith.fyp.utils.ViewPatientFormFragmentDecoder;
 import com.example.keith.fyp.views.fragments.PatientInfoCategListFragment;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
 public class ViewPatientActivity extends AppCompatActivity  implements CreatePatientCommunicator {

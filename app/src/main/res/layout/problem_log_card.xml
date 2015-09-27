@@ -41,16 +41,37 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
                         <EditText
-                            android:id="@+id/problem_log_item_date_edit_text"
+                            android:id="@+id/problem_log_item_from_date_edit_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Date"
+                            android:hint="From Date"
                             android:inputType="date" />
                     </android.support.design.widget.TextInputLayout>
 
                     <View
                         android:layout_width="@dimen/paper_card_row_spacing"
-                        android:layout_height="0dp"></View>
+                        android:layout_height="0dp" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                        <EditText
+                            android:id="@+id/problem_log_item_to_date_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="To Date"
+                            android:inputType="date" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/problem_log_item_first_row"
+                    android:layout_marginTop="@dimen/paper_card_row_spacing"
+                    android:orientation="horizontal">
 
                     <fr.ganfra.materialspinner.MaterialSpinner
                         android:id="@+id/problem_log_item_category_spinner"
@@ -70,18 +91,14 @@
                         app:ms_hint="Category"
                         app:ms_multiline="false" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/problem_log_item_first_row"
-                    android:layout_marginTop="@dimen/paper_card_row_spacing"
-                    android:orientation="horizontal">
+                    <View
+                        android:layout_width="@dimen/paper_card_row_spacing"
+                        android:layout_height="0dp" />
 
                     <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
 
                         <EditText
                             android:id="@+id/problem_log_item_notes_edit_text"

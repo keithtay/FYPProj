@@ -19,6 +19,7 @@ public class Global {
     // Bundle keys
     public static final String EXTRA_EMPTY_FIELD_ID_LIST = "EXTRA_EMPTY_FIELD_ID_LIST";
     public static final String EXTRA_SELECTED_CATEGORY = "EXTRA_SELECTED_CATEGORY";
+    public static final String EXTRA_OPEN_PROBLEM_LOG_TAB = "EXTRA_OPEN_PROBLEM_LOG_TAB";
 
     // Event list for broadcast receiver
     public static final String ACTION_NOTIFICATION_UPDATE = "ACTION_NOTIFICATION_UPDATE";

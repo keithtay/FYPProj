@@ -34,6 +34,8 @@ public class PatientInfoCategListFragment extends Fragment implements AdapterVie
     private CreatePatientCommunicator communicator;
     private CreateNewPatientReceiver createNewPatientReceiver;
 
+    private Integer openTabIndex;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_patient_info_categ_list, container, false);
@@ -55,14 +57,27 @@ public class PatientInfoCategListFragment extends Fragment implements AdapterVie
         infoCategListView.setAdapter(infoCategAdapter);
         infoCategListView.setOnItemClickListener(this);
 
-        // Select the first item of the listView (only for landscape mode)
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        openTabIndex = null;
+
+        Bundle bundle = getActivity().getIntent().getExtras();
+        if(bundle != null) {
+            if(bundle.getBoolean(Global.EXTRA_OPEN_PROBLEM_LOG_TAB)) {
+                openTabIndex = 6;
+            }
+        } else {
+            // Select the first item of the listView (only for landscape mode)
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                openTabIndex = 0;
+            }
+        }
+
+        if(openTabIndex != null) {
             ViewTreeObserver observer = infoCategListView.getViewTreeObserver();
             observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
                     infoCategListView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                    performClickOnItemWithPosition(0);
+                    performClickOnItemWithPosition(openTabIndex);
                 }
             });
         }
@@ -108,7 +123,7 @@ public class PatientInfoCategListFragment extends Fragment implements AdapterVie
     private void performClickOnItemWithPosition(int position) {
         infoCategListView.performItemClick(
                 infoCategListView.getAdapter().getView(position, null, null),
-                0,
+                position,
                 infoCategListView.getAdapter().getItemId(position));
         infoCategListView.setItemChecked(position,true);
     }

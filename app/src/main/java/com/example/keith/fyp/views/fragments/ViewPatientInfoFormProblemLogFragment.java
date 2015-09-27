@@ -1,6 +1,8 @@
 package com.example.keith.fyp.views.fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -17,8 +19,10 @@ import android.widget.TextView;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
-import com.example.keith.fyp.models.Allergy;
 import com.example.keith.fyp.models.ProblemLog;
+import com.example.keith.fyp.utils.DataHolder;
+import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.adapters.ProblemLogListAdapter;
 import com.example.keith.fyp.views.decorators.SpacesCardItemDecoration;
 
@@ -38,6 +42,7 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
     private Button cancelNewProblemLogButton;
     private Button addNewProblemLogButton;
     private MaterialSpinner newProblemLogCategorySpinner;
+    private EditText addProblemLogFromDateEditText;
     private EditText newProblemLogNotesEditText;
     private ExpandableLayout addProblemLogExpandableLayout;
 
@@ -54,6 +59,9 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
+        addProblemLogFromDateEditText = (EditText) rootView.findViewById(R.id.add_problem_log_from_date_edit_text);
+        UtilsUi.setupEditTextToBeDatePicker(addProblemLogFromDateEditText, "Select problem log from date");
+
         problemLogRecyclerView = (RecyclerView) rootView.findViewById(R.id.problem_log_recycler_view);
         problemLogRecyclerView.setLayoutManager(layoutManager);
         problemLogRecyclerView.setAdapter(problemLogListAdapter);
@@ -68,6 +76,10 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
             public boolean onTouch(View v, MotionEvent event) {
                 if (addProblemLogExpandableLayout.isOpened()) {
                     resetNewProblemLogFields();
+                } else {
+                    DateTime currentDateTime = DateTime.now();
+                    String currentDateStr = currentDateTime.toString(Global.DATE_FORMAT);
+                    addProblemLogFromDateEditText.setText(currentDateStr);
                 }
                 return false;
             }
@@ -113,7 +125,7 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
     }
 
     private void createAndAddProblemLog() {
-        DateTime creationDate = DateTime.now();
+        DateTime creationDate = Global.DATE_FORMAT.parseDateTime(addProblemLogFromDateEditText.getText().toString());
         String category = newProblemLogCategorySpinner.getSelectedItem().toString();
         String notes = newProblemLogNotesEditText.getText().toString();
 
@@ -121,6 +133,16 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
 
         ProblemLog newProblemLog = new ProblemLog(creationDate, category, notes);
 
+        ProblemLog similarLog = UtilsUi.isSimilarProblemLogExist(newProblemLog);
+
+        if (similarLog != null) {
+            openSimilarProblemLogDialog(newProblemLog, similarLog);
+        } else {
+            addProblemLog(newProblemLog);
+        }
+    }
+
+    private void addProblemLog(ProblemLog newProblemLog) {
         problemLogList.add(0, newProblemLog);
         problemLogListAdapter.notifyItemInserted(0);
 
@@ -130,7 +152,24 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
         hideKeyboard();
     }
 
+    private void openSimilarProblemLogDialog(final ProblemLog newProblemLog, ProblemLog similarLog) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        DateTime shownDate = similarLog.getCreationDate();
+        if(similarLog.getToDate() != null) {
+            shownDate = similarLog.getToDate();
+        }
+        String message = "On " + shownDate.toString(Global.DATE_FORMAT) + " the patient have a similar problem with the " + similarLog.getCategory() + " category. Are you sure you want to add this log?";
+        builder.setMessage(message);
+        builder.setPositiveButton(R.string.button_add_problem_log_anyway, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                addProblemLog(newProblemLog);
+            }
+        });
+        builder.show();
+    }
+
     private void resetNewProblemLogFields() {
+        addProblemLogFromDateEditText.setText(null);
         newProblemLogCategorySpinner.setSelection(0);
         newProblemLogNotesEditText.setText(null);
     }

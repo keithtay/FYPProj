@@ -11,14 +11,18 @@ import android.widget.TextView;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Event;
+import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.ProblemLog;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
+import com.example.keith.fyp.views.customviews.DateField;
 import com.example.keith.fyp.views.customviews.SpinnerField;
 import com.example.keith.fyp.views.customviews.TextField;
 
 import org.joda.time.DateTime;
+import org.joda.time.Duration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,8 +45,7 @@ public class ViewScheduleActivity extends ScheduleActivity {
         viewMoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ViewScheduleActivity.this, ViewPatientActivity.class);
-                startActivity(intent);
+                openViewPatientInfoActivity(null);
             }
         });
 
@@ -50,52 +53,7 @@ public class ViewScheduleActivity extends ScheduleActivity {
         logProblemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ViewScheduleActivity.this);
-
-                builder.setTitle(R.string.dialog_title_add_new_problem_log);
-
-                LayoutInflater inflater = getLayoutInflater();
-                View rootView = inflater.inflate(R.layout.dialog_log_problem, null);
-
-                final SpinnerField categorySpinnerField = (SpinnerField) rootView.findViewById(R.id.problem_log_category);
-                final TextField notesTextField = (TextField) rootView.findViewById(R.id.problem_log_notes);
-
-                String[] problemLogCategoryArray = getResources().getStringArray(R.array.option_problem_log_category);
-                final ArrayList<String> problemLogCategoryList = new ArrayList<String>(Arrays.asList(problemLogCategoryArray));
-
-                categorySpinnerField.setSpinnerItems(problemLogCategoryArray);
-                categorySpinnerField.setSpinnerFieldItemSelectedListener(new SpinnerField.OnSpinnerFieldItemSelectedListener() {
-                    @Override
-                    public void onSpinnerFieldItemSelected(int index) {
-                        String selectedCategoryStr = problemLogCategoryList.get(index);
-                        categorySpinnerField.changeDisplayedText(selectedCategoryStr);
-                    }
-                });
-
-                builder.setView(rootView);
-
-                builder.setPositiveButton(R.string.dialog_button_add, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // TODO: check for field values
-
-                        DateTime creationDate = DateTime.now();
-                        String category = categorySpinnerField.getText();
-                        String notes = notesTextField.getText();
-
-                        ProblemLog newProblemLog = new ProblemLog(creationDate, category, notes);
-
-                        DataHolder.getViewedPatient().getProblemLogList().add(newProblemLog);
-                    }
-                });
-                builder.setNegativeButton(R.string.dialog_button_cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
-                    }
-                });
-
-                AlertDialog dialog = builder.create();
-
-                dialog.show();
+                openProblemLogFormDialog();
             }
         });
 
@@ -103,8 +61,95 @@ public class ViewScheduleActivity extends ScheduleActivity {
         displaySchedule();
     }
 
-    public void openEditScheduleActivity(View view)
-    {
+    private void openViewPatientInfoActivity(Bundle bundle) {
+        Intent intent = new Intent(ViewScheduleActivity.this, ViewPatientActivity.class);
+        if(bundle != null) {
+            intent.putExtras(bundle);
+        }
+        startActivity(intent);
+    }
+
+    private void openProblemLogFormDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ViewScheduleActivity.this);
+
+        builder.setTitle(R.string.dialog_title_add_new_problem_log);
+
+        LayoutInflater inflater = getLayoutInflater();
+        View rootView = inflater.inflate(R.layout.dialog_log_problem, null);
+
+        final DateField fromDateDateField = (DateField) rootView.findViewById(R.id.problem_log_from_date);
+        fromDateDateField.setText(DateTime.now().toString(Global.DATE_FORMAT));
+
+        final SpinnerField categorySpinnerField = (SpinnerField) rootView.findViewById(R.id.problem_log_category);
+        final TextField notesTextField = (TextField) rootView.findViewById(R.id.problem_log_notes);
+
+        String[] problemLogCategoryArray = getResources().getStringArray(R.array.option_problem_log_category);
+        final ArrayList<String> problemLogCategoryList = new ArrayList<String>(Arrays.asList(problemLogCategoryArray));
+
+        categorySpinnerField.setSpinnerItems(problemLogCategoryArray);
+        categorySpinnerField.setSpinnerFieldItemSelectedListener(new SpinnerField.OnSpinnerFieldItemSelectedListener() {
+            @Override
+            public void onSpinnerFieldItemSelected(int index) {
+                String selectedCategoryStr = problemLogCategoryList.get(index);
+                categorySpinnerField.changeDisplayedText(selectedCategoryStr);
+            }
+        });
+
+        builder.setView(rootView);
+
+        builder.setPositiveButton(R.string.dialog_button_add, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // TODO: check for field values
+
+                DateTime creationDate = Global.DATE_FORMAT.parseDateTime(fromDateDateField.getText().toString());
+                String category = categorySpinnerField.getText();
+                String notes = notesTextField.getText();
+                ProblemLog newProblemLog = new ProblemLog(creationDate, category, notes);
+
+                ProblemLog similarLog = UtilsUi.isSimilarProblemLogExist(newProblemLog);
+
+                if (similarLog != null) {
+                    openSimilarProblemLogDialog(newProblemLog, similarLog);
+                } else {
+                    DataHolder.getViewedPatient().getProblemLogList().add(0, newProblemLog);
+                }
+            }
+        });
+        builder.setNegativeButton(R.string.dialog_button_cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
+    }
+
+    private void openSimilarProblemLogDialog(final ProblemLog newProblemLog, ProblemLog similarLog) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        DateTime shownDate = similarLog.getCreationDate();
+        if(similarLog.getToDate() != null) {
+            shownDate = similarLog.getToDate();
+        }
+        String message = "On " + shownDate.toString(Global.DATE_FORMAT) + " the patient have a similar problem with the " + similarLog.getCategory() + " category. Are you sure you want to add this log?";
+        builder.setMessage(message);
+        builder.setPositiveButton(R.string.button_add_problem_log_anyway, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                DataHolder.getViewedPatient().getProblemLogList().add(0, newProblemLog);
+            }
+        });
+        builder.setNegativeButton(R.string.button_view_similar_log, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(Global.EXTRA_OPEN_PROBLEM_LOG_TAB, true);
+                openViewPatientInfoActivity(bundle);
+            }
+        });
+        builder.show();
+    }
+
+    public void openEditScheduleActivity(View view) {
         Intent intent = new Intent(ViewScheduleActivity.this, EditScheduleActivity.class);
         startActivity(intent);
     }

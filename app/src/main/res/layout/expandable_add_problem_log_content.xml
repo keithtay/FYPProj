@@ -29,22 +29,44 @@
                 android:paddingRight="@dimen/paper_card_padding"
                 android:paddingTop="@dimen/paper_card_padding">
 
-                <fr.ganfra.materialspinner.MaterialSpinner
-                    android:id="@+id/add_problem_log_category_spinner"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="-8dp"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    app:ms_alignLabels="false"
-                    app:ms_arrowColor="@color/text_color_light"
-                    app:ms_arrowSize="12dp"
-                    app:ms_baseColor="@color/text_color_light"
-                    app:ms_errorColor="@color/text_color_error"
-                    app:ms_floatingLabelColor="@color/text_color_light"
-                    app:ms_floatingLabelText="Category"
-                    app:ms_hint="Category"
-                    app:ms_multiline="false" />
+                    android:orientation="horizontal">
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                        <EditText
+                            android:id="@+id/add_problem_log_from_date_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="From Date"
+                            android:inputType="date" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <View
+                        android:layout_width="@dimen/paper_card_row_spacing"
+                        android:layout_height="0dp" />
+
+                    <fr.ganfra.materialspinner.MaterialSpinner
+                        android:id="@+id/add_problem_log_category_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginTop="-8dp"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        app:ms_alignLabels="false"
+                        app:ms_arrowColor="@color/text_color_light"
+                        app:ms_arrowSize="12dp"
+                        app:ms_baseColor="@color/text_color_light"
+                        app:ms_errorColor="@color/text_color_error"
+                        app:ms_floatingLabelColor="@color/text_color_light"
+                        app:ms_floatingLabelText="Category"
+                        app:ms_hint="Category"
+                        app:ms_multiline="false" />
+                </LinearLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"

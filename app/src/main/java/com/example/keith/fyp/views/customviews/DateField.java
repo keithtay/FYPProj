@@ -28,6 +28,11 @@ public class DateField extends CustomField implements View.OnClickListener {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+
+        if(alwaysEditable) {
+            enableEditTextField(false);
+            fieldValueEditText.setOnClickListener(this);
+        }
     }
 
     public void collapse() {

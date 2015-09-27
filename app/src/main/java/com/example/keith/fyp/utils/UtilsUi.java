@@ -19,6 +19,8 @@ import android.widget.TimePicker;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Notification;
+import com.example.keith.fyp.models.Patient;
+import com.example.keith.fyp.models.ProblemLog;
 import com.example.keith.fyp.views.fragments.HomeScheduleFragment;
 import com.example.keith.fyp.views.fragments.NotificationFragment;
 import com.example.keith.fyp.views.fragments.PatientListFragment;
@@ -175,5 +177,40 @@ public class UtilsUi {
         }
 
         return count;
+    }
+
+    public static ProblemLog isSimilarProblemLogExist(ProblemLog newProblemLog) {
+        ProblemLog similarLog = null;
+
+        String newCategory = newProblemLog.getCategory();
+        DateTime newCreationDate = newProblemLog.getCreationDate();
+
+        Patient viewedPatient = DataHolder.getViewedPatient();
+        ArrayList<ProblemLog> problemLogList = viewedPatient.getProblemLogList();
+        for (ProblemLog problemLog : problemLogList) {
+            String currentCategory = problemLog.getCategory();
+            if (!currentCategory.equals(newCategory)) {
+                continue;
+            }
+
+            DateTime compareDate = null;
+            DateTime existingToDate = problemLog.getCreationDate();
+            if(existingToDate != null) {
+                compareDate = existingToDate;
+            } else {
+                DateTime existingFromDate = problemLog.getCreationDate();
+                compareDate = existingFromDate;
+            }
+
+            Duration duration = new Duration(compareDate, newCreationDate);
+            boolean isBeforeOrEqual = compareDate.isBefore(newCreationDate) || compareDate.isEqual(newCreationDate);
+            boolean isBetweenOneDay = duration.getStandardDays() <= 1;
+            if (isBetweenOneDay && isBeforeOrEqual) {
+                similarLog = problemLog;
+                break;
+            }
+        }
+
+        return similarLog;
     }
 }
