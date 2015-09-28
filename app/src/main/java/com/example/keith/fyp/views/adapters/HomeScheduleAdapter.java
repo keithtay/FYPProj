@@ -2,6 +2,7 @@ package com.example.keith.fyp.views.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,9 @@ import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.Schedule;
 import com.example.keith.fyp.views.activities.ViewScheduleActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -60,6 +63,23 @@ public class HomeScheduleAdapter extends RecyclerView.Adapter<HomeScheduleAdapte
         holder.patientName.setText(currentSchedule.getName());
         holder.patientNric.setText(currentSchedule.getNric());
         holder.currActivity.setText(currentSchedule.getcActivity());
+
+        holder.nextActivityTime.setText(currentSchedule.getnActivityTime());
+
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm ");
+        String strDate = sdf.format(c.getTime());
+        int a1 = Integer.parseInt(strDate.substring(0, 2));
+        int a2 = Integer.parseInt(strDate.substring(3, 5));
+        String strDate2 = currentSchedule.getnActivityTime();
+        int b1 = Integer.parseInt(strDate2.substring(0, 2));
+        int b2 = Integer.parseInt(strDate2.substring(3, 5));
+        if (b1-a1 == 0 && b2-a2 <= 15){
+            holder.nextActivityTime.setTextColor(Color.rgb(255,0,0));
+        }else{
+            holder.nextActivityTime.setTextColor(Color.rgb(0,0,0));
+        }
+
         holder.nextActivity.setText(currentSchedule.getnActivity());
 
     }
@@ -78,18 +98,20 @@ public class HomeScheduleAdapter extends RecyclerView.Adapter<HomeScheduleAdapte
     }
 
     class HomeScheduleHolder extends RecyclerView.ViewHolder {
-        ImageButton patientPhoto;
+        ImageView patientPhoto;
         TextView patientName;
         TextView patientNric;
         TextView currActivity;
         TextView nextActivity;
+        TextView nextActivityTime;
 
         public HomeScheduleHolder(View itemView) {
             super(itemView);
-            patientPhoto = (ImageButton) itemView.findViewById(R.id.patientImage1);
+            patientPhoto = (ImageView) itemView.findViewById(R.id.patientImage1);
             patientName = (TextView) itemView.findViewById(R.id.pid);
             patientNric = (TextView) itemView.findViewById(R.id.pname);
             currActivity = (TextView) itemView.findViewById(R.id.cActivity);
+            nextActivityTime = (TextView) itemView.findViewById(R.id.nActivityTime);
             nextActivity = (TextView) itemView.findViewById(R.id.nActivity);
         }
     }

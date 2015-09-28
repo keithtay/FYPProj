@@ -1,6 +1,8 @@
 package com.example.keith.fyp.views.fragments;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,9 +13,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.models.FilterList;
 import com.example.keith.fyp.models.Schedule;
 import com.example.keith.fyp.views.customviews.ScheduleRecycleView;
 import com.example.keith.fyp.views.adapters.HomeScheduleAdapter;
@@ -21,6 +30,7 @@ import com.example.keith.fyp.views.adapters.HomeScheduleAdapter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -30,7 +40,7 @@ public class HomeScheduleFragment extends Fragment {
     private View rootView;
     private ScheduleRecycleView scheduleRecyclerView;
     private HomeScheduleAdapter scheduleAdapter;
-
+    private SpinAdapter adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.home_schedule, container, false);
@@ -44,11 +54,52 @@ public class HomeScheduleFragment extends Fragment {
 
         TextView t1 = (TextView) rootView.findViewById(R.id.currentTimeDisplay);
 
-
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm ");
         String strDate = sdf.format(c.getTime());
         t1.setText("Current Time: " + strDate);
+
+        FilterList[] filter = new FilterList[3];
+        filter[0] = new FilterList();
+        filter[0].setId(1);
+        filter[0].setName("Filter By: Patient's Name");
+        filter[1] = new FilterList();
+        filter[1].setId(2);
+        filter[1].setName("Filter By: Patient's ID");
+        filter[2] = new FilterList();
+        filter[2].setId(3);
+        filter[2].setName("Filter By: Next Activity Time");
+
+         adapter = new SpinAdapter(getActivity(), android.R.layout.simple_spinner_item, filter);
+        Spinner s = (Spinner) rootView.findViewById(R.id.spinnerFilter);
+        s.setAdapter(adapter);
+        s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view,
+                                       int position, long id) {
+                // Here you get the current item (a User object) that is selected by its position
+                FilterList filter = adapter.getItem(position);
+                List<Schedule> getFilterList = new ArrayList<Schedule>();
+                getFilterList = getScheduleList();
+                // Here you can do the action you want to...
+                if(filter.getId() == 1){
+                    Collections.sort(getFilterList, Schedule.COMPARE_BY_NAME);
+                }else if(filter.getId() == 2 ){
+                    Collections.sort(getFilterList, Schedule.COMPARE_BY_ID);
+                }else{
+                    Collections.sort(getFilterList, Schedule.COMPARE_BY_SCHEDULE);
+                }
+                scheduleAdapter = new HomeScheduleAdapter(getActivity(), getFilterList);
+                scheduleRecyclerView = (ScheduleRecycleView) rootView.findViewById(R.id.test);
+                scheduleRecyclerView.setAdapter(scheduleAdapter);
+                Toast.makeText(getActivity(), "Name: " + filter.getName(),
+                        Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapter) {  }
+        });
+
         // ================
         // Prepare the patient list
         // ================
@@ -57,19 +108,64 @@ public class HomeScheduleFragment extends Fragment {
         scheduleRecyclerView = (ScheduleRecycleView) rootView.findViewById(R.id.test);
         scheduleRecyclerView.setAdapter(scheduleAdapter);
         scheduleRecyclerView.setNoSearchResultView(rootView.findViewById(R.id.no_search_result_container1));
-//        scheduleRecyclerView.setNoPatientView(rootView.findViewById(R.id.no_patient_container));
-//        scheduleRecyclerView.addItemDecoration(
-//                new SpacesItemDecoration((int) getResources().getDimension(R.dimen.activity_content_container_padding)));
-//
-//        createPatientFab = (FloatingActionButton) rootView.findViewById(R.id.create_patient_fab);
-//        createPatientFab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                openCreatePatientActivity();
-//            }
-//        });
 
         return rootView;
+    }
+    public class SpinAdapter extends ArrayAdapter<FilterList>{
+
+        // Your sent context
+        private Context context;
+        // Your custom values for the spinner (User)
+        private FilterList[] values;
+
+        public SpinAdapter(Context context, int textViewResourceId,
+                           FilterList[] values) {
+            super(context, textViewResourceId, values);
+            this.context = context;
+            this.values = values;
+        }
+
+        public int getCount(){
+            return values.length;
+        }
+
+        public FilterList getItem(int position){
+            return values[position];
+        }
+
+        public long getItemId(int position){
+            return position;
+        }
+
+
+        // And the "magic" goes here
+        // This is for the "passive" state of the spinner
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            // I created a dynamic TextView here, but you can reference your own  custom layout for each spinner item
+            TextView label = new TextView(context);
+            label.setTextColor(Color.RED);
+            label.setTextSize(17);
+            // Then you can get the current item using the values array (Users array) and the current position
+            // You can NOW reference each method you has created in your bean object (User class)
+            label.setText(values[position].getName());
+
+            // And finally return your dynamic (or custom) view for each spinner item
+            return label;
+        }
+
+        // And here is when the "chooser" is popped up
+        // Normally is the same view, but you can customize it if you want
+        @Override
+        public View getDropDownView(int position, View convertView,
+                                    ViewGroup parent) {
+            TextView label = new TextView(context);
+            label.setTextColor(Color.BLACK);
+            label.setText(values[position].getName());
+            label.setTextSize(17);
+
+            return label;
+        }
     }
 
     private List<Schedule> getScheduleList() {
@@ -123,6 +219,17 @@ public class HomeScheduleFragment extends Fragment {
                 "Game",
         };
 
+        String[] nActivityTime = {"16:30hrs- 17:00hrs",
+                "16:30hrs- 17:00hrs",
+                "16:35hrs- 17:00hrs",
+                "16:40hrs- 17:00hrs",
+                "16:45hrs- 17:00hrs",
+                "16:50hrs- 17:00hrs",
+                "16:55hrs- 17:00hrs",
+                "17:00hrs- 17:00hrs",
+                "17:30hrs- 18:00hrs",
+                "17:30hrs- 18:00hrs",
+        };
         String[] nActivity = {"Eat",
                 "Eat",
                 "Eat",
@@ -135,7 +242,7 @@ public class HomeScheduleFragment extends Fragment {
                 "Eat",
         };
         for (int i = 0; i < photoid.length; i++) {
-            Schedule schedule1 = new Schedule(photoid[i], pname[i], pid[i], cActivity[i], nActivity[i]);
+            Schedule schedule1 = new Schedule(photoid[i], pname[i], pid[i], cActivity[i],nActivityTime[i], nActivity[i]);
             scheduleList.add(schedule1);
         }
 

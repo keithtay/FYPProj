@@ -3,6 +3,7 @@ package com.example.keith.fyp.models;
 import android.graphics.Bitmap;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Created by Sutrisno on 13/9/2015.
@@ -13,8 +14,17 @@ public class Schedule {
     private String nActivity;
     private String name;
     private String nric;
+    private String nActivityTime;
     private Bitmap photo;
     private int photoid;
+
+    public String getnActivityTime() {
+        return nActivityTime;
+    }
+
+    public void setnActivityTime(String nActivityTime) {
+        this.nActivityTime = nActivityTime;
+    }
 
     public int getPhotoid() {
         return photoid;
@@ -76,11 +86,33 @@ public class Schedule {
         this.eventList = eventList;
     }
 
-    public Schedule(int photoid, String firstName, String nric, String cActivity, String nActivity) {
+    public Schedule(int photoid, String firstName, String nric, String cActivity, String nActivityTime, String nActivity) {
         this.photoid = photoid;
         this.name = firstName;
         this.nric = nric;
         this.cActivity = cActivity;
+        this.nActivityTime = nActivityTime;
         this.nActivity = nActivity;
     }
+
+    public static Comparator<Schedule> COMPARE_BY_ID = new Comparator<Schedule>(){
+        @Override
+        public int compare(Schedule lhs, Schedule rhs) {
+            return lhs.getNric().compareTo(rhs.getNric());
+        }
+    };
+
+    public static Comparator<Schedule> COMPARE_BY_NAME = new Comparator<Schedule>(){
+        @Override
+        public int compare(Schedule lhs, Schedule rhs) {
+            return lhs.getName().compareTo(rhs.getName());
+        }
+    };
+
+    public static Comparator<Schedule> COMPARE_BY_SCHEDULE = new Comparator<Schedule>(){
+        @Override
+        public int compare(Schedule lhs, Schedule rhs) {
+            return lhs.getnActivityTime().compareTo(rhs.getnActivityTime());
+        }
+    };
 }

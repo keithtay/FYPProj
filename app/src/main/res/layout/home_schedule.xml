@@ -5,16 +5,47 @@
     android:orientation="vertical"
     android:paddingTop="@dimen/activity_content_container_padding">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Current Time: "
-        android:id="@+id/currentTimeDisplay"
-        style="@style/typo_title"
-        android:paddingBottom="5dp"
-        android:paddingLeft="@dimen/activity_content_container_padding"
-        android:paddingRight="@dimen/activity_content_container_padding" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Current Time: "
+                android:id="@+id/currentTimeDisplay"
+                style="@style/typo_title"
+                android:paddingBottom="5dp"
+                android:paddingLeft="@dimen/activity_content_container_padding"
+                android:paddingRight="@dimen/activity_content_container_padding" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:layout_gravity="right"
+            android:paddingRight="20dp">
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:id="@+id/spinnerFilter"
+                android:paddingRight="50dp"
+                android:layout_gravity="right"
+                android:focusableInTouchMode="false" />
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -113,12 +144,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Next Activity:"
+                android:text="Next Activity Time"
                 android:id="@+id/nextActivity"
                 style="@style/typo_title"/>
         </LinearLayout>
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/event_border"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:gravity="center_horizontal" >
+
+            <TextView
+                style="@style/typo_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Next Activity:"
+                android:id="@+id/textView" />
+        </LinearLayout>
+
     </LinearLayout>
+
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
