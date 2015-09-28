@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -41,6 +42,9 @@ public class HomeScheduleFragment extends Fragment {
     private ScheduleRecycleView scheduleRecyclerView;
     private HomeScheduleAdapter scheduleAdapter;
     private SpinAdapter adapter;
+    Handler handler = new Handler();
+    Runnable refresh;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.home_schedule, container, false);
@@ -52,10 +56,23 @@ public class HomeScheduleFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Patient's Current Activity");
 
 
-        TextView t1 = (TextView) rootView.findViewById(R.id.currentTimeDisplay);
+
+
+        refresh = new Runnable() {
+            public void run() {
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm ");
+                TextView t1 = (TextView) rootView.findViewById(R.id.currentTimeDisplay);
+                String strDate = sdf.format(c.getTime());
+                t1.setText("Current Time: " + strDate);
+                handler.postDelayed(refresh, 10000);
+            }
+        };
+        handler.post(refresh);
 
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm ");
+        TextView t1 = (TextView) rootView.findViewById(R.id.currentTimeDisplay);
         String strDate = sdf.format(c.getTime());
         t1.setText("Current Time: " + strDate);
 
