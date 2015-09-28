@@ -236,13 +236,13 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
 
                             switch (selectedIdentifier) {
                                 case NAVIGATION_PATIENT_LIST_ID:
-                                    fragmentToBeDisplayed = new PatientListFragment();
+                                    fragmentToBeDisplayed = new HomeScheduleFragment();
                                     break;
                                 case NAVIGATION_NOTIFICATION_ID:
                                     fragmentToBeDisplayed = new NotificationFragment();
                                     break;
                                 case 3:
-                                    fragmentToBeDisplayed = new HomeScheduleFragment();
+                                    fragmentToBeDisplayed = new PatientListFragment();
                                     break;
                                 case NAVIGATION_CARE_CENTER_CONFIG_ID:
                                     fragmentToBeDisplayed = new CareCenterConfigFragment();

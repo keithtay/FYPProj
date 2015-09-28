@@ -1,12 +1,18 @@
 package com.example.keith.fyp.views.fragments;
 
 import android.app.Fragment;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
@@ -25,6 +31,7 @@ import android.widget.Toast;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.FilterList;
 import com.example.keith.fyp.models.Schedule;
+import com.example.keith.fyp.views.activities.DashboardActivity;
 import com.example.keith.fyp.views.customviews.ScheduleRecycleView;
 import com.example.keith.fyp.views.adapters.HomeScheduleAdapter;
 
@@ -33,7 +40,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-
+import android.os.Bundle;
+import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 /**
  * Created by Keith on 22/9/2015.
  */
@@ -184,6 +197,10 @@ public class HomeScheduleFragment extends Fragment {
             return label;
         }
     }
+
+
+
+
 
     private List<Schedule> getScheduleList() {
         List<Schedule> scheduleList = new ArrayList<>();
