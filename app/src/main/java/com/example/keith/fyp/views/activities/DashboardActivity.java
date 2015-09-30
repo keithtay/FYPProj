@@ -6,18 +6,17 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.example.keith.fyp.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.broadcastreceiver.NotificationUpdateReceiver;
 import com.example.keith.fyp.interfaces.OnNotificationUpdateListener;
 import com.example.keith.fyp.models.Notification;
-import com.example.keith.fyp.utils.CrossfadeWrapper;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsUi;
@@ -25,20 +24,10 @@ import com.example.keith.fyp.views.fragments.CareCenterConfigFragment;
 import com.example.keith.fyp.views.fragments.HomeScheduleFragment;
 import com.example.keith.fyp.views.fragments.NotificationFragment;
 import com.example.keith.fyp.views.fragments.PatientListFragment;
-import com.mikepenz.crossfader.Crossfader;
-import com.mikepenz.fontawesome_typeface_library.FontAwesome;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.MiniDrawer;
-import com.mikepenz.materialdrawer.holder.BadgeStyle;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IProfile;
-import com.mikepenz.materialize.util.UIUtils;
 
 import org.joda.time.DateTime;
 
@@ -46,11 +35,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class DashboardActivity extends AppCompatActivity implements OnNotificationUpdateListener {
-
-    private final int NAVIGATION_PATIENT_LIST_ID = 1;
-    private final int NAVIGATION_NOTIFICATION_ID = 2;
-    private final int NAVIGATION_CARE_CENTER_CONFIG_ID = 4;
+public class DashboardActivity extends AppCompatActivity implements OnNotificationUpdateListener, Drawer.OnDrawerItemClickListener {
 
     private Drawer navDrawer;
     private MiniDrawer miniDrawer;
@@ -58,12 +43,6 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
     private NotificationUpdateReceiver notificationUpdateReceiver;
 
     private FragmentManager fragmentManager;
-
-    // Indicate which page of the navigation option is currently displayed
-    private int currentDisplayedFragmentId;
-
-    private BadgeStyle visibleStyle;
-    private BadgeStyle invisibleStyle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,28 +53,41 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
 
         retrieveNotification();
 
-        // Style of notification count badge (navigation drawer)
-        visibleStyle = new BadgeStyle(getResources().getColor(R.color.red_100), getResources().getColor(R.color.red_100));
-        visibleStyle.withTextColor(getResources().getColor(R.color.text_color_default));
-        invisibleStyle = new BadgeStyle(getResources().getColor(R.color.transparent), getResources().getColor(R.color.transparent));
-        invisibleStyle.withTextColor(getResources().getColor(R.color.transparent));
+        View contentWrapper = findViewById(R.id.dashboard_fragment_container);
+        DrawerAndMiniDrawerPair drawerAndMiniDrawerPair = UtilsUi.setNavigationDrawer(this, contentWrapper, this, savedInstanceState);
+        this.navDrawer = drawerAndMiniDrawerPair.getDrawer();
+        this.miniDrawer = drawerAndMiniDrawerPair.getMiniDrawer();
 
-        setNavigationDrawer(savedInstanceState);
+        Intent intent = getIntent();
+
         if(savedInstanceState != null && savedInstanceState.containsKey(Global.STATE_LAST_DISPLAYED_FRAGMENT_ID)) {
             int lastFragmentId = savedInstanceState.getInt(Global.STATE_LAST_DISPLAYED_FRAGMENT_ID);
             navDrawer.setSelection(lastFragmentId);
-            miniDrawer.updateItem(lastFragmentId);
+            refreshMiniDrawer();
+        } else if(intent.hasExtra(Global.EXTRA_SELECTED_NAVIGATION_ID)) {
+            int selectedNavigationId = intent.getIntExtra(Global.EXTRA_SELECTED_NAVIGATION_ID, 0);
+            navDrawer.setSelection(selectedNavigationId);
+            refreshMiniDrawer();
         } else {
-            navDrawer.setSelection(NAVIGATION_PATIENT_LIST_ID);
-            miniDrawer.updateItem(NAVIGATION_PATIENT_LIST_ID);
+            navDrawer.setSelection(Global.NAVIGATION_PATIENT_LIST_ID);
+            refreshMiniDrawer();
         }
 
         notificationUpdateReceiver = new NotificationUpdateReceiver(this);
     }
 
+    private void refreshMiniDrawer() {
+        miniDrawer.updateItem(0);
+        miniDrawer.updateItem(1);
+        miniDrawer.updateItem(2);
+        miniDrawer.updateItem(3);
+        miniDrawer.updateItem(4);
+        miniDrawer.updateItem(5);
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(Global.STATE_LAST_DISPLAYED_FRAGMENT_ID, currentDisplayedFragmentId);
+        outState.putInt(Global.STATE_LAST_DISPLAYED_FRAGMENT_ID, UtilsUi.getCurrentDisplayedFragmentId());
         super.onSaveInstanceState(outState);
     }
 
@@ -172,117 +164,15 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         PrimaryDrawerItem notificationNav = (PrimaryDrawerItem) navDrawer.getDrawerItem(2);
 
         if(notificationCount == 0) {
-            notificationNav = notificationNav.withBadgeStyle(invisibleStyle);
+            notificationNav = notificationNav.withBadgeStyle(UtilsUi.getInvisibleBadgeStyle(this));
         } else {
             String notificationCountStr = Integer.toString(notificationCount);
-            notificationNav = notificationNav.withBadgeStyle(visibleStyle);
+            notificationNav = notificationNav.withBadgeStyle(UtilsUi.getVisibleBadgeStyle(this));
             notificationNav = notificationNav.withBadge(notificationCountStr);
 
         }
         navDrawer.updateItem(notificationNav);
         miniDrawer.updateItem(2);
-    }
-
-    private void setNavigationDrawer(Bundle savedInstanceState) {
-        Resources resource = getResources();
-        final IProfile profile = new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").withIcon(resource.getDrawable(R.drawable.avatar1));
-
-        AccountHeader accountHeader = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withHeaderBackground(R.drawable.account_header)
-                .withTranslucentStatusBar(false)
-                .addProfiles(profile)
-                .withSavedInstance(savedInstanceState)
-                .build();
-
-        PrimaryDrawerItem homeDrawerItem = new PrimaryDrawerItem()
-                .withName(R.string.nav_patient_list)
-                .withIcon(GoogleMaterial.Icon.gmd_supervisor_account)
-                .withIdentifier(NAVIGATION_PATIENT_LIST_ID);
-        String notificationCount = Integer.toString(UtilsUi.countUnacceptedAndUnrejectedNotification());
-        PrimaryDrawerItem notificationDrawerItem = new PrimaryDrawerItem()
-                .withName(R.string.nav_notification)
-                .withIcon(GoogleMaterial.Icon.gmd_notifications)
-                .withBadge(notificationCount)
-                .withBadgeStyle(visibleStyle)
-                .withIdentifier(NAVIGATION_NOTIFICATION_ID);
-        PrimaryDrawerItem accountDrawerItem = new PrimaryDrawerItem()
-                .withName(R.string.nav_account)
-                .withIcon(GoogleMaterial.Icon.gmd_person)
-                .withIdentifier(3);
-        PrimaryDrawerItem settingsDrawerItem = new PrimaryDrawerItem()
-                .withName(R.string.nav_care_center_config)
-                .withIcon(FontAwesome.Icon.faw_building)
-                .withIdentifier(NAVIGATION_CARE_CENTER_CONFIG_ID);
-
-        Drawer navigationDrawer = new DrawerBuilder()
-                .withActivity(this)
-                .withTranslucentStatusBar(false)
-                .withAccountHeader(accountHeader)
-                .addDrawerItems(
-                        homeDrawerItem,
-                        notificationDrawerItem,
-                        accountDrawerItem,
-                        settingsDrawerItem
-                )
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        int selectedIdentifier = drawerItem.getIdentifier();
-
-                        // Change fragment when the selected navigation is not
-                        // the one currently being displayed
-                        if (selectedIdentifier != currentDisplayedFragmentId) {
-                            Fragment fragmentToBeDisplayed = null;
-
-                            switch (selectedIdentifier) {
-                                case NAVIGATION_PATIENT_LIST_ID:
-                                    fragmentToBeDisplayed = new HomeScheduleFragment();
-                                    break;
-                                case NAVIGATION_NOTIFICATION_ID:
-                                    fragmentToBeDisplayed = new NotificationFragment();
-                                    break;
-                                case 3:
-                                    fragmentToBeDisplayed = new PatientListFragment();
-                                    break;
-                                case NAVIGATION_CARE_CENTER_CONFIG_ID:
-                                    fragmentToBeDisplayed = new CareCenterConfigFragment();
-                                    break;
-                            }
-
-                            miniDrawer.updateItem(currentDisplayedFragmentId);
-
-                            changeContentFragment(fragmentToBeDisplayed);
-
-                            currentDisplayedFragmentId = selectedIdentifier;
-                        }
-
-                        return true;
-                    }
-                })
-                .withSavedInstance(savedInstanceState)
-                .buildView();
-
-        this.miniDrawer = new MiniDrawer()
-                .withDrawer(navigationDrawer)
-                .withInnerShadow(true)
-                .withAccountHeader(accountHeader);
-
-        int first = (int) UIUtils.convertDpToPixel(300, this);
-        int second = (int) UIUtils.convertDpToPixel(72, this);
-
-        View contentWrapper = findViewById(R.id.dashboard_fragment_container);
-
-        Crossfader crossFader = new Crossfader()
-                .withContent(contentWrapper)
-                .withFirst(navigationDrawer.getSlider(), first)
-                .withSecond(miniDrawer.build(this), second)
-                .withSavedInstance(savedInstanceState)
-                .build();
-
-        miniDrawer.withCrossFader(new CrossfadeWrapper(crossFader));
-
-        this.navDrawer = navigationDrawer;
     }
 
     @Override
@@ -293,8 +183,8 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
                 if (resultCode == Activity.RESULT_OK) {
                     boolean isFromNotificationDetailActivity = data.getBooleanExtra(Global.EXTRA_FROM_NOTIFICATION_DETAIL_ACTIVITY, false);
                     if(isFromNotificationDetailActivity) {
-                        navDrawer.setSelection(NAVIGATION_NOTIFICATION_ID);
-                        miniDrawer.updateItem(NAVIGATION_NOTIFICATION_ID);
+                        navDrawer.setSelection(Global.NAVIGATION_NOTIFICATION_ID);
+                        miniDrawer.updateItem(Global.NAVIGATION_NOTIFICATION_ID);
                     }
                 }
                 break;
@@ -302,10 +192,41 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         }
     }
 
-    private void changeContentFragment(Fragment fragmentToBeDisplayed) {
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.dashboard_fragment_container, fragmentToBeDisplayed);
-        transaction.addToBackStack(null);
-        transaction.commit();
+    @Override
+    public boolean onItemClick(View view, int i, IDrawerItem drawerItem) {
+        int selectedIdentifier = drawerItem.getIdentifier();
+
+        // Change fragment when the selected navigation is not
+        // the one currently being displayed
+        int currentDisplayedFragmentId = UtilsUi.getCurrentDisplayedFragmentId();
+        if (selectedIdentifier != currentDisplayedFragmentId || currentDisplayedFragmentId == Global.NAVIGATION_PATIENT_LIST_ID) {
+            Fragment fragmentToBeDisplayed = null;
+
+            switch (selectedIdentifier) {
+                case Global.NAVIGATION_PATIENT_LIST_ID:
+                    fragmentToBeDisplayed = new HomeScheduleFragment();
+                    break;
+                case Global.NAVIGATION_NOTIFICATION_ID:
+                    fragmentToBeDisplayed = new NotificationFragment();
+                    break;
+                case 3:
+                    fragmentToBeDisplayed = new PatientListFragment();
+                    break;
+                case Global.NAVIGATION_CARE_CENTER_CONFIG_ID:
+                    fragmentToBeDisplayed = new CareCenterConfigFragment();
+                    break;
+            }
+
+            miniDrawer.updateItem(currentDisplayedFragmentId);
+
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.dashboard_fragment_container, fragmentToBeDisplayed);
+            transaction.addToBackStack(null);
+            transaction.commit();
+
+            UtilsUi.setCurrentDisplayedFragmentId(selectedIdentifier);
+        }
+
+        return true;
     }
 }

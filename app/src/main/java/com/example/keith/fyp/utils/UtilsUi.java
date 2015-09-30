@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -17,14 +18,17 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TimePicker;
 
+import com.example.keith.fyp.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Notification;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.ProblemLog;
+import com.example.keith.fyp.views.fragments.CareCenterConfigFragment;
 import com.example.keith.fyp.views.fragments.HomeScheduleFragment;
 import com.example.keith.fyp.views.fragments.NotificationFragment;
 import com.example.keith.fyp.views.fragments.PatientListFragment;
 import com.mikepenz.crossfader.Crossfader;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -48,6 +52,35 @@ import java.util.Calendar;
  * Created by Sutrisno on 6/9/2015.
  */
 public class UtilsUi {
+
+    // Style of notification count badge (navigation drawer)
+    public static BadgeStyle visibleStyle;
+    public static BadgeStyle invisibleStyle;
+
+    // Indicate which page of the navigation option is currently displayed
+    private static int currentDisplayedFragmentId;
+
+    public static BadgeStyle getVisibleBadgeStyle(Context context) {
+        if(visibleStyle == null) {
+            visibleStyle = new BadgeStyle(context.getResources().getColor(R.color.red_100), context.getResources().getColor(R.color.red_100));
+        }
+        return visibleStyle;
+    }
+
+    public static BadgeStyle getInvisibleBadgeStyle(Context context) {
+        if(invisibleStyle == null) {
+            invisibleStyle = new BadgeStyle(context.getResources().getColor(R.color.transparent), context.getResources().getColor(R.color.transparent));
+        }
+        return invisibleStyle;
+    }
+
+    public static int getCurrentDisplayedFragmentId() {
+        return currentDisplayedFragmentId;
+    }
+
+    public static void setCurrentDisplayedFragmentId(int currentDisplayedFragmentId) {
+        UtilsUi.currentDisplayedFragmentId = currentDisplayedFragmentId;
+    }
 
     public static String convertDurationToString(Duration duration) {
         String durationStr = Long.toString(duration.getStandardMinutes()) + " min";
@@ -214,5 +247,73 @@ public class UtilsUi {
         }
 
         return similarLog;
+    }
+
+    public static DrawerAndMiniDrawerPair setNavigationDrawer(Activity activity, View contentWrapper, Drawer.OnDrawerItemClickListener drawerItemClickListener, Bundle savedInstanceState) {
+        Resources resource = activity.getResources();
+        final IProfile profile = new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").withIcon(resource.getDrawable(R.drawable.avatar1));
+
+        AccountHeader accountHeader = new AccountHeaderBuilder()
+                .withActivity(activity)
+                .withHeaderBackground(R.drawable.account_header)
+                .withTranslucentStatusBar(false)
+                .addProfiles(profile)
+                .withSavedInstance(savedInstanceState)
+                .build();
+
+        PrimaryDrawerItem homeDrawerItem = new PrimaryDrawerItem()
+                .withName(R.string.nav_patient_list)
+                .withIcon(GoogleMaterial.Icon.gmd_supervisor_account)
+                .withIdentifier(Global.NAVIGATION_PATIENT_LIST_ID);
+        String notificationCount = Integer.toString(UtilsUi.countUnacceptedAndUnrejectedNotification());
+        PrimaryDrawerItem notificationDrawerItem = new PrimaryDrawerItem()
+                .withName(R.string.nav_notification)
+                .withIcon(GoogleMaterial.Icon.gmd_notifications)
+                .withBadge(notificationCount)
+                .withBadgeStyle(getVisibleBadgeStyle(activity))
+                .withIdentifier(Global.NAVIGATION_NOTIFICATION_ID);
+        PrimaryDrawerItem accountDrawerItem = new PrimaryDrawerItem()
+                .withName(R.string.nav_account)
+                .withIcon(GoogleMaterial.Icon.gmd_person)
+                .withIdentifier(3);
+        PrimaryDrawerItem settingsDrawerItem = new PrimaryDrawerItem()
+                .withName(R.string.nav_care_center_config)
+                .withIcon(FontAwesome.Icon.faw_building)
+                .withIdentifier(Global.NAVIGATION_CARE_CENTER_CONFIG_ID);
+
+        Drawer navigationDrawer = new DrawerBuilder()
+                .withActivity(activity)
+                .withTranslucentStatusBar(false)
+                .withAccountHeader(accountHeader)
+                .addDrawerItems(
+                        homeDrawerItem,
+                        notificationDrawerItem,
+                        accountDrawerItem,
+                        settingsDrawerItem
+                )
+                .withOnDrawerItemClickListener(drawerItemClickListener)
+                .withSavedInstance(savedInstanceState)
+                .buildView();
+
+        MiniDrawer miniDrawer = new MiniDrawer()
+                .withDrawer(navigationDrawer)
+                .withInnerShadow(true)
+                .withAccountHeader(accountHeader);
+
+        int first = (int) UIUtils.convertDpToPixel(300, activity);
+        int second = (int) UIUtils.convertDpToPixel(72, activity);
+
+        Crossfader crossFader = new Crossfader()
+                .withContent(contentWrapper)
+                .withFirst(navigationDrawer.getSlider(), first)
+                .withSecond(miniDrawer.build(activity), second)
+                .withSavedInstance(savedInstanceState)
+                .build();
+
+        miniDrawer.withCrossFader(new CrossfadeWrapper(crossFader));
+
+        Drawer navDrawer = navigationDrawer;
+
+        return new DrawerAndMiniDrawerPair(navDrawer, miniDrawer);
     }
 }
