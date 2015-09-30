@@ -1,213 +1,238 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:paddingTop="@dimen/activity_content_container_padding">
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Current Time: "
-                android:id="@+id/currentTimeDisplay"
-                style="@style/typo_title"
-                android:paddingBottom="5dp"
-                android:paddingLeft="@dimen/activity_content_container_padding"
-                android:paddingRight="@dimen/activity_content_container_padding" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:layout_gravity="right"
-            android:paddingRight="20dp">
-
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:id="@+id/spinnerFilter"
-                android:paddingRight="50dp"
-                android:layout_gravity="right"
-                android:focusableInTouchMode="false" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_content_container_padding"
-        android:paddingRight="@dimen/activity_content_container_padding">
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/event_border"
-            android:gravity="center_horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Patient&apos;s Image:"
-                android:id="@+id/patientImage"
-                style="@style/typo_title"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/event_border"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:gravity="center_horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Patient&apos;s Name:"
-                android:id="@+id/patientName"
-                style="@style/typo_title"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/event_border"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:gravity="center_horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Patient&apos;s ID:"
-                android:id="@+id/patientID"
-                style="@style/typo_title"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/event_border"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:gravity="center_horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Current Activity:"
-                android:id="@+id/currActivity"
-                style="@style/typo_title"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/event_border"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:gravity="center_horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Next Activity Time"
-                android:id="@+id/nextActivity"
-                style="@style/typo_title"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/event_border"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:gravity="center_horizontal" >
-
-            <TextView
-                style="@style/typo_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Next Activity:"
-                android:id="@+id/textView" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center">
-    <com.example.keith.fyp.views.customviews.ScheduleRecycleView
-        android:id="@+id/test"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:columnWidth="900dp"
-        android:paddingLeft="@dimen/activity_content_container_padding"
-        android:paddingRight="@dimen/activity_content_container_padding"></com.example.keith.fyp.views.customviews.ScheduleRecycleView>
-    <LinearLayout
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/scheduleListContainer1"
-        android:layout_gravity="center"></LinearLayout>
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/currentTimeDisplay"
+                    style="@style/typo_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="@dimen/activity_content_container_padding"
+                    android:paddingRight="@dimen/activity_content_container_padding"
+                    android:text="Current Time: "
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:orientation="horizontal"
+                android:paddingRight="20dp">
+
+                <Spinner
+                    android:id="@+id/spinnerFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_gravity="right"
+                    android:focusableInTouchMode="false"
+                    android:paddingRight="50dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_content_container_padding"
+            android:paddingRight="@dimen/activity_content_container_padding">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/event_border"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/patientImage"
+                    style="@style/typo_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="3dp"
+                    android:paddingTop="3dp"
+                    android:text="Patient&apos;s Image:"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/event_border"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="3dp"
+                android:paddingTop="3dp">
+
+                <TextView
+                    android:id="@+id/patientName"
+                    style="@style/typo_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Patient&apos;s Name:"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/event_border"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="3dp"
+                android:paddingTop="3dp">
+
+                <TextView
+                    android:id="@+id/patientID"
+                    style="@style/typo_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Patient&apos;s ID:"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/event_border"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="3dp"
+                android:paddingTop="3dp">
+
+                <TextView
+                    android:id="@+id/currActivity"
+                    style="@style/typo_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Current Activity:"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/event_border"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="3dp"
+                android:paddingTop="3dp">
+
+                <TextView
+                    android:id="@+id/nextActivity"
+                    style="@style/typo_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Next Activity Time"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/event_border"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="3dp"
+                android:paddingTop="3dp">
+
+                <TextView
+                    android:id="@+id/textView"
+                    style="@style/typo_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Next Activity:"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
+
+            <com.example.keith.fyp.views.customviews.ScheduleRecycleView
+                android:id="@+id/test"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnWidth="900dp"
+                android:paddingLeft="@dimen/activity_content_container_padding"
+                android:paddingRight="@dimen/activity_content_container_padding"></com.example.keith.fyp.views.customviews.ScheduleRecycleView>
+
+            <LinearLayout
+                android:id="@+id/scheduleListContainer1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:orientation="vertical"></LinearLayout>
 
 
-<LinearLayout
-android:id="@+id/no_search_result_container1"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:gravity="center_vertical|center|center_horizontal"
-    android:layout_gravity="center"
-    android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/no_search_result_container1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center_vertical|center|center_horizontal"
+                android:orientation="vertical">
 
-    <ImageView
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="300dp" />
+
+                <TextView
+                    android:id="@+id/no_search_result_notif1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical|center|center_horizontal"
+                    android:text="@string/no_search_patient_result_notif"
+                    android:textSize="24sp" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/create_patient_fab"
         android:layout_width="wrap_content"
-        android:layout_height="300dp"
-        android:id="@+id/imageView" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add_white_24dp"
+        fab:fab_colorNormal="@color/primary"
+        fab:fab_colorPressed="@color/primary_pressed"
+        fab:fab_colorRipple="@color/ripple" />
 
-    <TextView
-    android:id="@+id/no_search_result_notif1"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@string/no_search_patient_result_notif"
-    android:textSize="24sp"
-    android:gravity="center_vertical|center|center_horizontal"
-    android:layout_gravity="center" />
-</LinearLayout></FrameLayout></LinearLayout>
+</FrameLayout>
+

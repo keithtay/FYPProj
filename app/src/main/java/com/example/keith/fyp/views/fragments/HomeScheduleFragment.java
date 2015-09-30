@@ -31,9 +31,11 @@ import android.widget.Toast;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.FilterList;
 import com.example.keith.fyp.models.Schedule;
+import com.example.keith.fyp.views.activities.CreatePatientActivity;
 import com.example.keith.fyp.views.activities.DashboardActivity;
 import com.example.keith.fyp.views.customviews.ScheduleRecycleView;
 import com.example.keith.fyp.views.adapters.HomeScheduleAdapter;
+import com.melnykov.fab.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -54,6 +56,8 @@ public class HomeScheduleFragment extends Fragment {
     private View rootView;
     private ScheduleRecycleView scheduleRecyclerView;
     private HomeScheduleAdapter scheduleAdapter;
+    private FloatingActionButton createPatientFab;
+
     private SpinAdapter adapter;
     Handler handler = new Handler();
     Runnable refresh;
@@ -139,8 +143,22 @@ public class HomeScheduleFragment extends Fragment {
         scheduleRecyclerView.setAdapter(scheduleAdapter);
         scheduleRecyclerView.setNoSearchResultView(rootView.findViewById(R.id.no_search_result_container1));
 
+        createPatientFab = (FloatingActionButton) rootView.findViewById(R.id.create_patient_fab);
+        createPatientFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openCreatePatientActivity();
+            }
+        });
+
         return rootView;
     }
+
+    private void openCreatePatientActivity() {
+        Intent intent = new Intent(getActivity(), CreatePatientActivity.class);
+        startActivity(intent);
+    }
+
     public class SpinAdapter extends ArrayAdapter<FilterList>{
 
         // Your sent context

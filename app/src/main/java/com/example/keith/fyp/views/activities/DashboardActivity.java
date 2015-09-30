@@ -51,13 +51,13 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
     private final int NAVIGATION_PATIENT_LIST_ID = 1;
     private final int NAVIGATION_NOTIFICATION_ID = 2;
     private final int NAVIGATION_CARE_CENTER_CONFIG_ID = 4;
-    private final String STATE_LAST_DISPLAYED_FRAGMENT_ID = "LAST_DISPLAYED_FRAGMENT_ID";
-    public static final String EXTRA_FROM_NOTIFICATION_DETAIL_ACTIVITY = "EXTRA_FROM_NOTIFICATION_DETAIL_ACTIVITY";
 
     private Drawer navDrawer;
     private MiniDrawer miniDrawer;
 
     private NotificationUpdateReceiver notificationUpdateReceiver;
+
+    private FragmentManager fragmentManager;
 
     // Indicate which page of the navigation option is currently displayed
     private int currentDisplayedFragmentId;
@@ -70,6 +70,8 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        fragmentManager = getFragmentManager();
+
         retrieveNotification();
 
         // Style of notification count badge (navigation drawer)
@@ -79,8 +81,8 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         invisibleStyle.withTextColor(getResources().getColor(R.color.transparent));
 
         setNavigationDrawer(savedInstanceState);
-        if(savedInstanceState != null && savedInstanceState.containsKey(STATE_LAST_DISPLAYED_FRAGMENT_ID)) {
-            int lastFragmentId = savedInstanceState.getInt(STATE_LAST_DISPLAYED_FRAGMENT_ID);
+        if(savedInstanceState != null && savedInstanceState.containsKey(Global.STATE_LAST_DISPLAYED_FRAGMENT_ID)) {
+            int lastFragmentId = savedInstanceState.getInt(Global.STATE_LAST_DISPLAYED_FRAGMENT_ID);
             navDrawer.setSelection(lastFragmentId);
             miniDrawer.updateItem(lastFragmentId);
         } else {
@@ -93,7 +95,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(STATE_LAST_DISPLAYED_FRAGMENT_ID, currentDisplayedFragmentId);
+        outState.putInt(Global.STATE_LAST_DISPLAYED_FRAGMENT_ID, currentDisplayedFragmentId);
         super.onSaveInstanceState(outState);
     }
 
@@ -181,7 +183,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         miniDrawer.updateItem(2);
     }
 
-    public void setNavigationDrawer(Bundle savedInstanceState) {
+    private void setNavigationDrawer(Bundle savedInstanceState) {
         Resources resource = getResources();
         final IProfile profile = new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").withIcon(resource.getDrawable(R.drawable.avatar1));
 
@@ -230,8 +232,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
 
                         // Change fragment when the selected navigation is not
                         // the one currently being displayed
-                        if (selectedIdentifier != currentDisplayedFragmentId || selectedIdentifier == 1) {
-                            FragmentManager fragmentManager = getFragmentManager();
+                        if (selectedIdentifier != currentDisplayedFragmentId) {
                             Fragment fragmentToBeDisplayed = null;
 
                             switch (selectedIdentifier) {
@@ -251,10 +252,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
 
                             miniDrawer.updateItem(currentDisplayedFragmentId);
 
-                            FragmentTransaction transaction = fragmentManager.beginTransaction();
-                            transaction.replace(R.id.dashboard_fragment_container, fragmentToBeDisplayed);
-                            transaction.addToBackStack(null);
-                            transaction.commit();
+                            changeContentFragment(fragmentToBeDisplayed);
 
                             currentDisplayedFragmentId = selectedIdentifier;
                         }
@@ -293,7 +291,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         switch(requestCode) {
             case (NotificationFragment.REQUEST_OPEN_NOTIFICATION_DETAIL) : {
                 if (resultCode == Activity.RESULT_OK) {
-                    boolean isFromNotificationDetailActivity = data.getBooleanExtra(EXTRA_FROM_NOTIFICATION_DETAIL_ACTIVITY, false);
+                    boolean isFromNotificationDetailActivity = data.getBooleanExtra(Global.EXTRA_FROM_NOTIFICATION_DETAIL_ACTIVITY, false);
                     if(isFromNotificationDetailActivity) {
                         navDrawer.setSelection(NAVIGATION_NOTIFICATION_ID);
                         miniDrawer.updateItem(NAVIGATION_NOTIFICATION_ID);
@@ -302,5 +300,12 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
                 break;
             }
         }
+    }
+
+    private void changeContentFragment(Fragment fragmentToBeDisplayed) {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.dashboard_fragment_container, fragmentToBeDisplayed);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

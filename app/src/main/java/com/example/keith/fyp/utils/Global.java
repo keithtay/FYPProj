@@ -27,6 +27,9 @@ public class Global {
     public static final String EXTRA_SELECTED_CATEGORY = "EXTRA_SELECTED_CATEGORY";
     public static final String EXTRA_OPEN_PROBLEM_LOG_TAB = "EXTRA_OPEN_PROBLEM_LOG_TAB";
     public static final String EXTRA_RECOGNIZED_TEXT = "EXTRA_RECOGNIZED_TEXT";
+    public static final String EXTRA_FROM_NOTIFICATION_DETAIL_ACTIVITY = "EXTRA_FROM_NOTIFICATION_DETAIL_ACTIVITY";
+
+    public static final String STATE_LAST_DISPLAYED_FRAGMENT_ID = "LAST_DISPLAYED_FRAGMENT_ID";
 
     // Event list for broadcast receiver
     public static final String ACTION_NOTIFICATION_UPDATE = "ACTION_NOTIFICATION_UPDATE";

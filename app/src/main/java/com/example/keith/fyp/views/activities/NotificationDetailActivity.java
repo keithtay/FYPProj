@@ -13,6 +13,7 @@ import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Notification;
 import com.example.keith.fyp.renderers.NotificationRenderer;
 import com.example.keith.fyp.utils.DataHolder;
+import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.NotificationToRendererConverter;
 import com.example.keith.fyp.views.activities.DashboardActivity;
 
@@ -50,7 +51,7 @@ public class NotificationDetailActivity extends AppCompatActivity {
 
     private void goBackToNotificationListActivity() {
         Intent output = new Intent();
-        output.putExtra(DashboardActivity.EXTRA_FROM_NOTIFICATION_DETAIL_ACTIVITY, true);
+        output.putExtra(Global.EXTRA_FROM_NOTIFICATION_DETAIL_ACTIVITY, true);
         setResult(RESULT_OK, output);
         finish();
     }
