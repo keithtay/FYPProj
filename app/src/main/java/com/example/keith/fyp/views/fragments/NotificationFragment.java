@@ -36,17 +36,28 @@ public class NotificationFragment extends Fragment implements Communicator {
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_fragment_notification);
 
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-        notificationListFragment = new NotificationListFragment();
-        notificationListFragment.setCommunicator(this);
-        notificationDetailFragment = new NotificationDetailFragment();
+        notificationListFragment = (NotificationListFragment) getChildFragmentManager().findFragmentById(R.id.notification_list_fragment_container);
 
-        transaction.add(R.id.notification_list_fragment_container, notificationListFragment);
-        if(rootView.findViewById(R.id.notification_detail_fragment_container) != null) {
-            transaction.add(R.id.notification_detail_fragment_container, notificationDetailFragment);
+        if(notificationListFragment == null) {
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            notificationListFragment = new NotificationListFragment();
+            transaction.add(R.id.notification_list_fragment_container, notificationListFragment);
+            transaction.commit();
         }
-        transaction.commit();
+
+        if(rootView.findViewById(R.id.notification_detail_fragment_container) != null) {
+            notificationDetailFragment = (NotificationDetailFragment) getChildFragmentManager().findFragmentById(R.id.notification_detail_fragment_container);
+
+            if(notificationDetailFragment == null) {
+                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                notificationDetailFragment = new NotificationDetailFragment();
+                transaction.add(R.id.notification_detail_fragment_container, notificationDetailFragment);
+                transaction.commit();
+            }
+        }
+
+        notificationListFragment.setCommunicator(this);
 
         return rootView;
     }

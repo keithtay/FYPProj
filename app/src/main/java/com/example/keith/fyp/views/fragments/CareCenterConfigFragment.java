@@ -31,13 +31,16 @@ public class CareCenterConfigFragment extends Fragment implements Communicator {
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_fragment_care_center_config);
 
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        careCenterConfigCategFragment = (CareCenterConfigCategFragment) getChildFragmentManager().findFragmentById(R.id.care_center_config_categ_fragment_container);
 
-        careCenterConfigCategFragment = new CareCenterConfigCategFragment();
+        if(careCenterConfigCategFragment == null) {
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            careCenterConfigCategFragment = new CareCenterConfigCategFragment();
+            transaction.add(R.id.care_center_config_categ_fragment_container, careCenterConfigCategFragment);
+            transaction.commit();
+        }
+
         careCenterConfigCategFragment.setCommunicator(this);
-
-        transaction.add(R.id.care_center_config_categ_fragment_container, careCenterConfigCategFragment);
-        transaction.commit();
 
         return rootView;
     }
