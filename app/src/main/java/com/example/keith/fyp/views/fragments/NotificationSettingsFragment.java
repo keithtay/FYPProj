@@ -63,6 +63,7 @@ public class NotificationSettingsFragment extends Fragment {
         rootView = inflater.inflate(R.layout.notification_setting, container, false);
         Switch Sw1 = (Switch) rootView.findViewById(R.id.switchButtonSchedule);
         gcmRegId = getSharedPreferences().getString(PREF_GCM_REG_ID, "");
+        Log.i("T", gcmRegId);
         if (TextUtils.isEmpty(gcmRegId)) {
             Sw1.setChecked(false);
         }else{
@@ -81,7 +82,10 @@ public class NotificationSettingsFragment extends Fragment {
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.clear();
                     editor.commit();
+                    gcmRegId = getSharedPreferences().getString(PREF_GCM_REG_ID, "");
+                    Log.i("ID After delete", gcmRegId);
                     handler.sendEmptyMessage(MSG_UNREGISTER_WEB_SERVER_FAILURE1);
+
                 }
             }
         });
