@@ -56,7 +56,9 @@ public class CareCenterConfigCategFragment extends Fragment implements AdapterVi
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        communicator.respond(position);
+        if(communicator != null) {
+            communicator.respond(position);
+        }
     }
 
     public void setCommunicator(Communicator communicator) {

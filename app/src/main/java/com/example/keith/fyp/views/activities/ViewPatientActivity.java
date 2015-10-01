@@ -10,8 +10,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.example.keith.fyp.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.CreatePatientCommunicator;
 import com.example.keith.fyp.models.Allergy;
@@ -22,19 +24,26 @@ import com.example.keith.fyp.models.SocialHistory;
 import com.example.keith.fyp.models.Vital;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.utils.ViewPatientFormFragmentDecoder;
 import com.example.keith.fyp.views.fragments.PatientInfoCategListFragment;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.MiniDrawer;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 
-public class ViewPatientActivity extends AppCompatActivity  implements CreatePatientCommunicator {
+public class ViewPatientActivity extends AppCompatActivity  implements CreatePatientCommunicator, Drawer.OnDrawerItemClickListener {
 
     private PatientInfoCategListFragment infoCategListFragment;
     private FragmentManager fragmentManager;
     private InputMethodManager inputManager;
     private Patient viewedPatient;
+
+    private Drawer navDrawer;
+    private MiniDrawer miniDrawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +55,12 @@ public class ViewPatientActivity extends AppCompatActivity  implements CreatePat
         getPatientInfoDetails();
 
         inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        View contentWrapper = findViewById(R.id.activity_content_container);
+        DrawerAndMiniDrawerPair drawerAndMiniDrawerPair = UtilsUi.setNavigationDrawer(this, contentWrapper,
+                this, savedInstanceState);
+        this.navDrawer = drawerAndMiniDrawerPair.getDrawer();
+        this.miniDrawer = drawerAndMiniDrawerPair.getMiniDrawer();
 
         fragmentManager = getFragmentManager();
         infoCategListFragment = (PatientInfoCategListFragment) fragmentManager.findFragmentById(R.id.patient_info_categ_list_fragment);
@@ -165,5 +180,27 @@ public class ViewPatientActivity extends AppCompatActivity  implements CreatePat
     @Override
     public void respond(int index, ArrayList<Integer> emptyFieldIdList) {
 
+    }
+
+    @Override
+    public boolean onItemClick(View view, int i, IDrawerItem drawerItem) {
+        int selectedIdentifier = drawerItem.getIdentifier();
+
+        if(selectedIdentifier != Global.NAVIGATION_PATIENT_LIST_ID) {
+            miniDrawer.updateItem(Global.NAVIGATION_PATIENT_LIST_ID);
+
+            Intent intent = new Intent(this, DashboardActivity.class);
+            intent.putExtra(Global.EXTRA_SELECTED_NAVIGATION_ID, selectedIdentifier);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(0, 0);
     }
 }

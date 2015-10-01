@@ -156,6 +156,7 @@ public class HomeScheduleFragment extends Fragment {
 
     private void openCreatePatientActivity() {
         Intent intent = new Intent(getActivity(), CreatePatientActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
     }
 

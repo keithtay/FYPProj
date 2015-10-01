@@ -81,7 +81,9 @@ public class NotificationListFragment extends Fragment implements AdapterView.On
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        communicator.respond(position);
+        if(communicator != null) {
+            communicator.respond(position);
+        }
     }
 
     public void setCommunicator(Communicator communicator) {
