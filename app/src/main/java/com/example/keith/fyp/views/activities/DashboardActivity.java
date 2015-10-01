@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.broadcastreceiver.NotificationUpdateReceiver;
@@ -48,10 +49,6 @@ import java.util.Comparator;
 
 public class DashboardActivity extends AppCompatActivity implements OnNotificationUpdateListener {
 
-    private final int NAVIGATION_PATIENT_LIST_ID = 1;
-    private final int NAVIGATION_NOTIFICATION_ID = 2;
-    private final int NAVIGATION_CARE_CENTER_CONFIG_ID = 4;
-
     private Drawer navDrawer;
     private MiniDrawer miniDrawer;
 
@@ -84,10 +81,10 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         if(savedInstanceState != null && savedInstanceState.containsKey(Global.STATE_LAST_DISPLAYED_FRAGMENT_ID)) {
             int lastFragmentId = savedInstanceState.getInt(Global.STATE_LAST_DISPLAYED_FRAGMENT_ID);
             navDrawer.setSelection(lastFragmentId);
-            miniDrawer.updateItem(lastFragmentId);
+            refreshMiniDrawer();
         } else {
-            navDrawer.setSelection(NAVIGATION_PATIENT_LIST_ID);
-            miniDrawer.updateItem(NAVIGATION_PATIENT_LIST_ID);
+            navDrawer.setSelection(Global.NAVIGATION_PATIENT_LIST_ID);
+            refreshMiniDrawer();
         }
 
         notificationUpdateReceiver = new NotificationUpdateReceiver(this);
@@ -180,7 +177,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
 
         }
         navDrawer.updateItem(notificationNav);
-        miniDrawer.updateItem(2);
+        miniDrawer.updateItem(Global.NAVIGATION_NOTIFICATION_ID);
     }
 
     private void setNavigationDrawer(Bundle savedInstanceState) {
@@ -198,22 +195,22 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         PrimaryDrawerItem homeDrawerItem = new PrimaryDrawerItem()
                 .withName(R.string.nav_patient_list)
                 .withIcon(GoogleMaterial.Icon.gmd_supervisor_account)
-                .withIdentifier(NAVIGATION_PATIENT_LIST_ID);
+                .withIdentifier(Global.NAVIGATION_PATIENT_LIST_ID);
         String notificationCount = Integer.toString(UtilsUi.countUnacceptedAndUnrejectedNotification());
         PrimaryDrawerItem notificationDrawerItem = new PrimaryDrawerItem()
                 .withName(R.string.nav_notification)
                 .withIcon(GoogleMaterial.Icon.gmd_notifications)
                 .withBadge(notificationCount)
                 .withBadgeStyle(visibleStyle)
-                .withIdentifier(NAVIGATION_NOTIFICATION_ID);
+                .withIdentifier(Global.NAVIGATION_NOTIFICATION_ID);
         PrimaryDrawerItem accountDrawerItem = new PrimaryDrawerItem()
                 .withName(R.string.nav_account)
                 .withIcon(GoogleMaterial.Icon.gmd_person)
-                .withIdentifier(3);
+                .withIdentifier(Global.NAVIGATION_OLD_PATIENT_LIST_ID);
         PrimaryDrawerItem settingsDrawerItem = new PrimaryDrawerItem()
                 .withName(R.string.nav_care_center_config)
                 .withIcon(FontAwesome.Icon.faw_building)
-                .withIdentifier(NAVIGATION_CARE_CENTER_CONFIG_ID);
+                .withIdentifier(Global.NAVIGATION_CARE_CENTER_CONFIG_ID);
 
         Drawer navigationDrawer = new DrawerBuilder()
                 .withActivity(this)
@@ -236,23 +233,23 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
                             Fragment fragmentToBeDisplayed = null;
 
                             switch (selectedIdentifier) {
-                                case NAVIGATION_PATIENT_LIST_ID:
+                                case Global.NAVIGATION_PATIENT_LIST_ID:
                                     fragmentToBeDisplayed = new HomeScheduleFragment();
                                     break;
-                                case NAVIGATION_NOTIFICATION_ID:
+                                case Global.NAVIGATION_NOTIFICATION_ID:
                                     fragmentToBeDisplayed = new NotificationFragment();
                                     break;
-                                case 3:
+                                case Global.NAVIGATION_OLD_PATIENT_LIST_ID:
                                     fragmentToBeDisplayed = new PatientListFragment();
                                     break;
-                                case NAVIGATION_CARE_CENTER_CONFIG_ID:
+                                case Global.NAVIGATION_CARE_CENTER_CONFIG_ID:
                                     fragmentToBeDisplayed = new CareCenterConfigFragment();
                                     break;
                             }
 
-                            miniDrawer.updateItem(currentDisplayedFragmentId);
+                            refreshMiniDrawer();
 
-                            changeContentFragment(fragmentToBeDisplayed);
+                            changeContentFragment(fragmentToBeDisplayed, selectedIdentifier);
 
                             currentDisplayedFragmentId = selectedIdentifier;
                         }
@@ -293,8 +290,8 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
                 if (resultCode == Activity.RESULT_OK) {
                     boolean isFromNotificationDetailActivity = data.getBooleanExtra(Global.EXTRA_FROM_NOTIFICATION_DETAIL_ACTIVITY, false);
                     if(isFromNotificationDetailActivity) {
-                        navDrawer.setSelection(NAVIGATION_NOTIFICATION_ID);
-                        miniDrawer.updateItem(NAVIGATION_NOTIFICATION_ID);
+                        navDrawer.setSelection(Global.NAVIGATION_NOTIFICATION_ID);
+                        miniDrawer.updateItem(Global.NAVIGATION_NOTIFICATION_ID);
                     }
                 }
                 break;
@@ -302,10 +299,45 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         }
     }
 
-    private void changeContentFragment(Fragment fragmentToBeDisplayed) {
+    private void changeContentFragment(Fragment fragmentToBeDisplayed, int navFragmentId) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.dashboard_fragment_container, fragmentToBeDisplayed);
-        transaction.addToBackStack(null);
+
+        ViewGroup viewGroup = (ViewGroup) findViewById(R.id.dashboard_fragment_container);
+        if(viewGroup.getChildCount() != 0) {
+            transaction.addToBackStack(String.valueOf(navFragmentId));
+        }
+
         transaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        int backStackItemCount = fragmentManager.getBackStackEntryCount();
+        if (backStackItemCount > 0){
+            fragmentManager.popBackStack();
+
+            backStackItemCount--;
+            int navItemIdToBeUpdated = Global.NAVIGATION_PATIENT_LIST_ID;
+            if (backStackItemCount > 0) {
+                int newTopIndex = backStackItemCount - 1;
+                FragmentManager.BackStackEntry entry = fragmentManager.getBackStackEntryAt(newTopIndex);
+                navItemIdToBeUpdated = Integer.parseInt(entry.getName());
+            }
+
+            currentDisplayedFragmentId = navItemIdToBeUpdated;
+
+            navDrawer.setSelection(navItemIdToBeUpdated);
+            refreshMiniDrawer();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    private void refreshMiniDrawer() {
+        int itemCount = navDrawer.getDrawerItems().size();
+        for(int i=1; i<=itemCount; i++) {
+            miniDrawer.updateItem(i);
+        }
     }
 }

@@ -49,4 +49,11 @@ public class Global {
     public static final Integer GUARDIAN_CONTACT_NUMBER_FIELD = 9;
     public static final Integer GUARDIAN_EMAIL_FIELD = 10;
     public static final Integer HAS_ALLERGY_RADIO_GROUP = 11;
+
+    // Navigation ids
+    public static final int NAVIGATION_PATIENT_LIST_ID = 1;
+    public static final int NAVIGATION_NOTIFICATION_ID = 2;
+    public static final int NAVIGATION_OLD_PATIENT_LIST_ID = 3;
+    public static final int NAVIGATION_CARE_CENTER_CONFIG_ID = 4;
+
 }
