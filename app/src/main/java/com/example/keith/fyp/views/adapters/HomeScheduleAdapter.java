@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.Schedule;
-import com.example.keith.fyp.views.activities.SettingsActivity;
+import com.example.keith.fyp.views.activities.DashboardActivity;
 import com.example.keith.fyp.views.activities.ViewScheduleActivity;
 
 import java.text.SimpleDateFormat;
@@ -49,7 +49,7 @@ public class HomeScheduleAdapter extends RecyclerView.Adapter<HomeScheduleAdapte
         rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, SettingsActivity.class);
+                Intent intent = new Intent(context, DashboardActivity.class);
                 context.startActivity(intent);
             }
         });

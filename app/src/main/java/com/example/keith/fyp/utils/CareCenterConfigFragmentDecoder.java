@@ -3,6 +3,7 @@ package com.example.keith.fyp.utils;
 import android.app.Fragment;
 
 import com.example.keith.fyp.views.fragments.CareCenterConfigDefaultScheduleFragment;
+import com.example.keith.fyp.views.fragments.NotificationSettingsFragment;
 
 /**
  * Created by Sutrisno on 26/9/2015.
@@ -15,6 +16,9 @@ public class CareCenterConfigFragmentDecoder {
         switch(index) {
             case 0:
                 fragmentToBeDisplayed = new CareCenterConfigDefaultScheduleFragment();
+                break;
+            case 1:
+                fragmentToBeDisplayed = new NotificationSettingsFragment();
                 break;
         }
 

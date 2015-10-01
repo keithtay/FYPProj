@@ -128,6 +128,7 @@
 
     <string-array name="care_center_config_category">
         <item>Default Schedule</item>
+        <item>Notification Settings</item>
     </string-array>
 
     <string name="title_activity_view_schedule">Patient Schedule</string>

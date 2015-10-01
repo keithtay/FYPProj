@@ -23,7 +23,6 @@ import android.widget.TextView;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.views.activities.DashboardActivity;
-import com.example.keith.fyp.views.activities.SettingsActivity;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.text.SimpleDateFormat;
