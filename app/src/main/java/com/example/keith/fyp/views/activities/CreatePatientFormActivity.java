@@ -13,23 +13,31 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.keith.fyp.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.utils.CreatePatientFormFragmentDecoder;
 import com.example.keith.fyp.utils.CreatedPatientEmptyFieldChecker;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsUi;
 import com.melnykov.fab.FloatingActionButton;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.MiniDrawer;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
 
-public class CreatePatientFormActivity extends PatientFormActivity {
+public class CreatePatientFormActivity extends PatientFormActivity implements Drawer.OnDrawerItemClickListener {
 
     private FloatingActionButton saveNewPatientFab;
 
     private FragmentManager fragmentManager;
 
     private Patient createdPatient;
+
+    private Drawer navDrawer;
+    private MiniDrawer miniDrawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +64,11 @@ public class CreatePatientFormActivity extends PatientFormActivity {
         transaction.replace(R.id.create_patient_info_form_fragment_container, fragmentToBeDisplayed);
         transaction.addToBackStack(null);
         transaction.commit();
+
+        View contentWrapper = findViewById(R.id.activity_content_container);
+        DrawerAndMiniDrawerPair drawerAndMiniDrawerPair = UtilsUi.setNavigationDrawer(this, contentWrapper, this, savedInstanceState);
+        this.navDrawer = drawerAndMiniDrawerPair.getDrawer();
+        this.miniDrawer = drawerAndMiniDrawerPair.getMiniDrawer();
 
         saveNewPatientFab = (FloatingActionButton) findViewById(R.id.save_new_patient_fab);
         saveNewPatientFab.setOnClickListener(new View.OnClickListener() {
@@ -92,5 +105,18 @@ public class CreatePatientFormActivity extends PatientFormActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onItemClick(View view, int i, IDrawerItem drawerItem) {
+        int selectedIdentifier = drawerItem.getIdentifier();
+
+        miniDrawer.updateItem(Global.NAVIGATION_PATIENT_LIST_ID);
+
+        Intent intent = new Intent(this, DashboardActivity.class);
+        intent.putExtra(Global.EXTRA_SELECTED_NAVIGATION_ID, selectedIdentifier);
+        startActivity(intent);
+
+        return true;
     }
 }

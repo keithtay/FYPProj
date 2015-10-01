@@ -76,6 +76,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         DrawerAndMiniDrawerPair drawerAndMiniDrawerPair = UtilsUi.setNavigationDrawer(this, contentWrapper, this, savedInstanceState);
         this.navDrawer = drawerAndMiniDrawerPair.getDrawer();
         this.miniDrawer = drawerAndMiniDrawerPair.getMiniDrawer();
+
         FloatingActionButton createNewPatientFab = (FloatingActionButton) findViewById(R.id.save_new_patient_fab);
         if (createNewPatientFab != null) {
             createNewPatientFab.setOnClickListener(new View.OnClickListener() {

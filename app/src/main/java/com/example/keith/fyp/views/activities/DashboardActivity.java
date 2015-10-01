@@ -238,4 +238,8 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
             miniDrawer.updateItem(i);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+    }
 }
