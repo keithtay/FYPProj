@@ -82,9 +82,9 @@ public class NotificationSettingsFragment extends Fragment {
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.clear();
                     editor.commit();
-                    gcmRegId = getSharedPreferences().getString(PREF_GCM_REG_ID, "");
-                    Log.i("ID After delete", gcmRegId);
                     handler.sendEmptyMessage(MSG_UNREGISTER_WEB_SERVER_FAILURE1);
+                    Log.i("ID After delete", gcmRegId);
+
 
                 }
             }
@@ -286,7 +286,7 @@ public class NotificationSettingsFragment extends Fragment {
 //                Toast.makeText(getActivity(), "unregistered with GCM",
 //                        Toast.LENGTH_LONG).show();
 //                regIdView.setText(result);
-                saveInSharedPref(result);
+                saveInSharedPref("");
                 handler.sendEmptyMessage(MSG_UNREGISTER_WEB_SERVER_FAILURE2);
             }
         }
