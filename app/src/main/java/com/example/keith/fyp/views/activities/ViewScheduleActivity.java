@@ -272,11 +272,13 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
     public boolean onItemClick(View view, int i, IDrawerItem drawerItem) {
         int selectedIdentifier = drawerItem.getIdentifier();
 
-        miniDrawer.updateItem(Global.NAVIGATION_PATIENT_LIST_ID);
+        if(selectedIdentifier != Global.NAVIGATION_PATIENT_LIST_ID) {
+            miniDrawer.updateItem(Global.NAVIGATION_PATIENT_LIST_ID);
 
-        Intent intent = new Intent(this, DashboardActivity.class);
-        intent.putExtra(Global.EXTRA_SELECTED_NAVIGATION_ID, selectedIdentifier);
-        startActivity(intent);
+            Intent intent = new Intent(this, DashboardActivity.class);
+            intent.putExtra(Global.EXTRA_SELECTED_NAVIGATION_ID, selectedIdentifier);
+            startActivity(intent);
+        }
 
         return true;
     }

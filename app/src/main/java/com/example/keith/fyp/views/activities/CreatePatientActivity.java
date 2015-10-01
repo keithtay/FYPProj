@@ -203,11 +203,13 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
     public boolean onItemClick(View view, int i, IDrawerItem drawerItem) {
         int selectedIdentifier = drawerItem.getIdentifier();
 
-        miniDrawer.updateItem(Global.NAVIGATION_PATIENT_LIST_ID);
-        
-        Intent intent = new Intent(this, DashboardActivity.class);
-        intent.putExtra(Global.EXTRA_SELECTED_NAVIGATION_ID, selectedIdentifier);
-        startActivity(intent);
+        if(selectedIdentifier != Global.NAVIGATION_PATIENT_LIST_ID) {
+            miniDrawer.updateItem(Global.NAVIGATION_PATIENT_LIST_ID);
+
+            Intent intent = new Intent(this, DashboardActivity.class);
+            intent.putExtra(Global.EXTRA_SELECTED_NAVIGATION_ID, selectedIdentifier);
+            startActivity(intent);
+        }
 
         return true;
     }
