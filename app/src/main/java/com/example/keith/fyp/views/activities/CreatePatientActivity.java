@@ -182,6 +182,12 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(0, 0);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -208,6 +214,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
 
             Intent intent = new Intent(this, DashboardActivity.class);
             intent.putExtra(Global.EXTRA_SELECTED_NAVIGATION_ID, selectedIdentifier);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
         }
 

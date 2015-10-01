@@ -70,6 +70,7 @@ public class NotificationFragment extends Fragment implements Communicator {
 
             Intent intent = new Intent(getActivity(), NotificationDetailActivity.class);
             intent.putExtra("selectedIndex", position);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivityForResult(intent, REQUEST_OPEN_NOTIFICATION_DETAIL);
         }
     }

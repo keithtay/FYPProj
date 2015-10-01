@@ -78,6 +78,7 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
         if(bundle != null) {
             intent.putExtras(bundle);
         }
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
     }
 
@@ -178,6 +179,7 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
 
     public void openEditScheduleActivity(View view) {
         Intent intent = new Intent(ViewScheduleActivity.this, EditScheduleActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
     }
 
@@ -277,10 +279,17 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
 
             Intent intent = new Intent(this, DashboardActivity.class);
             intent.putExtra(Global.EXTRA_SELECTED_NAVIGATION_ID, selectedIdentifier);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
         }
 
         return true;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(0, 0);
     }
 }
 

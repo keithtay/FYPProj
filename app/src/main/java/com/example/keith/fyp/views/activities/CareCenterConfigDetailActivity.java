@@ -70,9 +70,16 @@ public class CareCenterConfigDetailActivity extends AppCompatActivity implements
 
             Intent intent = new Intent(this, DashboardActivity.class);
             intent.putExtra(Global.EXTRA_SELECTED_NAVIGATION_ID, selectedIdentifier);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
         }
 
         return true;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(0, 0);
     }
 }

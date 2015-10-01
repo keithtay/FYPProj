@@ -60,6 +60,7 @@ public class CareCenterConfigFragment extends Fragment implements Communicator {
             // In portrait orientation
             Intent intent = new Intent(getActivity(), CareCenterConfigDetailActivity.class);
             intent.putExtra("selectedCategory", index);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
         }
     }

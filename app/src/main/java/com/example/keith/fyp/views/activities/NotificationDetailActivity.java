@@ -105,6 +105,7 @@ public class NotificationDetailActivity extends AppCompatActivity implements OnN
 
             Intent intent = new Intent(this, DashboardActivity.class);
             intent.putExtra(Global.EXTRA_SELECTED_NAVIGATION_ID, selectedIdentifier);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
         }
 
@@ -127,5 +128,11 @@ public class NotificationDetailActivity extends AppCompatActivity implements OnN
         }
         navDrawer.updateItem(notificationNav);
         miniDrawer.updateItem(Global.NAVIGATION_NOTIFICATION_ID);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(0, 0);
     }
 }
