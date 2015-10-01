@@ -1,5 +1,6 @@
 package com.example.keith.fyp.views.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.example.keith.fyp.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Event;
 import com.example.keith.fyp.utils.Global;
@@ -21,10 +23,13 @@ import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.adapters.EventArrayAdapter;
 import com.example.keith.fyp.views.customviews.TimeRangePicker;
 import com.example.keith.fyp.views.fragments.TimeRangePickerFragment;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.MiniDrawer;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.joda.time.DateTime;
 
-public class EditScheduleActivity extends ScheduleActivity implements View.OnClickListener {
+public class EditScheduleActivity extends ScheduleActivity implements View.OnClickListener, Drawer.OnDrawerItemClickListener {
 
     private ListView eventListView;
     private EventArrayAdapter eventListAdapter;
@@ -34,12 +39,23 @@ public class EditScheduleActivity extends ScheduleActivity implements View.OnCli
     private EditText startTimePicker;
     private EditText endTimePicker;
 
+    private Drawer navDrawer;
+    private MiniDrawer miniDrawer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_schedule);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         init();
+
+        View contentWrapper = findViewById(R.id.activity_content_container);
+        DrawerAndMiniDrawerPair drawerAndMiniDrawerPair = UtilsUi.setNavigationDrawer(this, contentWrapper,
+                this, savedInstanceState);
+        this.navDrawer = drawerAndMiniDrawerPair.getDrawer();
+        this.miniDrawer = drawerAndMiniDrawerPair.getMiniDrawer();
 
         // Hide the container of schedule  action buttons
         View actionContainer = findViewById(R.id.schedule_action_container);
@@ -173,5 +189,20 @@ public class EditScheduleActivity extends ScheduleActivity implements View.OnCli
                 ).show();
             }
         });
+    }
+
+    @Override
+    public boolean onItemClick(View view, int i, IDrawerItem drawerItem) {
+        int selectedIdentifier = drawerItem.getIdentifier();
+
+        if(selectedIdentifier != Global.NAVIGATION_PATIENT_LIST_ID) {
+            miniDrawer.updateItem(Global.NAVIGATION_PATIENT_LIST_ID);
+
+            Intent intent = new Intent(this, DashboardActivity.class);
+            intent.putExtra(Global.EXTRA_SELECTED_NAVIGATION_ID, selectedIdentifier);
+            startActivity(intent);
+        }
+
+        return true;
     }
 }
