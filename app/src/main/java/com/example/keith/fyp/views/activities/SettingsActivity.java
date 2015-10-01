@@ -51,11 +51,14 @@ public class SettingsActivity extends Activity {
     // Your project number and web server url. Please change below.
     private static final String GCM_SENDER_ID = "683098303820";
     private static final String WEB_SERVER_URL = "http://10.0.3.2/web_server_demo_gcm/register_user.php";
+    private static final String DELETE_USER_URL = "http://10.0.3.2/web_server_demo_gcm/unregister_user.php";
     private static final int ACTION_PLAY_SERVICES_DIALOG = 100;
     protected static final int MSG_REGISTER_WITH_GCM = 101;
     protected static final int MSG_REGISTER_WEB_SERVER = 102;
     protected static final int MSG_REGISTER_WEB_SERVER_SUCCESS = 103;
     protected static final int MSG_REGISTER_WEB_SERVER_FAILURE = 104;
+    protected static final int MSG_UNREGISTER_WEB_SERVER_FAILURE1 = 105;
+    protected static final int MSG_UNREGISTER_WEB_SERVER_FAILURE2 = 106;
     private String gcmRegId;
 
     public void onCreate(Bundle savedInstaneState){
@@ -76,14 +79,25 @@ public class SettingsActivity extends Activity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
-                try {
-                    try {
-                        gcm.unregister();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                if (isGoogelPlayInstalled()) {
+                    gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
+
+                    // Read saved registration id from shared preferences.
+                    gcmRegId = getSharedPreferences().getString(PREF_GCM_REG_ID, "");
+                    Log.i("Let me know", "What i am printing here + "+ gcmRegId);
+                    if (TextUtils.isEmpty(gcmRegId)) {
+                        Toast.makeText(getApplicationContext(), "You are not yet registered to unregister", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Unregistered with GCM", Toast.LENGTH_SHORT).show();
+                        prefs = getApplicationContext().getSharedPreferences(
+                                "AndroidSRCDemo", Context.MODE_PRIVATE);
+                        Editor editor = prefs.edit();
+                        editor.clear();
+                        editor.commit();
+                        handler.sendEmptyMessage(MSG_UNREGISTER_WEB_SERVER_FAILURE1);
                     }
-                }finally{}
+                }
+
             }
         });
 
@@ -165,7 +179,14 @@ public class SettingsActivity extends Activity {
                             "registration with web server failed",
                             Toast.LENGTH_LONG).show();
                     break;
-            }
+                case MSG_UNREGISTER_WEB_SERVER_FAILURE1:
+                    new GCMUnRegistrationTask().execute();
+                    break;
+
+             case MSG_UNREGISTER_WEB_SERVER_FAILURE2:
+                    new WebServerUnRegistrationTask().execute();
+                 break;
+        }
         };
     };
 
@@ -208,6 +229,109 @@ public class SettingsActivity extends Activity {
 
             try {
                 url = new URL(WEB_SERVER_URL);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                handler.sendEmptyMessage(MSG_REGISTER_WEB_SERVER_FAILURE);
+            }
+            Map<String, String> dataMap = new HashMap<String, String>();
+            dataMap.put("regId", gcmRegId);
+            Log.i("MyActivity", "I AM PRINTING");
+
+            StringBuilder postBody = new StringBuilder();
+            Iterator iterator = dataMap.entrySet().iterator();
+
+            while (iterator.hasNext()) {
+                Entry param = (Entry) iterator.next();
+                postBody.append(param.getKey()).append('=')
+                        .append(param.getValue());
+                if (iterator.hasNext()) {
+                    postBody.append('&');
+                }
+                Log.d("MyActivity",postBody.toString());
+            }
+
+            String body = postBody.toString();
+            byte[] bytes = body.getBytes();
+
+            HttpURLConnection conn = null;
+            try {
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setDoOutput(true);
+                conn.setUseCaches(false);
+                conn.setFixedLengthStreamingMode(bytes.length);
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type",
+                        "application/x-www-form-urlencoded;charset=UTF-8");
+                conn.connect();
+
+                OutputStream out = conn.getOutputStream();
+                out.write(bytes);
+                out.close();
+
+                int status = conn.getResponseCode();
+                if (status == 200) {
+                    // Request success
+                    handler.sendEmptyMessage(MSG_REGISTER_WEB_SERVER_SUCCESS);
+                } else {
+                    throw new IOException("Request failed with error code "
+                            + status);
+                }
+            } catch (ProtocolException pe) {
+                pe.printStackTrace();
+                handler.sendEmptyMessage(MSG_REGISTER_WEB_SERVER_FAILURE);
+            } catch (IOException io) {
+                io.printStackTrace();
+                handler.sendEmptyMessage(MSG_REGISTER_WEB_SERVER_FAILURE);
+            } finally {
+                if (conn != null) {
+                    conn.disconnect();
+                }
+            }
+
+            return null;
+        }
+    }
+
+
+
+    private class GCMUnRegistrationTask extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected String doInBackground(Void... params) {
+            // TODO Auto-generated method stub
+            if (gcm == null && isGoogelPlayInstalled()) {
+                gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
+            }
+            try {
+                gcm.unregister();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            return gcmRegId;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (result != null) {
+                Toast.makeText(getApplicationContext(), "unregistered with GCM",
+                        Toast.LENGTH_LONG).show();
+                regIdView.setText(result);
+                saveInSharedPref(result);
+                handler.sendEmptyMessage(MSG_UNREGISTER_WEB_SERVER_FAILURE2);
+            }
+        }
+
+    }
+    private class WebServerUnRegistrationTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            URL url = null;
+
+            try {
+                url = new URL(DELETE_USER_URL);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
                 handler.sendEmptyMessage(MSG_REGISTER_WEB_SERVER_FAILURE);
