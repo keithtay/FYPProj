@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -48,8 +49,8 @@ public class SettingsActivity extends Activity {
     private static final String PREF_GCM_REG_ID = "PREF_GCM_REG_ID";
     private SharedPreferences prefs;
     // Your project number and web server url. Please change below.
-    private static final String GCM_SENDER_ID = "pear-1084";
-    private static final String WEB_SERVER_URL = "http://localhost/web_server_demo_gcm/register_user.php";
+    private static final String GCM_SENDER_ID = "683098303820";
+    private static final String WEB_SERVER_URL = "http://10.0.3.2/web_server_demo_gcm/register_user.php";
     private static final int ACTION_PLAY_SERVICES_DIALOG = 100;
     protected static final int MSG_REGISTER_WITH_GCM = 101;
     protected static final int MSG_REGISTER_WEB_SERVER = 102;
@@ -63,6 +64,12 @@ public class SettingsActivity extends Activity {
         btn1 = (Button)findViewById(R.id.button);
         btn2 = (Button)findViewById(R.id.button2);
         regIdView = (TextView)findViewById(R.id.textView2);
+
+        prefs = getApplicationContext().getSharedPreferences(
+                "AndroidSRCDemo", Context.MODE_PRIVATE);
+        Editor editor = prefs.edit();
+        editor.clear();
+        editor.commit();
 //        gcm = GoogleCloudMessaging.getInstance(this.getApplicationContext());
 //        String regId = GCMPreference.get
 
@@ -84,20 +91,18 @@ public class SettingsActivity extends Activity {
             @Override
             public void onClick(View v) {
                 // Check device for Play Services APK.
-                Log.i("I AM TESTING", "LET ME SEE HOW");
                 if (isGoogelPlayInstalled()) {
                     gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
 
                     // Read saved registration id from shared preferences.
                     gcmRegId = getSharedPreferences().getString(PREF_GCM_REG_ID, "");
-                    Log.i("I AM TESTING", getSharedPreferences().getString(PREF_GCM_REG_ID, ""));
-                    Log.i("I AM TESTING", gcmRegId);
+                    Log.i("Let me know", "What i am printing here + "+ gcmRegId);
                     if (TextUtils.isEmpty(gcmRegId)) {
+                        Log.i("Let me know", "NOT TRUE");
                         handler.sendEmptyMessage(MSG_REGISTER_WITH_GCM);
-                        Log.i("I AM TESTING", "I DIDNT COME IN HERE");
                     }else{
-                        Log.i("I AM TESTING", "I COME IN HERE");
                         regIdView.setText(gcmRegId);
+                        Log.i("Let me know", "TRUE");
                         Toast.makeText(getApplicationContext(), "Already registered with GCM", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -210,7 +215,7 @@ public class SettingsActivity extends Activity {
             Map<String, String> dataMap = new HashMap<String, String>();
             dataMap.put("regId", gcmRegId);
             Log.i("MyActivity", "I AM PRINTING");
-            Log.d("MyActivity","I AM PRINTING");
+
             StringBuilder postBody = new StringBuilder();
             Iterator iterator = dataMap.entrySet().iterator();
 
@@ -221,7 +226,9 @@ public class SettingsActivity extends Activity {
                 if (iterator.hasNext()) {
                     postBody.append('&');
                 }
+                Log.d("MyActivity",postBody.toString());
             }
+
             String body = postBody.toString();
             byte[] bytes = body.getBytes();
 
@@ -234,6 +241,7 @@ public class SettingsActivity extends Activity {
                 conn.setRequestMethod("POST");
                 conn.setRequestProperty("Content-Type",
                         "application/x-www-form-urlencoded;charset=UTF-8");
+                conn.connect();
 
                 OutputStream out = conn.getOutputStream();
                 out.write(bytes);
