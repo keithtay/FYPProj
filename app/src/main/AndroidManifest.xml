@@ -97,6 +97,7 @@
         </activity>
         <activity
             android:name=".views.activities.NotificationDetailActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_notification_detail">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -104,6 +105,7 @@
         </activity>
         <activity
             android:name=".views.activities.CareCenterConfigDetailActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_care_center_config_detail">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

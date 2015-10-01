@@ -2,6 +2,7 @@ package com.example.keith.fyp.views.activities;
 
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -134,5 +135,15 @@ public class NotificationDetailActivity extends AppCompatActivity implements OnN
     public void onPause() {
         super.onPause();
         overridePendingTransition(0, 0);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            // Go back to parent activity since this activity is mainly for portrait
+            finish();
+        }
     }
 }
