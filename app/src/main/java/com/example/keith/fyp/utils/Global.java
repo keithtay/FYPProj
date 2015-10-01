@@ -28,6 +28,7 @@ public class Global {
     public static final String EXTRA_OPEN_PROBLEM_LOG_TAB = "EXTRA_OPEN_PROBLEM_LOG_TAB";
     public static final String EXTRA_RECOGNIZED_TEXT = "EXTRA_RECOGNIZED_TEXT";
     public static final String EXTRA_FROM_NOTIFICATION_DETAIL_ACTIVITY = "EXTRA_FROM_NOTIFICATION_DETAIL_ACTIVITY";
+    public static final String EXTRA_SELECTED_NAVIGATION_ID = "EXTRA_SELECTED_NAVIGATION_ID";
 
     public static final String STATE_LAST_DISPLAYED_FRAGMENT_ID = "LAST_DISPLAYED_FRAGMENT_ID";
 
@@ -50,7 +51,7 @@ public class Global {
     public static final Integer GUARDIAN_EMAIL_FIELD = 10;
     public static final Integer HAS_ALLERGY_RADIO_GROUP = 11;
 
-    // Navigation ids
+    // Navigation bar item IDs
     public static final int NAVIGATION_PATIENT_LIST_ID = 1;
     public static final int NAVIGATION_NOTIFICATION_ID = 2;
     public static final int NAVIGATION_OLD_PATIENT_LIST_ID = 3;

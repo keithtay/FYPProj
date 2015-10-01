@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.keith.fyp.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.broadcastreceiver.NotificationUpdateReceiver;
 import com.example.keith.fyp.interfaces.OnNotificationUpdateListener;
@@ -34,12 +35,10 @@ import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.MiniDrawer;
-import com.mikepenz.materialdrawer.holder.BadgeStyle;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
-import com.mikepenz.materialize.util.UIUtils;
 
 import org.joda.time.DateTime;
 
@@ -47,7 +46,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class DashboardActivity extends AppCompatActivity implements OnNotificationUpdateListener {
+public class DashboardActivity extends AppCompatActivity implements OnNotificationUpdateListener, Drawer.OnDrawerItemClickListener {
 
     private Drawer navDrawer;
     private MiniDrawer miniDrawer;
@@ -55,12 +54,6 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
     private NotificationUpdateReceiver notificationUpdateReceiver;
 
     private FragmentManager fragmentManager;
-
-    // Indicate which page of the navigation option is currently displayed
-    private int currentDisplayedFragmentId;
-
-    private BadgeStyle visibleStyle;
-    private BadgeStyle invisibleStyle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,16 +64,20 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
 
         retrieveNotification();
 
-        // Style of notification count badge (navigation drawer)
-        visibleStyle = new BadgeStyle(getResources().getColor(R.color.red_100), getResources().getColor(R.color.red_100));
-        visibleStyle.withTextColor(getResources().getColor(R.color.text_color_default));
-        invisibleStyle = new BadgeStyle(getResources().getColor(R.color.transparent), getResources().getColor(R.color.transparent));
-        invisibleStyle.withTextColor(getResources().getColor(R.color.transparent));
+        View contentWrapper = findViewById(R.id.dashboard_fragment_container);
+        DrawerAndMiniDrawerPair drawerAndMiniDrawerPair = UtilsUi.setNavigationDrawer(this, contentWrapper, this, savedInstanceState);
+        this.navDrawer = drawerAndMiniDrawerPair.getDrawer();
+        this.miniDrawer = drawerAndMiniDrawerPair.getMiniDrawer();
 
-        setNavigationDrawer(savedInstanceState);
+        Intent intent = getIntent();
+
         if(savedInstanceState != null && savedInstanceState.containsKey(Global.STATE_LAST_DISPLAYED_FRAGMENT_ID)) {
             int lastFragmentId = savedInstanceState.getInt(Global.STATE_LAST_DISPLAYED_FRAGMENT_ID);
             navDrawer.setSelection(lastFragmentId);
+            refreshMiniDrawer();
+        } else if(intent.hasExtra(Global.EXTRA_SELECTED_NAVIGATION_ID)) {
+            int selectedNavigationId = intent.getIntExtra(Global.EXTRA_SELECTED_NAVIGATION_ID, 0);
+            navDrawer.setSelection(selectedNavigationId);
             refreshMiniDrawer();
         } else {
             navDrawer.setSelection(Global.NAVIGATION_PATIENT_LIST_ID);
@@ -92,7 +89,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(Global.STATE_LAST_DISPLAYED_FRAGMENT_ID, currentDisplayedFragmentId);
+        outState.putInt(Global.STATE_LAST_DISPLAYED_FRAGMENT_ID, UtilsUi.getCurrentDisplayedFragmentId());
         super.onSaveInstanceState(outState);
     }
 
@@ -169,117 +166,15 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         PrimaryDrawerItem notificationNav = (PrimaryDrawerItem) navDrawer.getDrawerItem(2);
 
         if(notificationCount == 0) {
-            notificationNav = notificationNav.withBadgeStyle(invisibleStyle);
+            notificationNav = notificationNav.withBadgeStyle(UtilsUi.getInvisibleBadgeStyle(this));
         } else {
             String notificationCountStr = Integer.toString(notificationCount);
-            notificationNav = notificationNav.withBadgeStyle(visibleStyle);
+            notificationNav = notificationNav.withBadgeStyle(UtilsUi.getVisibleBadgeStyle(this));
             notificationNav = notificationNav.withBadge(notificationCountStr);
 
         }
         navDrawer.updateItem(notificationNav);
         miniDrawer.updateItem(Global.NAVIGATION_NOTIFICATION_ID);
-    }
-
-    private void setNavigationDrawer(Bundle savedInstanceState) {
-        Resources resource = getResources();
-        final IProfile profile = new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").withIcon(resource.getDrawable(R.drawable.avatar1));
-
-        AccountHeader accountHeader = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withHeaderBackground(R.drawable.account_header)
-                .withTranslucentStatusBar(false)
-                .addProfiles(profile)
-                .withSavedInstance(savedInstanceState)
-                .build();
-
-        PrimaryDrawerItem homeDrawerItem = new PrimaryDrawerItem()
-                .withName(R.string.nav_patient_list)
-                .withIcon(GoogleMaterial.Icon.gmd_supervisor_account)
-                .withIdentifier(Global.NAVIGATION_PATIENT_LIST_ID);
-        String notificationCount = Integer.toString(UtilsUi.countUnacceptedAndUnrejectedNotification());
-        PrimaryDrawerItem notificationDrawerItem = new PrimaryDrawerItem()
-                .withName(R.string.nav_notification)
-                .withIcon(GoogleMaterial.Icon.gmd_notifications)
-                .withBadge(notificationCount)
-                .withBadgeStyle(visibleStyle)
-                .withIdentifier(Global.NAVIGATION_NOTIFICATION_ID);
-        PrimaryDrawerItem accountDrawerItem = new PrimaryDrawerItem()
-                .withName(R.string.nav_account)
-                .withIcon(GoogleMaterial.Icon.gmd_person)
-                .withIdentifier(Global.NAVIGATION_OLD_PATIENT_LIST_ID);
-        PrimaryDrawerItem settingsDrawerItem = new PrimaryDrawerItem()
-                .withName(R.string.nav_care_center_config)
-                .withIcon(FontAwesome.Icon.faw_building)
-                .withIdentifier(Global.NAVIGATION_CARE_CENTER_CONFIG_ID);
-
-        Drawer navigationDrawer = new DrawerBuilder()
-                .withActivity(this)
-                .withTranslucentStatusBar(false)
-                .withAccountHeader(accountHeader)
-                .addDrawerItems(
-                        homeDrawerItem,
-                        notificationDrawerItem,
-                        accountDrawerItem,
-                        settingsDrawerItem
-                )
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        int selectedIdentifier = drawerItem.getIdentifier();
-
-                        // Change fragment when the selected navigation is not
-                        // the one currently being displayed
-                        if (selectedIdentifier != currentDisplayedFragmentId) {
-                            Fragment fragmentToBeDisplayed = null;
-
-                            switch (selectedIdentifier) {
-                                case Global.NAVIGATION_PATIENT_LIST_ID:
-                                    fragmentToBeDisplayed = new HomeScheduleFragment();
-                                    break;
-                                case Global.NAVIGATION_NOTIFICATION_ID:
-                                    fragmentToBeDisplayed = new NotificationFragment();
-                                    break;
-                                case Global.NAVIGATION_OLD_PATIENT_LIST_ID:
-                                    fragmentToBeDisplayed = new PatientListFragment();
-                                    break;
-                                case Global.NAVIGATION_CARE_CENTER_CONFIG_ID:
-                                    fragmentToBeDisplayed = new CareCenterConfigFragment();
-                                    break;
-                            }
-
-                            refreshMiniDrawer();
-
-                            changeContentFragment(fragmentToBeDisplayed, selectedIdentifier);
-
-                            currentDisplayedFragmentId = selectedIdentifier;
-                        }
-
-                        return true;
-                    }
-                })
-                .withSavedInstance(savedInstanceState)
-                .buildView();
-
-        this.miniDrawer = new MiniDrawer()
-                .withDrawer(navigationDrawer)
-                .withInnerShadow(true)
-                .withAccountHeader(accountHeader);
-
-        int first = (int) UIUtils.convertDpToPixel(300, this);
-        int second = (int) UIUtils.convertDpToPixel(72, this);
-
-        View contentWrapper = findViewById(R.id.dashboard_fragment_container);
-
-        Crossfader crossFader = new Crossfader()
-                .withContent(contentWrapper)
-                .withFirst(navigationDrawer.getSlider(), first)
-                .withSecond(miniDrawer.build(this), second)
-                .withSavedInstance(savedInstanceState)
-                .build();
-
-        miniDrawer.withCrossFader(new CrossfadeWrapper(crossFader));
-
-        this.navDrawer = navigationDrawer;
     }
 
     @Override
@@ -299,39 +194,42 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         }
     }
 
-    private void changeContentFragment(Fragment fragmentToBeDisplayed, int navFragmentId) {
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.dashboard_fragment_container, fragmentToBeDisplayed);
-
-        ViewGroup viewGroup = (ViewGroup) findViewById(R.id.dashboard_fragment_container);
-        if(viewGroup.getChildCount() != 0) {
-            transaction.addToBackStack(String.valueOf(navFragmentId));
-        }
-
-        transaction.commit();
-    }
-
     @Override
-    public void onBackPressed() {
-        int backStackItemCount = fragmentManager.getBackStackEntryCount();
-        if (backStackItemCount > 0){
-            fragmentManager.popBackStack();
+    public boolean onItemClick(View view, int i, IDrawerItem drawerItem) {
+        int selectedIdentifier = drawerItem.getIdentifier();
 
-            backStackItemCount--;
-            int navItemIdToBeUpdated = Global.NAVIGATION_PATIENT_LIST_ID;
-            if (backStackItemCount > 0) {
-                int newTopIndex = backStackItemCount - 1;
-                FragmentManager.BackStackEntry entry = fragmentManager.getBackStackEntryAt(newTopIndex);
-                navItemIdToBeUpdated = Integer.parseInt(entry.getName());
+        // Change fragment when the selected navigation is not
+        // the one currently being displayed
+        int currentDisplayedFragmentId = UtilsUi.getCurrentDisplayedFragmentId();
+        if (selectedIdentifier != currentDisplayedFragmentId || currentDisplayedFragmentId == Global.NAVIGATION_PATIENT_LIST_ID) {
+            Fragment fragmentToBeDisplayed = null;
+
+            switch (selectedIdentifier) {
+                case Global.NAVIGATION_PATIENT_LIST_ID:
+                    fragmentToBeDisplayed = new HomeScheduleFragment();
+                    break;
+                case Global.NAVIGATION_NOTIFICATION_ID:
+                    fragmentToBeDisplayed = new NotificationFragment();
+                    break;
+                case 3:
+                    fragmentToBeDisplayed = new PatientListFragment();
+                    break;
+                case Global.NAVIGATION_CARE_CENTER_CONFIG_ID:
+                    fragmentToBeDisplayed = new CareCenterConfigFragment();
+                    break;
             }
 
-            currentDisplayedFragmentId = navItemIdToBeUpdated;
+            miniDrawer.updateItem(currentDisplayedFragmentId);
 
-            navDrawer.setSelection(navItemIdToBeUpdated);
-            refreshMiniDrawer();
-        } else {
-            super.onBackPressed();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.dashboard_fragment_container, fragmentToBeDisplayed);
+            transaction.addToBackStack(null);
+            transaction.commit();
+
+            UtilsUi.setCurrentDisplayedFragmentId(selectedIdentifier);
         }
+
+        return true;
     }
 
     private void refreshMiniDrawer() {

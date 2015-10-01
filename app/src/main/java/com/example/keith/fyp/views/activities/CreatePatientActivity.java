@@ -22,13 +22,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.example.keith.fyp.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.CreatePatientCommunicator;
 import com.example.keith.fyp.utils.CreatePatientFormFragmentDecoder;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsUi;
+import com.example.keith.fyp.views.fragments.CareCenterConfigFragment;
+import com.example.keith.fyp.views.fragments.HomeScheduleFragment;
+import com.example.keith.fyp.views.fragments.NotificationFragment;
 import com.example.keith.fyp.views.fragments.PatientInfoCategListFragment;
+import com.example.keith.fyp.views.fragments.PatientListFragment;
 import com.melnykov.fab.FloatingActionButton;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.MiniDrawer;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -37,13 +46,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-public class CreatePatientActivity extends AppCompatActivity implements CreatePatientCommunicator {
+public class CreatePatientActivity extends AppCompatActivity implements CreatePatientCommunicator, Drawer.OnDrawerItemClickListener {
 
     private PatientInfoCategListFragment infoCategListFragment;
     private Fragment fragmentDisplayed;
 
     private FragmentManager fragmentManager;
     private InputMethodManager inputManager;
+
+    private Drawer navDrawer;
+    private MiniDrawer miniDrawer;
 
     private static final String TAG = "CaptureImageOcr";
 
@@ -60,6 +72,10 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         infoCategListFragment = (PatientInfoCategListFragment) fragmentManager.findFragmentById(R.id.create_patient_info_categ_list_fragment);
         infoCategListFragment.setCommunicator(this);
 
+        View contentWrapper = findViewById(R.id.activity_content_container);
+        DrawerAndMiniDrawerPair drawerAndMiniDrawerPair = UtilsUi.setNavigationDrawer(this, contentWrapper, this, savedInstanceState);
+        this.navDrawer = drawerAndMiniDrawerPair.getDrawer();
+        this.miniDrawer = drawerAndMiniDrawerPair.getMiniDrawer();
         FloatingActionButton createNewPatientFab = (FloatingActionButton) findViewById(R.id.save_new_patient_fab);
         if (createNewPatientFab != null) {
             createNewPatientFab.setOnClickListener(new View.OnClickListener() {
@@ -179,6 +195,19 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
 //                prepareOcrEnvirontment();
 //                startCaptureImageOcrActivity();
         }
+        return true;
+    }
+
+    @Override
+    public boolean onItemClick(View view, int i, IDrawerItem drawerItem) {
+        int selectedIdentifier = drawerItem.getIdentifier();
+
+        miniDrawer.updateItem(Global.NAVIGATION_PATIENT_LIST_ID);
+        
+        Intent intent = new Intent(this, DashboardActivity.class);
+        intent.putExtra(Global.EXTRA_SELECTED_NAVIGATION_ID, selectedIdentifier);
+        startActivity(intent);
+
         return true;
     }
 
