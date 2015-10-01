@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.example.keith.fyp.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Event;
 import com.example.keith.fyp.models.ProblemLog;
@@ -19,6 +20,9 @@ import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.customviews.DateField;
 import com.example.keith.fyp.views.customviews.SpinnerField;
 import com.example.keith.fyp.views.customviews.TextField;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.MiniDrawer;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.joda.time.DateTime;
 
@@ -27,17 +31,27 @@ import java.util.Arrays;
 
 import mehdi.sakout.fancybuttons.FancyButton;
 
-public class ViewScheduleActivity extends ScheduleActivity {
+public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnDrawerItemClickListener {
 
     private FancyButton viewMoreButton;
     private FancyButton logProblemButton;
+
+    private Drawer navDrawer;
+    private MiniDrawer miniDrawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_schedule);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         init();
+
+        View contentWrapper = findViewById(R.id.activity_content_container);
+        DrawerAndMiniDrawerPair drawerAndMiniDrawerPair = UtilsUi.setNavigationDrawer(this, contentWrapper, this, savedInstanceState);
+        this.navDrawer = drawerAndMiniDrawerPair.getDrawer();
+        this.miniDrawer = drawerAndMiniDrawerPair.getMiniDrawer();
 
         viewMoreButton = (FancyButton) findViewById(R.id.view_more_button);
         viewMoreButton.setOnClickListener(new View.OnClickListener() {
@@ -252,6 +266,19 @@ public class ViewScheduleActivity extends ScheduleActivity {
     public void onBackPressed() {
         super.onBackPressed();
         DataHolder.resetViewedPatient();
+    }
+
+    @Override
+    public boolean onItemClick(View view, int i, IDrawerItem drawerItem) {
+        int selectedIdentifier = drawerItem.getIdentifier();
+
+        miniDrawer.updateItem(Global.NAVIGATION_PATIENT_LIST_ID);
+
+        Intent intent = new Intent(this, DashboardActivity.class);
+        intent.putExtra(Global.EXTRA_SELECTED_NAVIGATION_ID, selectedIdentifier);
+        startActivity(intent);
+
+        return true;
     }
 }
 
