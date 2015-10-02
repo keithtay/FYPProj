@@ -11,7 +11,7 @@
         android:padding="@dimen/paper_card_padding">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/notification_sender_photo_image_view"
+            android:id="@+id/notification_patient_photo_image_view"
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:src="@drawable/avatar_01"
@@ -29,7 +29,7 @@
                 android:textColor="@color/primary"
                 android:text="12 March 2004, 13:55"/>
             <TextView
-                android:id="@+id/notification_sender_name_text_view"
+                android:id="@+id/notification_patient_name_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/typo_headline"

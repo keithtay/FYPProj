@@ -43,6 +43,13 @@ public class Patient {
         this.photoId = photoId;
     }
 
+    public Patient(String firstName, String lastName, String nric, Bitmap photo) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.nric = nric;
+        this.photo = photo;
+    }
+
     public String getGuardianFullName() {
         return guardianFullName;
     }
@@ -209,5 +216,9 @@ public class Patient {
 
     public void setHasAllergy(Boolean hasAllergy) {
         this.hasAllergy = hasAllergy;
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
     }
 }

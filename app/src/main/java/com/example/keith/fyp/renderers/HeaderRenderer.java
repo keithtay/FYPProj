@@ -7,11 +7,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.keith.fyp.R;
-import com.example.keith.fyp.models.Notification;
 import com.example.keith.fyp.utils.Global;
 
 import org.joda.time.DateTime;
-import org.w3c.dom.Text;
 
 /**
  * Created by Sutrisno on 21/9/2015.
@@ -35,9 +33,9 @@ public class HeaderRenderer extends Renderer {
     public View render() {
         View rootView = inflater.inflate(R.layout.notification_detail_header_layout, null);
 
-        ImageView photoImageView = (ImageView) rootView.findViewById(R.id.notification_sender_photo_image_view);
+        ImageView photoImageView = (ImageView) rootView.findViewById(R.id.notification_patient_photo_image_view);
         TextView dateTextView = (TextView) rootView.findViewById(R.id.notification_date_text_view);
-        TextView senderNameTextView = (TextView) rootView.findViewById(R.id.notification_sender_name_text_view);
+        TextView senderNameTextView = (TextView) rootView.findViewById(R.id.notification_patient_name_text_view);
         TextView summaryTextView = (TextView) rootView.findViewById(R.id.notification_summary_text_view);
 
         photoImageView.setImageBitmap(photo);

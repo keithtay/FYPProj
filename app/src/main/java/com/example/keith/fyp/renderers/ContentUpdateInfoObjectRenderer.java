@@ -9,6 +9,7 @@ import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.ObjectToAttributeValueTransformer;
 import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.adapters.AttributeValueListAdapter;
+import com.example.keith.fyp.views.customviews.NotScrollableListView;
 
 import org.w3c.dom.Attr;
 
@@ -32,8 +33,8 @@ public class ContentUpdateInfoObjectRenderer extends ContentRenderer {
 
         View rootView = inflater.inflate(R.layout.notification_detail_content_update_info_object_layout, null);
 
-        ListView oldObjectListView = (ListView) rootView.findViewById(R.id.old_object_list_view);
-        ListView newObjectListView = (ListView) rootView.findViewById(R.id.new_object_list_view);
+        NotScrollableListView oldObjectListView = (NotScrollableListView) rootView.findViewById(R.id.old_object_list_view);
+        NotScrollableListView newObjectListView = (NotScrollableListView) rootView.findViewById(R.id.new_object_list_view);
 
         oldObjectListView.setAdapter(new AttributeValueListAdapter(context, oldObject.transform()));
         newObjectListView.setAdapter(new AttributeValueListAdapter(context, newObject.transform()));

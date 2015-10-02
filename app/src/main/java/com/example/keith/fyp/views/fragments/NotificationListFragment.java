@@ -1,6 +1,7 @@
 package com.example.keith.fyp.views.fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -16,12 +17,15 @@ import com.example.keith.fyp.broadcastreceiver.NotificationUpdateReceiver;
 import com.example.keith.fyp.interfaces.Communicator;
 import com.example.keith.fyp.interfaces.OnNotificationUpdateListener;
 import com.example.keith.fyp.models.Notification;
+import com.example.keith.fyp.models.NotificationGroup;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.adapters.NotificationListAdapter;
 import com.quentindommerc.superlistview.SuperListview;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class NotificationListFragment extends Fragment implements AdapterView.OnItemClickListener, OnNotificationUpdateListener {
@@ -29,7 +33,7 @@ public class NotificationListFragment extends Fragment implements AdapterView.On
     private SuperListview notificationListView;
     private NotificationListAdapter notificationListAdapter;
 
-    private ArrayList<Notification> notificationList;
+    private ArrayList<NotificationGroup> notificationGroupList;
     private Communicator communicator;
     private NotificationUpdateReceiver notificationUpdateReceiver;
 
@@ -40,9 +44,9 @@ public class NotificationListFragment extends Fragment implements AdapterView.On
 
         notificationListView = (SuperListview) rootView.findViewById(R.id.notification_recycler_view);
 
-        notificationList = DataHolder.getNotificationList();
+        notificationGroupList = DataHolder.getNotificationGroupList();
 
-        notificationListAdapter = new NotificationListAdapter(getActivity(), notificationList);
+        notificationListAdapter = new NotificationListAdapter(getActivity(), notificationGroupList);
         notificationListView.setAdapter(notificationListAdapter);
         notificationListView.setOnItemClickListener(this);
 
@@ -92,6 +96,29 @@ public class NotificationListFragment extends Fragment implements AdapterView.On
 
     @Override
     public void onNotificationUpdate() {
+        // Recalculate the summary + status
+        for(NotificationGroup notificationGroup : notificationGroupList) {
+
+            ArrayList<Notification> toBeMoved = new ArrayList<>();
+
+            for(Notification notification:notificationGroup.getUnprocessedNotif()) {
+                if(notification.getStatus() != Notification.STATUS_NONE) {
+                    toBeMoved.add(notification);
+                }
+            }
+
+            ArrayList<Notification> unprocessedNotifList = notificationGroup.getUnprocessedNotif();
+            ArrayList<Notification> processedNotifList = notificationGroup.getProcessedNotif();
+            unprocessedNotifList.removeAll(toBeMoved);
+            processedNotifList.addAll(toBeMoved);
+
+            UtilsUi.setNotificationGroupSummary(getActivity(), notificationGroup);
+            UtilsUi.setNotificationGroupStatus(getActivity(), notificationGroup);
+        }
+
+        Intent intent = new Intent(Global.ACTION_NOTIFICATION_GROUP_UPDATE);
+        getActivity().sendBroadcast(intent);
+
         notificationListAdapter.notifyDataSetChanged();
     }
 }

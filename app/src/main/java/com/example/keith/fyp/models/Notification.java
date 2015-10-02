@@ -23,14 +23,16 @@ public class Notification {
     private String senderName;
     private Bitmap senderPhoto;
     private String summary;
+    private Patient affectedPatient;
     private int status;
     private int type;
 
-    public Notification(DateTime creationDate, String senderName, Bitmap senderPhoto, String summary, int status, int type) {
+    public Notification(DateTime creationDate, String senderName, Bitmap senderPhoto, String summary, Patient affectedPatient, int status, int type) {
         this.creationDate = creationDate;
         this.senderName = senderName;
         this.senderPhoto = senderPhoto;
         this.summary = summary;
+        this.affectedPatient = affectedPatient;
         this.status = status;
         this.type = type;
     }
@@ -81,5 +83,13 @@ public class Notification {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public Patient getAffectedPatient() {
+        return affectedPatient;
+    }
+
+    public void setAffectedPatient(Patient affectedPatient) {
+        this.affectedPatient = affectedPatient;
     }
 }

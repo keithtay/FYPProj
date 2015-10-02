@@ -2,14 +2,10 @@ package com.example.keith.fyp.utils;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
@@ -18,15 +14,12 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TimePicker;
 
-import com.example.keith.fyp.DrawerAndMiniDrawerPair;
+import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Notification;
+import com.example.keith.fyp.models.NotificationGroup;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.ProblemLog;
-import com.example.keith.fyp.views.fragments.CareCenterConfigFragment;
-import com.example.keith.fyp.views.fragments.HomeScheduleFragment;
-import com.example.keith.fyp.views.fragments.NotificationFragment;
-import com.example.keith.fyp.views.fragments.PatientListFragment;
 import com.mikepenz.crossfader.Crossfader;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -38,7 +31,6 @@ import com.mikepenz.materialdrawer.MiniDrawer;
 import com.mikepenz.materialdrawer.holder.BadgeStyle;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mikepenz.materialize.util.UIUtils;
 
@@ -200,13 +192,13 @@ public class UtilsUi {
         ((ViewGroup) view.getParent()).removeView(view);
     }
 
-    public static int countUnacceptedAndUnrejectedNotification() {
-        ArrayList<Notification> notificationList = DataHolder.getNotificationList();
+    public static int countUnprocessedNotificationGroup() {
+        ArrayList<NotificationGroup> notificationGroupList = DataHolder.getNotificationGroupList();
 
         int count = 0;
 
-        for(Notification notification : notificationList) {
-            if(notification.getStatus() == Notification.STATUS_NONE) {
+        for(NotificationGroup notificationGroup : notificationGroupList) {
+            if(notificationGroup.getStatus() == NotificationGroup.STATUS_UNPROCESSED) {
                 count++;
             }
         }
@@ -265,7 +257,7 @@ public class UtilsUi {
                 .withName(R.string.nav_patient_list)
                 .withIcon(GoogleMaterial.Icon.gmd_supervisor_account)
                 .withIdentifier(Global.NAVIGATION_PATIENT_LIST_ID);
-        String notificationCount = Integer.toString(UtilsUi.countUnacceptedAndUnrejectedNotification());
+        String notificationCount = Integer.toString(UtilsUi.countUnprocessedNotificationGroup());
         PrimaryDrawerItem notificationDrawerItem = new PrimaryDrawerItem()
                 .withName(R.string.nav_notification)
                 .withIcon(GoogleMaterial.Icon.gmd_notifications)
@@ -315,5 +307,24 @@ public class UtilsUi {
         Drawer navDrawer = navigationDrawer;
 
         return new DrawerAndMiniDrawerPair(navDrawer, miniDrawer);
+    }
+
+    public static void setNotificationGroupSummary(Context context, NotificationGroup notificationGroup) {
+        int unprocessedCount = notificationGroup.getUnprocessedNotif().size();
+        String summary;
+        if(unprocessedCount == 0) {
+            summary = context.getResources().getString(R.string.notification_group_summary_all_processed);
+        } else {
+            summary = context.getResources().getString(R.string.notification_group_summary_unprocessed, unprocessedCount);
+        }
+        notificationGroup.setSummary(summary);
+    }
+
+    public static void setNotificationGroupStatus(Context context, NotificationGroup notificationGroup) {
+        if(notificationGroup.getUnprocessedNotif().size() > 0) {
+            notificationGroup.setStatus(NotificationGroup.STATUS_UNPROCESSED);
+        } else {
+            notificationGroup.setStatus(NotificationGroup.STATUS_ALL_PROCESSED);
+        }
     }
 }

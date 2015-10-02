@@ -176,5 +176,6 @@
     <string name="error_msg_end_date_must_be_after_start_date">End date must be after start date</string>
     <string name="error_msg_end_time_must_be_after_start_time">End time must be after start time</string>
     <string name="title_activity_capture_image_ocr">Scan Document Review</string>
-
+    <string name="notification_group_summary_unprocessed">Patient has %1$d unprocessed updates</string>
+    <string name="notification_group_summary_all_processed">All updates has been processed</string>
 </resources>

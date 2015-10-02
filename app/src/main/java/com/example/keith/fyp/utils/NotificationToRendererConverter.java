@@ -47,11 +47,11 @@ public class NotificationToRendererConverter {
                 break;
             case Notification.TYPE_NEW_PATIENT:
                 Patient newPatient = new Patient();
-                newPatient.setFirstName("Alice");
-                newPatient.setLastName("Lee");
+                newPatient.setFirstName("Laura");
+                newPatient.setLastName("Freeman");
                 newPatient.setGender('F');
                 newPatient.setDob(DateTime.now().withYear(1955).withMonthOfYear(5).withDayOfMonth(12));
-                newPatient.setPhoto(BitmapFactory.decodeResource(context.getResources(), R.drawable.avatar_19));
+                newPatient.setPhoto(BitmapFactory.decodeResource(context.getResources(), R.drawable.avatar_20));
                 contentRenderer = new ContentNewPatientRenderer(inflater, newPatient);
                 break;
             case Notification.TYPE_UPDATE_INFO_FIELD:

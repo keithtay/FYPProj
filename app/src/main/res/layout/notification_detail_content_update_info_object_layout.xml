@@ -12,7 +12,7 @@
         android:layout_weight="1"
         android:background="@drawable/border_divider_bg"
         android:orientation="vertical">
-        <ListView
+        <com.example.keith.fyp.views.customviews.NotScrollableListView
             android:id="@+id/old_object_list_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
         android:layout_weight="1"
         android:background="@drawable/border_divider_bg"
         android:orientation="vertical">
-        <ListView
+        <com.example.keith.fyp.views.customviews.NotScrollableListView
             android:id="@+id/new_object_list_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

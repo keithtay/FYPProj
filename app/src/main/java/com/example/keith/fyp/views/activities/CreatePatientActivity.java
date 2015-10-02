@@ -5,15 +5,8 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -22,28 +15,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import com.example.keith.fyp.DrawerAndMiniDrawerPair;
+import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.CreatePatientCommunicator;
 import com.example.keith.fyp.utils.CreatePatientFormFragmentDecoder;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsUi;
-import com.example.keith.fyp.views.fragments.CareCenterConfigFragment;
-import com.example.keith.fyp.views.fragments.HomeScheduleFragment;
-import com.example.keith.fyp.views.fragments.NotificationFragment;
 import com.example.keith.fyp.views.fragments.PatientInfoCategListFragment;
-import com.example.keith.fyp.views.fragments.PatientListFragment;
 import com.melnykov.fab.FloatingActionButton;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.MiniDrawer;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class CreatePatientActivity extends AppCompatActivity implements CreatePatientCommunicator, Drawer.OnDrawerItemClickListener {

@@ -34,6 +34,7 @@ public class Global {
 
     // Event list for broadcast receiver
     public static final String ACTION_NOTIFICATION_UPDATE = "ACTION_NOTIFICATION_UPDATE";
+    public static final String ACTION_NOTIFICATION_GROUP_UPDATE = "ACTION_NOTIFICATION_GROUP_UPDATE";
     public static final String ACTION_CREATE_NEW_PATIENT = "ACTION_CREATE_NEW_PATIENT";
 
     // Create new patient fields IDs (for input checking)

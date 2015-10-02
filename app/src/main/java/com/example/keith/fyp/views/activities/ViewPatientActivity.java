@@ -13,7 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import com.example.keith.fyp.DrawerAndMiniDrawerPair;
+import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.CreatePatientCommunicator;
 import com.example.keith.fyp.models.Allergy;

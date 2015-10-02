@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.example.keith.fyp.DrawerAndMiniDrawerPair;
+import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Event;
 import com.example.keith.fyp.utils.Global;

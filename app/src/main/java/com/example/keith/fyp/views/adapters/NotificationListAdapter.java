@@ -1,6 +1,7 @@
 package com.example.keith.fyp.views.adapters;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.keith.fyp.R;
-import com.example.keith.fyp.models.Notification;
-import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.models.NotificationGroup;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,26 +21,26 @@ import java.util.List;
  */
 public class NotificationListAdapter extends BaseAdapter {
 
-    private List<Notification> notificationList = Collections.emptyList();
+    private List<NotificationGroup> notificationGroupList = Collections.emptyList();
     private Context context;
 
     public NotificationListAdapter(Context context) {
         this.context = context;
     }
 
-    public NotificationListAdapter(Context context, List<Notification> notificationList) {
+    public NotificationListAdapter(Context context, List<NotificationGroup> notificationGroupList) {
         this.context = context;
-        this.notificationList = notificationList;
+        this.notificationGroupList = notificationGroupList;
     }
 
     @Override
     public int getCount() {
-        return notificationList.size();
+        return notificationGroupList.size();
     }
 
     @Override
-    public Notification getItem(int position) {
-        return notificationList.get(position);
+    public NotificationGroup getItem(int position) {
+        return notificationGroupList.get(position);
     }
 
     @Override
@@ -58,33 +58,31 @@ public class NotificationListAdapter extends BaseAdapter {
             notificationItemView = vi.inflate(R.layout.notification_item_layout, null);
         }
 
-        final Notification notification = getItem(position);
+        final NotificationGroup notificationGroup = getItem(position);
 
-        if (notification != null) {
-            ImageView senderPhotoImageView = (ImageView) notificationItemView.findViewById(R.id.notification_sender_photo_image_view);
-            TextView senderNameTextView = (TextView) notificationItemView.findViewById(R.id.notification_sender_name_text_view);
+        if (notificationGroup != null) {
+            ImageView patientPhotoImageView = (ImageView) notificationItemView.findViewById(R.id.notification_patient_photo_image_view);
+            TextView patientNameTextView = (TextView) notificationItemView.findViewById(R.id.notification_patient_name_text_view);
             TextView summaryTextView = (TextView) notificationItemView.findViewById(R.id.notification_summary_text_view);
-            TextView dateTextView = (TextView) notificationItemView.findViewById(R.id.notification_date_text_view);
 
-            if(notification.getStatus() != Notification.STATUS_NONE) {
-                senderNameTextView.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-                dateTextView.setTextColor(context.getResources().getColor(R.color.text_color_default));
+            if(notificationGroup.getStatus() == NotificationGroup.STATUS_ALL_PROCESSED) {
+                patientNameTextView.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                patientNameTextView.setTextColor(context.getResources().getColor(R.color.text_color_default));
+            } else {
+                patientNameTextView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                patientNameTextView.setTextColor(context.getResources().getColor(R.color.light_green_800));
             }
 
-            if (senderPhotoImageView != null) {
-                senderPhotoImageView.setImageBitmap(notification.getSenderPhoto());
+            if (patientPhotoImageView != null) {
+                patientPhotoImageView.setImageBitmap(notificationGroup.getAffectedPatient().getPhoto());
             }
 
-            if (senderNameTextView != null) {
-                senderNameTextView.setText(notification.getSenderName());
+            if (patientNameTextView != null) {
+                patientNameTextView.setText(notificationGroup.getAffectedPatient().getFullName());
             }
 
             if (summaryTextView != null) {
-                summaryTextView.setText(notification.getSummary());
-            }
-
-            if (dateTextView != null) {
-                dateTextView.setText(notification.getCreationDate().toString(Global.DATE_FORMAT));
+                summaryTextView.setText(notificationGroup.getSummary());
             }
         }
         return notificationItemView;

@@ -1,8 +1,18 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.keith.fyp.views.fragments.NotificationDetailFragment">
 
+    <ListView
+        android:id="@+id/notification_detail_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:divider="@color/transparent"
+        android:dividerHeight="@dimen/activity_content_container_padding"
+        android:padding="@dimen/activity_content_container_padding"
+        android:scrollbarStyle="outsideOverlay" />
 
-</FrameLayout>
+</LinearLayout>

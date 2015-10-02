@@ -3,36 +3,44 @@ package com.example.keith.fyp.views.activities;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
-import com.example.keith.fyp.DrawerAndMiniDrawerPair;
+import com.example.keith.fyp.broadcastreceiver.NotificationGroupUpdateReceiver;
+import com.example.keith.fyp.interfaces.OnNotificationGroupUpdateListener;
+import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.broadcastreceiver.NotificationUpdateReceiver;
-import com.example.keith.fyp.interfaces.OnNotificationUpdateListener;
 import com.example.keith.fyp.models.Notification;
+import com.example.keith.fyp.models.NotificationGroup;
 import com.example.keith.fyp.renderers.NotificationRenderer;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.NotificationToRendererConverter;
 import com.example.keith.fyp.utils.UtilsUi;
-import com.example.keith.fyp.views.activities.DashboardActivity;
+import com.example.keith.fyp.views.adapters.NotificationDetailListAdapter;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.MiniDrawer;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-public class NotificationDetailActivity extends AppCompatActivity implements OnNotificationUpdateListener, Drawer.OnDrawerItemClickListener {
+import java.util.ArrayList;
+
+public class NotificationDetailActivity extends AppCompatActivity implements OnNotificationGroupUpdateListener, Drawer.OnDrawerItemClickListener {
 
     private Drawer navDrawer;
     private MiniDrawer miniDrawer;
+    private ListView notificationDetailListView;
 
-    private NotificationUpdateReceiver notificationUpdateReceiver;
+    private ArrayList<Notification> displayedNotificationDetailList;
+
+    private NotificationDetailListAdapter listAdapter;
+
+    private NotificationGroupUpdateReceiver notificationGroupUpdateReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,19 +59,26 @@ public class NotificationDetailActivity extends AppCompatActivity implements OnN
         refreshMiniDrawer();
 
         int selectedIndex = getIntent().getIntExtra("selectedIndex", 0);
-        Notification notification = DataHolder.getNotificationList().get(selectedIndex);
-        NotificationRenderer renderer = NotificationToRendererConverter.convert(this, notification);
-        View view = renderer.render();
-        ((ViewGroup) findViewById(R.id.activity_content_container)).addView(view);
+        NotificationGroup notificationGroup = DataHolder.getNotificationGroupList().get(selectedIndex);
 
-        notificationUpdateReceiver = new NotificationUpdateReceiver(this);
+        displayedNotificationDetailList = new ArrayList<>();
+        ArrayList<Notification> unprocessedNotifList = (ArrayList<Notification>) notificationGroup.getUnprocessedNotif().clone();
+        ArrayList<Notification> processedNotifList = (ArrayList<Notification>) notificationGroup.getProcessedNotif().clone();
+        displayedNotificationDetailList.addAll(unprocessedNotifList);
+        displayedNotificationDetailList.addAll(processedNotifList);
+
+        notificationDetailListView = (ListView) findViewById(R.id.notification_detail_list_view);
+        listAdapter = new NotificationDetailListAdapter(this, displayedNotificationDetailList);
+        notificationDetailListView.setAdapter(listAdapter);
+
+        notificationGroupUpdateReceiver = new NotificationGroupUpdateReceiver(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (null != notificationUpdateReceiver) {
-            registerReceiver(notificationUpdateReceiver, new IntentFilter(Global.ACTION_NOTIFICATION_UPDATE));
+        if (null != notificationGroupUpdateReceiver) {
+            registerReceiver(notificationGroupUpdateReceiver, new IntentFilter(Global.ACTION_NOTIFICATION_GROUP_UPDATE));
         }
     }
 
@@ -114,10 +129,10 @@ public class NotificationDetailActivity extends AppCompatActivity implements OnN
     }
 
     @Override
-    public void onNotificationUpdate() {
-        int notificationCount = UtilsUi.countUnacceptedAndUnrejectedNotification();
+    public void onNotificationGroupUpdate() {
+        int notificationCount = UtilsUi.countUnprocessedNotificationGroup();
 
-        PrimaryDrawerItem notificationNav = (PrimaryDrawerItem) navDrawer.getDrawerItem(2);
+        PrimaryDrawerItem notificationNav = (PrimaryDrawerItem) navDrawer.getDrawerItem(Global.NAVIGATION_NOTIFICATION_ID);
 
         if(notificationCount == 0) {
             notificationNav = notificationNav.withBadgeStyle(UtilsUi.getInvisibleBadgeStyle(this));
