@@ -43,7 +43,7 @@
                             android:id="@+id/routine_name_edit_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Name"
+                            android:hint="@string/event_name"
                             android:inputType="text"
                             android:nextFocusDown="@+id/routine_notes_edit_text"/>
                     </android.support.design.widget.TextInputLayout>

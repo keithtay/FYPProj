@@ -43,7 +43,7 @@
                             android:id="@+id/prescription_name_edit_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Name"
+                            android:hint="@string/drug_name"
                             android:inputType="text"
                             android:nextFocusDown="@+id/dosage_edit_text"/>
                     </android.support.design.widget.TextInputLayout>

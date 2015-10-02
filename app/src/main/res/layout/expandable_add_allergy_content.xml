@@ -39,7 +39,7 @@
                             android:id="@+id/new_allergy_name_edit_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Name"
+                            android:hint="@string/allergy_name"
                             android:inputType="text"
                             android:nextFocusDown="@+id/new_allergy_reaction_edit_text" />
                     </android.support.design.widget.TextInputLayout>
