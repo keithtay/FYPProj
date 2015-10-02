@@ -8,16 +8,40 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/list_item_divider"></View>
+        android:background="@color/list_item_divider" />
 
     <TextView
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/paper_card_row_spacing"
+        android:layout_marginBottom="@dimen/sml_spacing"
         android:layout_marginTop="@dimen/paper_card_row_spacing"
         android:text="@string/rejected"
         android:textAllCaps="true"
         android:textStyle="bold" />
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/big_spacing"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/paper_card_row_spacing"
+        android:paddingRight="@dimen/paper_card_row_spacing">
+
+        <TextView
+            style="@style/typo_body2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/med_spacing"
+            android:text="@string/reason" />
+
+        <TextView
+            android:id="@+id/notification_rejection_reason_text_view"
+            style="@style/typo_body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Actual Reason" />
+    </LinearLayout>
 
 </LinearLayout>

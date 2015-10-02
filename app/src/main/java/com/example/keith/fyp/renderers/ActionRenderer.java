@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -69,6 +70,8 @@ public class ActionRenderer extends Renderer {
                 break;
             case Notification.STATUS_REJECTED:
                 rootView = (ViewGroup) inflater.inflate(R.layout.notification_detail_action_rejected_layout, null);
+                TextView reasonTextView = (TextView) rootView.findViewById(R.id.notification_rejection_reason_text_view);
+                reasonTextView.setText(notification.getRejectionReason());
                 break;
         }
 
@@ -125,8 +128,11 @@ public class ActionRenderer extends Renderer {
 
                 if (isValidForm) {
                     notification.setStatus(Notification.STATUS_REJECTED);
+                    notification.setRejectionReason(reasonStr);
                     finalRootView.removeAllViews();
                     View rejectedView = inflater.inflate(R.layout.notification_detail_action_rejected_layout, null);
+                    TextView reasonTextView = (TextView) rejectedView.findViewById(R.id.notification_rejection_reason_text_view);
+                    reasonTextView.setText(reasonStr);
                     finalRootView.addView(rejectedView);
 
                     Intent intent = new Intent(Global.ACTION_NOTIFICATION_UPDATE);

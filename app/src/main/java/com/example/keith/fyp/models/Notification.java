@@ -24,6 +24,7 @@ public class Notification {
     private Bitmap senderPhoto;
     private String summary;
     private Patient affectedPatient;
+    private String rejectionReason;
     private int status;
     private int type;
 
@@ -91,5 +92,13 @@ public class Notification {
 
     public void setAffectedPatient(Patient affectedPatient) {
         this.affectedPatient = affectedPatient;
+    }
+
+    public String getRejectionReason() {
+        return rejectionReason;
+    }
+
+    public void setRejectionReason(String rejectionReason) {
+        this.rejectionReason = rejectionReason;
     }
 }
