@@ -10,6 +10,7 @@ import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.ObjectToAttributeValueTransformer;
 import com.example.keith.fyp.models.ProblemLog;
 import com.example.keith.fyp.views.adapters.AttributeValueListAdapter;
+import com.example.keith.fyp.views.customviews.NotScrollableListView;
 
 /**
  * Created by Sutrisno on 21/9/2015.
@@ -29,7 +30,7 @@ public class ContentNewInfoObjectRenderer extends ContentRenderer {
 
         View rootView = inflater.inflate(R.layout.notification_detail_content_new_info_object_layout, null);
 
-        ListView newObjectListView = (ListView) rootView.findViewById(R.id.new_object_list_view);
+        NotScrollableListView newObjectListView = (NotScrollableListView) rootView.findViewById(R.id.new_object_list_view);
         newObjectListView.setAdapter(new AttributeValueListAdapter(context, newObject.transform()));
 
         return rootView;

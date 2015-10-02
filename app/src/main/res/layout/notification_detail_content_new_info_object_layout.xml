@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:padding="@dimen/paper_card_padding">
 
-    <ListView
+    <com.example.keith.fyp.views.customviews.NotScrollableListView
         android:id="@+id/new_object_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
