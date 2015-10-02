@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:customfield="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/paper_card_padding">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/provide_reason_of_notification_rejection" />
+
+    <com.example.keith.fyp.views.customviews.TextField
+        android:id="@+id/notification_reject_reason_text_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textCapSentences"
+        customfield:alwaysEditable="true"
+        customfield:containerPaddingLeft="0dp"
+        customfield:containerPaddingRight="0dp"
+        customfield:fieldTitle="Reason"
+        customfield:fieldTitleWidth="80dp"
+        customfield:showBottomBorder="false"
+        customfield:showTopBorder="false" />
+
+</LinearLayout>

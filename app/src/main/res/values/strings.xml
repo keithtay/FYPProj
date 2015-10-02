@@ -178,4 +178,9 @@
     <string name="title_activity_capture_image_ocr">Scan Document Review</string>
     <string name="notification_group_summary_unprocessed">Patient has %1$d unprocessed updates</string>
     <string name="notification_group_summary_all_processed">All updates has been processed</string>
+    <string name="dialog_title_reject_notification">Are you sure to reject the request?</string>
+    <string name="provide_reason_of_notification_rejection">If yes, please provide the reason</string>
+    <string name="dialog_button_reject">Reject</string>
+    <string name="dialog_title_accept_notification">Are you sure to accept the request?</string>
+    <string name="dialog_button_accept">Accept</string>
 </resources>
