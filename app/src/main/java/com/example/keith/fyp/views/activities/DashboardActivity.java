@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.example.keith.fyp.broadcastreceiver.NotificationGroupUpdateReceiver;
+import com.example.keith.fyp.comparators.NotificationComparator;
 import com.example.keith.fyp.interfaces.OnNotificationGroupUpdateListener;
 import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
@@ -281,21 +282,5 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
 
     @Override
     public void onBackPressed() {
-    }
-
-    private class NotificationComparator implements Comparator<Notification> {
-        @Override
-        public int compare(Notification lhs, Notification rhs) {
-            DateTime lhsDate = lhs.getCreationDate();
-            DateTime rhsDate = rhs.getCreationDate();
-
-            if (lhsDate.isBefore(rhsDate)) {
-                return 1;
-            } else if (lhsDate.isAfter(rhsDate)) {
-                return -1;
-            } else {
-                return 0;
-            }
-        }
     }
 }

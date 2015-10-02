@@ -54,14 +54,19 @@ public class UtilsUi {
 
     public static BadgeStyle getVisibleBadgeStyle(Context context) {
         if(visibleStyle == null) {
-            visibleStyle = new BadgeStyle(context.getResources().getColor(R.color.red_100), context.getResources().getColor(R.color.red_100));
+            int backgroundColor = context.getResources().getColor(R.color.red_100);
+            int textColor = context.getResources().getColor(R.color.text_color_default);
+            visibleStyle = new BadgeStyle(backgroundColor, backgroundColor);
+            visibleStyle.withTextColor(textColor);
         }
         return visibleStyle;
     }
 
     public static BadgeStyle getInvisibleBadgeStyle(Context context) {
         if(invisibleStyle == null) {
-            invisibleStyle = new BadgeStyle(context.getResources().getColor(R.color.transparent), context.getResources().getColor(R.color.transparent));
+            int transparentColor = context.getResources().getColor(R.color.transparent);
+            invisibleStyle = new BadgeStyle(transparentColor, transparentColor);
+            invisibleStyle.withTextColor(transparentColor);
         }
         return invisibleStyle;
     }

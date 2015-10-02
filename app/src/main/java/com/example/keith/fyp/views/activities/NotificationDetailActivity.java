@@ -42,6 +42,8 @@ public class NotificationDetailActivity extends AppCompatActivity implements OnN
 
     private NotificationGroupUpdateReceiver notificationGroupUpdateReceiver;
 
+    private int selectedIndex;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +60,7 @@ public class NotificationDetailActivity extends AppCompatActivity implements OnN
         navDrawer.setSelection(Global.NAVIGATION_NOTIFICATION_ID);
         refreshMiniDrawer();
 
-        int selectedIndex = getIntent().getIntExtra("selectedIndex", 0);
+        selectedIndex = getIntent().getIntExtra("selectedIndex", 0);
         NotificationGroup notificationGroup = DataHolder.getNotificationGroupList().get(selectedIndex);
 
         displayedNotificationDetailList = new ArrayList<>();
@@ -144,6 +146,14 @@ public class NotificationDetailActivity extends AppCompatActivity implements OnN
         }
         navDrawer.updateItem(notificationNav);
         miniDrawer.updateItem(Global.NAVIGATION_NOTIFICATION_ID);
+
+        NotificationGroup notificationGroup = DataHolder.getNotificationGroupList().get(selectedIndex);
+        displayedNotificationDetailList.clear();
+        ArrayList<Notification> unprocessedNotifList = (ArrayList<Notification>) notificationGroup.getUnprocessedNotif().clone();
+        ArrayList<Notification> processedNotifList = (ArrayList<Notification>) notificationGroup.getProcessedNotif().clone();
+        displayedNotificationDetailList.addAll(unprocessedNotifList);
+        displayedNotificationDetailList.addAll(processedNotifList);
+        listAdapter.notifyDataSetChanged();
     }
 
     @Override

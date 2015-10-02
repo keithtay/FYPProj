@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.broadcastreceiver.NotificationUpdateReceiver;
+import com.example.keith.fyp.comparators.NotificationComparator;
 import com.example.keith.fyp.interfaces.Communicator;
 import com.example.keith.fyp.interfaces.OnNotificationUpdateListener;
 import com.example.keith.fyp.models.Notification;
@@ -25,6 +26,7 @@ import com.example.keith.fyp.views.adapters.NotificationListAdapter;
 import com.quentindommerc.superlistview.SuperListview;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -96,9 +98,8 @@ public class NotificationListFragment extends Fragment implements AdapterView.On
 
     @Override
     public void onNotificationUpdate() {
-        // Recalculate the summary + status
-        for(NotificationGroup notificationGroup : notificationGroupList) {
 
+        for(NotificationGroup notificationGroup : notificationGroupList) {
             ArrayList<Notification> toBeMoved = new ArrayList<>();
 
             for(Notification notification:notificationGroup.getUnprocessedNotif()) {
@@ -107,13 +108,21 @@ public class NotificationListFragment extends Fragment implements AdapterView.On
                 }
             }
 
-            ArrayList<Notification> unprocessedNotifList = notificationGroup.getUnprocessedNotif();
-            ArrayList<Notification> processedNotifList = notificationGroup.getProcessedNotif();
-            unprocessedNotifList.removeAll(toBeMoved);
-            processedNotifList.addAll(toBeMoved);
+            if(toBeMoved.size() > 0) {
+                ArrayList<Notification> unprocessedNotifList = notificationGroup.getUnprocessedNotif();
+                ArrayList<Notification> processedNotifList = notificationGroup.getProcessedNotif();
+                unprocessedNotifList.removeAll(toBeMoved);
+                processedNotifList.addAll(toBeMoved);
 
-            UtilsUi.setNotificationGroupSummary(getActivity(), notificationGroup);
-            UtilsUi.setNotificationGroupStatus(getActivity(), notificationGroup);
+                // Sort the notifications by date
+                NotificationComparator comparator = new NotificationComparator();
+                Collections.sort(notificationGroup.getProcessedNotif(), comparator);
+                Collections.sort(notificationGroup.getUnprocessedNotif(), comparator);
+
+                // Recalculate the summary + status
+                UtilsUi.setNotificationGroupSummary(getActivity(), notificationGroup);
+                UtilsUi.setNotificationGroupStatus(getActivity(), notificationGroup);
+            }
         }
 
         Intent intent = new Intent(Global.ACTION_NOTIFICATION_GROUP_UPDATE);

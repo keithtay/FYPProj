@@ -1,5 +1,6 @@
 package com.example.keith.fyp.views.fragments;
 
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,17 +9,22 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.broadcastreceiver.NotificationGroupUpdateReceiver;
+import com.example.keith.fyp.interfaces.OnNotificationGroupUpdateListener;
 import com.example.keith.fyp.models.Notification;
 import com.example.keith.fyp.models.NotificationGroup;
 import com.example.keith.fyp.renderers.NotificationRenderer;
 import com.example.keith.fyp.utils.DataHolder;
+import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.NotificationToRendererConverter;
+import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.adapters.NotificationDetailListAdapter;
 import com.example.keith.fyp.views.adapters.NotificationListAdapter;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 
 import java.util.ArrayList;
 
-public class NotificationDetailFragment extends Fragment {
+public class NotificationDetailFragment extends Fragment implements OnNotificationGroupUpdateListener {
 
     private View rootView;
     private ListView notificationDetailListView;
@@ -26,6 +32,10 @@ public class NotificationDetailFragment extends Fragment {
     private ArrayList<Notification> displayedNotificationDetailList;
 
     private NotificationDetailListAdapter listAdapter;
+
+    private NotificationGroupUpdateReceiver notificationGroupUpdateReceiver;
+
+    private int selectedIndex;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,10 +47,22 @@ public class NotificationDetailFragment extends Fragment {
         listAdapter = new NotificationDetailListAdapter(getActivity(), displayedNotificationDetailList);
         notificationDetailListView.setAdapter(listAdapter);
 
+        notificationGroupUpdateReceiver = new NotificationGroupUpdateReceiver(this);
+
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (null != notificationGroupUpdateReceiver) {
+            getActivity().registerReceiver(notificationGroupUpdateReceiver, new IntentFilter(Global.ACTION_NOTIFICATION_GROUP_UPDATE));
+        }
+    }
+
     public void renderDetail(int position) {
+        selectedIndex = position;
+
         displayedNotificationDetailList.clear();
 
         NotificationGroup notificationGroup = DataHolder.getNotificationGroupList().get(position);
@@ -51,5 +73,10 @@ public class NotificationDetailFragment extends Fragment {
         displayedNotificationDetailList.addAll(processedNotifList);
 
         listAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onNotificationGroupUpdate() {
+        renderDetail(selectedIndex);
     }
 }
