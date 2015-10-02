@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.keith.fyp.views.fragments.CareCenterConfigDefaultScheduleFragment">
+    tools:context="com.example.keith.fyp.views.fragments.CareCenterConfigDefaultEventFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,16 +20,16 @@
             app:cardElevation="5dp">
 
             <com.andexert.expandablelayout.library.ExpandableLayout xmlns:expandable="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/add_default_schedule_expandable_layout"
+                android:id="@+id/add_default_event_expandable_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                expandable:el_contentLayout="@layout/expandable_add_default_schedule_content"
-                expandable:el_headerLayout="@layout/expandable_add_default_schedule_header" />
+                expandable:el_contentLayout="@layout/expandable_add_default_event_content"
+                expandable:el_headerLayout="@layout/expandable_add_default_event_header" />
 
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/default_schedule_recycler_view"
+            android:id="@+id/default_event_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

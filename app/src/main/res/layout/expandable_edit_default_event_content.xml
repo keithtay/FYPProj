@@ -16,18 +16,18 @@
         android:paddingRight="@dimen/paper_card_padding"
         android:paddingBottom="@dimen/paper_card_row_spacing">
         <Button
-            android:id="@+id/edit_default_schedule_cancel_button"
+            android:id="@+id/edit_default_event_cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/button_cancel"
             android:textAllCaps="true"
-            android:layout_toLeftOf="@+id/edit_default_schedule_save_button"
+            android:layout_toLeftOf="@+id/edit_default_event_save_button"
             android:paddingLeft="@dimen/padding_flat_button"
             android:paddingRight="@dimen/padding_flat_button"
             android:textStyle="bold"
             style="?android:attr/borderlessButtonStyle"/>
         <Button
-            android:id="@+id/edit_default_schedule_save_button"
+            android:id="@+id/edit_default_event_save_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

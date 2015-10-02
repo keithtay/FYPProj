@@ -16,13 +16,12 @@ import android.widget.Spinner;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
-import com.example.keith.fyp.models.DefaultSchedule;
-import com.example.keith.fyp.models.Routine;
+import com.example.keith.fyp.models.DefaultEvent;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
-import com.example.keith.fyp.views.fragments.CareCenterConfigDefaultScheduleFragment;
+import com.example.keith.fyp.views.fragments.CareCenterConfigDefaultEventFragment;
 
 import org.joda.time.DateTime;
 
@@ -35,34 +34,34 @@ import fr.ganfra.materialspinner.MaterialSpinner;
 /**
  * Created by Sutrisno on 26/9/2015.
  */
-public class DefaultScheduleListAdapter extends RecyclerView.Adapter<DefaultScheduleListAdapter.DefaultScheduleListViewHolder> {
+public class DefaultEventListAdapter extends RecyclerView.Adapter<DefaultEventListAdapter.DefaultEventListViewHolder> {
 
     private LayoutInflater inflater;
-    private List<DefaultSchedule> defaultScheduleList;
-    private CareCenterConfigDefaultScheduleFragment fragment;
+    private List<DefaultEvent> defaultEventList;
+    private CareCenterConfigDefaultEventFragment fragment;
 
-    public DefaultScheduleListAdapter(Context context, CareCenterConfigDefaultScheduleFragment fragment, List<DefaultSchedule> defaultScheduleList) {
+    public DefaultEventListAdapter(Context context, CareCenterConfigDefaultEventFragment fragment, List<DefaultEvent> defaultEventList) {
         this.inflater = LayoutInflater.from(context);
-        this.defaultScheduleList = defaultScheduleList;
+        this.defaultEventList = defaultEventList;
         this.fragment = fragment;
     }
 
     @Override
-    public DefaultScheduleListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View rootView = inflater.inflate(R.layout.default_schedule_card, parent, false);
-        DefaultScheduleListViewHolder viewHolder = new DefaultScheduleListViewHolder(rootView);
+    public DefaultEventListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View rootView = inflater.inflate(R.layout.default_event_card, parent, false);
+        DefaultEventListViewHolder viewHolder = new DefaultEventListViewHolder(rootView);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(DefaultScheduleListViewHolder holder, int position) {
+    public void onBindViewHolder(DefaultEventListViewHolder holder, int position) {
         Context context = holder.nameEditText.getContext();
 
-        DefaultSchedule defaultSchedule = defaultScheduleList.get(position);
+        DefaultEvent defaultEvent = defaultEventList.get(position);
 
-        holder.nameEditText.setText(defaultSchedule.getName());
+        holder.nameEditText.setText(defaultEvent.getName());
 
-        DateTime startTime = defaultSchedule.getStartTime();
+        DateTime startTime = defaultEvent.getStartTime();
         if (startTime != null) {
             String startTimeStr = startTime.toString();
             if (startTimeStr != null && !startTimeStr.isEmpty()) {
@@ -70,7 +69,7 @@ public class DefaultScheduleListAdapter extends RecyclerView.Adapter<DefaultSche
             }
         }
 
-        DateTime endTime = defaultSchedule.getEndTime();
+        DateTime endTime = defaultEvent.getEndTime();
         if (endTime != null) {
             String endTimeStr = endTime.toString();
             if (endTimeStr != null && !endTimeStr.isEmpty()) {
@@ -78,17 +77,17 @@ public class DefaultScheduleListAdapter extends RecyclerView.Adapter<DefaultSche
             }
         }
 
-        if (defaultSchedule.getEveryNumber() != null) {
-            holder.everyEditText.setText(Integer.toString(defaultSchedule.getEveryNumber()));
+        if (defaultEvent.getEveryNumber() != null) {
+            holder.everyEditText.setText(Integer.toString(defaultEvent.getEveryNumber()));
         }
 
-        String everyLabelStr = defaultSchedule.getEveryLabel();
+        String everyLabelStr = defaultEvent.getEveryLabel();
         int everyLabelIdx;
         String[] everyLabelStrArray = context.getResources().getStringArray(R.array.option_every_label);
         everyLabelIdx = Arrays.asList(everyLabelStrArray).indexOf(everyLabelStr);
         holder.everySpinner.setSelection(everyLabelIdx);
 
-        String startDayStr = defaultSchedule.getStartDay();
+        String startDayStr = defaultEvent.getStartDay();
         int startDayIdx;
         String[] startDayStrArray = context.getResources().getStringArray(R.array.option_day);
         startDayIdx = Arrays.asList(startDayStrArray).indexOf(startDayStr);
@@ -97,10 +96,10 @@ public class DefaultScheduleListAdapter extends RecyclerView.Adapter<DefaultSche
 
     @Override
     public int getItemCount() {
-        return defaultScheduleList.size();
+        return defaultEventList.size();
     }
 
-    class DefaultScheduleListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
+    class DefaultEventListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 
         EditText nameEditText;
         EditText startTimePicker;
@@ -121,17 +120,17 @@ public class DefaultScheduleListAdapter extends RecyclerView.Adapter<DefaultSche
         String oldEveryLabel;
         String oldStartDay;
 
-        public DefaultScheduleListViewHolder(View itemView) {
+        public DefaultEventListViewHolder(View itemView) {
             super(itemView);
 
             Context context = itemView.getContext();
 
-            nameEditText = (EditText) itemView.findViewById(R.id.default_schedule_item_name_edit_text);
-            startTimePicker = (EditText) itemView.findViewById(R.id.default_schedule_item_start_time_picker);
-            endTimePicker = (EditText) itemView.findViewById(R.id.default_schedule_item_end_time_picker);
-            everyEditText = (EditText) itemView.findViewById(R.id.default_schedule_item_every_edit_text);
-            everySpinner = (Spinner) itemView.findViewById(R.id.default_schedule_item_every_spinner);
-            startDaySpinner = (MaterialSpinner) itemView.findViewById(R.id.default_schedule_item_start_day_spinner);
+            nameEditText = (EditText) itemView.findViewById(R.id.default_event_item_name_edit_text);
+            startTimePicker = (EditText) itemView.findViewById(R.id.default_event_item_start_time_picker);
+            endTimePicker = (EditText) itemView.findViewById(R.id.default_event_item_end_time_picker);
+            everyEditText = (EditText) itemView.findViewById(R.id.default_event_item_every_edit_text);
+            everySpinner = (Spinner) itemView.findViewById(R.id.default_event_item_every_spinner);
+            startDaySpinner = (MaterialSpinner) itemView.findViewById(R.id.default_event_item_start_day_spinner);
 
             UtilsUi.setupEditTextToBeTimePicker(startTimePicker, context.getString(R.string.select_routine_start_time));
             UtilsUi.setupEditTextToBeTimePicker(endTimePicker, context.getString(R.string.select_routine_end_time));
@@ -149,9 +148,9 @@ public class DefaultScheduleListAdapter extends RecyclerView.Adapter<DefaultSche
             menuButton = (ImageView) itemView.findViewById(R.id.menu_button);
             menuButton.setOnClickListener(this);
 
-            expandableLayout = (ExpandableLayout) itemView.findViewById(R.id.edit_default_schedule_expandable_layout);
-            cancelButton = (Button) itemView.findViewById(R.id.edit_default_schedule_cancel_button);
-            saveButton = (Button) itemView.findViewById(R.id.edit_default_schedule_save_button);
+            expandableLayout = (ExpandableLayout) itemView.findViewById(R.id.edit_default_event_expandable_layout);
+            cancelButton = (Button) itemView.findViewById(R.id.edit_default_event_cancel_button);
+            saveButton = (Button) itemView.findViewById(R.id.edit_default_event_save_button);
 
             setFormEditable(false);
 
@@ -226,16 +225,16 @@ public class DefaultScheduleListAdapter extends RecyclerView.Adapter<DefaultSche
                     }
 
                     if (isValidForm) {
-                        ArrayList<DefaultSchedule> defaultScheduleList = DataHolder.getDefaultScheduleList();
-                        DefaultSchedule defaultSchedule = defaultScheduleList.get(getAdapterPosition());
+                        ArrayList<DefaultEvent> defaultEventList = DataHolder.getDefaultEventList();
+                        DefaultEvent defaultEvent = defaultEventList.get(getAdapterPosition());
                         Integer everyNum = Integer.parseInt(everyNumStr);
 
-                        defaultSchedule.setName(nameStr);
-                        defaultSchedule.setStartTime(startTime);
-                        defaultSchedule.setEndTime(endTime);
-                        defaultSchedule.setEveryNumber(everyNum);
-                        defaultSchedule.setEveryLabel(everyLabelStr);
-                        defaultSchedule.setStartDay(startDayStr);
+                        defaultEvent.setName(nameStr);
+                        defaultEvent.setStartTime(startTime);
+                        defaultEvent.setEndTime(endTime);
+                        defaultEvent.setEveryNumber(everyNum);
+                        defaultEvent.setEveryLabel(everyLabelStr);
+                        defaultEvent.setStartDay(startDayStr);
 
                         setFormEditable(false);
                         if (expandableLayout.isOpened()) {

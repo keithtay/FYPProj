@@ -31,7 +31,7 @@
                     android:src="@drawable/ic_more_horiz" />
 
                 <LinearLayout
-                    android:id="@+id/default_schedule_item_first_row"
+                    android:id="@+id/default_event_item_first_row"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -42,12 +42,12 @@
                         android:layout_weight="1">
 
                         <EditText
-                            android:id="@+id/default_schedule_item_name_edit_text"
+                            android:id="@+id/default_event_item_name_edit_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/name"
                             android:inputType="text"
-                            android:nextFocusDown="@+id/default_schedule_every_edit_text" />
+                            android:nextFocusDown="@+id/default_event_every_edit_text" />
                     </android.support.design.widget.TextInputLayout>
 
                     <View
@@ -55,7 +55,7 @@
                         android:layout_height="0dp" />
 
                     <fr.ganfra.materialspinner.MaterialSpinner
-                        android:id="@+id/default_schedule_item_start_day_spinner"
+                        android:id="@+id/default_event_item_start_day_spinner"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-8dp"
@@ -75,10 +75,10 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/default_schedule_item_second_row"
+                    android:id="@+id/default_event_item_second_row"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/default_schedule_item_first_row"
+                    android:layout_below="@id/default_event_item_first_row"
                     android:layout_marginTop="@dimen/paper_card_row_spacing"
                     android:orientation="horizontal">
 
@@ -88,7 +88,7 @@
                         android:layout_weight="1">
 
                         <EditText
-                            android:id="@+id/default_schedule_item_start_time_picker"
+                            android:id="@+id/default_event_item_start_time_picker"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/start_time"
@@ -105,7 +105,7 @@
                         android:layout_weight="1">
 
                         <EditText
-                            android:id="@+id/default_schedule_item_end_time_picker"
+                            android:id="@+id/default_event_item_end_time_picker"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/end_time"
@@ -117,7 +117,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/default_schedule_item_second_row"
+                    android:layout_below="@id/default_event_item_second_row"
                     android:layout_marginTop="@dimen/paper_card_row_spacing"
                     android:orientation="horizontal">
 
@@ -144,7 +144,7 @@
                             android:orientation="horizontal">
 
                             <EditText
-                                android:id="@+id/default_schedule_item_every_edit_text"
+                                android:id="@+id/default_event_item_every_edit_text"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="bottom"
@@ -152,7 +152,7 @@
                                 android:inputType="number" />
 
                             <Spinner
-                                android:id="@+id/default_schedule_item_every_spinner"
+                                android:id="@+id/default_event_item_every_spinner"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1" />
@@ -174,11 +174,11 @@
             </RelativeLayout>
 
             <com.andexert.expandablelayout.library.ExpandableLayout xmlns:expandable="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/edit_default_schedule_expandable_layout"
+                android:id="@+id/edit_default_event_expandable_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                expandable:el_contentLayout="@layout/expandable_edit_default_schedule_content"
-                expandable:el_headerLayout="@layout/expandable_edit_default_schedule_header" />
+                expandable:el_contentLayout="@layout/expandable_edit_default_event_content"
+                expandable:el_headerLayout="@layout/expandable_edit_default_event_header" />
 
         </LinearLayout>
 

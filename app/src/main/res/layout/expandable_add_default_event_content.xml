@@ -39,12 +39,12 @@
                         android:layout_weight="1">
 
                         <EditText
-                            android:id="@+id/default_schedule_name_edit_text"
+                            android:id="@+id/default_event_name_edit_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/name"
                             android:inputType="text"
-                            android:nextFocusDown="@+id/default_schedule_every_edit_text" />
+                            android:nextFocusDown="@+id/default_event_every_edit_text" />
                     </android.support.design.widget.TextInputLayout>
 
                     <View
@@ -52,7 +52,7 @@
                         android:layout_height="0dp" />
 
                     <fr.ganfra.materialspinner.MaterialSpinner
-                        android:id="@+id/default_schedule_start_day_spinner"
+                        android:id="@+id/default_event_start_day_spinner"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-8dp"
@@ -83,7 +83,7 @@
                         android:layout_weight="1">
 
                         <EditText
-                            android:id="@+id/default_schedule_start_time_picker"
+                            android:id="@+id/default_event_start_time_picker"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/start_time"
@@ -100,7 +100,7 @@
                         android:layout_weight="1">
 
                         <EditText
-                            android:id="@+id/default_schedule_end_time_picker"
+                            android:id="@+id/default_event_end_time_picker"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/end_time"
@@ -138,7 +138,7 @@
                             android:orientation="horizontal">
 
                             <EditText
-                                android:id="@+id/default_schedule_every_edit_text"
+                                android:id="@+id/default_event_every_edit_text"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="bottom"
@@ -146,7 +146,7 @@
                                 android:inputType="number" />
 
                             <Spinner
-                                android:id="@+id/default_schedule_every_spinner"
+                                android:id="@+id/default_event_every_spinner"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1" />
@@ -181,11 +181,11 @@
                 android:paddingRight="@dimen/paper_card_padding">
 
                 <Button
-                    android:id="@+id/cancel_add_default_schedule_button"
+                    android:id="@+id/cancel_add_default_event_button"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/add_new_default_schedule_button"
+                    android:layout_toLeftOf="@+id/add_new_default_event_button"
                     android:paddingLeft="@dimen/padding_flat_button"
                     android:paddingRight="@dimen/padding_flat_button"
                     android:text="@string/button_cancel"
@@ -193,7 +193,7 @@
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/add_new_default_schedule_button"
+                    android:id="@+id/add_new_default_event_button"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

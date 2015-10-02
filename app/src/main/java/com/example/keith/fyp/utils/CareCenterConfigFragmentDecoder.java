@@ -2,7 +2,7 @@ package com.example.keith.fyp.utils;
 
 import android.app.Fragment;
 
-import com.example.keith.fyp.views.fragments.CareCenterConfigDefaultScheduleFragment;
+import com.example.keith.fyp.views.fragments.CareCenterConfigDefaultEventFragment;
 import com.example.keith.fyp.views.fragments.NotificationSettingsFragment;
 
 /**
@@ -15,7 +15,7 @@ public class CareCenterConfigFragmentDecoder {
 
         switch(index) {
             case 0:
-                fragmentToBeDisplayed = new CareCenterConfigDefaultScheduleFragment();
+                fragmentToBeDisplayed = new CareCenterConfigDefaultEventFragment();
                 break;
             case 1:
                 fragmentToBeDisplayed = new NotificationSettingsFragment();

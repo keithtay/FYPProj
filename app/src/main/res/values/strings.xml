@@ -127,7 +127,7 @@
     </string-array>
 
     <string-array name="care_center_config_category">
-        <item>Default Schedule</item>
+        <item>Default Event</item>
         <item>Notification Settings</item>
     </string-array>
 
@@ -154,7 +154,7 @@
     <string name="rejected">Rejected</string>
     <string name="title_activity_notification_detail">Notification</string>
     <string name="title_fragment_care_center_config">Care Center Configuration</string>
-    <string name="add_new_default_schedule">Add New Default Schedule</string>
+    <string name="add_new_default_event">Add New Default Event</string>
     <string name="name">Name</string>
     <string name="repeat_every">Repeat Every</string>
     <string name="start_time">Start Time</string>

@@ -18,13 +18,12 @@ import android.widget.Spinner;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
-import com.example.keith.fyp.models.DefaultSchedule;
-import com.example.keith.fyp.models.Routine;
+import com.example.keith.fyp.models.DefaultEvent;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
-import com.example.keith.fyp.views.adapters.DefaultScheduleListAdapter;
+import com.example.keith.fyp.views.adapters.DefaultEventListAdapter;
 import com.example.keith.fyp.views.decorators.SpacesCardItemDecoration;
 
 import org.joda.time.DateTime;
@@ -34,11 +33,11 @@ import java.util.ArrayList;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 
-public class CareCenterConfigDefaultScheduleFragment extends Fragment {
+public class CareCenterConfigDefaultEventFragment extends Fragment {
 
     private View rootView;
 
-    private ExpandableLayout addDefaultScheduleExpandable;
+    private ExpandableLayout addDefaultEventExpandable;
 
     private EditText nameEditText;
     private EditText startTimePicker;
@@ -47,43 +46,43 @@ public class CareCenterConfigDefaultScheduleFragment extends Fragment {
     private Spinner everySpinner;
     private MaterialSpinner startDaySpinner;
 
-    private ArrayList<DefaultSchedule> defaultScheduleList;
-    private DefaultScheduleListAdapter defaultScheduleListAdapter;
+    private ArrayList<DefaultEvent> defaultEventList;
+    private DefaultEventListAdapter defaultEventListAdapter;
 
     private LinearLayout addNewRoutineHeaderContainer;
-    private Button cancelNewDefaultScheduleButton;
-    private Button addNewDefaultScheduleButton;
-    private RecyclerView defaultScheduleRecyclerView;
+    private Button cancelNewDefaultEventButton;
+    private Button addNewDefaultEventButton;
+    private RecyclerView defaultEventRecyclerView;
     private LinearLayoutManager layoutManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_care_center_config_default_schedule, container, false);
+        rootView = inflater.inflate(R.layout.fragment_care_center_config_default_event, container, false);
 
-        addDefaultScheduleExpandable = (ExpandableLayout) rootView.findViewById(R.id.add_default_schedule_expandable_layout);
+        addDefaultEventExpandable = (ExpandableLayout) rootView.findViewById(R.id.add_default_event_expandable_layout);
 
-        nameEditText = (EditText) rootView.findViewById(R.id.default_schedule_name_edit_text);
-        startTimePicker = (EditText) rootView.findViewById(R.id.default_schedule_start_time_picker);
-        endTimePicker = (EditText) rootView.findViewById(R.id.default_schedule_end_time_picker);
-        everyEditText = (EditText) rootView.findViewById(R.id.default_schedule_every_edit_text);
-        everySpinner = (Spinner) rootView.findViewById(R.id.default_schedule_every_spinner);
-        startDaySpinner = (MaterialSpinner) rootView.findViewById(R.id.default_schedule_start_day_spinner);
+        nameEditText = (EditText) rootView.findViewById(R.id.default_event_name_edit_text);
+        startTimePicker = (EditText) rootView.findViewById(R.id.default_event_start_time_picker);
+        endTimePicker = (EditText) rootView.findViewById(R.id.default_event_end_time_picker);
+        everyEditText = (EditText) rootView.findViewById(R.id.default_event_every_edit_text);
+        everySpinner = (Spinner) rootView.findViewById(R.id.default_event_every_spinner);
+        startDaySpinner = (MaterialSpinner) rootView.findViewById(R.id.default_event_start_day_spinner);
 
         UtilsUi.setupEditTextToBeTimePicker(startTimePicker, getString(R.string.select_routine_start_time));
         UtilsUi.setupEditTextToBeTimePicker(endTimePicker, getString(R.string.select_routine_end_time));
 
-        defaultScheduleList = getDefaultScheduleList();
-        defaultScheduleListAdapter = new DefaultScheduleListAdapter(getActivity(), this, defaultScheduleList);
+        defaultEventList = getDefaultEventList();
+        defaultEventListAdapter = new DefaultEventListAdapter(getActivity(), this, defaultEventList);
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        addNewRoutineHeaderContainer = (LinearLayout) rootView.findViewById(R.id.add_new_default_schedule_header_container);
+        addNewRoutineHeaderContainer = (LinearLayout) rootView.findViewById(R.id.add_new_default_event_header_container);
         addNewRoutineHeaderContainer.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (addDefaultScheduleExpandable.isOpened()) {
-                    resetNewDefaultScheduleFields();
+                if (addDefaultEventExpandable.isOpened()) {
+                    resetNewDefaultEventFields();
                 }
                 return false;
             }
@@ -99,18 +98,18 @@ public class CareCenterConfigDefaultScheduleFragment extends Fragment {
         startDayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         startDaySpinner.setAdapter(startDayAdapter);
 
-        defaultScheduleRecyclerView = (RecyclerView) rootView.findViewById(R.id.default_schedule_recycler_view);
-        defaultScheduleRecyclerView.setLayoutManager(layoutManager);
-        defaultScheduleRecyclerView.setAdapter(defaultScheduleListAdapter);
-        defaultScheduleRecyclerView.addItemDecoration(
+        defaultEventRecyclerView = (RecyclerView) rootView.findViewById(R.id.default_event_recycler_view);
+        defaultEventRecyclerView.setLayoutManager(layoutManager);
+        defaultEventRecyclerView.setAdapter(defaultEventListAdapter);
+        defaultEventRecyclerView.addItemDecoration(
                 new SpacesCardItemDecoration((int) getResources().getDimension(R.dimen.paper_card_row_spacing)));
 
-        cancelNewDefaultScheduleButton = (Button) rootView.findViewById(R.id.cancel_add_default_schedule_button);
-        cancelNewDefaultScheduleButton.setOnClickListener(new View.OnClickListener() {
+        cancelNewDefaultEventButton = (Button) rootView.findViewById(R.id.cancel_add_default_event_button);
+        cancelNewDefaultEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                closeExpandableAddDefaultSchedule();
-                resetNewDefaultScheduleFields();
+                closeExpandableAddDefaultEvent();
+                resetNewDefaultEventFields();
 
                 nameEditText.setError(null);
                 startDaySpinner.setError(null);
@@ -120,18 +119,18 @@ public class CareCenterConfigDefaultScheduleFragment extends Fragment {
             }
         });
 
-        addNewDefaultScheduleButton = (Button) rootView.findViewById(R.id.add_new_default_schedule_button);
-        addNewDefaultScheduleButton.setOnClickListener(new View.OnClickListener() {
+        addNewDefaultEventButton = (Button) rootView.findViewById(R.id.add_new_default_event_button);
+        addNewDefaultEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createAndAddDefaultSchedule();
+                createAndAddDefaultEvent();
             }
         });
 
         return rootView;
     }
 
-    private void createAndAddDefaultSchedule() {
+    private void createAndAddDefaultEvent() {
         String name = nameEditText.getText().toString();
         String startTimeStr = startTimePicker.getText().toString();
         String endTimeStr = endTimePicker.getText().toString();
@@ -184,13 +183,13 @@ public class CareCenterConfigDefaultScheduleFragment extends Fragment {
         if (isValidForm) {
             Integer everyNum = Integer.parseInt(everyNumStr);
 
-            DefaultSchedule newDefaultSchedule = new DefaultSchedule(name, startTime, endTime, everyNum, everyLabel, startDay);
-            defaultScheduleList.add(0, newDefaultSchedule);
-            defaultScheduleListAdapter.notifyItemInserted(0);
+            DefaultEvent newDefaultEvent = new DefaultEvent(name, startTime, endTime, everyNum, everyLabel, startDay);
+            defaultEventList.add(0, newDefaultEvent);
+            defaultEventListAdapter.notifyItemInserted(0);
 
-            resetNewDefaultScheduleFields();
+            resetNewDefaultEventFields();
 
-            closeExpandableAddDefaultSchedule();
+            closeExpandableAddDefaultEvent();
             hideKeyboard();
         }
     }
@@ -202,11 +201,11 @@ public class CareCenterConfigDefaultScheduleFragment extends Fragment {
     }
 
     public void deleteItem(int selectedItemIdx) {
-        defaultScheduleList.remove(selectedItemIdx);
-        defaultScheduleListAdapter.notifyItemRemoved(selectedItemIdx);
+        defaultEventList.remove(selectedItemIdx);
+        defaultEventListAdapter.notifyItemRemoved(selectedItemIdx);
     }
 
-    private void resetNewDefaultScheduleFields() {
+    private void resetNewDefaultEventFields() {
         nameEditText.setText(null);
         startTimePicker.setText(null);
         endTimePicker.setText(null);
@@ -215,33 +214,33 @@ public class CareCenterConfigDefaultScheduleFragment extends Fragment {
         startDaySpinner.setSelection(0);
     }
 
-    private void closeExpandableAddDefaultSchedule() {
-        if (addDefaultScheduleExpandable.isOpened()) {
-            addDefaultScheduleExpandable.hide();
+    private void closeExpandableAddDefaultEvent() {
+        if (addDefaultEventExpandable.isOpened()) {
+            addDefaultEventExpandable.hide();
         }
     }
 
-    public ArrayList<DefaultSchedule> getDefaultScheduleList() {
-        ArrayList<DefaultSchedule> defaultScheduleList = DataHolder.getDefaultScheduleList();
+    public ArrayList<DefaultEvent> getDefaultEventList() {
+        ArrayList<DefaultEvent> defaultEventList = DataHolder.getDefaultEventList();
 
-        if (defaultScheduleList == null) {
-            defaultScheduleList = new ArrayList<>();
+        if (defaultEventList == null) {
+            defaultEventList = new ArrayList<>();
 
-            defaultScheduleList.add(new DefaultSchedule("Lunch",
+            defaultEventList.add(new DefaultEvent("Lunch",
                     DateTime.now().withHourOfDay(12).withMinuteOfHour(0),
                     DateTime.now().withHourOfDay(13).withMinuteOfHour(0),
                     1,
                     "Day",
                     null));
 
-            defaultScheduleList.add(new DefaultSchedule("Tea Break",
+            defaultEventList.add(new DefaultEvent("Tea Break",
                     DateTime.now().withHourOfDay(16).withMinuteOfHour(0),
                     DateTime.now().withHourOfDay(16).withMinuteOfHour(30),
                     2,
                     "Day",
                     "Monday"));
 
-            defaultScheduleList.add(new DefaultSchedule("Aerobics",
+            defaultEventList.add(new DefaultEvent("Aerobics",
                     DateTime.now().withHourOfDay(9).withMinuteOfHour(0),
                     DateTime.now().withHourOfDay(10).withMinuteOfHour(0),
                     1,
@@ -249,6 +248,6 @@ public class CareCenterConfigDefaultScheduleFragment extends Fragment {
                     "Wednesday"));
         }
 
-        return defaultScheduleList;
+        return defaultEventList;
     }
 }

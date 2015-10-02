@@ -1,7 +1,6 @@
 package com.example.keith.fyp.utils;
 
-import com.example.keith.fyp.models.DefaultSchedule;
-import com.example.keith.fyp.models.Notification;
+import com.example.keith.fyp.models.DefaultEvent;
 import com.example.keith.fyp.models.NotificationGroup;
 import com.example.keith.fyp.models.Patient;
 
@@ -18,7 +17,7 @@ public class DataHolder {
     private static Patient viewedPatient;
 
     private static ArrayList<NotificationGroup> notificationGroupList = new ArrayList<>();
-    private static ArrayList<DefaultSchedule> defaultScheduleList = new ArrayList<>();
+    private static ArrayList<DefaultEvent> defaultEventList = new ArrayList<>();
 
     public static Patient getCreatedPatient() {
         if(createdPatient == null) {
@@ -50,11 +49,11 @@ public class DataHolder {
         DataHolder.notificationGroupList = notificationGroupList;
     }
 
-    public static ArrayList<DefaultSchedule> getDefaultScheduleList() {
-        return defaultScheduleList;
+    public static ArrayList<DefaultEvent> getDefaultEventList() {
+        return defaultEventList;
     }
 
-    public static void setDefaultScheduleList(ArrayList<DefaultSchedule> defaultScheduleList) {
-        DataHolder.defaultScheduleList = defaultScheduleList;
+    public static void setDefaultEventList(ArrayList<DefaultEvent> defaultEventList) {
+        DataHolder.defaultEventList = defaultEventList;
     }
 }

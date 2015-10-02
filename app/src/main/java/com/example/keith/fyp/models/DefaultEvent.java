@@ -5,7 +5,7 @@ import org.joda.time.DateTime;
 /**
  * Created by Sutrisno on 26/9/2015.
  */
-public class DefaultSchedule {
+public class DefaultEvent {
     private String name;
     private DateTime startTime;
     private DateTime endTime;
@@ -13,7 +13,7 @@ public class DefaultSchedule {
     private String everyLabel;
     private String startDay;
 
-    public DefaultSchedule(String name, DateTime startTime, DateTime endTime, Integer everyNumber, String everyLabel, String startDay) {
+    public DefaultEvent(String name, DateTime startTime, DateTime endTime, Integer everyNumber, String everyLabel, String startDay) {
         this.name = name;
         this.startTime = startTime;
         this.endTime = endTime;
