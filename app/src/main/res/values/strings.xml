@@ -108,27 +108,27 @@
     </string-array>
 
     <string-array name="info_category_create_patient">
-        <item>Personal Information</item>
-        <item>Allergy</item>
-        <item>Vital</item>
-        <item>Social History</item>
-        <item>Prescription</item>
-        <item>Routine</item>
+        <item>Personal Information|</item>
+        <item>Allergy|</item>
+        <item>Vital|Measure \'s vital signs to check general physical health</item>
+        <item>Social History|Patient\'s past experiences and other supporting information</item>
+        <item>Prescription|</item>
+        <item>Routine|Patient\'s activities that are followed regularly</item>
     </string-array>
 
     <string-array name="info_category_view_patient">
-        <item>Personal Information</item>
-        <item>Allergy</item>
-        <item>Vital</item>
-        <item>Social History</item>
-        <item>Prescription</item>
-        <item>Routine</item>
-        <item>Problem Log</item>
+        <item>Personal Information|</item>
+        <item>Allergy|</item>
+        <item>Vital|Measure patient\'s vital signs to check general physical health</item>
+        <item>Social History|Patient\'s past experiences and other supporting information</item>
+        <item>Prescription|</item>
+        <item>Routine|Patient\'s activities that are followed regularly</item>
+        <item>Problem Log|Take note of patient\'s problem</item>
     </string-array>
 
     <string-array name="care_center_config_category">
-        <item>Default Event</item>
-        <item>Notification Settings</item>
+        <item>Default Event|Care center\'s default activities to be automatically included in patients\' schedule</item>
+        <item>Notification Settings|</item>
     </string-array>
 
     <string name="title_activity_view_schedule">Patient Schedule</string>

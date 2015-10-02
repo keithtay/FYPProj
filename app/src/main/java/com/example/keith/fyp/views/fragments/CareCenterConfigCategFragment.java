@@ -13,6 +13,10 @@ import android.widget.ListView;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.Communicator;
+import com.example.keith.fyp.models.TextTooltipPair;
+import com.example.keith.fyp.views.adapters.TextTooltipPairListAdapter;
+
+import java.util.ArrayList;
 
 
 public class CareCenterConfigCategFragment extends Fragment implements AdapterView.OnItemClickListener {
@@ -31,8 +35,15 @@ public class CareCenterConfigCategFragment extends Fragment implements AdapterVi
 
         String[] infoCategList = getResources().getStringArray(R.array.care_center_config_category);
 
-        ArrayAdapter<String> infoCategAdapter = new ArrayAdapter<>(getActivity(), R.layout.text_list_item_layout, infoCategList);
-        careCenterConfigCategListView.setAdapter(infoCategAdapter);
+        ArrayList<TextTooltipPair> textTooltipPairList = new ArrayList<>();
+
+        for(String entry:infoCategList) {
+            String[] splitResult = entry.split("\\|", 2);
+            textTooltipPairList.add(new TextTooltipPair(splitResult[0], splitResult[1]));
+        }
+
+        TextTooltipPairListAdapter listAdapter = new TextTooltipPairListAdapter(getActivity(), textTooltipPairList);
+        careCenterConfigCategListView.setAdapter(listAdapter);
         careCenterConfigCategListView.setOnItemClickListener(this);
 
         // Select the first item of the listView (only for landscape mode)

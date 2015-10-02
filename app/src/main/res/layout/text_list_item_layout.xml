@@ -1,9 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="72dp"
-    android:gravity="center_vertical"
-    android:text="Info Category"
-    android:paddingLeft="@dimen/list_item_padding"
-    android:textSize="20sp"
-    android:background="@drawable/list_item_bg"/>
+    android:layout_height="match_parent"
+    android:clipChildren="false">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipChildren="false">
+
+        <TextView
+            android:id="@+id/text_item_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@drawable/list_item_bg"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/list_item_padding"
+            android:text="Info Category"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/info_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="@dimen/list_item_padding"
+            android:paddingLeft="@dimen/list_item_padding"
+            android:paddingTop="18dp"
+            android:paddingBottom="18dp"
+            android:src="@drawable/ic_info_outline_green_24px" />
+    </RelativeLayout>
+
+    <com.nhaarman.supertooltips.ToolTipRelativeLayout
+        android:id="@+id/tooltip_relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

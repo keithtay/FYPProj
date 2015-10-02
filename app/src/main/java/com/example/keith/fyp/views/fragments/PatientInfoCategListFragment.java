@@ -20,11 +20,15 @@ import com.example.keith.fyp.interfaces.Communicator;
 import com.example.keith.fyp.interfaces.CreatePatientCommunicator;
 import com.example.keith.fyp.interfaces.OnCreateNewPatientListener;
 import com.example.keith.fyp.models.Patient;
+import com.example.keith.fyp.models.TextTooltipPair;
 import com.example.keith.fyp.utils.CreatedPatientEmptyFieldChecker;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.views.activities.CreatePatientActivity;
+import com.example.keith.fyp.views.adapters.TextTooltipPairListAdapter;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -52,9 +56,15 @@ public class PatientInfoCategListFragment extends Fragment implements AdapterVie
             infoCategList = getResources().getStringArray(R.array.info_category_view_patient);
         }
 
+        ArrayList<TextTooltipPair> textTooltipPairList = new ArrayList<>();
 
-        ArrayAdapter<String> infoCategAdapter = new ArrayAdapter<>(getActivity(), R.layout.text_list_item_layout, infoCategList);
-        infoCategListView.setAdapter(infoCategAdapter);
+        for(String entry:infoCategList) {
+            String[] splitResult = entry.split("\\|", 2);
+            textTooltipPairList.add(new TextTooltipPair(splitResult[0], splitResult[1]));
+        }
+
+        TextTooltipPairListAdapter listAdapter = new TextTooltipPairListAdapter(getActivity(), textTooltipPairList);
+        infoCategListView.setAdapter(listAdapter);
         infoCategListView.setOnItemClickListener(this);
 
         openTabIndex = null;
