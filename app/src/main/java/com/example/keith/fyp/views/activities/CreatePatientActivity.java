@@ -31,6 +31,7 @@ import com.example.keith.fyp.views.fragments.PatientInfoCategListFragment;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.melnykov.fab.FloatingActionButton;
+import com.mikepenz.iconics.utils.Utils;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.MiniDrawer;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
@@ -65,6 +66,17 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         selectedPatientDraftId = getIntent().getStringExtra(Global.EXTRA_SELECTED_PATIENT_DRAFT_ID);
+        if(!UtilsString.isEmpty(selectedPatientDraftId)) {
+            SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+            String json = mPrefs.getString(Global.SP_CREATE_PATIENT_DRAFT, "");
+            if(!UtilsString.isEmpty(json)) {
+                Gson gson = new Gson();
+                Type type = new TypeToken<HashMap<String, Patient>>(){}.getType();
+                HashMap<String, Patient> draftMap = gson.fromJson(json, type);
+                Patient patient = draftMap.get(selectedPatientDraftId);
+                DataHolder.setCreatedPatientEditInitial(patient);
+            }
+        }
 
         inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -217,7 +229,15 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
     }
 
     private void checkWhetherInTheMiddleOfCreatingPatient(final int selectedIdentifier) {
-        if(UtilsUi.isPatientHasDeclaredAttribute(DataHolder.getCreatedPatient())) {
+        boolean isEditing = false;
+
+        if(UtilsString.isEmpty(selectedPatientDraftId)) {
+            isEditing =  !DataHolder.getCreatedPatient().equals(new Patient());
+        } else {
+            isEditing = !DataHolder.getCreatedPatient().equals(DataHolder.getCreatedPatientEditInitial());
+        }
+
+        if(isEditing) {
             MaterialDialog.Builder builder = new MaterialDialog.Builder(this);
             if(UtilsString.isEmpty(selectedPatientDraftId)) {
                 builder.title("You are in the middle of creating a patient. Do you want to save current patient as draft?");

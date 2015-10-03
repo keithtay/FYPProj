@@ -2,6 +2,8 @@ package com.example.keith.fyp.models;
 
 import android.graphics.Bitmap;
 
+import com.example.keith.fyp.utils.UtilsString;
+
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
@@ -220,5 +222,158 @@ public class Patient {
 
     public String getFullName() {
         return firstName + " " + lastName;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Patient)) {
+            return false;
+        }
+
+        Patient patient = (Patient) other;
+
+        if(!UtilsString.isEqual(firstName, patient.getFirstName())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(lastName, patient.getLastName())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(nric, patient.getNric())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(address, patient.getAddress())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(homeNumber, patient.getHomeNumber())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(phoneNumber, patient.getPhoneNumber())) {
+            return false;
+        }
+
+        if(gender != patient.getGender()) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(dob, patient.getDob())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(photo, patient.getPhoto())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(guardianFullName, patient.getGuardianFullName())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(guardianContactNumber, patient.getGuardianContactNumber())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(guardianEmail, patient.getGuardianEmail())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(hasAllergy, patient.getHasAllergy())) {
+            return false;
+        }
+
+        if(allergyList.size() != patient.getAllergyList().size()) {
+            return false;
+        }
+
+        if(vitalList.size() != patient.getVitalList().size()) {
+            return false;
+        }
+
+        if(prescriptionList.size() != patient.getPrescriptionList().size()) {
+            return false;
+        }
+
+        if(routineList.size() != patient.getRoutineList().size()) {
+            return false;
+        }
+
+        SocialHistory socialHistoryOther = patient.getSocialHistory();
+
+        if(!UtilsString.isEqual(socialHistory.getLiveWith(), socialHistoryOther.getLiveWith())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(socialHistory.getDiet(), socialHistoryOther.getDiet())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(socialHistory.getReligion(), socialHistoryOther.getReligion())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(socialHistory.getIsSexuallyActive(), socialHistoryOther.getIsSexuallyActive())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(socialHistory.getIsSecondhandSmoker(), socialHistoryOther.getIsSecondhandSmoker())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(socialHistory.getAlcoholUse(), socialHistoryOther.getAlcoholUse())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(socialHistory.getCaffeineUse(), socialHistoryOther.getCaffeineUse())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(socialHistory.getTobaccoUse(), socialHistoryOther.getTobaccoUse())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(socialHistory.getDrugUse(), socialHistoryOther.getDrugUse())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(socialHistory.getPet(), socialHistoryOther.getPet())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(socialHistory.getOccupation(), socialHistoryOther.getOccupation())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(socialHistory.getLike(), socialHistoryOther.getLike())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(socialHistory.getDislike(), socialHistoryOther.getDislike())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(socialHistory.getHobby(), socialHistoryOther.getHobby())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(socialHistory.getHabbit(), socialHistoryOther.getHabbit())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(socialHistory.getHolidayExperience(), socialHistoryOther.getHolidayExperience())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(socialHistory.getEducation(), socialHistoryOther.getEducation())) {
+            return false;
+        }
+
+        if(!UtilsString.isEqual(socialHistory.getExercise(), socialHistoryOther.getExercise())) {
+            return false;
+        }
+
+        return true;
     }
 }

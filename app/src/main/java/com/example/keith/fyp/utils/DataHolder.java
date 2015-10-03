@@ -13,6 +13,9 @@ public class DataHolder {
     // Patient currently being created
     private static Patient createdPatient;
 
+    // For comparing whether or not the patient draft is editted
+    private static Patient createdPatientEditInitial;
+
     private static ArrayList<Patient> patientDraftList = new ArrayList<>();
 
     // Patient currently being viewed
@@ -69,5 +72,13 @@ public class DataHolder {
 
     public static void setPatientDraftList(ArrayList<Patient> patientDraftList) {
         DataHolder.patientDraftList = patientDraftList;
+    }
+
+    public static Patient getCreatedPatientEditInitial() {
+        return createdPatientEditInitial;
+    }
+
+    public static void setCreatedPatientEditInitial(Patient createdPatientEditInitial) {
+        DataHolder.createdPatientEditInitial = createdPatientEditInitial;
     }
 }
