@@ -5,6 +5,9 @@ import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -20,6 +23,9 @@ import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.PatientFormSpec;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsString;
+import com.example.keith.fyp.utils.UtilsUi;
+import com.google.gson.Gson;
 
 import org.joda.time.DateTime;
 
@@ -41,6 +47,17 @@ public class CreatePatientInfoFormFragment extends PatientInfoFormFragment {
 
     public void init() {
         super.init();
+
+        if(!UtilsUi.isPatientHasDeclaredAttribute(DataHolder.getCreatedPatient())) {
+            SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            Gson gson = new Gson();
+            String json = mPrefs.getString(Global.SP_CREATE_PATIENT_DRAFT, "");
+            if(!UtilsString.isEmpty(json)) {
+                Patient patient = gson.fromJson(json, Patient.class);
+                DataHolder.setCreatedPatient(patient);
+            }
+        }
+
         createdPatient = DataHolder.getCreatedPatient();
         patientFormSpecs = new ArrayList<>();
     }

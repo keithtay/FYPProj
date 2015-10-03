@@ -10,6 +10,7 @@ android {
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -22,10 +23,12 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     // Suport Libraries
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.android.support:cardview-v7:22.2.1'
-    compile 'com.android.support:recyclerview-v7:21.0.0'
-    compile 'com.android.support:design:22.2.1'
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.android.support:cardview-v7:23.0.1'
+    compile 'com.android.support:recyclerview-v7:23.0.1'
+    compile 'com.android.support:design:23.0.1'
+    compile 'com.android.support:multidex:1.0.0'
+
     // Other Libraries
     compile "com.google.android.gms:play-services:7.5.0"
     compile 'com.mikepenz:iconics-core:1.7.5@aar'
@@ -51,6 +54,7 @@ dependencies {
         transitive = true
     }
     compile 'com.nhaarman.supertooltips:library:3.0.+'
+    compile 'com.google.code.gson:gson:2.3.1'
 }
 
 repositories {

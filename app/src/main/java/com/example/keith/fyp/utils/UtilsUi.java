@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,18 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TimePicker;
 
+import com.example.keith.fyp.models.Allergy;
 import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Notification;
 import com.example.keith.fyp.models.NotificationGroup;
 import com.example.keith.fyp.models.Patient;
+import com.example.keith.fyp.models.Prescription;
 import com.example.keith.fyp.models.ProblemLog;
+import com.example.keith.fyp.models.Routine;
+import com.example.keith.fyp.models.Schedule;
+import com.example.keith.fyp.models.SocialHistory;
+import com.example.keith.fyp.models.Vital;
 import com.mikepenz.crossfader.Crossfader;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -331,5 +338,149 @@ public class UtilsUi {
         } else {
             notificationGroup.setStatus(NotificationGroup.STATUS_ALL_PROCESSED);
         }
+    }
+
+    // Check whether patient has any declared attributes
+    public static boolean isPatientHasDeclaredAttribute(Patient patient) {
+
+        if(!UtilsString.isEmpty(patient.getFirstName())) {
+            return true;
+        }
+
+        if(!UtilsString.isEmpty(patient.getLastName())) {
+            return true;
+        }
+
+        if(!UtilsString.isEmpty(patient.getNric())) {
+            return true;
+        }
+
+        if(!UtilsString.isEmpty(patient.getAddress())) {
+            return true;
+        }
+
+        if(!UtilsString.isEmpty(patient.getHomeNumber())) {
+            return true;
+        }
+
+        if(!UtilsString.isEmpty(patient.getPhoneNumber())) {
+            return true;
+        }
+
+        if(patient.getGender() != '\u0000') {
+            return true;
+        }
+
+        if(patient.getDob() != null) {
+            return true;
+        }
+
+        if(patient.getPhoto() != null) {
+            return true;
+        }
+
+        if(!UtilsString.isEmpty(patient.getGuardianFullName())) {
+            return true;
+        }
+
+        if(!UtilsString.isEmpty(patient.getGuardianContactNumber())) {
+            return true;
+        }
+
+        if(!UtilsString.isEmpty(patient.getGuardianEmail())) {
+            return true;
+        }
+
+        if(patient.getHasAllergy() != null) {
+            return true;
+        }
+
+        if(patient.getVitalList().size() > 0) {
+            return true;
+        }
+
+        if(patient.getPrescriptionList().size() > 0) {
+            return true;
+        }
+
+        if(patient.getRoutineList().size() > 0) {
+            return true;
+        }
+
+        SocialHistory socialHistory = patient.getSocialHistory();
+
+        if(!UtilsString.isEmpty(socialHistory.getLiveWith())) {
+            return true;
+        }
+
+        if(!UtilsString.isEmpty(socialHistory.getDiet())) {
+            return true;
+        }
+
+        if(!UtilsString.isEmpty(socialHistory.getReligion())) {
+            return true;
+        }
+
+        if(socialHistory.getIsSexuallyActive() != null) {
+            return true;
+        }
+
+        if(socialHistory.getIsSecondhandSmoker() != null) {
+            return true;
+        }
+
+        if(!UtilsString.isEmpty(socialHistory.getAlcoholUse())) {
+            return true;
+        }
+
+        if(!UtilsString.isEmpty(socialHistory.getCaffeineUse())) {
+            return true;
+        }
+
+        if(!UtilsString.isEmpty(socialHistory.getTobaccoUse())) {
+            return true;
+        }
+
+        if(!UtilsString.isEmpty(socialHistory.getDrugUse())) {
+            return true;
+        }
+
+        if(!UtilsString.isEmpty(socialHistory.getPet())) {
+            return true;
+        }
+
+        if(!UtilsString.isEmpty(socialHistory.getOccupation())) {
+            return true;
+        }
+
+        if(!UtilsString.isEmpty(socialHistory.getLike())) {
+            return true;
+        }
+
+        if(!UtilsString.isEmpty(socialHistory.getDislike())) {
+            return true;
+        }
+
+        if(!UtilsString.isEmpty(socialHistory.getHobby())) {
+            return true;
+        }
+
+        if(!UtilsString.isEmpty(socialHistory.getHabbit())) {
+            return true;
+        }
+
+        if(!UtilsString.isEmpty(socialHistory.getHolidayExperience())) {
+            return true;
+        }
+
+        if(!UtilsString.isEmpty(socialHistory.getEducation())) {
+            return true;
+        }
+
+        if(!UtilsString.isEmpty(socialHistory.getExercise())) {
+            return true;
+        }
+
+        return false;
     }
 }

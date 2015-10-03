@@ -56,4 +56,8 @@ public class DataHolder {
     public static void setDefaultEventList(ArrayList<DefaultEvent> defaultEventList) {
         DataHolder.defaultEventList = defaultEventList;
     }
+
+    public static void setCreatedPatient(Patient createdPatient) {
+        DataHolder.createdPatient = createdPatient;
+    }
 }

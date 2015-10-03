@@ -37,6 +37,9 @@ public class Global {
     public static final String ACTION_NOTIFICATION_GROUP_UPDATE = "ACTION_NOTIFICATION_GROUP_UPDATE";
     public static final String ACTION_CREATE_NEW_PATIENT = "ACTION_CREATE_NEW_PATIENT";
 
+    // Keys in Shared Preferences
+    public static final String SP_CREATE_PATIENT_DRAFT = "SP_CREATE_PATIENT_DRAFT";
+
     // Create new patient fields IDs (for input checking)
     public static final Integer PHOTO = -1;
     public static final Integer FIRST_NAME_FIELD = 0;

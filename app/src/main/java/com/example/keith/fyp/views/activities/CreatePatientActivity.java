@@ -5,8 +5,10 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.CreatePatientCommunicator;
@@ -23,6 +26,7 @@ import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.fragments.PatientInfoCategListFragment;
+import com.google.gson.Gson;
 import com.melnykov.fab.FloatingActionButton;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.MiniDrawer;
@@ -150,8 +154,9 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        DataHolder.resetCreatedPatient();
+//        super.onBackPressed();
+
+        checkWhetherInTheMiddleOfCreatingPatient(Global.NAVIGATION_PATIENT_LIST_ID);
     }
 
     @Override
@@ -178,9 +183,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case android.R.id.home:
-                // app icon in action bar clicked; goto parent activity.
-                DataHolder.resetCreatedPatient();
-                NavUtils.navigateUpFromSameTask(this);
+                onBackPressed();
                 return true;
             case R.id.action_ocr:
 //                prepareOcrEnvirontment();
@@ -191,18 +194,70 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
 
     @Override
     public boolean onItemClick(View view, int i, IDrawerItem drawerItem) {
-        int selectedIdentifier = drawerItem.getIdentifier();
+        final int selectedIdentifier = drawerItem.getIdentifier();
 
         if(selectedIdentifier != Global.NAVIGATION_PATIENT_LIST_ID) {
-            miniDrawer.updateItem(Global.NAVIGATION_PATIENT_LIST_ID);
 
-            Intent intent = new Intent(this, DashboardActivity.class);
-            intent.putExtra(Global.EXTRA_SELECTED_NAVIGATION_ID, selectedIdentifier);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            startActivity(intent);
+            checkWhetherInTheMiddleOfCreatingPatient(selectedIdentifier);
         }
 
         return true;
+    }
+
+    private void checkWhetherInTheMiddleOfCreatingPatient(final int selectedIdentifier) {
+        if(UtilsUi.isPatientHasDeclaredAttribute(DataHolder.getCreatedPatient())) {
+            MaterialDialog.Builder builder = new MaterialDialog.Builder(this);
+            builder.title("You are in the middle of creating a patient. Do you want to save current patient as draft?");
+
+            builder.positiveText(R.string.button_proceed_with_save);
+            builder.neutralText(R.string.button_no);
+            builder.negativeText(R.string.button_cancel);
+
+            builder.callback(new MaterialDialog.ButtonCallback() {
+                @Override
+                public void onPositive(MaterialDialog dialog) {
+                    super.onPositive(dialog);
+                    savePatientAsDraft();
+                    openAnotherTabInDashboardActivity(selectedIdentifier);
+                }
+
+                @Override
+                public void onNeutral(MaterialDialog dialog) {
+                    super.onNeutral(dialog);
+                    removePatientFromDraft();
+                    openAnotherTabInDashboardActivity(selectedIdentifier);
+                }
+            });
+            builder.show();
+        } else {
+            openAnotherTabInDashboardActivity(selectedIdentifier);
+        }
+    }
+
+    private void removePatientFromDraft() {
+        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        prefsEditor.remove(Global.SP_CREATE_PATIENT_DRAFT);
+        prefsEditor.commit();
+        DataHolder.resetCreatedPatient();
+    }
+
+    private void savePatientAsDraft() {
+        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(DataHolder.getCreatedPatient());
+        prefsEditor.putString(Global.SP_CREATE_PATIENT_DRAFT, json);
+        prefsEditor.commit();
+    }
+
+    private void openAnotherTabInDashboardActivity(int selectedIdentifier) {
+        miniDrawer.updateItem(Global.NAVIGATION_PATIENT_LIST_ID);
+
+        Intent intent = new Intent(CreatePatientActivity.this, DashboardActivity.class);
+        intent.putExtra(Global.EXTRA_SELECTED_NAVIGATION_ID, selectedIdentifier);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
     }
 
 //    private void prepareOcrEnvirontment() {
