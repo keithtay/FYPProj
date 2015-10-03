@@ -129,6 +129,9 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         } else {
             // In portrait orientation
             Intent intent = new Intent(this, CreatePatientFormActivity.class);
+            if(!UtilsString.isEmpty(selectedPatientDraftId)) {
+                intent.putExtra(Global.EXTRA_SELECTED_PATIENT_DRAFT_ID, selectedPatientDraftId);
+            }
             intent.putExtra(Global.EXTRA_SELECTED_CATEGORY, index);
             startActivity(intent);
         }
@@ -152,6 +155,9 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
             // In portrait orientation
             Intent intent = new Intent(this, CreatePatientFormActivity.class);
             intent.putExtra(Global.EXTRA_SELECTED_CATEGORY, index);
+            if(!UtilsString.isEmpty(selectedPatientDraftId)) {
+                intent.putExtra(Global.EXTRA_SELECTED_PATIENT_DRAFT_ID, selectedPatientDraftId);
+            }
             intent.putIntegerArrayListExtra(Global.EXTRA_EMPTY_FIELD_ID_LIST, emptyFieldIdList);
             startActivity(intent);
         }
@@ -178,8 +184,6 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
 
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
-
         checkWhetherInTheMiddleOfCreatingPatient(Global.NAVIGATION_PATIENT_LIST_ID);
     }
 
@@ -221,7 +225,6 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         final int selectedIdentifier = drawerItem.getIdentifier();
 
         if(selectedIdentifier != Global.NAVIGATION_PATIENT_LIST_ID) {
-
             checkWhetherInTheMiddleOfCreatingPatient(selectedIdentifier);
         }
 
