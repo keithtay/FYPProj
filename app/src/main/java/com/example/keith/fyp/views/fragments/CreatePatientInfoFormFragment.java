@@ -26,13 +26,17 @@ import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.joda.time.DateTime;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 import javadz.beanutils.PropertyUtils;
@@ -48,14 +52,19 @@ public class CreatePatientInfoFormFragment extends PatientInfoFormFragment {
     public void init() {
         super.init();
 
-        if(!UtilsUi.isPatientHasDeclaredAttribute(DataHolder.getCreatedPatient())) {
+        String selectedPatientDraftId = getActivity().getIntent().getStringExtra(Global.EXTRA_SELECTED_PATIENT_DRAFT_ID);
+        if(!UtilsString.isEmpty(selectedPatientDraftId)) {
             SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            Gson gson = new Gson();
             String json = mPrefs.getString(Global.SP_CREATE_PATIENT_DRAFT, "");
             if(!UtilsString.isEmpty(json)) {
-                Patient patient = gson.fromJson(json, Patient.class);
+                Gson gson = new Gson();
+                Type type = new TypeToken<HashMap<String, Patient>>(){}.getType();
+                HashMap<String, Patient> draftMap = gson.fromJson(json, type);
+                Patient patient = draftMap.get(selectedPatientDraftId);
                 DataHolder.setCreatedPatient(patient);
             }
+        } else {
+            DataHolder.resetCreatedPatient();
         }
 
         createdPatient = DataHolder.getCreatedPatient();

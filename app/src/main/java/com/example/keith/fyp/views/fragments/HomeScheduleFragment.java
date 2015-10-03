@@ -1,18 +1,15 @@
 package com.example.keith.fyp.views.fragments;
 
 import android.app.Fragment;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
@@ -22,33 +19,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.FilterList;
 import com.example.keith.fyp.models.Schedule;
+import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.views.activities.CreatePatientActivity;
-import com.example.keith.fyp.views.activities.DashboardActivity;
 import com.example.keith.fyp.views.customviews.ScheduleRecycleView;
 import com.example.keith.fyp.views.adapters.HomeScheduleAdapter;
+import com.google.gson.Gson;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import android.os.Bundle;
-import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
+
 /**
  * Created by Keith on 22/9/2015.
  */
@@ -147,16 +141,55 @@ public class HomeScheduleFragment extends Fragment {
         createPatientFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openCreatePatientActivity();
+                checkForAvailablePatientDrafts();
             }
         });
 
         return rootView;
     }
 
-    private void openCreatePatientActivity() {
+    private void checkForAvailablePatientDrafts() {
+        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        final String json = mPrefs.getString(Global.SP_CREATE_PATIENT_DRAFT, "");
+        if(!UtilsString.isEmpty(json)) {
+            final Gson gson = new Gson();
+            HashMap draftMap = gson.fromJson(json, HashMap.class);
+
+            String[] draftIdArray = (String[]) draftMap.keySet().toArray(new String[draftMap.size()]);
+            ArrayList<String> draftIdList = new ArrayList<>(Arrays.asList(draftIdArray));
+            draftIdList.add("Create blank patient");
+            final String[] draftIdWithBlankArray = draftIdList.toArray(new String[draftIdList.size()]);
+
+            MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+            builder.title("Select a draft");
+            builder.items(draftIdWithBlankArray);
+            builder.itemsCallback(new MaterialDialog.ListCallback() {
+                @Override
+                public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                    String selectedDraftId = draftIdWithBlankArray[which];
+                    HashMap draftMap = gson.fromJson(json, HashMap.class);
+                    if (draftMap.containsKey(selectedDraftId)) {
+                        Bundle extras = new Bundle();
+                        extras.putString(Global.EXTRA_SELECTED_PATIENT_DRAFT_ID, selectedDraftId);
+                        openCreatePatientActivity(extras);
+                    } else {
+                        openCreatePatientActivity(null);
+                    }
+                }
+            });
+            builder.show();
+        } else {
+            openCreatePatientActivity(null);
+        }
+    }
+
+    private void openCreatePatientActivity(Bundle extras) {
         Intent intent = new Intent(getActivity(), CreatePatientActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        if(extras != null) {
+            intent.putExtras(extras);
+        }
         startActivity(intent);
     }
 

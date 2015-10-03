@@ -190,4 +190,5 @@
     <string name="button_proceed_without_save">Proceed without saving</string>
     <string name="button_proceed_with_save">Save as Draft</string>
     <string name="button_no">No</string>
+    <string name="button_save_draft_changes">Save changes</string>
 </resources>

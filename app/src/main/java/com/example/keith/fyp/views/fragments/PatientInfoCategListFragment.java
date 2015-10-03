@@ -73,6 +73,8 @@ public class PatientInfoCategListFragment extends Fragment implements AdapterVie
         if(bundle != null) {
             if(bundle.getBoolean(Global.EXTRA_OPEN_PROBLEM_LOG_TAB)) {
                 openTabIndex = 6;
+            } else {
+                openTabIndex = 0;
             }
         } else {
             // Select the first item of the listView (only for landscape mode)

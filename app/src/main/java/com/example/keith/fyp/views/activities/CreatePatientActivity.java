@@ -21,18 +21,26 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.CreatePatientCommunicator;
+import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.utils.CreatePatientFormFragmentDecoder;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.fragments.PatientInfoCategListFragment;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.melnykov.fab.FloatingActionButton;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.MiniDrawer;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+import org.joda.time.DateTime;
+
+import java.lang.reflect.Type;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CreatePatientActivity extends AppCompatActivity implements CreatePatientCommunicator, Drawer.OnDrawerItemClickListener {
 
@@ -47,12 +55,16 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
 
     private static final String TAG = "CaptureImageOcr";
 
+    private String selectedPatientDraftId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_patient);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        selectedPatientDraftId = getIntent().getStringExtra(Global.EXTRA_SELECTED_PATIENT_DRAFT_ID);
 
         inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -207,9 +219,14 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
     private void checkWhetherInTheMiddleOfCreatingPatient(final int selectedIdentifier) {
         if(UtilsUi.isPatientHasDeclaredAttribute(DataHolder.getCreatedPatient())) {
             MaterialDialog.Builder builder = new MaterialDialog.Builder(this);
-            builder.title("You are in the middle of creating a patient. Do you want to save current patient as draft?");
+            if(UtilsString.isEmpty(selectedPatientDraftId)) {
+                builder.title("You are in the middle of creating a patient. Do you want to save current patient as draft?");
+                builder.positiveText(R.string.button_proceed_with_save);
+            } else {
+                builder.title("You have changed the patient draft. Do you want to save the changes?");
+                builder.positiveText(R.string.button_save_draft_changes);
+            }
 
-            builder.positiveText(R.string.button_proceed_with_save);
             builder.neutralText(R.string.button_no);
             builder.negativeText(R.string.button_cancel);
 
@@ -224,7 +241,6 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
                 @Override
                 public void onNeutral(MaterialDialog dialog) {
                     super.onNeutral(dialog);
-                    removePatientFromDraft();
                     openAnotherTabInDashboardActivity(selectedIdentifier);
                 }
             });
@@ -234,24 +250,36 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         }
     }
 
-    private void removePatientFromDraft() {
-        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor prefsEditor = mPrefs.edit();
-        prefsEditor.remove(Global.SP_CREATE_PATIENT_DRAFT);
-        prefsEditor.commit();
-        DataHolder.resetCreatedPatient();
-    }
-
     private void savePatientAsDraft() {
         SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor prefsEditor = mPrefs.edit();
         Gson gson = new Gson();
-        String json = gson.toJson(DataHolder.getCreatedPatient());
+
+        String json = mPrefs.getString(Global.SP_CREATE_PATIENT_DRAFT, "");
+        HashMap<String, Patient> draftMap = new HashMap();
+
+        if(!UtilsString.isEmpty(json)) {
+            Type type = new TypeToken<HashMap<String, Patient>>(){}.getType();
+            draftMap = gson.fromJson(json, type);
+        }
+
+        String mapKey;
+        if(!UtilsString.isEmpty(selectedPatientDraftId)) {
+            mapKey = selectedPatientDraftId;
+        } else {
+            DateTime now = DateTime.now();
+            mapKey = now.toString(Global.DATE_TIME_FORMAT);
+        }
+        draftMap.put(mapKey, DataHolder.getCreatedPatient());
+
+        json = gson.toJson(draftMap);
         prefsEditor.putString(Global.SP_CREATE_PATIENT_DRAFT, json);
         prefsEditor.commit();
     }
 
     private void openAnotherTabInDashboardActivity(int selectedIdentifier) {
+        DataHolder.resetCreatedPatient();
+
         miniDrawer.updateItem(Global.NAVIGATION_PATIENT_LIST_ID);
 
         Intent intent = new Intent(CreatePatientActivity.this, DashboardActivity.class);

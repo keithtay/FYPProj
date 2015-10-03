@@ -13,6 +13,8 @@ public class DataHolder {
     // Patient currently being created
     private static Patient createdPatient;
 
+    private static ArrayList<Patient> patientDraftList = new ArrayList<>();
+
     // Patient currently being viewed
     private static Patient viewedPatient;
 
@@ -59,5 +61,13 @@ public class DataHolder {
 
     public static void setCreatedPatient(Patient createdPatient) {
         DataHolder.createdPatient = createdPatient;
+    }
+
+    public static ArrayList<Patient> getPatientDraftList() {
+        return patientDraftList;
+    }
+
+    public static void setPatientDraftList(ArrayList<Patient> patientDraftList) {
+        DataHolder.patientDraftList = patientDraftList;
     }
 }
