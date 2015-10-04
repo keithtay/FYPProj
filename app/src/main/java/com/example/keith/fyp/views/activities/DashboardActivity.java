@@ -6,9 +6,11 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -77,6 +79,11 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
             navDrawer.setSelection(Global.NAVIGATION_PATIENT_LIST_ID);
             refreshMiniDrawer();
         }
+
+        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = mPrefs.edit();
+        editor.remove(Global.STATE_SELECTED_PATIENT_DRAFT_ID);
+        editor.commit();
 
         notificationGroupUpdateReceiver = new NotificationGroupUpdateReceiver(this);
     }

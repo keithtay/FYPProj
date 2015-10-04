@@ -32,6 +32,7 @@ public class Global {
     public static final String EXTRA_SELECTED_PATIENT_DRAFT_ID = "EXTRA_SELECTED_PATIENT_DRAFT_ID";
 
     public static final String STATE_LAST_DISPLAYED_FRAGMENT_ID = "LAST_DISPLAYED_FRAGMENT_ID";
+    public static final String STATE_SELECTED_PATIENT_DRAFT_ID = "STATE_SELECTED_PATIENT_DRAFT_ID";
 
     // Event list for broadcast receiver
     public static final String ACTION_NOTIFICATION_UPDATE = "ACTION_NOTIFICATION_UPDATE";

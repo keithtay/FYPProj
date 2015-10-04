@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -58,6 +59,8 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
 
     private String selectedPatientDraftId;
 
+    private SharedPreferences mPrefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,13 +68,18 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        selectedPatientDraftId = getIntent().getStringExtra(Global.EXTRA_SELECTED_PATIENT_DRAFT_ID);
-        if(!UtilsString.isEmpty(selectedPatientDraftId)) {
-            SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        selectedPatientDraftId = mPrefs.getString(Global.STATE_SELECTED_PATIENT_DRAFT_ID, null);
+        if (UtilsString.isEmpty(selectedPatientDraftId)) {
+            selectedPatientDraftId = getIntent().getStringExtra(Global.EXTRA_SELECTED_PATIENT_DRAFT_ID);
+        }
+
+        if (!UtilsString.isEmpty(selectedPatientDraftId)) {
             String json = mPrefs.getString(Global.SP_CREATE_PATIENT_DRAFT, "");
-            if(!UtilsString.isEmpty(json)) {
+            if (!UtilsString.isEmpty(json)) {
                 Gson gson = new Gson();
-                Type type = new TypeToken<HashMap<String, Patient>>(){}.getType();
+                Type type = new TypeToken<HashMap<String, Patient>>() {
+                }.getType();
                 HashMap<String, Patient> draftMap = gson.fromJson(json, type);
                 Patient patient = draftMap.get(selectedPatientDraftId);
                 DataHolder.setCreatedPatientEditInitial(patient);
@@ -129,7 +137,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         } else {
             // In portrait orientation
             Intent intent = new Intent(this, CreatePatientFormActivity.class);
-            if(!UtilsString.isEmpty(selectedPatientDraftId)) {
+            if (!UtilsString.isEmpty(selectedPatientDraftId)) {
                 intent.putExtra(Global.EXTRA_SELECTED_PATIENT_DRAFT_ID, selectedPatientDraftId);
             }
             intent.putExtra(Global.EXTRA_SELECTED_CATEGORY, index);
@@ -155,7 +163,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
             // In portrait orientation
             Intent intent = new Intent(this, CreatePatientFormActivity.class);
             intent.putExtra(Global.EXTRA_SELECTED_CATEGORY, index);
-            if(!UtilsString.isEmpty(selectedPatientDraftId)) {
+            if (!UtilsString.isEmpty(selectedPatientDraftId)) {
                 intent.putExtra(Global.EXTRA_SELECTED_PATIENT_DRAFT_ID, selectedPatientDraftId);
             }
             intent.putIntegerArrayListExtra(Global.EXTRA_EMPTY_FIELD_ID_LIST, emptyFieldIdList);
@@ -202,6 +210,11 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
     public void onPause() {
         super.onPause();
         overridePendingTransition(0, 0);
+        if (!UtilsString.isEmpty(selectedPatientDraftId)) {
+            SharedPreferences.Editor editor = mPrefs.edit();
+            editor.putString(Global.STATE_SELECTED_PATIENT_DRAFT_ID, selectedPatientDraftId);
+            editor.commit();
+        }
     }
 
     @Override
@@ -224,7 +237,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
     public boolean onItemClick(View view, int i, IDrawerItem drawerItem) {
         final int selectedIdentifier = drawerItem.getIdentifier();
 
-        if(selectedIdentifier != Global.NAVIGATION_PATIENT_LIST_ID) {
+        if (selectedIdentifier != Global.NAVIGATION_PATIENT_LIST_ID) {
             checkWhetherInTheMiddleOfCreatingPatient(selectedIdentifier);
         }
 
@@ -234,15 +247,15 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
     private void checkWhetherInTheMiddleOfCreatingPatient(final int selectedIdentifier) {
         boolean isEditing = false;
 
-        if(UtilsString.isEmpty(selectedPatientDraftId)) {
-            isEditing =  !DataHolder.getCreatedPatient().equals(new Patient());
+        if (UtilsString.isEmpty(selectedPatientDraftId)) {
+            isEditing = !DataHolder.getCreatedPatient().equals(new Patient());
         } else {
             isEditing = !DataHolder.getCreatedPatient().equals(DataHolder.getCreatedPatientEditInitial());
         }
 
-        if(isEditing) {
+        if (isEditing) {
             MaterialDialog.Builder builder = new MaterialDialog.Builder(this);
-            if(UtilsString.isEmpty(selectedPatientDraftId)) {
+            if (UtilsString.isEmpty(selectedPatientDraftId)) {
                 builder.title("You are in the middle of creating a patient. Do you want to save current patient as draft?");
                 builder.positiveText(R.string.button_proceed_with_save);
             } else {
@@ -281,13 +294,14 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         String json = mPrefs.getString(Global.SP_CREATE_PATIENT_DRAFT, "");
         HashMap<String, Patient> draftMap = new HashMap();
 
-        if(!UtilsString.isEmpty(json)) {
-            Type type = new TypeToken<HashMap<String, Patient>>(){}.getType();
+        if (!UtilsString.isEmpty(json)) {
+            Type type = new TypeToken<HashMap<String, Patient>>() {
+            }.getType();
             draftMap = gson.fromJson(json, type);
         }
 
         String mapKey;
-        if(!UtilsString.isEmpty(selectedPatientDraftId)) {
+        if (!UtilsString.isEmpty(selectedPatientDraftId)) {
             mapKey = selectedPatientDraftId;
         } else {
             DateTime now = DateTime.now();
