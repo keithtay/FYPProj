@@ -300,14 +300,20 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
             draftMap = gson.fromJson(json, type);
         }
 
+        Patient createdPatient = DataHolder.getCreatedPatient();
         String mapKey;
         if (!UtilsString.isEmpty(selectedPatientDraftId)) {
             mapKey = selectedPatientDraftId;
         } else {
             DateTime now = DateTime.now();
             mapKey = now.toString(Global.DATE_TIME_FORMAT);
+
+            String firstName = createdPatient.getFirstName();
+            if(!UtilsString.isEmpty(firstName)) {
+                mapKey += " | " + firstName;
+            }
         }
-        draftMap.put(mapKey, DataHolder.getCreatedPatient());
+        draftMap.put(mapKey, createdPatient);
 
         json = gson.toJson(draftMap);
         prefsEditor.putString(Global.SP_CREATE_PATIENT_DRAFT, json);

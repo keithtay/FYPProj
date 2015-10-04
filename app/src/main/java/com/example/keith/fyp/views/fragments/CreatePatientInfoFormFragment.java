@@ -52,9 +52,12 @@ public class CreatePatientInfoFormFragment extends PatientInfoFormFragment {
     public void init() {
         super.init();
 
-        String selectedPatientDraftId = getActivity().getIntent().getStringExtra(Global.EXTRA_SELECTED_PATIENT_DRAFT_ID);
+        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String selectedPatientDraftId = mPrefs.getString(Global.STATE_SELECTED_PATIENT_DRAFT_ID, null);
+        if (UtilsString.isEmpty(selectedPatientDraftId)) {
+            selectedPatientDraftId = getActivity().getIntent().getStringExtra(Global.EXTRA_SELECTED_PATIENT_DRAFT_ID);
+        }
         if(!UtilsString.isEmpty(selectedPatientDraftId)) {
-            SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             String json = mPrefs.getString(Global.SP_CREATE_PATIENT_DRAFT, "");
             if(!UtilsString.isEmpty(json)) {
                 Gson gson = new Gson();
@@ -63,8 +66,6 @@ public class CreatePatientInfoFormFragment extends PatientInfoFormFragment {
                 Patient patient = draftMap.get(selectedPatientDraftId);
                 DataHolder.setCreatedPatient(patient);
             }
-        } else {
-            DataHolder.resetCreatedPatient();
         }
 
         createdPatient = DataHolder.getCreatedPatient();
