@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -79,6 +80,7 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
             intent.putExtras(bundle);
         }
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        intent.putExtra(Global.STATE_SELECTED_PATIENT_NRIC, selectedPatientNric);
         startActivity(intent);
     }
 

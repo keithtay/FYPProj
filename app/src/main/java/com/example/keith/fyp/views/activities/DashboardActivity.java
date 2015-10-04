@@ -83,6 +83,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = mPrefs.edit();
         editor.remove(Global.STATE_SELECTED_PATIENT_DRAFT_ID);
+        editor.remove(Global.STATE_SELECTED_PATIENT_NRIC);
         editor.commit();
 
         notificationGroupUpdateReceiver = new NotificationGroupUpdateReceiver(this);

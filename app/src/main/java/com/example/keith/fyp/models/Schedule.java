@@ -18,6 +18,9 @@ public class Schedule {
     private Bitmap photo;
     private int photoid;
 
+    public Schedule() {
+    }
+
     public String getnActivityTime() {
         return nActivityTime;
     }

@@ -2,6 +2,8 @@ package com.example.keith.fyp.views.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Patient;
+import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.views.activities.ViewScheduleActivity;
 
 import java.util.ArrayList;
@@ -40,15 +43,7 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
 
     @Override
     public PatientListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View rootView = inflater.inflate(R.layout.patient_card, parent, false);
-        rootView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, ViewScheduleActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                context.startActivity(intent);
-            }
-        });
+        final View rootView = inflater.inflate(R.layout.patient_card, parent, false);
         PatientListViewHolder viewHolder = new PatientListViewHolder(rootView);
         return viewHolder;
     }
@@ -56,8 +51,8 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
     @Override
     public void onBindViewHolder(PatientListViewHolder holder, int position) {
         Patient currentPatient = filteredPatientList.get(position);
-        holder.patientPhoto.setImageResource(currentPatient.getPhotoId());
-        holder.patientName.setText(currentPatient.getFirstName());
+        holder.patientPhoto.setImageBitmap(currentPatient.getPhoto());
+        holder.patientName.setText(currentPatient.getFullName());
         holder.patientNric.setText(currentPatient.getNric());
     }
 
@@ -84,6 +79,19 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
             patientPhoto = (ImageView) itemView.findViewById(R.id.patientPhoto);
             patientName = (TextView) itemView.findViewById(R.id.patientName);
             patientNric = (TextView) itemView.findViewById(R.id.patientNric);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor editor = mPrefs.edit();
+                    editor.putString(Global.STATE_SELECTED_PATIENT_NRIC, patientNric.getText().toString());
+                    editor.commit();
+
+                    Intent intent = new Intent(context, ViewScheduleActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 

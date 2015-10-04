@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Patient;
+import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.views.customviews.EmptyAndAutofitRecyclerView;
 import com.example.keith.fyp.views.activities.CreatePatientActivity;
 import com.example.keith.fyp.views.adapters.PatientListAdapter;
@@ -42,7 +43,7 @@ public class PatientListFragment extends Fragment {
         // ================
         // Prepare the patient list
         // ================
-        patientListAdapter = new PatientListAdapter(getActivity(), getPatientList());
+        patientListAdapter = new PatientListAdapter(getActivity(), DataHolder.getPatientList(getActivity()));
 
         patientListRecyclerView = (EmptyAndAutofitRecyclerView) rootView.findViewById(R.id.patient_list_grid);
         patientListRecyclerView.setAdapter(patientListAdapter);

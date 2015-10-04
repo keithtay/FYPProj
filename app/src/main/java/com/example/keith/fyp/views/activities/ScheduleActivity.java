@@ -1,18 +1,20 @@
 package com.example.keith.fyp.views.activities;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Event;
+import com.example.keith.fyp.models.Patient;
+import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 
@@ -27,11 +29,30 @@ public class ScheduleActivity extends AppCompatActivity {
     protected int spacingBetweenEventView;
     protected DateTime currentTime;
 
+    protected String selectedPatientNric;
+    protected Patient viewedPatient;
+
+    private ImageView photoImageView;
+    private TextView firstNameTextView;
+    private TextView lastNameTextView;
+    private TextView genderTextView;
+    private TextView dobTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        eventList = getPatientEventList();
+        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        selectedPatientNric = mPrefs.getString(Global.STATE_SELECTED_PATIENT_NRIC, "");
+        for(Patient patient : DataHolder.getPatientList(this)) {
+            if(patient.getNric().equals(selectedPatientNric)) {
+                DataHolder.setViewedPatient(patient);
+                viewedPatient = patient;
+                break;
+            }
+        }
+
+        eventList = viewedPatient.getTodaySchedule().getEventList();
 
         spacingBetweenEventView = (int) getResources().getDimension(R.dimen.paper_card_padding) / 2;
 
@@ -45,34 +66,26 @@ public class ScheduleActivity extends AppCompatActivity {
         todayDate.setText(currentDate.toString(Global.DATE_FORMAT));
     }
 
-    private ArrayList<Event> getPatientEventList() {
-
-        DateTimeFormatter formatter = Global.DATE_TIME_FORMAT;
-
-        String todayDateStr = DateTime.now().toString(Global.DATE_FORMAT);
-
-        DateTime startTime1 = formatter.parseDateTime(todayDateStr + " 12:00");
-        DateTime endTime1 = formatter.parseDateTime(todayDateStr + " 12:30");
-        Event event1 = new Event("Lunch", "Patient is lactose intolerant", startTime1, endTime1);
-
-        DateTime startTime2 = formatter.parseDateTime(todayDateStr + " 12:30");
-        DateTime endTime2 = formatter.parseDateTime(todayDateStr + " 13:30");
-        Event event2 = new Event("Games", "Play memory games", startTime2, endTime2);
-
-        DateTime startTime3 = formatter.parseDateTime(todayDateStr + " 14:30");
-        DateTime endTime3 = formatter.parseDateTime(todayDateStr + " 15:30");
-        Event event3 = new Event("Games", "Play cognitive games", startTime3, endTime3);
-
-        ArrayList<Event> eventList = new ArrayList<>();
-        eventList.add(event1);
-        eventList.add(event2);
-        eventList.add(event3);
-
-
-        return eventList;
-    }
-
     protected void init() {
         setScheduleDate();
+        setPatientBriefInfo();
+    }
+
+    private void setPatientBriefInfo() {
+        photoImageView = (ImageView) findViewById(R.id.photo_image_view);
+        firstNameTextView = (TextView) findViewById(R.id.first_name_text_view);
+        lastNameTextView = (TextView) findViewById(R.id.last_name_text_view);
+        genderTextView = (TextView) findViewById(R.id.gender_text_view);
+        dobTextView = (TextView) findViewById(R.id.dob_text_view);
+
+        photoImageView.setImageBitmap(viewedPatient.getPhoto());
+        firstNameTextView.setText(viewedPatient.getFirstName());
+        lastNameTextView.setText(viewedPatient.getLastName());
+        String gender = "Male";
+        if(viewedPatient.getGender() == 'F') {
+            gender = "Female";
+        }
+        genderTextView.setText(gender);
+        dobTextView.setText(viewedPatient.getDob().toString(Global.DATE_FORMAT));
     }
 }

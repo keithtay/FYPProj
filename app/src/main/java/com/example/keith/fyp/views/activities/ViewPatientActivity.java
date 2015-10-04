@@ -5,9 +5,11 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -68,86 +70,16 @@ public class ViewPatientActivity extends AppCompatActivity  implements CreatePat
     }
 
     private void getPatientInfoDetails() {
+        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String selectedPatientNric = mPrefs.getString(Global.STATE_SELECTED_PATIENT_NRIC, "");
+        for(Patient patient : DataHolder.getPatientList(this)) {
+            if(patient.getNric().equals(selectedPatientNric)) {
+                viewedPatient = patient;
+                break;
+            }
+        }
+
         viewedPatient = DataHolder.getViewedPatient();
-
-        // TODO: replace using backend API to retrieve patient info details
-
-        // Patient's personal info
-        viewedPatient.setFirstName("Andy");
-        viewedPatient.setLastName("Grammer");
-        viewedPatient.setNric("G1162834J");
-        viewedPatient.setAddress("32 Nanyang Lake, Hall of Residence 19 #64-3-1221");
-        viewedPatient.setHomeNumber("+65 8900 9800");
-        viewedPatient.setPhoneNumber("+65 1234 5678");
-        viewedPatient.setGender('M');
-        viewedPatient.setDob(DateTime.now().withYear(1955).withMonthOfYear(3).withDayOfMonth(23));
-        viewedPatient.setGuardianFullName("Bob Grammer");
-        viewedPatient.setGuardianContactNumber("+65 5555 3333");
-        viewedPatient.setGuardianEmail("bobgrammer@gmail.com");
-
-        Bitmap photo = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_01);
-        viewedPatient.setPhoto(photo);
-
-        // Patient's allergy list
-        ArrayList<Allergy> allergyList = new ArrayList<>();
-
-        Allergy allergy1 = new Allergy("Cheese", "Swolen lips", "Take 5mg Paracetamol");
-        Allergy allergy2 = new Allergy("Peanut", "Itchy skin", "Wash the skin with cold cloth");
-
-        allergyList.add(allergy1);
-        allergyList.add(allergy2);
-
-        viewedPatient.setAllergyList(allergyList);
-        viewedPatient.setHasAllergy(true);
-
-        // Patient's vital list
-        ArrayList<Vital> vitalList = new ArrayList<>();
-
-        Vital vital1 = new Vital(DateTime.now(), true, 34f, 120f, 80f, 189f, 70f, "");
-
-        vitalList.add(vital1);
-
-        viewedPatient.setVitalList(vitalList);
-
-        // Patient's prescription list
-        ArrayList<Prescription> prescriptionList = new ArrayList<>();
-
-        Prescription prescription1 = new Prescription("Panadol", "1 tablet", 2, "Drink a lot of water", DateTime.now(), DateTime.now(), "Before meal", "N/A");
-        Prescription prescription2 = new Prescription("Paracetamol", "2 tbps", 3, "Drink with tea", DateTime.now(), DateTime.now(), "No preferences", "N/A");
-
-        prescriptionList.add(prescription1);
-        prescriptionList.add(prescription2);
-
-        viewedPatient.setPrescriptionList(prescriptionList);
-
-        // Patient's routine list
-        ArrayList<Routine> routineList = new ArrayList<>();
-
-        Routine routine1 = new Routine("Swimming", "Provision", DateTime.now(), DateTime.now(), DateTime.now(), DateTime.now(), 3, "Week");
-
-        routineList.add(routine1);
-
-        viewedPatient.setRoutineList(routineList);
-
-        // Patient's social history
-        SocialHistory socialHistory = new SocialHistory();
-        socialHistory.setLiveWith("Wife and 2 children");
-        socialHistory.setDiet("Vegetarian");
-        socialHistory.setReligion("Christian");
-        socialHistory.setIsSexuallyActive(false);
-        socialHistory.setIsSecondhandSmoker(false);
-        socialHistory.setAlcoholUse("Seldom");
-        socialHistory.setCaffeineUse("Regular");
-        socialHistory.setTobaccoUse("Never");
-        socialHistory.setDrugUse("Never");
-        socialHistory.setPet("2 dogs");
-        socialHistory.setOccupation("Entrepreneur");
-        socialHistory.setLike("Sandwich, salad");
-        socialHistory.setDislike("Soft drinks");
-        socialHistory.setHolidayExperience("2002 - Thailand, 2010 - Bali");
-        socialHistory.setEducation("1990 - Princeton University");
-        socialHistory.setExercise("Tennis, swimming");
-        viewedPatient.setSocialHistory(socialHistory);
     }
 
     @Override
