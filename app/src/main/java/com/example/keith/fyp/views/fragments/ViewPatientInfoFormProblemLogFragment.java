@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.comparators.ProblemLogComparator;
 import com.example.keith.fyp.models.ProblemLog;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsUi;
@@ -27,6 +28,7 @@ import com.example.keith.fyp.views.decorators.SpacesCardItemDecoration;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 
@@ -45,6 +47,7 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
     private ExpandableLayout addProblemLogExpandableLayout;
 
     private ArrayList<ProblemLog> problemLogList;
+    private ProblemLogComparator problemLogComparator = new ProblemLogComparator();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,6 +56,7 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
         rootView = (LinearLayout) inflater.inflate(R.layout.fragment_view_patient_info_form_problem_log, container, false);
 
         problemLogList = viewedPatient.getProblemLogList();
+        Collections.sort(problemLogList, problemLogComparator);
         problemLogListAdapter = new ProblemLogListAdapter(getActivity(), this, problemLogList, viewedPatient);
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -136,6 +140,9 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
         problemLogList.add(0, newProblemLog);
         problemLogListAdapter.notifyItemInserted(0);
 
+        Collections.sort(problemLogList, problemLogComparator);
+        problemLogListAdapter.notifyDataSetChanged();
+        
         resetNewProblemLogFields();
 
         closeExpandableAddProblemLog();
