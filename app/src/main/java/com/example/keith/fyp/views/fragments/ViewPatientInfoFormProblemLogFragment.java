@@ -35,6 +35,7 @@ import org.joda.time.DateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.UUID;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 
@@ -161,7 +162,7 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
         String category = newProblemLogCategorySpinner.getSelectedItem().toString();
         String notes = newProblemLogNotesEditText.getText().toString();
 
-        ProblemLog newProblemLog = new ProblemLog(creationDate, category, notes);
+        ProblemLog newProblemLog = new ProblemLog(UtilsUi.generateUniqueId(), creationDate, category, notes);
 
         addProblemLog(newProblemLog);
     }

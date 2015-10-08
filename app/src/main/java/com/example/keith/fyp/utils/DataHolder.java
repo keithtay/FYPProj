@@ -23,6 +23,7 @@ import org.joda.time.format.DateTimeFormatter;
 import java.lang.reflect.Array;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by Sutrisno on 9/9/2015.
@@ -179,9 +180,10 @@ public class DataHolder {
             patient1.setTodaySchedule(schedule);
 
             ArrayList<ProblemLog> problemLogList = new ArrayList<>();
-            problemLogList.add(new ProblemLog(DateTime.now().minusDays(5), "Communication", "Patient did not respond to question"));
-            problemLogList.add(new ProblemLog(DateTime.now().minusDays(3), "Communication", "Patient did not respond to when called"));
-            problemLogList.add(new ProblemLog(DateTime.now().minusDays(1), "Communication", "Patient seems to be not socializing with the other patient"));
+
+            problemLogList.add(new ProblemLog(UtilsUi.generateUniqueId(), DateTime.now().minusDays(5), "Communication", "Patient did not respond to question"));
+            problemLogList.add(new ProblemLog(UtilsUi.generateUniqueId(), DateTime.now().minusDays(3), "Communication", "Patient did not respond to when called"));
+            problemLogList.add(new ProblemLog(UtilsUi.generateUniqueId(), DateTime.now().minusDays(1), "Communication", "Patient seems to be not socializing with the other patient"));
             patient1.setProblemLogList(problemLogList);
 
             // ==========================

@@ -162,7 +162,7 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
                     DateTime creationDate = Global.DATE_FORMAT.parseDateTime(fromDateDateField.getText().toString());
                     String category = categoryStr;
                     String notes = notesTextField.getText();
-                    ProblemLog newProblemLog = new ProblemLog(creationDate, category, notes);
+                    ProblemLog newProblemLog = new ProblemLog(UtilsUi.generateUniqueId(), creationDate, category, notes);
 
                     DataHolder.getViewedPatient().getProblemLogList().add(0, newProblemLog);
                     dialog.dismiss();

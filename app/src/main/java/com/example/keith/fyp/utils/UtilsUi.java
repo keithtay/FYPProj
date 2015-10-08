@@ -46,6 +46,7 @@ import org.joda.time.Duration;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.UUID;
 
 /**
  * Created by Sutrisno on 6/9/2015.
@@ -303,5 +304,11 @@ public class UtilsUi {
         } else {
             notificationGroup.setStatus(NotificationGroup.STATUS_ALL_PROCESSED);
         }
+    }
+
+    public static String generateUniqueId() {
+        UUID uniqueId = UUID.randomUUID();
+        String id = uniqueId.toString().replaceAll("[\\- ]", "");
+        return id;
     }
 }

@@ -47,7 +47,7 @@ public class ProblemLogListAdapter extends RecyclerView.Adapter<ProblemLogListAd
         this.fragment = fragment;
         this.patient = patient;
         this.context = context;
-        this.problemLogFilter =  new ProblemLogFilter(this, problemLogList);
+        this.problemLogFilter = new ProblemLogFilter(this, problemLogList);
     }
 
     @Override
@@ -58,8 +58,8 @@ public class ProblemLogListAdapter extends RecyclerView.Adapter<ProblemLogListAd
     }
 
     @Override
-    public void onBindViewHolder(ProblemLogListViewHolder holder, int position) {
-        ProblemLog problemLog = problemLogList.get(position);
+    public void onBindViewHolder(final ProblemLogListViewHolder holder, int position) {
+        final ProblemLog problemLog = problemLogList.get(position);
 
         holder.creationDateEditText.setText(problemLog.getCreationDate().toString(Global.DATE_FORMAT));
 
@@ -69,6 +69,32 @@ public class ProblemLogListAdapter extends RecyclerView.Adapter<ProblemLogListAd
         holder.categorySpinner.setSelection(index);
 
         holder.notesEditText.setText(problemLog.getNotes());
+
+        holder.saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<ProblemLog> problemLogList = patient.getProblemLogList();
+
+                for (ProblemLog log : problemLogList) {
+                    if (log.getId().equals(problemLog.getId())) {
+                        problemLog.setCategory(holder.categorySpinner.getSelectedItem().toString());
+                        problemLog.setNotes(holder.notesEditText.getText().toString());
+
+                        DateTime fromDate = Global.DATE_FORMAT.parseDateTime(holder.creationDateEditText.getText().toString());
+                        problemLog.setCreationDate(fromDate);
+
+                        holder.setFormEditable(false);
+                        if (holder.expandableLayout.isOpened()) {
+                            holder.expandableLayout.hide();
+                        }
+
+                        break;
+                    }
+                }
+
+                updateFilterOriginalList(problemLogList);
+            }
+        });
     }
 
     @Override
@@ -128,25 +154,6 @@ public class ProblemLogListAdapter extends RecyclerView.Adapter<ProblemLogListAd
                     restoreOldFieldsValue();
                 }
             });
-
-            saveButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ArrayList<ProblemLog> problemLogList = patient.getProblemLogList();
-                    ProblemLog problemLog = problemLogList.get(getAdapterPosition());
-                    problemLog.setCategory(categorySpinner.getSelectedItem().toString());
-                    problemLog.setNotes(notesEditText.getText().toString());
-
-                    DateTime fromDate = Global.DATE_FORMAT.parseDateTime(creationDateEditText.getText().toString());
-
-                    problemLog.setCreationDate(fromDate);
-
-                    setFormEditable(false);
-                    if (expandableLayout.isOpened()) {
-                        expandableLayout.hide();
-                    }
-                }
-            });
         }
 
         private void restoreOldFieldsValue() {
@@ -178,7 +185,7 @@ public class ProblemLogListAdapter extends RecyclerView.Adapter<ProblemLogListAd
                     oldCategory = categorySpinner.getSelectedItem().toString();
                     oldNotes = notesEditText.getText().toString();
 
-                    if(!expandableLayout.isOpened()) {
+                    if (!expandableLayout.isOpened()) {
                         expandableLayout.show();
                     }
                     setFormEditable(true);
