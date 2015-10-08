@@ -69,14 +69,8 @@ public class PatientInfoCategListFragment extends Fragment implements AdapterVie
 
         openTabIndex = null;
 
-        Bundle bundle = getActivity().getIntent().getExtras();
-        if(bundle != null) {
-            if(bundle.getBoolean(Global.EXTRA_OPEN_PROBLEM_LOG_TAB)) {
-                openTabIndex = 6;
-            }
-        }
-
-        if(openTabIndex == null && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        // click the first category in landscape mode
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             openTabIndex = 0;
         }
 
