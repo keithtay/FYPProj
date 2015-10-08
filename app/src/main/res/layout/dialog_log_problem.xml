@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:customfield="http://schemas.android.com/apk/res-auto"
+    xmlns:superlistview="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:paddingBottom="0dp"
     android:paddingLeft="@dimen/paper_card_padding"
-    android:paddingTop="@dimen/paper_card_padding"
     android:paddingRight="@dimen/paper_card_padding"
-    android:paddingBottom="0dp">
+    android:paddingTop="@dimen/paper_card_padding">
 
     <!-- Dummy view to prevent soft-keyboard open -->
     <View
@@ -22,10 +23,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         customfield:alwaysEditable="true"
+        customfield:containerPaddingTop="0dp"
         customfield:fieldTitle="From Date"
         customfield:showBottomBorder="false"
-        customfield:showTopBorder="false"
-        customfield:containerPaddingTop="0dp"/>
+        customfield:showTopBorder="false" />
 
     <com.example.keith.fyp.views.customviews.SpinnerField
         android:id="@+id/problem_log_category"
@@ -44,9 +45,32 @@
         android:layout_height="wrap_content"
         android:inputType="textCapSentences"
         customfield:alwaysEditable="true"
+        customfield:containerPaddingBottom="0dp"
         customfield:fieldTitle="Notes"
         customfield:showBottomBorder="false"
-        customfield:showTopBorder="false"
-        customfield:containerPaddingBottom="0dp"/>
+        customfield:showTopBorder="false" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="@dimen/med_spacing"
+        android:layout_marginTop="@dimen/big_spacing"
+        android:background="@color/divider" />
+
+    <TextView
+        style="@style/typo_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/med_spacing"
+        android:gravity="center"
+        android:text="@string/recent_patient_similar_problem" />
+
+    <com.quentindommerc.superlistview.SuperListview
+        android:id="@+id/similar_problem_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        superlistview:superlv__empty="@layout/empty_similar_problem_list"
+        superlistview:superlv__listDivider="@color/transparent"
+        superlistview:superlv__listDividerHeight="@dimen/med_spacing" />
 
 </LinearLayout>

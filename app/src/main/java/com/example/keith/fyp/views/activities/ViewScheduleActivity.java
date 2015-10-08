@@ -6,10 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.example.keith.fyp.comparators.ProblemLogComparator;
 import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Event;
@@ -18,17 +20,21 @@ import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
+import com.example.keith.fyp.views.adapters.SimilarProblemListAdapter;
 import com.example.keith.fyp.views.customviews.DateField;
 import com.example.keith.fyp.views.customviews.SpinnerField;
 import com.example.keith.fyp.views.customviews.TextField;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.MiniDrawer;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.quentindommerc.superlistview.SuperListview;
 
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import mehdi.sakout.fancybuttons.FancyButton;
 
@@ -101,12 +107,39 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
         String[] problemLogCategoryArray = getResources().getStringArray(R.array.option_problem_log_category);
         final ArrayList<String> problemLogCategoryList = new ArrayList<String>(Arrays.asList(problemLogCategoryArray));
 
+        SuperListview similarProblemListView = (SuperListview) rootView.findViewById(R.id.similar_problem_list_view);
+        final ArrayList<ProblemLog> similarProblemList = new ArrayList<>();
+        final SimilarProblemListAdapter similarProblemAdapter = new SimilarProblemListAdapter(this, similarProblemList);
+        similarProblemListView.setAdapter(similarProblemAdapter);
+
         categorySpinnerField.setSpinnerItems(problemLogCategoryArray);
         categorySpinnerField.setSpinnerFieldItemSelectedListener(new SpinnerField.OnSpinnerFieldItemSelectedListener() {
             @Override
             public void onSpinnerFieldItemSelected(int index) {
                 String selectedCategoryStr = problemLogCategoryList.get(index);
                 categorySpinnerField.changeDisplayedText(selectedCategoryStr);
+
+                // TODO find similar problem
+                similarProblemList.clear();
+                ArrayList<ProblemLog> problemList = viewedPatient.getProblemLogList();
+                for(ProblemLog problemLog : problemList) {
+                    boolean isSameCategory = problemLog.getCategory().equals(selectedCategoryStr);
+
+                    String selectedDateStr = fromDateDateField.getText();
+                    DateTime selectedDate = Global.DATE_FORMAT.parseDateTime(selectedDateStr);
+                    int numOfDaysDiff = Days.daysBetween(selectedDate.withTimeAtStartOfDay(), problemLog.getCreationDate().withTimeAtStartOfDay()).getDays();
+                    boolean isWithinSevenDays = numOfDaysDiff <= 7;
+
+                    if(isSameCategory && isWithinSevenDays) {
+                        similarProblemList.add(problemLog);
+                    }
+
+                    // TODO Sort the problem list
+                    ProblemLogComparator comparator = new ProblemLogComparator();
+                    Collections.sort(similarProblemList, comparator);
+
+                    similarProblemAdapter.notifyDataSetChanged();
+                }
             }
         });
 
