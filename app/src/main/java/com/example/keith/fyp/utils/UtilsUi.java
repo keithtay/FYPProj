@@ -218,41 +218,6 @@ public class UtilsUi {
         return count;
     }
 
-    public static ProblemLog isSimilarProblemLogExist(ProblemLog newProblemLog) {
-        ProblemLog similarLog = null;
-
-        String newCategory = newProblemLog.getCategory();
-        DateTime newCreationDate = newProblemLog.getCreationDate();
-
-        Patient viewedPatient = DataHolder.getViewedPatient();
-        ArrayList<ProblemLog> problemLogList = viewedPatient.getProblemLogList();
-        for (ProblemLog problemLog : problemLogList) {
-            String currentCategory = problemLog.getCategory();
-            if (!currentCategory.equals(newCategory)) {
-                continue;
-            }
-
-            DateTime compareDate = null;
-            DateTime existingToDate = problemLog.getCreationDate();
-            if(existingToDate != null) {
-                compareDate = existingToDate;
-            } else {
-                DateTime existingFromDate = problemLog.getCreationDate();
-                compareDate = existingFromDate;
-            }
-
-            Duration duration = new Duration(compareDate, newCreationDate);
-            boolean isBeforeOrEqual = compareDate.isBefore(newCreationDate) || compareDate.isEqual(newCreationDate);
-            boolean isBetweenOneDay = duration.getStandardDays() <= 1;
-            if (isBetweenOneDay && isBeforeOrEqual) {
-                similarLog = problemLog;
-                break;
-            }
-        }
-
-        return similarLog;
-    }
-
     public static DrawerAndMiniDrawerPair setNavigationDrawer(Activity activity, View contentWrapper, Drawer.OnDrawerItemClickListener drawerItemClickListener, Bundle savedInstanceState) {
         Resources resource = activity.getResources();
         final IProfile profile = new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").withIcon(resource.getDrawable(R.drawable.avatar1));

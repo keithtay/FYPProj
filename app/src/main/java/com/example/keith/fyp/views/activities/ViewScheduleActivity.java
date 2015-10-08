@@ -82,7 +82,7 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
 
     private void openViewPatientInfoActivity(Bundle bundle) {
         Intent intent = new Intent(ViewScheduleActivity.this, ViewPatientActivity.class);
-        if(bundle != null) {
+        if (bundle != null) {
             intent.putExtras(bundle);
         }
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -119,10 +119,9 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
                 String selectedCategoryStr = problemLogCategoryList.get(index);
                 categorySpinnerField.changeDisplayedText(selectedCategoryStr);
 
-                // TODO find similar problem
                 similarProblemList.clear();
                 ArrayList<ProblemLog> problemList = viewedPatient.getProblemLogList();
-                for(ProblemLog problemLog : problemList) {
+                for (ProblemLog problemLog : problemList) {
                     boolean isSameCategory = problemLog.getCategory().equals(selectedCategoryStr);
 
                     String selectedDateStr = fromDateDateField.getText();
@@ -130,11 +129,10 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
                     int numOfDaysDiff = Days.daysBetween(selectedDate.withTimeAtStartOfDay(), problemLog.getCreationDate().withTimeAtStartOfDay()).getDays();
                     boolean isWithinSevenDays = numOfDaysDiff <= 7;
 
-                    if(isSameCategory && isWithinSevenDays) {
+                    if (isSameCategory && isWithinSevenDays) {
                         similarProblemList.add(problemLog);
                     }
 
-                    // TODO Sort the problem list
                     ProblemLogComparator comparator = new ProblemLogComparator();
                     Collections.sort(similarProblemList, comparator);
 
@@ -166,50 +164,11 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
                     String notes = notesTextField.getText();
                     ProblemLog newProblemLog = new ProblemLog(creationDate, category, notes);
 
-                    ProblemLog similarLog = UtilsUi.isSimilarProblemLogExist(newProblemLog);
-
-                    if (similarLog != null) {
-                        openSimilarProblemLogDialog(newProblemLog, similarLog);
-                    } else {
-                        DataHolder.getViewedPatient().getProblemLogList().add(0, newProblemLog);
-                        dialog.dismiss();
-                    }
+                    DataHolder.getViewedPatient().getProblemLogList().add(0, newProblemLog);
+                    dialog.dismiss();
                 }
             }
         });
-    }
-
-    private void openSimilarProblemLogDialog(final ProblemLog newProblemLog, ProblemLog similarLog) {
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(this);
-
-        DateTime shownDate = similarLog.getCreationDate();
-        if(similarLog.getToDate() != null) {
-            shownDate = similarLog.getToDate();
-        }
-        String message = "On " + shownDate.toString(Global.DATE_FORMAT) + " the patient have a similar problem with the " + similarLog.getCategory() + " category. Are you sure you want to add this log?";
-        builder.content(message);
-
-        builder.positiveText(R.string.button_add_problem_log_anyway);
-        builder.neutralText(R.string.button_view_similar_log);
-        builder.negativeText(R.string.button_cancel);
-
-        builder.callback(new MaterialDialog.ButtonCallback() {
-            @Override
-            public void onPositive(MaterialDialog dialog) {
-                super.onPositive(dialog);
-                DataHolder.getViewedPatient().getProblemLogList().add(0, newProblemLog);
-            }
-
-            @Override
-            public void onNeutral(MaterialDialog dialog) {
-                super.onNegative(dialog);
-                Bundle bundle = new Bundle();
-                bundle.putBoolean(Global.EXTRA_OPEN_PROBLEM_LOG_TAB, true);
-                openViewPatientInfoActivity(bundle);
-            }
-        });
-
-        builder.show();
     }
 
     public void openEditScheduleActivity(View view) {
@@ -309,7 +268,7 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
     public boolean onItemClick(View view, int i, IDrawerItem drawerItem) {
         int selectedIdentifier = drawerItem.getIdentifier();
 
-        if(selectedIdentifier != Global.NAVIGATION_PATIENT_LIST_ID) {
+        if (selectedIdentifier != Global.NAVIGATION_PATIENT_LIST_ID) {
             miniDrawer.updateItem(Global.NAVIGATION_PATIENT_LIST_ID);
 
             Intent intent = new Intent(this, DashboardActivity.class);

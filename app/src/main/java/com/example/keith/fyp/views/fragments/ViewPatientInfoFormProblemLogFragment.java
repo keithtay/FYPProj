@@ -129,13 +129,7 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
 
         ProblemLog newProblemLog = new ProblemLog(creationDate, category, notes);
 
-        ProblemLog similarLog = UtilsUi.isSimilarProblemLogExist(newProblemLog);
-
-        if (similarLog != null) {
-            openSimilarProblemLogDialog(newProblemLog, similarLog);
-        } else {
-            addProblemLog(newProblemLog);
-        }
+        addProblemLog(newProblemLog);
     }
 
     private void addProblemLog(ProblemLog newProblemLog) {
@@ -151,7 +145,7 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
     private void openSimilarProblemLogDialog(final ProblemLog newProblemLog, ProblemLog similarLog) {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         DateTime shownDate = similarLog.getCreationDate();
-        if(similarLog.getToDate() != null) {
+        if (similarLog.getToDate() != null) {
             shownDate = similarLog.getToDate();
         }
         String message = "On " + shownDate.toString(Global.DATE_FORMAT) + " the patient have a similar problem with the " + similarLog.getCategory() + " category. Are you sure you want to add this log?";
