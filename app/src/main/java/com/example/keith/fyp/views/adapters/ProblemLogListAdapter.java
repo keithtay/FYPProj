@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
@@ -31,7 +33,7 @@ import fr.ganfra.materialspinner.MaterialSpinner;
 /**
  * Created by Sutrisno on 20/9/2015.
  */
-public class ProblemLogListAdapter extends RecyclerView.Adapter<ProblemLogListAdapter.ProblemLogListViewHolder> {
+public class ProblemLogListAdapter extends RecyclerView.Adapter<ProblemLogListAdapter.ProblemLogListViewHolder> implements Filterable {
 
     private LayoutInflater inflater;
     private List<ProblemLog> problemLogList;
@@ -45,6 +47,7 @@ public class ProblemLogListAdapter extends RecyclerView.Adapter<ProblemLogListAd
         this.fragment = fragment;
         this.patient = patient;
         this.context = context;
+        this.problemLogFilter =  new ProblemLogFilter(this, problemLogList);
     }
 
     @Override
@@ -197,5 +200,63 @@ public class ProblemLogListAdapter extends RecyclerView.Adapter<ProblemLogListAd
             notesEditText.setFocusable(isEditable);
             notesEditText.setFocusableInTouchMode(isEditable);
         }
+    }
+
+    private ProblemLogFilter problemLogFilter;
+
+    @Override
+    public Filter getFilter() {
+        return problemLogFilter;
+    }
+
+    private static class ProblemLogFilter extends Filter {
+
+        private final ProblemLogListAdapter adapter;
+        private List<ProblemLog> originalList;
+        private List<ProblemLog> filteredList;
+
+        private ProblemLogFilter(ProblemLogListAdapter adapter, List<ProblemLog> originalList) {
+            super();
+            this.adapter = adapter;
+            this.originalList = new ArrayList<>(originalList);
+            this.filteredList = new ArrayList<>();
+        }
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            filteredList.clear();
+            final FilterResults results = new FilterResults();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(originalList);
+            } else {
+                final String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (final ProblemLog problemLog : originalList) {
+                    if (problemLog.getCategory().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(problemLog);
+                    }
+                }
+            }
+            results.values = filteredList;
+            results.count = filteredList.size();
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            adapter.problemLogList.clear();
+            adapter.problemLogList.addAll((ArrayList<ProblemLog>) results.values);
+            adapter.notifyDataSetChanged();
+        }
+
+        public void setOriginalList(ArrayList<ProblemLog> newOriginalList) {
+            this.originalList = new ArrayList<>(newOriginalList);
+        }
+    }
+
+
+    public void updateFilterOriginalList(ArrayList<ProblemLog> problemLogList) {
+        problemLogFilter.setOriginalList(problemLogList);
     }
 }

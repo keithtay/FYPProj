@@ -1,33 +1,39 @@
 package com.example.keith.fyp.views.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.comparators.ProblemLogComparator;
 import com.example.keith.fyp.models.ProblemLog;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.adapters.ProblemLogListAdapter;
 import com.example.keith.fyp.views.decorators.SpacesCardItemDecoration;
+import com.mikepenz.iconics.utils.Utils;
 
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
@@ -45,9 +51,12 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
     private EditText addProblemLogFromDateEditText;
     private EditText newProblemLogNotesEditText;
     private ExpandableLayout addProblemLogExpandableLayout;
+    private Spinner problemLogFilterSpinner;
 
     private ArrayList<ProblemLog> problemLogList;
     private ProblemLogComparator problemLogComparator = new ProblemLogComparator();
+
+    private String selectedCategoryFilter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,7 +64,8 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
 
         rootView = (LinearLayout) inflater.inflate(R.layout.fragment_view_patient_info_form_problem_log, container, false);
 
-        problemLogList = viewedPatient.getProblemLogList();
+        problemLogList = new ArrayList<>();
+        problemLogList.addAll(viewedPatient.getProblemLogList());
         Collections.sort(problemLogList, problemLogComparator);
         problemLogListAdapter = new ProblemLogListAdapter(getActivity(), this, problemLogList, viewedPatient);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -123,6 +133,26 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
             }
         });
 
+        problemLogFilterSpinner = (Spinner) rootView.findViewById(R.id.problem_log_category_filter_spinner);
+        final ArrayAdapter<CharSequence> problemLogFilterAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.option_problem_log_category_filter, android.R.layout.simple_spinner_item);
+        problemLogFilterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        problemLogFilterSpinner.setAdapter(problemLogFilterAdapter);
+        problemLogFilterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedCategoryFilter = (String) parent.getItemAtPosition(position);
+                if (selectedCategoryFilter.equals("None")) {
+                    selectedCategoryFilter = null;
+                }
+                problemLogListAdapter.getFilter().filter(selectedCategoryFilter);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
         return rootView;
     }
 
@@ -137,12 +167,18 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
     }
 
     private void addProblemLog(ProblemLog newProblemLog) {
-        problemLogList.add(0, newProblemLog);
-        problemLogListAdapter.notifyItemInserted(0);
+        viewedPatient.getProblemLogList().add(0, newProblemLog);
+        problemLogList.clear();
+        problemLogList.addAll(viewedPatient.getProblemLogList());
 
         Collections.sort(problemLogList, problemLogComparator);
+        problemLogListAdapter.updateFilterOriginalList(problemLogList);
         problemLogListAdapter.notifyDataSetChanged();
-        
+
+        if (selectedCategoryFilter != null) {
+            problemLogListAdapter.getFilter().filter(selectedCategoryFilter);
+        }
+
         resetNewProblemLogFields();
 
         closeExpandableAddProblemLog();
