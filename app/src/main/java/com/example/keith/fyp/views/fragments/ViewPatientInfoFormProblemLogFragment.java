@@ -142,29 +142,6 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
         hideKeyboard();
     }
 
-    private void openSimilarProblemLogDialog(final ProblemLog newProblemLog, ProblemLog similarLog) {
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-        DateTime shownDate = similarLog.getCreationDate();
-        if (similarLog.getToDate() != null) {
-            shownDate = similarLog.getToDate();
-        }
-        String message = "On " + shownDate.toString(Global.DATE_FORMAT) + " the patient have a similar problem with the " + similarLog.getCategory() + " category. Are you sure you want to add this log?";
-        builder.content(message);
-
-        builder.positiveText(R.string.button_add_problem_log_anyway);
-        builder.negativeText(R.string.button_cancel);
-
-        builder.callback(new MaterialDialog.ButtonCallback() {
-            @Override
-            public void onPositive(MaterialDialog dialog) {
-                super.onPositive(dialog);
-                addProblemLog(newProblemLog);
-            }
-        });
-
-        builder.show();
-    }
-
     private void resetNewProblemLogFields() {
         addProblemLogFromDateEditText.setText(null);
         newProblemLogCategorySpinner.setSelection(0);

@@ -193,4 +193,6 @@
     <string name="button_save_draft_changes">Save changes</string>
     <string name="recent_patient_similar_problem">Recent Patient\'s Similar Problem</string>
     <string name="no_similar_problem_found">Recently patient has no similar problem</string>
+    <string name="notes">Notes</string>
+    <string name="from_date">From Date</string>
 </resources>

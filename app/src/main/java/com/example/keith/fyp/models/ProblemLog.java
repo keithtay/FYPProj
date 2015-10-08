@@ -11,7 +11,6 @@ import java.util.ArrayList;
  */
 public class ProblemLog implements ObjectToAttributeValueTransformer {
     private DateTime creationDate;
-    private DateTime toDate;
     private String category;
     private String notes;
 
@@ -19,7 +18,6 @@ public class ProblemLog implements ObjectToAttributeValueTransformer {
         this.creationDate = creationDate;
         this.category = category;
         this.notes = notes;
-        this.toDate = null;
     }
 
     public DateTime getCreationDate() {
@@ -52,13 +50,5 @@ public class ProblemLog implements ObjectToAttributeValueTransformer {
         list.add(new AttributeValuePair("Category", getCategory()));
         list.add(new AttributeValuePair("Notes", getNotes()));
         return list;
-    }
-
-    public DateTime getToDate() {
-        return toDate;
-    }
-
-    public void setToDate(DateTime toDate) {
-        this.toDate = toDate;
     }
 }

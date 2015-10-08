@@ -59,9 +59,6 @@ public class ProblemLogListAdapter extends RecyclerView.Adapter<ProblemLogListAd
         ProblemLog problemLog = problemLogList.get(position);
 
         holder.creationDateEditText.setText(problemLog.getCreationDate().toString(Global.DATE_FORMAT));
-        if(problemLog.getToDate() != null) {
-            holder.toDateEditText.setText(problemLog.getToDate().toString(Global.DATE_FORMAT));
-        }
 
         String[] problemLogCategoryArray = context.getResources().getStringArray(R.array.option_problem_log_category);
         ArrayList<String> problemLogCategoryList = new ArrayList<>(Arrays.asList(problemLogCategoryArray));
@@ -79,7 +76,6 @@ public class ProblemLogListAdapter extends RecyclerView.Adapter<ProblemLogListAd
     class ProblemLogListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 
         EditText creationDateEditText;
-        EditText toDateEditText;
         MaterialSpinner categorySpinner;
         EditText notesEditText;
 
@@ -89,7 +85,6 @@ public class ProblemLogListAdapter extends RecyclerView.Adapter<ProblemLogListAd
         Button saveButton;
 
         String oldFromDate;
-        String oldToDate;
         String oldCategory;
         String oldNotes;
 
@@ -101,10 +96,8 @@ public class ProblemLogListAdapter extends RecyclerView.Adapter<ProblemLogListAd
             context = itemView.getContext();
 
             creationDateEditText = (EditText) itemView.findViewById(R.id.problem_log_item_from_date_edit_text);
-            toDateEditText = (EditText) itemView.findViewById(R.id.problem_log_item_to_date_edit_text);
 
             UtilsUi.setupEditTextToBeDatePicker(creationDateEditText, "Select problem log from date");
-            UtilsUi.setupEditTextToBeDatePicker(toDateEditText, "Select problem log to date");
 
             categorySpinner = (MaterialSpinner) itemView.findViewById(R.id.problem_log_item_category_spinner);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
@@ -142,10 +135,8 @@ public class ProblemLogListAdapter extends RecyclerView.Adapter<ProblemLogListAd
                     problemLog.setNotes(notesEditText.getText().toString());
 
                     DateTime fromDate = Global.DATE_FORMAT.parseDateTime(creationDateEditText.getText().toString());
-                    DateTime toDate = Global.DATE_FORMAT.parseDateTime(toDateEditText.getText().toString());
 
                     problemLog.setCreationDate(fromDate);
-                    problemLog.setToDate(toDate);
 
                     setFormEditable(false);
                     if (expandableLayout.isOpened()) {
@@ -157,7 +148,6 @@ public class ProblemLogListAdapter extends RecyclerView.Adapter<ProblemLogListAd
 
         private void restoreOldFieldsValue() {
             creationDateEditText.setText(oldFromDate);
-            toDateEditText.setText(oldToDate);
 
             String[] problemLogCategoryArray = context.getResources().getStringArray(R.array.option_problem_log_category);
             ArrayList<String> problemLogCategoryList = new ArrayList<>(Arrays.asList(problemLogCategoryArray));
@@ -182,7 +172,6 @@ public class ProblemLogListAdapter extends RecyclerView.Adapter<ProblemLogListAd
             switch (item.getItemId()) {
                 case R.id.action_item_edit:
                     oldFromDate = creationDateEditText.getText().toString();
-                    oldToDate = toDateEditText.getText().toString();
                     oldCategory = categorySpinner.getSelectedItem().toString();
                     oldNotes = notesEditText.getText().toString();
 
@@ -202,7 +191,6 @@ public class ProblemLogListAdapter extends RecyclerView.Adapter<ProblemLogListAd
 
         private void setFormEditable(boolean isEditable) {
             creationDateEditText.setEnabled(isEditable);
-            toDateEditText.setEnabled(isEditable);
 
             categorySpinner.setEnabled(isEditable);
 
