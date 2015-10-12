@@ -107,6 +107,7 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
         String[] problemLogCategoryArray = getResources().getStringArray(R.array.option_problem_log_category);
         final ArrayList<String> problemLogCategoryList = new ArrayList<String>(Arrays.asList(problemLogCategoryArray));
 
+        final View similarProblemContainer = rootView.findViewById(R.id.similar_problem_log_container);
         SuperListview similarProblemListView = (SuperListview) rootView.findViewById(R.id.similar_problem_list_view);
         final ArrayList<ProblemLog> similarProblemList = new ArrayList<>();
         final SimilarProblemListAdapter similarProblemAdapter = new SimilarProblemListAdapter(this, similarProblemList);
@@ -116,6 +117,8 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
         categorySpinnerField.setSpinnerFieldItemSelectedListener(new SpinnerField.OnSpinnerFieldItemSelectedListener() {
             @Override
             public void onSpinnerFieldItemSelected(int index) {
+                similarProblemContainer.setVisibility(View.VISIBLE);
+
                 String selectedCategoryStr = problemLogCategoryList.get(index);
                 categorySpinnerField.changeDisplayedText(selectedCategoryStr);
 

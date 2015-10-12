@@ -50,27 +50,34 @@
         customfield:showBottomBorder="false"
         customfield:showTopBorder="false" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="@dimen/med_spacing"
-        android:layout_marginTop="@dimen/big_spacing"
-        android:background="@color/divider" />
-
-    <TextView
-        style="@style/typo_title"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/similar_problem_log_container"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/med_spacing"
-        android:gravity="center"
-        android:text="@string/recent_patient_similar_problem" />
+        android:orientation="vertical"
+        android:visibility="gone">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/med_spacing"
+            android:layout_marginTop="@dimen/big_spacing"
+            android:background="@color/divider" />
 
-    <com.quentindommerc.superlistview.SuperListview
-        android:id="@+id/similar_problem_list_view"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        superlistview:superlv__empty="@layout/empty_similar_problem_list"
-        superlistview:superlv__listDivider="@color/transparent"
-        superlistview:superlv__listDividerHeight="@dimen/med_spacing" />
+        <TextView
+            style="@style/typo_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/med_spacing"
+            android:gravity="center"
+            android:text="@string/recent_patient_similar_problem" />
+
+        <com.quentindommerc.superlistview.SuperListview
+            android:id="@+id/similar_problem_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            superlistview:superlv__empty="@layout/empty_similar_problem_list"
+            superlistview:superlv__listDivider="@color/transparent"
+            superlistview:superlv__listDividerHeight="@dimen/med_spacing" />
+    </LinearLayout>
 
 </LinearLayout>

@@ -54,12 +54,12 @@ public class NotificationToRendererConverter {
                 newPatient.setPhoto(BitmapFactory.decodeResource(context.getResources(), R.drawable.avatar_20));
                 contentRenderer = new ContentNewPatientRenderer(inflater, newPatient);
                 break;
-            case Notification.TYPE_UPDATE_INFO_FIELD:
+            case Notification.TYPE_UPDATE_INFO_OBJECT:
                 Allergy oldAllergy = new Allergy("Milk", "Itchy skin", "");
                 Allergy newAllergy = new Allergy("Milk", "Itchy skin", "Wash the skin with cold cloth");
                 contentRenderer = new ContentUpdateInfoObjectRenderer(inflater, oldAllergy, newAllergy);
                 break;
-            case Notification.TYPE_UPDATE_INFO_OBJECT:
+            case Notification.TYPE_UPDATE_INFO_FIELD:
                 contentRenderer = new ContentUpdateInfoFieldRenderer(inflater, "Personal Information", "Address", "32 Nanyang Avenue #12-7-23", "32 Nanyang Avenue #12-7-24");
                 break;
         }

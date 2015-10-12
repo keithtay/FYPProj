@@ -7,6 +7,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class DashboardActivity extends AppCompatActivity implements OnNotificationGroupUpdateListener, Drawer.OnDrawerItemClickListener {
 
@@ -136,12 +138,12 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         String caregiverName4 = "Apple Tan";
         String caregiverName5 = "Bethany Mandler";
 
-        String summary1 = "Updated information of patient";
-        String summary2 = "Log new problem for patient";
+        String summary1 = "Updated information of patient Garry Reese";
+        String summary2 = "Log new problem for patient Lilian Wade";
         String summary3 = "Create new patient Laura Freeman";
-        String summary4 = "Recommended the game category memory to patient";
-        String summary5 = "Updated the milk allergy of patient Hilda";
-        String summary6 = "Log new problem for patient";
+        String summary4 = "Recommended the game category memory to patient Garry Reese";
+        String summary5 = "Updated the milk allergy of patient Lillian Wade";
+        String summary6 = "Log new problem for patient Garry Reese";
 
         Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_UPDATE_INFO_FIELD);
         Notification notification2 = new Notification(date2, caregiverName2, caregiverAvatar2, summary2, patient2, Notification.STATUS_NONE, Notification.TYPE_NEW_LOG);

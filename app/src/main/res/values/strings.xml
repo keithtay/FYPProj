@@ -202,8 +202,8 @@
     <string name="button_proceed_with_save">Save as Draft</string>
     <string name="button_no">No</string>
     <string name="button_save_draft_changes">Save changes</string>
-    <string name="recent_patient_similar_problem">Recent Patient\'s Similar Problem</string>
-    <string name="no_similar_problem_found">Recently patient has no similar problem</string>
+    <string name="recent_patient_similar_problem">Patient\'s Similar Problem in Last 7 Days</string>
+    <string name="no_similar_problem_found">Patient has no similar problem</string>
     <string name="notes">Notes</string>
     <string name="from_date">From Date</string>
     <string name="category_filter">Category filter:</string>

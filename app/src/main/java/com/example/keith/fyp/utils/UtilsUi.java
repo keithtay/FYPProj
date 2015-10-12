@@ -251,6 +251,11 @@ public class UtilsUi {
                 .withIcon(FontAwesome.Icon.faw_building)
                 .withIdentifier(Global.NAVIGATION_CARE_CENTER_CONFIG_ID);
 
+//        PrimaryDrawerItem logoutItem = new PrimaryDrawerItem()
+//                .withName(R.string.nav_care_center_config)
+//                .withIcon(FontAwesome.Icon.faw_sign_out)
+//                .withIdentifier(5);
+
         Drawer navigationDrawer = new DrawerBuilder()
                 .withActivity(activity)
                 .withTranslucentStatusBar(false)
@@ -260,6 +265,7 @@ public class UtilsUi {
                         notificationDrawerItem,
                         accountDrawerItem,
                         settingsDrawerItem
+//                        logoutItem
                 )
                 .withOnDrawerItemClickListener(drawerItemClickListener)
                 .withSavedInstance(savedInstanceState)
