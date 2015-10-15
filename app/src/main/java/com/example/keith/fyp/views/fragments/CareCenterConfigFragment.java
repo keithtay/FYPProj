@@ -14,10 +14,14 @@ import android.view.ViewGroup;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.Communicator;
-import com.example.keith.fyp.utils.CareCenterConfigFragmentDecoder;
+import com.example.keith.fyp.utils.CareCenterConfigFragmentEncoder;
 import com.example.keith.fyp.views.activities.CareCenterConfigDetailActivity;
 
-
+/**
+ * Fragment to display the care centre configuration
+ *
+ * @author  Sutrisno Suryajaya Dwi Putra
+ */
 public class CareCenterConfigFragment extends Fragment implements Communicator {
 
     private View rootView;
@@ -54,7 +58,7 @@ public class CareCenterConfigFragment extends Fragment implements Communicator {
             // In landscape orientation
 
             // Change fragment
-            Fragment fragmentToBeDisplayed = CareCenterConfigFragmentDecoder.getFragment(index);
+            Fragment fragmentToBeDisplayed = CareCenterConfigFragmentEncoder.getFragment(index);
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
             transaction.replace(R.id.care_center_config_detail_fragment_container, fragmentToBeDisplayed);
             transaction.addToBackStack(null);

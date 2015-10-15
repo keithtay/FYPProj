@@ -49,17 +49,25 @@ import java.util.Calendar;
 import java.util.UUID;
 
 /**
- * Created by Sutrisno on 6/9/2015.
+ * UtilsUi is a singleton class to
+ * handle various operations to Android user interface
+ *
+ * @author      Sutrisno Suryajaya Dwi Putra
  */
 public class UtilsUi {
 
     // Style of notification count badge (navigation drawer)
-    public static BadgeStyle visibleStyle;
-    public static BadgeStyle invisibleStyle;
+    private static BadgeStyle visibleStyle;
+    private static BadgeStyle invisibleStyle;
 
     // Indicate which page of the navigation option is currently displayed
     private static int currentDisplayedFragmentId;
 
+    /**
+     * Method the get the styling when navigation's badge is visible
+     * @param context context of the application
+     * @return navigation's badge style
+     */
     public static BadgeStyle getVisibleBadgeStyle(Context context) {
         if(visibleStyle == null) {
             int backgroundColor = context.getResources().getColor(R.color.red_100);
@@ -70,6 +78,11 @@ public class UtilsUi {
         return visibleStyle;
     }
 
+    /**
+     * Method the get the styling when navigation's badge is invisible
+     * @param context context of the application
+     * @return navigation's badge style
+     */
     public static BadgeStyle getInvisibleBadgeStyle(Context context) {
         if(invisibleStyle == null) {
             int transparentColor = context.getResources().getColor(R.color.transparent);
@@ -79,19 +92,36 @@ public class UtilsUi {
         return invisibleStyle;
     }
 
+    /**
+     * @return identifier of currently displayed fragment
+     */
     public static int getCurrentDisplayedFragmentId() {
         return currentDisplayedFragmentId;
     }
 
+    /**
+     * @param currentDisplayedFragmentId identifier of currently displayed fragment
+     */
     public static void setCurrentDisplayedFragmentId(int currentDisplayedFragmentId) {
         UtilsUi.currentDisplayedFragmentId = currentDisplayedFragmentId;
     }
 
+    /**
+     * Convert a {@link Duration} to string
+     *
+     * @param duration duration to be converted
+     * @return comvertion result
+     */
     public static String convertDurationToString(Duration duration) {
         String durationStr = Long.toString(duration.getStandardMinutes()) + " min";
         return durationStr;
     }
 
+    /**
+     * Method to set {@link ListView}'s height based on the children's heights.
+     *
+     * @param listView list view to be set the height
+     */
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
@@ -114,6 +144,12 @@ public class UtilsUi {
         listView.setLayoutParams(params);
     }
 
+    /**
+     * Make an {@link EditText} to open a date picker when it is clicked.
+     *
+     * @param editText the {@link EditText} to be edited
+     * @param title title of date picker dialog
+     */
     public static void openDatePickerOnEditTextClick(final EditText editText, String title) {
         int mYear;
         int mMonth;
@@ -150,6 +186,12 @@ public class UtilsUi {
         datePickerDialog.show();
     }
 
+    /**
+     * Make an {@link EditText} to be a date picker
+     *
+     * @param editText the {@link EditText} to be edited
+     * @param title title of date picker dialog
+     */
     public static void setupEditTextToBeDatePicker(final EditText editText, final String title) {
         editText.setFocusable(false);
         editText.setOnClickListener(new View.OnClickListener() {
@@ -160,7 +202,12 @@ public class UtilsUi {
         });
     }
 
-
+    /**
+     * Make an {@link EditText} to be a time picker
+     *
+     * @param editText the {@link EditText} to be edited
+     * @param title title of time picker dialog
+     */
     public static void setupEditTextToBeTimePicker(final EditText editText, final String title) {
         editText.setFocusable(false);
         editText.setOnClickListener(new View.OnClickListener() {
@@ -201,10 +248,19 @@ public class UtilsUi {
         });
     }
 
+    /**
+     * Remove view from the layout
+     *
+     * @param view view to be removed
+     */
     public static void removeView(View view) {
         ((ViewGroup) view.getParent()).removeView(view);
     }
 
+    /**
+     * Method to count the number of {@link NotificationGroup} with status {@link NotificationGroup#STATUS_UNPROCESSED}
+     * @return
+     */
     public static int countUnprocessedNotificationGroup() {
         ArrayList<NotificationGroup> notificationGroupList = DataHolder.getNotificationGroupList();
 
@@ -219,6 +275,15 @@ public class UtilsUi {
         return count;
     }
 
+    /**
+     * Set the navigation bar to the user interface
+     *
+     * @param activity activity to be add the navigation bar
+     * @param contentWrapper view that wrap the content of the activity
+     * @param drawerItemClickListener listener when an item in the navigation drawer is clicked
+     * @param savedInstanceState save instance state
+     * @return pair of navigation drawer and mini navigation drawer
+     */
     public static DrawerAndMiniDrawerPair setNavigationDrawer(Activity activity, View contentWrapper, Drawer.OnDrawerItemClickListener drawerItemClickListener, Bundle savedInstanceState) {
         Resources resource = activity.getResources();
         final IProfile profile = new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").withIcon(resource.getDrawable(R.drawable.avatar1));
@@ -293,6 +358,12 @@ public class UtilsUi {
         return new DrawerAndMiniDrawerPair(navDrawer, miniDrawer);
     }
 
+    /**
+     * Set the summary of {@code notificationGroup}
+     *
+     * @param context context of the application
+     * @param notificationGroup notification group to be edited
+     */
     public static void setNotificationGroupSummary(Context context, NotificationGroup notificationGroup) {
         int unprocessedCount = notificationGroup.getUnprocessedNotif().size();
         String summary;
@@ -304,6 +375,12 @@ public class UtilsUi {
         notificationGroup.setSummary(summary);
     }
 
+    /**
+     * Set the status of {@code notificationGroup}
+     *
+     * @param context context of the application
+     * @param notificationGroup notification group to be edited
+     */
     public static void setNotificationGroupStatus(Context context, NotificationGroup notificationGroup) {
         if(notificationGroup.getUnprocessedNotif().size() > 0) {
             notificationGroup.setStatus(NotificationGroup.STATUS_UNPROCESSED);
@@ -312,6 +389,11 @@ public class UtilsUi {
         }
     }
 
+    /**
+     * Method to generate unique ID
+     *
+     * @return unique ID
+     */
     public static String generateUniqueId() {
         UUID uniqueId = UUID.randomUUID();
         String id = uniqueId.toString().replaceAll("[\\- ]", "");

@@ -20,17 +20,28 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by Sutrisno on 2/10/2015.
+ * An {@link BaseAdapter} to display list of text and its description pair
  */
 public class TextTooltipPairListAdapter extends BaseAdapter {
 
     private List<TextTooltipPair> textTooltipPairsList = Collections.emptyList();
     private Context context;
 
+    /**
+     * Create an text tooltip pair list adapter with the specified values
+     *
+     * @param context context of the application
+     */
     public TextTooltipPairListAdapter(Context context) {
         this.context = context;
     }
 
+    /**
+     * Create an text tooltip pair list adapter with the specified values
+     *
+     * @param context context of the application
+     * @param textTooltipPairList list of text and its description to be displayed
+     */
     public TextTooltipPairListAdapter(Context context, List<TextTooltipPair> textTooltipPairList) {
         this.context = context;
         this.textTooltipPairsList = textTooltipPairList;

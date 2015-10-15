@@ -12,9 +12,11 @@ import android.widget.TextView;
 import com.example.keith.fyp.R;
 
 /**
- * Created by Sutrisno on 5/9/2015.
- * Empty: Give the RecyclerView and empty state (i.e. display specific view when it is empty)
- * Autofit: Each column item has a fixed width
+ * A {@link RecyclerView} that provide empty and autofit features.
+ * Empty: Give the RecyclerView and empty state (i.e. display specific view when it is empty).
+ * Autofit: Each column item has a fixed width.
+ *
+ * @author  Sutrisno Suryajaya Dwi Putra
  */
 public class EmptyAndAutofitRecyclerView extends RecyclerView {
     private View noSearchResultView;
@@ -41,10 +43,21 @@ public class EmptyAndAutofitRecyclerView extends RecyclerView {
         }
     };
 
+    /**
+     * Create a empty and autofit recycler view with the specified values
+     *
+     * @param context context of the application
+     */
     public EmptyAndAutofitRecyclerView(Context context) {
         super(context);
     }
 
+    /**
+     * Create a empty and autofit recycler view with the specified values
+     *
+     * @param context context of the application
+     * @param attrs attributes of the view
+     */
     public EmptyAndAutofitRecyclerView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -62,6 +75,13 @@ public class EmptyAndAutofitRecyclerView extends RecyclerView {
         setLayoutManager(manager);
     }
 
+    /**
+     * Create a empty and autofit recycler view with the specified values
+     *
+     * @param context context of the application
+     * @param attrs attributes of the view
+     * @param defStyle style definition
+     */
     public EmptyAndAutofitRecyclerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
@@ -75,7 +95,7 @@ public class EmptyAndAutofitRecyclerView extends RecyclerView {
         }
     }
 
-    void checkIfEmpty() {
+    private void checkIfEmpty() {
         if (noSearchResultView != null &&
                 getAdapter() != null &&
                 noPatientView != null &&
@@ -110,16 +130,31 @@ public class EmptyAndAutofitRecyclerView extends RecyclerView {
         checkIfEmpty();
     }
 
+    /**
+     * Set the view to be displayed when there is no search result
+     *
+     * @param noSearchResultView view to be displayed
+     */
     public void setNoSearchResultView(View noSearchResultView) {
         this.noSearchResultView = noSearchResultView;
         checkIfEmpty();
     }
 
+    /**
+     * Set the search view to filter the list displayed
+     *
+     * @param searchFieldView serach view for filtering the list
+     */
     public void setSearchFieldView(SearchView searchFieldView) {
         this.searchFieldView = searchFieldView;
         checkIfEmpty();
     }
 
+    /**
+     * Set the view to be displayed when this recycler view is empty
+     *
+     * @param noPatientView view to be displayed
+     */
     public void setNoPatientView(View noPatientView) {
         this.noPatientView = noPatientView;
         checkIfEmpty();

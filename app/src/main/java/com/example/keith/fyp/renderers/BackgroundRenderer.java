@@ -6,9 +6,15 @@ import android.view.View;
 import com.example.keith.fyp.R;
 
 /**
- * Created by Sutrisno on 21/9/2015.
+ * BackgroundRenderer is {@link Renderer} to render the background of a {@link com.example.keith.fyp.models.Notification}
+ *
+ * @author      Sutrisno Suryajaya Dwi Putra
  */
 public class BackgroundRenderer extends Renderer {
+
+    /**
+     * Create a background renderer with the specified values.
+     */
     public BackgroundRenderer(LayoutInflater inflater) {
         super(inflater);
     }

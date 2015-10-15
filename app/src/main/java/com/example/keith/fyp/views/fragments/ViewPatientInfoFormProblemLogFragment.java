@@ -39,6 +39,11 @@ import java.util.UUID;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 
+/**
+ * Fragment to display the patient's problem log information
+ *
+ * @author  Sutrisno Suryajaya Dwi Putra
+ */
 public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFragment implements PatientInfoFormListFragment {
 
     private LinearLayout rootView;
@@ -198,6 +203,11 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
         }
     }
 
+    /**
+     * Delete an problem log from the list
+     *
+     * @param selectedItemIdx index of problem log to be deleted
+     */
     public void deleteItem(int selectedItemIdx) {
         problemLogList.remove(selectedItemIdx);
         problemLogListAdapter.notifyItemRemoved(selectedItemIdx);

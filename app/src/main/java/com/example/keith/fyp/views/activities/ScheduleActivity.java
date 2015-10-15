@@ -19,7 +19,7 @@ import org.joda.time.DateTime;
 import java.util.ArrayList;
 
 /**
- * Created by Sutrisno on 16/9/2015.
+ * Base Activity to display the patient's schedule
  */
 public class ScheduleActivity extends AppCompatActivity {
 
@@ -60,12 +60,15 @@ public class ScheduleActivity extends AppCompatActivity {
         currentTime = DateTime.now().withTime(13,30,0,0);
     }
 
-    protected void setScheduleDate() {
+    private void setScheduleDate() {
         TextView todayDate = (TextView) findViewById(R.id.today_date);
         DateTime currentDate = DateTime.now();
         todayDate.setText(currentDate.toString(Global.DATE_FORMAT));
     }
 
+    /**
+     * Initilization by set the schedule date and set the patient brief information
+     */
     protected void init() {
         setScheduleDate();
         setPatientBriefInfo();

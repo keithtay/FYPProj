@@ -3,16 +3,19 @@ package com.example.keith.fyp.utils;
 import org.joda.time.DateTime;
 
 /**
- * Created by Sutrisno on 17/9/2015.
+ * UtilsDate is a singleton class to
+ * handle various operations to {@link DateTime}
+ *
+ * @author      Sutrisno Suryajaya Dwi Putra
  */
 public class UtilsDate {
-    public static DateTime setCurrentDateToTime(DateTime time) {
-        DateTime now = DateTime.now();
-        now = now.withHourOfDay(time.getHourOfDay());
-        now = now.withMinuteOfHour(time.getMinuteOfHour());
-        return now;
-    }
 
+    /**
+     * Method to get the current date with the passed time
+     *
+     * @param timeStr time to be included in current date
+     * @return current date with the passed time
+     */
     public static DateTime setCurrentDateToTime(String timeStr) {
         DateTime dateTime = DateTime.now();
         DateTime time = Global.TIME_FORMAT.parseDateTime(timeStr);

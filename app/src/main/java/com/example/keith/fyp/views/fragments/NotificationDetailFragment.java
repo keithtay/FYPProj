@@ -13,17 +13,17 @@ import com.example.keith.fyp.broadcastreceiver.NotificationGroupUpdateReceiver;
 import com.example.keith.fyp.interfaces.OnNotificationGroupUpdateListener;
 import com.example.keith.fyp.models.Notification;
 import com.example.keith.fyp.models.NotificationGroup;
-import com.example.keith.fyp.renderers.NotificationRenderer;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
-import com.example.keith.fyp.utils.NotificationToRendererConverter;
-import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.adapters.NotificationDetailListAdapter;
-import com.example.keith.fyp.views.adapters.NotificationListAdapter;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 
 import java.util.ArrayList;
 
+/**
+ * Fragment to display notification detail
+ *
+ * @author  Sutrisno Suryajaya Dwi Putra
+ */
 public class NotificationDetailFragment extends Fragment implements OnNotificationGroupUpdateListener {
 
     private View rootView;
@@ -60,6 +60,11 @@ public class NotificationDetailFragment extends Fragment implements OnNotificati
         }
     }
 
+    /**
+     * Render the notification detail
+     *
+     * @param position position of the selected notification
+     */
     public void renderDetail(int position) {
         selectedIndex = position;
 

@@ -8,18 +8,38 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 /**
- * Created by Sutrisno on 18/9/2015.
+ * A custom view to create and editable and expandable text field
+ *
+ * @author      Sutrisno Suryajaya Dwi Putra
  */
 public class TextField extends CustomField {
 
+    /**
+     * Create a text field with the specified value
+     *
+     * @param context context of the application
+     */
     public TextField(Context context) {
         super(context);
     }
 
+    /**
+     * Create a text field with the specified value
+     *
+     * @param context context of the application
+     * @param attrs attributes of the view
+     */
     public TextField(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
+    /**
+     * Create a text field with the specified value
+     *
+     * @param context context of the application
+     * @param attrs attributes of the view
+     * @param  defStyleAttr style attribute
+     */
     public TextField(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
@@ -47,11 +67,18 @@ public class TextField extends CustomField {
         });
     }
 
+    /**
+     * Collapse the view from edit mode and make the text field uneditable
+     */
     public void collapse() {
         super.collapse();
         imm.hideSoftInputFromWindow(fieldValueEditText.getWindowToken(), 0);
     }
 
+    /**
+     * Expand the view to be editable and focus the cursor to
+     * the text field and open soft-keyboard
+     */
     public void expand() {
         super.expand();
         fieldValueEditText.requestFocus();

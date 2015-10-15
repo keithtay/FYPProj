@@ -32,7 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by Sutrisno on 13/9/2015.
+ * An {@link android.support.v7.widget.RecyclerView.Adapter} to display list of routine
  */
 public class RoutineListAdapter extends RecyclerView.Adapter<RoutineListAdapter.RoutineListViewHolder> {
 
@@ -41,6 +41,14 @@ public class RoutineListAdapter extends RecyclerView.Adapter<RoutineListAdapter.
     private PatientInfoFormListFragment fragment;
     private Patient patient;
 
+    /**
+     * Create routine list adapter with the specified values
+     *
+     * @param context context of the application
+     * @param fragment fragment of the UI
+     * @param routineList list of routine to be displayed
+     * @param patient patient to be edited
+     */
     public RoutineListAdapter(Context context, PatientInfoFormListFragment fragment, List<Routine> routineList, Patient patient) {
         this.inflater = LayoutInflater.from(context);
         this.routineList = routineList;

@@ -22,18 +22,21 @@ import com.example.keith.fyp.models.NotificationGroup;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsUi;
-import com.example.keith.fyp.views.adapters.NotificationListAdapter;
+import com.example.keith.fyp.views.adapters.NotificationGroupListAdapter;
 import com.quentindommerc.superlistview.SuperListview;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
-
+/**
+ * Fragment to display the user's list of notification
+ *
+ * @author  Sutrisno Suryajaya Dwi Putra
+ */
 public class NotificationListFragment extends Fragment implements AdapterView.OnItemClickListener, OnNotificationUpdateListener {
     private View rootView;
     private SuperListview notificationListView;
-    private NotificationListAdapter notificationListAdapter;
+    private NotificationGroupListAdapter notificationGroupListAdapter;
 
     private ArrayList<NotificationGroup> notificationGroupList;
     private Communicator communicator;
@@ -48,8 +51,8 @@ public class NotificationListFragment extends Fragment implements AdapterView.On
 
         notificationGroupList = DataHolder.getNotificationGroupList();
 
-        notificationListAdapter = new NotificationListAdapter(getActivity(), notificationGroupList);
-        notificationListView.setAdapter(notificationListAdapter);
+        notificationGroupListAdapter = new NotificationGroupListAdapter(getActivity(), notificationGroupList);
+        notificationListView.setAdapter(notificationGroupListAdapter);
         notificationListView.setOnItemClickListener(this);
 
         notificationListView.getList().setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
@@ -63,7 +66,7 @@ public class NotificationListFragment extends Fragment implements AdapterView.On
                 @Override
                 public void onGlobalLayout() {
                     notificationListView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                    if (notificationListAdapter.getCount() > 0) {
+                    if (notificationGroupListAdapter.getCount() > 0) {
                         notificationListView.getList().performItemClick(
                                 notificationListView.getAdapter().getView(0, null, null),
                                 0,
@@ -92,6 +95,9 @@ public class NotificationListFragment extends Fragment implements AdapterView.On
         }
     }
 
+    /**
+     * @param communicator communicator to send data to the other fragment
+     */
     public void setCommunicator(Communicator communicator) {
         this.communicator = communicator;
     }
@@ -128,6 +134,6 @@ public class NotificationListFragment extends Fragment implements AdapterView.On
         Intent intent = new Intent(Global.ACTION_NOTIFICATION_GROUP_UPDATE);
         getActivity().sendBroadcast(intent);
 
-        notificationListAdapter.notifyDataSetChanged();
+        notificationGroupListAdapter.notifyDataSetChanged();
     }
 }

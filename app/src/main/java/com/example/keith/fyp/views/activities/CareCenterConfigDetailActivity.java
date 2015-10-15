@@ -12,13 +12,16 @@ import android.view.View;
 
 import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
-import com.example.keith.fyp.utils.CareCenterConfigFragmentDecoder;
+import com.example.keith.fyp.utils.CareCenterConfigFragmentEncoder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsUi;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.MiniDrawer;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+/**
+ * Activity to display the care centre configuration detail
+ */
 public class CareCenterConfigDetailActivity extends AppCompatActivity implements Drawer.OnDrawerItemClickListener {
 
     private FragmentManager fragmentManager;
@@ -44,7 +47,7 @@ public class CareCenterConfigDetailActivity extends AppCompatActivity implements
 
         Intent intent = getIntent();
         int selectedCategoryIndex = intent.getIntExtra("selectedCategory",0);
-        Fragment fragmentToBeDisplayed = CareCenterConfigFragmentDecoder.getFragment(selectedCategoryIndex);
+        Fragment fragmentToBeDisplayed = CareCenterConfigFragmentEncoder.getFragment(selectedCategoryIndex);
 
         fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();

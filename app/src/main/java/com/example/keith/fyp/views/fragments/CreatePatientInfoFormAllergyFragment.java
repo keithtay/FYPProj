@@ -29,7 +29,9 @@ import com.example.keith.fyp.views.decorators.SpacesCardItemDecoration;
 import java.util.ArrayList;
 
 /**
- * Created by Sutrisno on 11/9/2015.
+ * Fragment to display the allergy form in creating patient
+ *
+ * @author  Sutrisno Suryajaya Dwi Putra
  */
 public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormFragment implements PatientInfoFormListFragment {
     private LinearLayout rootView;
@@ -202,6 +204,11 @@ public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormF
         }
     }
 
+    /**
+     * Delete an allergy from the list
+     *
+     * @param selectedItemIdx index of allergy to be deleted
+     */
     public void deleteItem(int selectedItemIdx) {
         allergyList.remove(selectedItemIdx);
         allergyListAdapter.notifyItemRemoved(selectedItemIdx);

@@ -3,22 +3,25 @@ package com.example.keith.fyp.renderers;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.ObjectToAttributeValueTransformer;
-import com.example.keith.fyp.models.ProblemLog;
 import com.example.keith.fyp.views.adapters.AttributeValueListAdapter;
 import com.example.keith.fyp.views.customviews.NotScrollableListView;
 
 /**
- * Created by Sutrisno on 21/9/2015.
+ * ContentNewInfoObjectRenderer is {@link Renderer} to render the content of a {@link com.example.keith.fyp.models.Notification} with type {@link com.example.keith.fyp.models.Notification#TYPE_NEW_INFO_OBJECT}.
+ * Info object is a group of patient information that are related to each other (e.g. patient's allergy which consist of name, reaction and notes)
+ *
+ * @author      Sutrisno Suryajaya Dwi Putra
  */
 public class ContentNewInfoObjectRenderer extends ContentRenderer {
 
     private ObjectToAttributeValueTransformer newObject;
 
+    /**
+     * Create a content new info object renderer with the specified values.
+     */
     public ContentNewInfoObjectRenderer(LayoutInflater inflater, ObjectToAttributeValueTransformer newObject) {
         super(inflater);
         this.newObject = newObject;

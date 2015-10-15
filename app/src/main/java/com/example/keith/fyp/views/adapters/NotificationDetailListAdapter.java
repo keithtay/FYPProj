@@ -19,17 +19,28 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by Sutrisno on 2/10/2015.
+ * An {@link BaseAdapter} to display notification detail list with the same affected patient
  */
 public class NotificationDetailListAdapter extends BaseAdapter {
 
     private List<Notification> notificationList = Collections.emptyList();
     private Context context;
 
+    /**
+     * Create an notification detail list adapter with the specified values
+     *
+     * @param context context of the application
+     */
     public NotificationDetailListAdapter(Context context) {
         this.context = context;
     }
 
+    /**
+     * Create an notification detail list adapter with the specified values
+     *
+     * @param context context of the application
+     * @param notificationList list of notification to be displayed
+     */
     public NotificationDetailListAdapter(Context context, List<Notification> notificationList) {
         this.context = context;
         this.notificationList = notificationList;

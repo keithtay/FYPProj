@@ -6,9 +6,15 @@ import android.view.View;
 import com.example.keith.fyp.R;
 
 /**
- * Created by Sutrisno on 21/9/2015.
+ * ContentGameRecommendationRenderer is {@link Renderer} to render the content of a {@link com.example.keith.fyp.models.Notification} with type {@link com.example.keith.fyp.models.Notification#TYPE_GAME_RECOMMENDATION}
+ *
+ * @author      Sutrisno Suryajaya Dwi Putra
  */
 public class ContentGameRecommendationRenderer extends ContentRenderer {
+
+    /**
+     * Create a content game recommendation renderer with the specified values.
+     */
     public ContentGameRecommendationRenderer(LayoutInflater inflater) {
         super(inflater);
     }

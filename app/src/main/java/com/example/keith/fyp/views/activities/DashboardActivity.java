@@ -7,7 +7,6 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -20,7 +19,6 @@ import com.example.keith.fyp.comparators.NotificationComparator;
 import com.example.keith.fyp.interfaces.OnNotificationGroupUpdateListener;
 import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
-import com.example.keith.fyp.broadcastreceiver.NotificationUpdateReceiver;
 import com.example.keith.fyp.models.Notification;
 import com.example.keith.fyp.models.NotificationGroup;
 import com.example.keith.fyp.models.Patient;
@@ -40,10 +38,12 @@ import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Locale;
 
+/**
+ * Activity to display the dashboard
+ * The dashboard consist of {@link PatientListFragment}, {@link NotificationFragment} and {@link CareCenterConfigFragment}
+ */
 public class DashboardActivity extends AppCompatActivity implements OnNotificationGroupUpdateListener, Drawer.OnDrawerItemClickListener {
 
     private Drawer navDrawer;
@@ -105,7 +105,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         }
     }
 
-    public void retrieveNotification() {
+    private void retrieveNotification() {
 
         // =====================================================
         // Creating Notification Model
@@ -146,11 +146,11 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         String summary6 = "Log new problem for patient Garry Reese";
 
         Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_UPDATE_INFO_FIELD);
-        Notification notification2 = new Notification(date2, caregiverName2, caregiverAvatar2, summary2, patient2, Notification.STATUS_NONE, Notification.TYPE_NEW_LOG);
+        Notification notification2 = new Notification(date2, caregiverName2, caregiverAvatar2, summary2, patient2, Notification.STATUS_NONE, Notification.TYPE_NEW_INFO_OBJECT);
         Notification notification3 = new Notification(date3, caregiverName3, caregiverAvatar3, summary3, patient3, Notification.STATUS_NONE, Notification.TYPE_NEW_PATIENT);
         Notification notification4 = new Notification(date4, caregiverName4, caregiverAvatar4, summary4, patient1, Notification.STATUS_NONE, Notification.TYPE_GAME_RECOMMENDATION);
         Notification notification5 = new Notification(date5, caregiverName5, caregiverAvatar5, summary5, patient2, Notification.STATUS_NONE, Notification.TYPE_UPDATE_INFO_OBJECT);
-        Notification notification6 = new Notification(date6, caregiverName3, caregiverAvatar3, summary6, patient1, Notification.STATUS_NONE, Notification.TYPE_NEW_LOG);
+        Notification notification6 = new Notification(date6, caregiverName3, caregiverAvatar3, summary6, patient1, Notification.STATUS_NONE, Notification.TYPE_NEW_INFO_OBJECT);
 
         ArrayList<Notification> notificationList = new ArrayList<>();
         notificationList.add(notification1);

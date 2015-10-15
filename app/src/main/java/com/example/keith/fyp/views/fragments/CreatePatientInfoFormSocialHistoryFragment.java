@@ -26,8 +26,11 @@ import java.lang.reflect.InvocationTargetException;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 
+
 /**
- * Created by Sutrisno on 12/9/2015.
+ * Fragment to display the social history form in creating patient
+ *
+ * @author  Sutrisno Suryajaya Dwi Putra
  */
 public class CreatePatientInfoFormSocialHistoryFragment extends CreatePatientInfoFormFragment {
 

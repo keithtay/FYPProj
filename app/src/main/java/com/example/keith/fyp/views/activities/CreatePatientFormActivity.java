@@ -16,7 +16,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Patient;
-import com.example.keith.fyp.utils.CreatePatientFormFragmentDecoder;
+import com.example.keith.fyp.utils.CreatePatientFormFragmentEncoder;
 import com.example.keith.fyp.utils.CreatedPatientEmptyFieldChecker;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
@@ -35,6 +35,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Activity to display the create patient form
+ */
 public class CreatePatientFormActivity extends PatientFormActivity implements Drawer.OnDrawerItemClickListener {
 
     private FloatingActionButton saveNewPatientFab;
@@ -61,7 +64,7 @@ public class CreatePatientFormActivity extends PatientFormActivity implements Dr
 
         Intent intent = getIntent();
         int selectedCategoryIndex = intent.getIntExtra(Global.EXTRA_SELECTED_CATEGORY, 0);
-        Fragment fragmentToBeDisplayed = CreatePatientFormFragmentDecoder.getFragment(selectedCategoryIndex);
+        Fragment fragmentToBeDisplayed = CreatePatientFormFragmentEncoder.getFragment(selectedCategoryIndex);
 
         ArrayList<Integer> emptyFieldIdList = intent.getIntegerArrayListExtra(Global.EXTRA_EMPTY_FIELD_ID_LIST);
         if(emptyFieldIdList != null && emptyFieldIdList.size() > 0) {

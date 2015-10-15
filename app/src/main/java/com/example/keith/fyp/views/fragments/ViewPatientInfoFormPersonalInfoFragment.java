@@ -19,6 +19,11 @@ import com.example.keith.fyp.utils.DataHolder;
 
 import java.lang.reflect.InvocationTargetException;
 
+/**
+ * Fragment to display the patient's personal information
+ *
+ * @author  Sutrisno Suryajaya Dwi Putra
+ */
 public class ViewPatientInfoFormPersonalInfoFragment extends ViewPatientInfoFormFragment {
 
     private LinearLayout rootView;

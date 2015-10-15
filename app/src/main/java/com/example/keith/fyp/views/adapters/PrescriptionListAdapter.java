@@ -33,7 +33,7 @@ import java.util.List;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 /**
- * Created by Sutrisno on 12/9/2015.
+ * An {@link android.support.v7.widget.RecyclerView.Adapter} to display list of prescription
  */
 public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionListAdapter.PrescriptionListViewHolder> {
 
@@ -42,6 +42,14 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
     private PatientInfoFormListFragment fragment;
     private Patient patient;
 
+    /**
+     * Create prescription list adapter with the specified values
+     *
+     * @param context context of the application
+     * @param createPatientInfoFormPrescriptionFragment fragment of the UI
+     * @param prescriptionList list of prescription to be displayed
+     * @param patient patient to be edited
+     */
     public PrescriptionListAdapter(Context context, PatientInfoFormListFragment createPatientInfoFormPrescriptionFragment, List<Prescription> prescriptionList, Patient patient) {
         this.inflater = LayoutInflater.from(context);
         this.prescriptionList = prescriptionList;

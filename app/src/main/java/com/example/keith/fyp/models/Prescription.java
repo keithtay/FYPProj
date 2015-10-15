@@ -8,7 +8,9 @@ import org.joda.time.DateTime;
 import java.util.ArrayList;
 
 /**
- * Created by Sutrisno on 12/9/2015.
+ * PatientFormSpec is a model to represent a medication prescribed to a {@link Patient}
+ *
+ * @author Sutrisno Suryajaya Dwi Putra
  */
 public class Prescription implements ObjectToAttributeValueTransformer {
     private String name;
@@ -20,6 +22,9 @@ public class Prescription implements ObjectToAttributeValueTransformer {
     private String beforeAfterMeal;
     private String notes;
 
+    /**
+     * Create a new prescription with the specified values
+     */
     public Prescription(String name, String dosage, Integer freqPerDay, String instruction, DateTime startDate, DateTime endDate, String beforeAfterMeal, String notes) {
         this.name = name;
         this.dosage = dosage;
@@ -31,66 +36,114 @@ public class Prescription implements ObjectToAttributeValueTransformer {
         this.notes = notes;
     }
 
+    /**
+     * @return medicine's name of the prescription
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @param name medicine's name to set
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * @return dosage per one take of the prescription
+     */
     public String getDosage() {
         return dosage;
     }
 
+    /**
+     * @param dosage dosage per one take to set
+     */
     public void setDosage(String dosage) {
         this.dosage = dosage;
     }
 
+    /**
+     * @return how many time the medicine need to be consumed in one day
+     */
     public Integer getFreqPerDay() {
         return freqPerDay;
     }
 
+    /**
+     * @param freqPerDay how many time the medicine need to be consumed in one day
+     */
     public void setFreqPerDay(Integer freqPerDay) {
         this.freqPerDay = freqPerDay;
     }
 
+    /**
+     * @return instruction to consume the medicine
+     */
     public String getInstruction() {
         return instruction;
     }
 
+    /**
+     * @param instruction instruction to set
+     */
     public void setInstruction(String instruction) {
         this.instruction = instruction;
     }
 
+    /**
+     * @return start date to consume the medicine
+     */
     public DateTime getStartDate() {
         return startDate;
     }
 
+    /**
+     * @param startDate start date to set
+     */
     public void setStartDate(DateTime startDate) {
         this.startDate = startDate;
     }
 
+    /**
+     * @return end date to consume the medicine
+     */
     public DateTime getEndDate() {
         return endDate;
     }
 
+    /**
+     * @param endDate end date to set
+     */
     public void setEndDate(DateTime endDate) {
         this.endDate = endDate;
     }
 
+    /**
+     * @return indicator whether the medicine should be consumed before or after the meal
+     */
     public String getBeforeAfterMeal() {
         return beforeAfterMeal;
     }
 
+    /**
+     * @param beforeAfterMeal indicator whether the medicine should be consumed before or after the meal
+     */
     public void setBeforeAfterMeal(String beforeAfterMeal) {
         this.beforeAfterMeal = beforeAfterMeal;
     }
 
+    /**
+     * @return other information to take notes in consuming the medicine
+     */
     public String getNotes() {
         return notes;
     }
 
+    /**
+     * @param notes other information to take notes in consuming the medicine
+     */
     public void setNotes(String notes) {
         this.notes = notes;
     }

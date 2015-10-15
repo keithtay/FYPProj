@@ -2,6 +2,7 @@ package com.example.keith.fyp.utils;
 
 import android.app.Fragment;
 
+import com.example.keith.fyp.views.fragments.CreatePatientInfoFormFragment;
 import com.example.keith.fyp.views.fragments.CreatePatientInfoFormRoutineFragment;
 import com.example.keith.fyp.views.fragments.CreatePatientInfoFormAllergyFragment;
 import com.example.keith.fyp.views.fragments.CreatePatientInfoFormPrescriptionFragment;
@@ -10,9 +11,19 @@ import com.example.keith.fyp.views.fragments.CreatePatientInfoFormVitalFragment;
 import com.example.keith.fyp.views.fragments.CreatePatientInfoFormPersonalInfoFragment;
 
 /**
- * Created by Sutrisno on 9/9/2015.
+ * CreatePatientFormFragmentEncoder is a singleton class that
+ * encode an integer ID into a {@link CreatePatientInfoFormFragment}
+ *
+ * @author      Sutrisno Suryajaya Dwi Putra
  */
-public class CreatePatientFormFragmentDecoder {
+public class CreatePatientFormFragmentEncoder {
+
+    /**
+     * Method to get {@link CreatePatientInfoFormFragment} based on the specified integer ID
+     *
+     * @param index integer ID of the {@link CreatePatientInfoFormFragment} identifier
+     * @return encoded {@link CreatePatientInfoFormFragment}
+     */
     public static Fragment getFragment(int index) {
 
         Fragment fragmentToBeDisplayed = null;

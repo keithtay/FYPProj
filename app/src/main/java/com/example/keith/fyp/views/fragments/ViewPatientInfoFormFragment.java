@@ -21,18 +21,32 @@ import java.util.Arrays;
 import javadz.beanutils.PropertyUtils;
 
 /**
- * Created by Sutrisno on 18/9/2015.
+ * Fragment to display the patient's information
+ *
+ * @author  Sutrisno Suryajaya Dwi Putra
  */
 public class ViewPatientInfoFormFragment extends PatientInfoFormFragment {
     protected Patient viewedPatient;
     protected ArrayList<PatientFormSpec> patientFormSpecs;
 
+    /**
+     * Fragment initialization
+     */
     public void init() {
         super.init();
         viewedPatient = DataHolder.getViewedPatient();
         patientFormSpecs = new ArrayList<>();
     }
 
+    /**
+     * Method to fill the patient information fields
+     *
+     * @param rootView root view of the form
+     * @param patientFormSpecs specification of patient form
+     * @throws IllegalAccessException
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     */
     protected void prepareForm(View rootView, ArrayList<PatientFormSpec> patientFormSpecs) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         for(final PatientFormSpec spec:patientFormSpecs) {
             final String attributeName = spec.getAttributeName();

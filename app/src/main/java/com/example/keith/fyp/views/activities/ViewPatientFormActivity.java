@@ -11,7 +11,7 @@ import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsUi;
-import com.example.keith.fyp.utils.ViewPatientFormFragmentDecoder;
+import com.example.keith.fyp.utils.ViewPatientFormFragmentEncoder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.MiniDrawer;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
@@ -38,7 +38,7 @@ public class ViewPatientFormActivity extends PatientFormActivity implements Draw
 
         Intent intent = getIntent();
         int selectedCategoryIndex = intent.getIntExtra("selectedCategory",0);
-        Fragment fragmentToBeDisplayed = ViewPatientFormFragmentDecoder.getFragment(selectedCategoryIndex);
+        Fragment fragmentToBeDisplayed = ViewPatientFormFragmentEncoder.getFragment(selectedCategoryIndex);
 
         fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();

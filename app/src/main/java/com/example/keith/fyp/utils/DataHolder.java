@@ -16,6 +16,7 @@ import com.example.keith.fyp.models.Routine;
 import com.example.keith.fyp.models.Schedule;
 import com.example.keith.fyp.models.SocialHistory;
 import com.example.keith.fyp.models.Vital;
+import com.example.keith.fyp.views.fragments.CreatePatientInfoFormFragment;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
@@ -26,7 +27,10 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 /**
- * Created by Sutrisno on 9/9/2015.
+ * DataHolder is a singleton class that
+ * hold data that will be shared accross different part of the application
+ *
+ * @author      Sutrisno Suryajaya Dwi Putra
  */
 public class DataHolder {
     // Patient currently being created
@@ -46,6 +50,9 @@ public class DataHolder {
     // Care center patient list
     private static ArrayList<Patient> patientList = new ArrayList<>();
 
+    /**
+     * @return current created {@link Patient} in the application
+     */
     public static Patient getCreatedPatient() {
         if (createdPatient == null) {
             createdPatient = new Patient();
@@ -53,10 +60,16 @@ public class DataHolder {
         return createdPatient;
     }
 
+    /**
+     * Reset the created {@link Patient} being hold by the {@link DataHolder}
+     */
     public static void resetCreatedPatient() {
         createdPatient = new Patient();
     }
 
+    /**
+     * @return current viewed {@link Patient} in the application
+     */
     public static Patient getViewedPatient() {
         if (viewedPatient == null) {
             viewedPatient = new Patient();
@@ -64,50 +77,66 @@ public class DataHolder {
         return viewedPatient;
     }
 
+    /*
+     * @param viewedPatient current viewed {@link Patient} in the application
+     */
     public static void setViewedPatient(Patient viewedPatient) {
         DataHolder.viewedPatient = viewedPatient;
     }
 
+    /**
+     * Reset the viewed {@link Patient} being hold by the {@link DataHolder}
+     */
     public static void resetViewedPatient() {
         viewedPatient = new Patient();
     }
 
+    /**
+     * @return notification list of the current logged in user
+     */
     public static ArrayList<NotificationGroup> getNotificationGroupList() {
         return notificationGroupList;
     }
 
+    /**
+     * @param notificationGroupList notification list of the current logged in user
+     */
     public static void setNotificationGroupList(ArrayList<NotificationGroup> notificationGroupList) {
         DataHolder.notificationGroupList = notificationGroupList;
     }
 
+    /**
+     * @return list of {@link DefaultEvent} of the current care centre
+     */
     public static ArrayList<DefaultEvent> getDefaultEventList() {
         return defaultEventList;
     }
 
-    public static void setDefaultEventList(ArrayList<DefaultEvent> defaultEventList) {
-        DataHolder.defaultEventList = defaultEventList;
-    }
-
+    /**
+     * @param createdPatient current created {@link Patient} in the application
+     */
     public static void setCreatedPatient(Patient createdPatient) {
         DataHolder.createdPatient = createdPatient;
     }
 
-    public static ArrayList<Patient> getPatientDraftList() {
-        return patientDraftList;
-    }
-
-    public static void setPatientDraftList(ArrayList<Patient> patientDraftList) {
-        DataHolder.patientDraftList = patientDraftList;
-    }
-
+    /**
+     * @return {@link Patient} draft before it is continued to be edited
+     */
     public static Patient getCreatedPatientEditInitial() {
         return createdPatientEditInitial;
     }
 
+    /**
+     * @param createdPatientEditInitial {@link Patient} draft before it is continued to be edited
+     */
     public static void setCreatedPatientEditInitial(Patient createdPatientEditInitial) {
         DataHolder.createdPatientEditInitial = createdPatientEditInitial;
     }
 
+    /**
+     * @param context context of the application
+     * @return list of {@link Patient} in the care centre
+     */
     public static ArrayList<Patient> getPatientList(Context context) {
         if (patientList.size() == 0) {
             // Initialize mock patient list
@@ -1432,9 +1461,5 @@ public class DataHolder {
             patientList.add(patient20);
         }
         return patientList;
-    }
-
-    public static void setPatientList(ArrayList<Patient> patientList) {
-        DataHolder.patientList = patientList;
     }
 }

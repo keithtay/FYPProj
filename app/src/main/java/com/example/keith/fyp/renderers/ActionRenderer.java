@@ -28,13 +28,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Created by Sutrisno on 21/9/2015.
+ * ActionRenderer is {@link Renderer} to render the action that can be done to a {@link Notification}
+ *
+ * @author      Sutrisno Suryajaya Dwi Putra
  */
 public class ActionRenderer extends Renderer {
 
     private Notification notification;
     private Context context;
 
+    /**
+     * Create a action renderer with the specified values.
+     */
     public ActionRenderer(LayoutInflater inflater) {
         super(inflater);
         this.context = inflater.getContext();
@@ -144,6 +149,9 @@ public class ActionRenderer extends Renderer {
         });
     }
 
+    /**
+     * @param notification notification to be rendered
+     */
     public void setNotification(Notification notification) {
         this.notification = notification;
     }

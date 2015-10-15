@@ -5,8 +5,17 @@ import com.example.keith.fyp.models.AttributeValuePair;
 import java.util.ArrayList;
 
 /**
- * Created by Sutrisno on 24/9/2015.
+ * ObjectToAttributeValueTransformer is an interface
+ * that going to transform an object into a list of {@link AttributeValuePair}
+ *
+ * @author      Sutrisno Suryajaya Dwi Putra
  */
 public interface ObjectToAttributeValueTransformer {
-    public ArrayList<AttributeValuePair> transform();
+
+    /**
+     * A method to transform an object into a list of {@link AttributeValuePair}
+     *
+     * @return object transformation result, i.e. a list of {@link AttributeValuePair}
+     */
+    ArrayList<AttributeValuePair> transform();
 }

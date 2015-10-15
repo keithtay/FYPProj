@@ -38,6 +38,9 @@ import java.util.Collections;
 
 import mehdi.sakout.fancybuttons.FancyButton;
 
+/**
+ * Activity to display the patient schedule
+ */
 public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnDrawerItemClickListener {
 
     private FancyButton viewMoreButton;
@@ -174,6 +177,10 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
         });
     }
 
+    /**
+     * Method to open the edit schedule activity
+     * @param view view being clicked
+     */
     public void openEditScheduleActivity(View view) {
         Intent intent = new Intent(ViewScheduleActivity.this, EditScheduleActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);

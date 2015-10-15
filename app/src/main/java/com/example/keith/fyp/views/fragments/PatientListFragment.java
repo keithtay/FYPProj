@@ -24,6 +24,11 @@ import com.melnykov.fab.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Fragment to display list of patient in care centre
+ *
+ * @author  Sutrisno Suryajaya Dwi Putra
+ */
 public class PatientListFragment extends Fragment {
 
     private View rootView;
@@ -197,8 +202,7 @@ public class PatientListFragment extends Fragment {
         }
     }
 
-    public void openCreatePatientActivity()
-    {
+    private void openCreatePatientActivity() {
         Intent intent = new Intent(getActivity(), CreatePatientActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);

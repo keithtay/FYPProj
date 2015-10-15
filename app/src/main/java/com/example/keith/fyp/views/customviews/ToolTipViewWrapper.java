@@ -4,23 +4,29 @@ import com.nhaarman.supertooltips.ToolTip;
 import com.nhaarman.supertooltips.ToolTipView;
 
 /**
- * Created by Sutrisno on 2/10/2015.
+ * A wrapper for {@link ToolTipView}
+ * @author  Sutrisno Suryajaya Dwi Putra
  */
 public class ToolTipViewWrapper {
     private ToolTipView toolTipView;
 
+    /**
+     * Create a tooltip view wrapper
+     */
     public ToolTipViewWrapper() {
         toolTipView = null;
     }
 
-    public ToolTipViewWrapper(ToolTipView toolTipView) {
-        this.toolTipView = toolTipView;
-    }
-
+    /*
+     * @return tooltip view
+     */
     public ToolTipView getToolTipView() {
         return toolTipView;
     }
 
+    /**
+     * @param toolTipView tooltip view to set
+     */
     public void setToolTipView(ToolTipView toolTipView) {
         this.toolTipView = toolTipView;
     }

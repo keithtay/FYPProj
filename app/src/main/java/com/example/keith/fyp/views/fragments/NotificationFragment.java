@@ -17,6 +17,11 @@ import com.example.keith.fyp.views.activities.NotificationDetailActivity;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.Communicator;
 
+/**
+ * Fragment to display the notification
+ *
+ * @author  Sutrisno Suryajaya Dwi Putra
+ */
 public class NotificationFragment extends Fragment implements Communicator {
 
     private View rootView;

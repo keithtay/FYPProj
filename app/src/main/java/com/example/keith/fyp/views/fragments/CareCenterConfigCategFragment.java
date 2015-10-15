@@ -18,7 +18,11 @@ import com.example.keith.fyp.views.adapters.TextTooltipPairListAdapter;
 
 import java.util.ArrayList;
 
-
+/**
+ * Fragment to display the list of care centre configuration category list
+ *
+ * @author  Sutrisno Suryajaya Dwi Putra
+ */
 public class CareCenterConfigCategFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private View rootView;
@@ -72,6 +76,9 @@ public class CareCenterConfigCategFragment extends Fragment implements AdapterVi
         }
     }
 
+    /**
+     * @param communicator communicator to pass data to the other fragment
+     */
     public void setCommunicator(Communicator communicator) {
         this.communicator = communicator;
     }

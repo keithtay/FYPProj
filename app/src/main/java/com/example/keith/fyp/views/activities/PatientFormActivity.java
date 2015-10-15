@@ -5,7 +5,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 
 /**
- * Created by Sutrisno on 18/9/2015.
+ * Base Activity to display the patient creation form
  */
 public class PatientFormActivity extends AppCompatActivity {
     @Override

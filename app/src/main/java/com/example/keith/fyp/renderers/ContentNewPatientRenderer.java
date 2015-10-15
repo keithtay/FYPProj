@@ -21,12 +21,17 @@ import com.example.keith.fyp.views.activities.ViewPatientActivity;
 import mehdi.sakout.fancybuttons.FancyButton;
 
 /**
- * Created by Sutrisno on 21/9/2015.
+ * ContentNewPatientRenderer is {@link Renderer} to render the content of a {@link com.example.keith.fyp.models.Notification} with type {@link com.example.keith.fyp.models.Notification#TYPE_NEW_PATIENT}
+ *
+ * @author      Sutrisno Suryajaya Dwi Putra
  */
 public class ContentNewPatientRenderer extends ContentRenderer {
 
     private Patient newPatient;
 
+    /**
+     * Create a content new patient renderer with the specified values.
+     */
     public ContentNewPatientRenderer(LayoutInflater inflater, Patient newPatient) {
         super(inflater);
         this.newPatient = newPatient;

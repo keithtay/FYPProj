@@ -9,14 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.broadcastreceiver.CreateNewPatientReceiver;
-import com.example.keith.fyp.broadcastreceiver.NotificationUpdateReceiver;
-import com.example.keith.fyp.interfaces.Communicator;
 import com.example.keith.fyp.interfaces.CreatePatientCommunicator;
 import com.example.keith.fyp.interfaces.OnCreateNewPatientListener;
 import com.example.keith.fyp.models.Patient;
@@ -24,14 +20,16 @@ import com.example.keith.fyp.models.TextTooltipPair;
 import com.example.keith.fyp.utils.CreatedPatientEmptyFieldChecker;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
-import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.views.activities.CreatePatientActivity;
 import com.example.keith.fyp.views.adapters.TextTooltipPairListAdapter;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
+/**
+ * Fragment to display the list of patient's information categories
+ *
+ * @author  Sutrisno Suryajaya Dwi Putra
+ */
 public class PatientInfoCategListFragment extends Fragment implements AdapterView.OnItemClickListener, OnCreateNewPatientListener {
 
     private ListView infoCategListView;
@@ -101,6 +99,9 @@ public class PatientInfoCategListFragment extends Fragment implements AdapterVie
         communicator.respond(position);
     }
 
+    /**
+     * @param communicator communicator to send data to the other fragment
+     */
     public void setCommunicator(CreatePatientCommunicator communicator) {
         this.communicator = communicator;
     }

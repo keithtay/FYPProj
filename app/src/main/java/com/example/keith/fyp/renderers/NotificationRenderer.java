@@ -8,7 +8,9 @@ import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Notification;
 
 /**
- * Created by Sutrisno on 21/9/2015.
+ * NotificationRenderer is {@link Renderer} to render a {@link Notification}
+ *
+ * @author      Sutrisno Suryajaya Dwi Putra
  */
 public class NotificationRenderer extends Renderer {
 
@@ -18,6 +20,9 @@ public class NotificationRenderer extends Renderer {
     private ActionRenderer actionRenderer;
     private Notification notification;
 
+    /**
+     * Create a notification renderer the specified values.
+     */
     public NotificationRenderer(LayoutInflater inflater, BackgroundRenderer backgroundRenderer, HeaderRenderer headerRenderer, ContentRenderer contentRenderer, ActionRenderer actionRenderer, Notification notification) {
         super(inflater);
         this.backgroundRenderer = backgroundRenderer;
@@ -44,37 +49,5 @@ public class NotificationRenderer extends Renderer {
         contentContainer.addView(actionFooter);
 
         return background;
-    }
-
-    public BackgroundRenderer getBackgroundRenderer() {
-        return backgroundRenderer;
-    }
-
-    public void setBackgroundRenderer(BackgroundRenderer backgroundRenderer) {
-        this.backgroundRenderer = backgroundRenderer;
-    }
-
-    public HeaderRenderer getHeaderRenderer() {
-        return headerRenderer;
-    }
-
-    public void setHeaderRenderer(HeaderRenderer headerRenderer) {
-        this.headerRenderer = headerRenderer;
-    }
-
-    public ContentRenderer getContentRenderer() {
-        return contentRenderer;
-    }
-
-    public void setContentRenderer(ContentRenderer contentRenderer) {
-        this.contentRenderer = contentRenderer;
-    }
-
-    public ActionRenderer getActionRenderer() {
-        return actionRenderer;
-    }
-
-    public void setActionRenderer(ActionRenderer actionRenderer) {
-        this.actionRenderer = actionRenderer;
     }
 }

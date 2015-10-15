@@ -9,6 +9,9 @@ import android.widget.EditText;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.utils.Global;
 
+/**
+ * Activity to display the OCR result
+ */
 public class OcrReviewActivity extends AppCompatActivity {
 
     private EditText recognizedTextEditText;

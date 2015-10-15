@@ -2,67 +2,198 @@ package com.example.keith.fyp.utils;
 
 import android.os.Environment;
 
-import com.example.keith.fyp.views.adapters.NotificationListAdapter;
-
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 /**
- * Created by Sutrisno on 12/9/2015.
+ * Global is a singleton class that
+ * hold constant attributes that being used across different
+ * part of the application
+ *
+ * @author      Sutrisno Suryajaya Dwi Putra
  */
 public class Global {
+    /**
+     * String date format
+     */
     public static final String DATE_FORMAT_STR =  "d MMM yyyy";
+    /**
+     * String time format
+     */
     public static final String TIME_FORMAT_STR =  "HH:mm";
+    /**
+     * String date and time format
+     */
     public static final String DATE_TIME_FORMAT_STR = DATE_FORMAT_STR + " " + TIME_FORMAT_STR;
+    /**
+     * Formatter to print date
+     */
     public static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.forPattern(DATE_FORMAT_STR);
+    /**
+     * Formatter to print time
+     */
     public static final DateTimeFormatter TIME_FORMAT = DateTimeFormat.forPattern(TIME_FORMAT_STR);
+    /**
+     * Formatter to print date and time
+     */
     public static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormat.forPattern(DATE_TIME_FORMAT_STR);
 
-    // OCR related
+
+
+
+
+    /**
+     * Data path to retrieve the photo captured for OCR
+     */
     public static final String DATA_PATH = Environment.getExternalStorageDirectory().toString() + "/PearPCC/";
+    /**
+     * Language used in OCR feature
+     */
     public static final String LANG = "eng";
 
-    // Bundle keys / Intent extras
+
+
+
+
+
+    /**
+     * Bundle key for empty field ID list
+     */
     public static final String EXTRA_EMPTY_FIELD_ID_LIST = "EXTRA_EMPTY_FIELD_ID_LIST";
+    /**
+     * Bundle key for selected category
+     */
     public static final String EXTRA_SELECTED_CATEGORY = "EXTRA_SELECTED_CATEGORY";
-    public static final String EXTRA_OPEN_PROBLEM_LOG_TAB = "EXTRA_OPEN_PROBLEM_LOG_TAB";
+    /**
+     * Bundle key for recognized text
+     */
     public static final String EXTRA_RECOGNIZED_TEXT = "EXTRA_RECOGNIZED_TEXT";
+    /**
+     * Bundle key to notify from notification detail activity
+     */
     public static final String EXTRA_FROM_NOTIFICATION_DETAIL_ACTIVITY = "EXTRA_FROM_NOTIFICATION_DETAIL_ACTIVITY";
+    /**
+     * Bundle key for selected navigation ID
+     */
     public static final String EXTRA_SELECTED_NAVIGATION_ID = "EXTRA_SELECTED_NAVIGATION_ID";
+    /**
+     * Bundle key for selected patient draft ID
+     */
     public static final String EXTRA_SELECTED_PATIENT_DRAFT_ID = "EXTRA_SELECTED_PATIENT_DRAFT_ID";
-
+    /**
+     * Bundle key for last displayed fragment ID
+     */
     public static final String STATE_LAST_DISPLAYED_FRAGMENT_ID = "LAST_DISPLAYED_FRAGMENT_ID";
+    /**
+     * Bundle key for selected patient draft ID
+     */
     public static final String STATE_SELECTED_PATIENT_DRAFT_ID = "STATE_SELECTED_PATIENT_DRAFT_ID";
+    /**
+     * Bundle key for selected patient NRIC
+     */
     public static final String STATE_SELECTED_PATIENT_NRIC = "STATE_SELECTED_PATIENT_NRIC";
-    public static final String STATE_SELECTED_PROBLEM_LOG_CATEGORY_FILTER = "STATE_SELECTED_PROBLEM_LOG_CATEGORY_FILTER";
 
-    // Event list for broadcast receiver
+
+
+
+
+
+    /**
+     * Event identifier for {@link com.example.keith.fyp.broadcastreceiver.NotificationUpdateReceiver}
+     */
     public static final String ACTION_NOTIFICATION_UPDATE = "ACTION_NOTIFICATION_UPDATE";
+    /**
+     * Event identifier for {@link com.example.keith.fyp.broadcastreceiver.NotificationGroupUpdateReceiver}
+     */
     public static final String ACTION_NOTIFICATION_GROUP_UPDATE = "ACTION_NOTIFICATION_GROUP_UPDATE";
+    /**
+     * Event identifier for {@link com.example.keith.fyp.broadcastreceiver.CreateNewPatientReceiver}
+     */
     public static final String ACTION_CREATE_NEW_PATIENT = "ACTION_CREATE_NEW_PATIENT";
 
-    // Keys in Shared Preferences
+
+
+
+
+
+    /**
+     * Shared preference key to store patient draft
+     */
     public static final String SP_CREATE_PATIENT_DRAFT = "SP_CREATE_PATIENT_DRAFT";
 
-    // Create new patient fields IDs (for input checking)
+
+
+
+
+
+    /**
+     * Photo field identifier for {@link CreatedPatientEmptyFieldChecker}
+     */
     public static final Integer PHOTO = -1;
+    /**
+     * First name field identifier for {@link CreatedPatientEmptyFieldChecker}
+     */
     public static final Integer FIRST_NAME_FIELD = 0;
+    /**
+     * Last name field identifier for {@link CreatedPatientEmptyFieldChecker}
+     */
     public static final Integer LAST_NAME_FIELD = 1;
+    /**
+     * NRIC field identifier for {@link CreatedPatientEmptyFieldChecker}
+     */
     public static final Integer NRIC_FIELD = 2;
+    /**
+     * Address field identifier for {@link CreatedPatientEmptyFieldChecker}
+     */
     public static final Integer ADDRESS_FIELD = 3;
+    /**
+     * Home number field identifier for {@link CreatedPatientEmptyFieldChecker}
+     */
     public static final Integer HOME_NUMBER_FIELD = 4;
+    /**
+     * Photo number field identifier for {@link CreatedPatientEmptyFieldChecker}
+     */
     public static final Integer PHONE_NUMBER_FIELD = 5;
+    /**
+     * Gender field identifier for {@link CreatedPatientEmptyFieldChecker}
+     */
     public static final Integer GENDER_FIELD = 6;
+    /**
+     * Date of birth field identifier for {@link CreatedPatientEmptyFieldChecker}
+     */
     public static final Integer DOB_FIELD = 7;
+    /**
+     * Guardian name field identifier for {@link CreatedPatientEmptyFieldChecker}
+     */
     public static final Integer GUARDIAN_NAME_FIELD = 8;
+    /**
+     * Guardian contact number field identifier for {@link CreatedPatientEmptyFieldChecker}
+     */
     public static final Integer GUARDIAN_CONTACT_NUMBER_FIELD = 9;
+    /**
+     * Guardian email field identifier for {@link CreatedPatientEmptyFieldChecker}
+     */
     public static final Integer GUARDIAN_EMAIL_FIELD = 10;
+    /**
+     * Has allergy field identifier for {@link CreatedPatientEmptyFieldChecker}
+     */
     public static final Integer HAS_ALLERGY_RADIO_GROUP = 11;
 
-    // Navigation bar item IDs
+
+
+
+
+    /**
+     * Patient list navigation identifier for the navigation bar
+     */
     public static final int NAVIGATION_PATIENT_LIST_ID = 1;
+    /**
+     * Notification navigation identifier for the navigation bar
+     */
     public static final int NAVIGATION_NOTIFICATION_ID = 2;
-    public static final int NAVIGATION_OLD_PATIENT_LIST_ID = 3;
+    /**
+     * Care centre configuration navigation identifier for the navigation bar
+     */
     public static final int NAVIGATION_CARE_CENTER_CONFIG_ID = 4;
 
 }

@@ -8,6 +8,11 @@ import com.example.keith.fyp.views.fragments.TimeRangePickerFragment;
 
 import org.joda.time.DateTime;
 
+/**
+ * A custom field to select a time range (start time and end time
+ * )
+ * @author  Sutrisno Suryajaya Dwi Putra
+ */
 public class TimeRangePicker {
 
     private CharSequence mDialogTitle;

@@ -14,13 +14,19 @@ import com.example.keith.fyp.views.customviews.NotScrollableListView;
 import org.w3c.dom.Attr;
 
 /**
- * Created by Sutrisno on 21/9/2015.
+ * ContentUpdateInfoObjectRenderer is {@link Renderer} to render the content of a {@link com.example.keith.fyp.models.Notification} with type {@link com.example.keith.fyp.models.Notification#TYPE_UPDATE_INFO_OBJECT}.
+ * Info object is a group of patient information that are related to each other (e.g. patient's allergy which consist of name, reaction and notes).
+ *
+ * @author      Sutrisno Suryajaya Dwi Putra
  */
 public class ContentUpdateInfoObjectRenderer extends ContentRenderer {
 
-    ObjectToAttributeValueTransformer oldObject;
-    ObjectToAttributeValueTransformer newObject;
+    private ObjectToAttributeValueTransformer oldObject;
+    private ObjectToAttributeValueTransformer newObject;
 
+    /**
+     * Create a content update info object renderer with the specified values.
+     */
     public ContentUpdateInfoObjectRenderer(LayoutInflater inflater, ObjectToAttributeValueTransformer oldObject, ObjectToAttributeValueTransformer newObject) {
         super(inflater);
         this.oldObject = oldObject;

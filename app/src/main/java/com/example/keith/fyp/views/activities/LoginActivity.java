@@ -14,7 +14,9 @@ import android.widget.LinearLayout;
 
 import com.example.keith.fyp.R;
 
-
+/**
+ * Activity to display the login user interface
+ */
 public class LoginActivity extends ActionBarActivity {
     Button button;
     EditText et1;
@@ -35,7 +37,7 @@ public class LoginActivity extends ActionBarActivity {
         loginButton();
     }
 
-    public void onKeyboardOpenned() {
+    private void onKeyboardOpenned() {
         activityRootView = findViewById(R.id.activityRoot);
         headerContainer = findViewById(R.id.headerContainer);
         appLogo = findViewById(R.id.appLogo);
@@ -69,7 +71,7 @@ public class LoginActivity extends ActionBarActivity {
         });
     }
 
-    public void loginButton() {
+    private void loginButton() {
 
         final Context context = this;
 

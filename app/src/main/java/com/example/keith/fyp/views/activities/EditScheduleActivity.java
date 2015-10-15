@@ -24,6 +24,9 @@ import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.adapters.EventArrayAdapter;
 import com.example.keith.fyp.views.customviews.TimeRangePicker;
+import com.example.keith.fyp.views.fragments.CareCenterConfigFragment;
+import com.example.keith.fyp.views.fragments.NotificationFragment;
+import com.example.keith.fyp.views.fragments.PatientListFragment;
 import com.example.keith.fyp.views.fragments.TimeRangePickerFragment;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.MiniDrawer;
@@ -31,6 +34,9 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.joda.time.DateTime;
 
+/**
+ * Activity to display the edit schedule user interface
+ */
 public class EditScheduleActivity extends ScheduleActivity implements View.OnClickListener, Drawer.OnDrawerItemClickListener {
 
     private ListView eventListView;

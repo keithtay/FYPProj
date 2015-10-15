@@ -1,17 +1,9 @@
 package com.example.keith.fyp.views.fragments;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.keith.fyp.R;
@@ -19,6 +11,11 @@ import com.example.keith.fyp.models.PatientFormSpec;
 
 import java.lang.reflect.InvocationTargetException;
 
+/**
+ * Fragment to display the patient's social history information
+ *
+ * @author  Sutrisno Suryajaya Dwi Putra
+ */
 public class ViewPatientInfoFormSocialHistoryFragment extends ViewPatientInfoFormFragment  {
 
     private LinearLayout rootView;

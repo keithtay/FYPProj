@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Sutrisno on 11/9/2015.
+ * An {@link android.support.v7.widget.RecyclerView.Adapter} to display list of allergy
  */
 public class AllergyListAdapter extends RecyclerView.Adapter<AllergyListAdapter.AllergyListViewHolder> {
 
@@ -33,6 +33,14 @@ public class AllergyListAdapter extends RecyclerView.Adapter<AllergyListAdapter.
     private PatientInfoFormListFragment fragment;
     private Patient patient;
 
+    /**
+     * Create allergy list adapter with the specified values
+     *
+     * @param context context of the application
+     * @param patientInfoFormAllergyFragment fragment of the UI
+     * @param allergyList list of allergy to be displayed
+     * @param patient patient to be edited
+     */
     public AllergyListAdapter(Context context, PatientInfoFormListFragment patientInfoFormAllergyFragment, List<Allergy> allergyList, Patient patient) {
         this.inflater = LayoutInflater.from(context);
         this.allergyList = allergyList;

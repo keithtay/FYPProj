@@ -7,12 +7,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.models.Notification;
 import com.example.keith.fyp.utils.Global;
 
 import org.joda.time.DateTime;
 
 /**
- * Created by Sutrisno on 21/9/2015.
+ * BackgroundRenderer is {@link Renderer} to render the header of a {@link com.example.keith.fyp.models.Notification}
+ *
+ * @author      Sutrisno Suryajaya Dwi Putra
  */
 public class HeaderRenderer extends Renderer {
 
@@ -21,6 +24,9 @@ public class HeaderRenderer extends Renderer {
     private DateTime date;
     private String summary;
 
+    /**
+     * Create a header renderer with the specified values.
+     */
     public HeaderRenderer(LayoutInflater inflater, Bitmap photo, String name, DateTime date, String summary) {
         super(inflater);
         this.photo = photo;

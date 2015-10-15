@@ -42,13 +42,18 @@ import fr.ganfra.materialspinner.MaterialSpinner;
 import javadz.beanutils.PropertyUtils;
 
 /**
- * Created by Sutrisno on 9/9/2015.
+ * Fragment to display the create patient form
+ *
+ * @author  Sutrisno Suryajaya Dwi Putra
  */
 public class CreatePatientInfoFormFragment extends PatientInfoFormFragment {
 
     protected Patient createdPatient;
     protected ArrayList<PatientFormSpec> patientFormSpecs;
 
+    /**
+     * Initialize the fragment
+     */
     public void init() {
         super.init();
 
@@ -72,7 +77,15 @@ public class CreatePatientInfoFormFragment extends PatientInfoFormFragment {
         patientFormSpecs = new ArrayList<>();
     }
 
-    // Fill the form with the previously inserted value and add listener on change value
+    /**
+     * Fill the form with the previously inserted value and add listener on change value
+     *
+     * @param rootView root view of the form
+     * @param patientFormSpecs specification of patient form
+     * @throws IllegalAccessException
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     */
     protected void prepareForm(View rootView, ArrayList<PatientFormSpec> patientFormSpecs) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         for (final PatientFormSpec spec : patientFormSpecs) {
             View view = rootView.findViewById(spec.getViewId());

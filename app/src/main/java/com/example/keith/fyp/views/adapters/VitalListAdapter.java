@@ -30,7 +30,7 @@ import java.util.List;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 /**
- * Created by Sutrisno on 12/9/2015.
+ * An {@link android.support.v7.widget.RecyclerView.Adapter} to display list of vital measurement
  */
 public class VitalListAdapter extends RecyclerView.Adapter<VitalListAdapter.VitalListViewHolder> {
 
@@ -39,6 +39,14 @@ public class VitalListAdapter extends RecyclerView.Adapter<VitalListAdapter.Vita
     private PatientInfoFormListFragment fragment;
     private Patient patient;
 
+    /**
+     * Create vital list adapter with the specified values
+     *
+     * @param context context of the application
+     * @param createPatientInfoFormVitalFragment fragment of the UI
+     * @param vitalList list of vital to be displayed
+     * @param patient patient to be edited
+     */
     public VitalListAdapter(Context context, PatientInfoFormListFragment createPatientInfoFormVitalFragment, List<Vital> vitalList, Patient patient) {
         this.inflater = LayoutInflater.from(context);
         this.vitalList = vitalList;

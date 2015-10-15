@@ -1,5 +1,6 @@
 package com.example.keith.fyp.utils;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -23,9 +24,19 @@ import com.example.keith.fyp.renderers.NotificationRenderer;
 import org.joda.time.DateTime;
 
 /**
- * Created by Sutrisno on 24/9/2015.
+ * NotificationToRendererConverter is a singleton class to
+ * convert a {@link Notification} to its {@link NotificationRenderer}
+ *
+ * @author      Sutrisno Suryajaya Dwi Putra
  */
 public class NotificationToRendererConverter {
+
+    /**
+     * Method to convert a {@link Notification} to its {@link NotificationRenderer}
+     * @param context context of application
+     * @param notification notification to be converted
+     * @return renderer to render the notification
+     */
     public static NotificationRenderer convert(Context context, Notification notification) {
         LayoutInflater inflater = LayoutInflater.from(context);
 
@@ -41,7 +52,7 @@ public class NotificationToRendererConverter {
             case Notification.TYPE_GAME_RECOMMENDATION:
                 contentRenderer = new ContentGameRecommendationRenderer(inflater);
                 break;
-            case Notification.TYPE_NEW_LOG:
+            case Notification.TYPE_NEW_INFO_OBJECT:
                 ProblemLog problemLog = new ProblemLog(UtilsUi.generateUniqueId(), DateTime.now(), "Emotion", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu odio diam. Morbi sit amet erat at libero ullamcorper mollis et at turpis. Nam consequat ex sem, non ultricies risus molestie vel. Aenean placerat bibendum ipsum, eu volutpat sem pharetra sit amet. Proin metus nisi, lacinia id pharetra a, sollicitudin sit amet sapien. Vestibulum vehicula magna sit amet justo convallis tempor");
                 contentRenderer = new ContentNewInfoObjectRenderer(inflater, problemLog);
                 break;

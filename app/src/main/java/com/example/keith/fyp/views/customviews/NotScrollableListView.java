@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Sutrisno on 2/10/2015.
+ * A custom view to make a {@link android.widget.ListView} that is not scrollable
+ *
+ * @author  Sutrisno Suryajaya Dwi Putra
  */
 public class NotScrollableListView extends LinearLayout {
 
@@ -26,26 +29,50 @@ public class NotScrollableListView extends LinearLayout {
 
     private List<View> reusableViews = new ArrayList<>();
 
+    /**
+     * Create a unscrollable list view with the specified values
+     *
+     * @param context context of the application
+     */
     public NotScrollableListView(Context context) {
         super(context);
     }
 
+    /**
+     * Create a unscrollable list view with the specified values
+     *
+     * @param context context of the application
+     * @param attrs attributes of the view
+     */
     public NotScrollableListView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         setAttributes(attrs);
     }
 
+    /**
+     * Create a unscrollable list view with the specified values
+     *
+     * @param context context of the application
+     * @param attrs attributes of the view
+     * @param defStyleAttr style definition attribute
+     */
     public NotScrollableListView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         setAttributes(attrs);
     }
 
+    /**
+     * @return list adapter
+     */
     public ListAdapter getAdapter() {
         return adapter;
     }
 
+    /**
+     * @param adapter list adapter to set
+     */
     public void setAdapter(ListAdapter adapter) {
         if (this.adapter != null && dataChangeObserver != null) {
             this.adapter.unregisterDataSetObserver(dataChangeObserver);

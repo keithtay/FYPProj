@@ -10,7 +10,9 @@ import com.example.keith.fyp.utils.DataHolder;
 import java.util.ArrayList;
 
 /**
- * Created by Sutrisno on 18/9/2015.
+ * Base Fragment to display create patient form
+ *
+ * @author  Sutrisno Suryajaya Dwi Putra
  */
 public class PatientInfoFormFragment extends Fragment {
     protected final String TEXT_VIEW = "TextView";
@@ -32,11 +34,17 @@ public class PatientInfoFormFragment extends Fragment {
     protected Activity activity;
     protected InputMethodManager inputManager;
 
+    /**
+     * Fragment initialization
+     */
     public void init() {
         activity = getActivity();
         inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 
+    /**
+     * Method to hide the soft-keayboard
+     */
     protected void hideKeyboard() {
         inputManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);

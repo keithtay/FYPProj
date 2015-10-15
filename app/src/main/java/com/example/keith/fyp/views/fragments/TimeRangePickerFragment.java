@@ -17,6 +17,11 @@ import com.example.keith.fyp.R;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
+/**
+ * Fragment to display the time range picker dialog
+ *
+ * @author  Sutrisno Suryajaya Dwi Putra
+ */
 public class TimeRangePickerFragment extends DialogFragment {
     public static final String TAG_FRAG_TIME_RANGE = "fragTimeRange";
     private static final String KEY_DIALOG_TITLE = "dialogTitle";

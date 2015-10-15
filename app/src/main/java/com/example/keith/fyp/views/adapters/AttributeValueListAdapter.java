@@ -14,17 +14,28 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by Sutrisno on 24/9/2015.
+ * An {@link BaseAdapter} to display list of attribute name and value pair
  */
 public class AttributeValueListAdapter extends BaseAdapter {
 
     private List<AttributeValuePair> attributeValueList = Collections.emptyList();
     private Context context;
 
+    /**
+     * Create an attribute value list adapter with the specified values
+     *
+     * @param context context of the application
+     */
     public AttributeValueListAdapter(Context context) {
         this.context = context;
     }
 
+    /**
+     * Create an attribute value list adapter with the specified values
+     *
+     * @param context context of the application
+     * @param attributeValueList list of attribute name and value to be displayed
+     */
     public AttributeValueListAdapter(Context context, List<AttributeValuePair> attributeValueList) {
         this.context = context;
         this.attributeValueList = attributeValueList;

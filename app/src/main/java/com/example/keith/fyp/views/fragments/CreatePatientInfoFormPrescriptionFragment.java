@@ -31,7 +31,9 @@ import java.util.ArrayList;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 /**
- * Created by Sutrisno on 12/9/2015.
+ * Fragment to display the prescription form in creating patient
+ *
+ * @author  Sutrisno Suryajaya Dwi Putra
  */
 public class CreatePatientInfoFormPrescriptionFragment extends CreatePatientInfoFormFragment implements PatientInfoFormListFragment {
     private LinearLayout rootView;
@@ -243,6 +245,11 @@ public class CreatePatientInfoFormPrescriptionFragment extends CreatePatientInfo
         }
     }
 
+    /**
+     * Delete an prescription from the list
+     *
+     * @param selectedItemIdx index of prescription to be deleted
+     */
     public void deleteItem(int selectedItemIdx) {
         prescriptionList.remove(selectedItemIdx);
         prescriptionListAdapter.notifyItemRemoved(selectedItemIdx);

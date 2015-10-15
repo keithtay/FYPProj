@@ -33,7 +33,9 @@ import java.util.ArrayList;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 /**
- * Created by Sutrisno on 9/9/2015.
+ * Fragment to display the vital form in creating patient
+ *
+ * @author  Sutrisno Suryajaya Dwi Putra
  */
 public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFragment implements PatientInfoFormListFragment {
     private LinearLayout rootView;
@@ -145,6 +147,11 @@ public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFra
         return rootView;
     }
 
+    /**
+     * Delete an vital from the list
+     *
+     * @param selectedItemIdx index of vital to be deleted
+     */
     public void deleteItem(int selectedItemIdx) {
         vitalList.remove(selectedItemIdx);
         vitalListAdapter.notifyItemRemoved(selectedItemIdx);

@@ -29,26 +29,31 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Created by Sutrisno on 16/9/2015.
+ * An {@link BaseAdapter} to display list of event
  */
 public class EventArrayAdapter extends BaseAdapter {
 
     private List<Event> eventList = Collections.emptyList();
     private EditScheduleActivity activity;
 
+    /**
+     * Create an event array adapter with the specified values
+     *
+     * @param activity activity of the UI
+     */
     public EventArrayAdapter(EditScheduleActivity activity) {
         this.activity = activity;
     }
 
+    /**
+     * Create an event array adapter with the specified values
+     *
+     * @param activity activity of the UI
+     * @param eventList list of event to be displayed
+     */
     public EventArrayAdapter(EditScheduleActivity activity, List<Event> eventList) {
         this.activity = activity;
         this.eventList = eventList;
-    }
-
-    public void updateEventList(List<Event> eventList) {
-        UtilsThread.checkOnMainThread();
-        this.eventList = eventList;
-        notifyDataSetChanged();
     }
 
     @Override
@@ -189,6 +194,9 @@ public class EventArrayAdapter extends BaseAdapter {
         super.notifyDataSetChanged();
     }
 
+    /**
+     * Method to sort the displayed event list from the latest to oldest
+     */
     public void sortEventList() {
         Collections.sort(eventList, new Comparator<Event>() {
             @Override

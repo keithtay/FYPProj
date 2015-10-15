@@ -27,7 +27,9 @@ import org.joda.time.DateTime;
 import java.util.ArrayList;
 
 /**
- * Created by Sutrisno on 20/9/2015.
+ * Fragment to display the patient's routine information
+ *
+ * @author  Sutrisno Suryajaya Dwi Putra
  */
 public class ViewPatientInfoFormRoutineFragment extends ViewPatientInfoFormFragment implements PatientInfoFormListFragment {
     private LinearLayout rootView;
@@ -213,6 +215,11 @@ public class ViewPatientInfoFormRoutineFragment extends ViewPatientInfoFormFragm
         }
     }
 
+    /**
+     * Delete an routine from the list
+     *
+     * @param selectedItemIdx index of routine to be deleted
+     */
     public void deleteItem(int selectedItemIdx) {
         routineList.remove(selectedItemIdx);
         routineListAdapter.notifyItemRemoved(selectedItemIdx);

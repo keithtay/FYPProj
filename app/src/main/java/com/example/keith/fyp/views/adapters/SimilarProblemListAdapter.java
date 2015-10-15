@@ -16,17 +16,28 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by Sutrisno on 8/10/2015.
+ * An {@link BaseAdapter} to display list of similar problem log
  */
 public class SimilarProblemListAdapter extends BaseAdapter {
 
     private List<ProblemLog> similarProblemList = Collections.emptyList();
     private Context context;
 
+    /**
+     * Create an similar problem list adapter with the specified values
+     *
+     * @param context context of the application
+     */
     public SimilarProblemListAdapter(Context context) {
         this.context = context;
     }
 
+    /**
+     * Create an similar problem list adapter with the specified values
+     *
+     * @param context context of the application
+     * @param similarProblemList list of similar problem log to be displayed
+     */
     public SimilarProblemListAdapter(Context context, List<ProblemLog> similarProblemList) {
         this.context = context;
         this.similarProblemList = similarProblemList;

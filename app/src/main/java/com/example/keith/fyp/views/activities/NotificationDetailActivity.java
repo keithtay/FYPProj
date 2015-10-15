@@ -30,6 +30,9 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
 
+/**
+ * Activity to display the notification detail
+ */
 public class NotificationDetailActivity extends AppCompatActivity implements OnNotificationGroupUpdateListener, Drawer.OnDrawerItemClickListener {
 
     private Drawer navDrawer;

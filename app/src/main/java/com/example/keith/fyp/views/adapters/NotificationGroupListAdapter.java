@@ -17,18 +17,29 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by Sutrisno on 21/9/2015.
+ * An {@link BaseAdapter} to display notification group list with the same affected patient
  */
-public class NotificationListAdapter extends BaseAdapter {
+public class NotificationGroupListAdapter extends BaseAdapter {
 
     private List<NotificationGroup> notificationGroupList = Collections.emptyList();
     private Context context;
 
-    public NotificationListAdapter(Context context) {
+    /**
+     * Create an notification group list adapter with the specified values
+     *
+     * @param context context of the application
+     */
+    public NotificationGroupListAdapter(Context context) {
         this.context = context;
     }
 
-    public NotificationListAdapter(Context context, List<NotificationGroup> notificationGroupList) {
+    /**
+     * Create an notification group list adapter with the specified values
+     *
+     * @param context context of the application
+     * @param notificationGroupList list of notification group to be displayed
+     */
+    public NotificationGroupListAdapter(Context context, List<NotificationGroup> notificationGroupList) {
         this.context = context;
         this.notificationGroupList = notificationGroupList;
     }

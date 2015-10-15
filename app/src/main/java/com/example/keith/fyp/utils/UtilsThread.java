@@ -4,9 +4,16 @@ import android.os.Looper;
 import android.support.v7.appcompat.BuildConfig;
 
 /**
- * Created by Sutrisno on 17/9/2015.
+ * UtilsThread is a singleton class to
+ * handle various operations about Android thread
+ *
+ * @author      Sutrisno Suryajaya Dwi Putra
  */
 public class UtilsThread {
+
+    /**
+     * Method to ensure that current the method is run on the main thread
+     */
     public static void checkOnMainThread() {
         if (BuildConfig.DEBUG) {
             if (Thread.currentThread() != Looper.getMainLooper().getThread()) {

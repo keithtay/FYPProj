@@ -32,7 +32,7 @@ import java.util.List;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 /**
- * Created by Sutrisno on 26/9/2015.
+ * An {@link android.support.v7.widget.RecyclerView.Adapter} to display list of default event
  */
 public class DefaultEventListAdapter extends RecyclerView.Adapter<DefaultEventListAdapter.DefaultEventListViewHolder> {
 
@@ -40,6 +40,13 @@ public class DefaultEventListAdapter extends RecyclerView.Adapter<DefaultEventLi
     private List<DefaultEvent> defaultEventList;
     private CareCenterConfigDefaultEventFragment fragment;
 
+    /**
+     * Create allergy list adapter with the specified values
+     *
+     * @param context context of the application
+     * @param fragment fragment of the UI
+     * @param defaultEventList list of default event to be displayed
+     */
     public DefaultEventListAdapter(Context context, CareCenterConfigDefaultEventFragment fragment, List<DefaultEvent> defaultEventList) {
         this.inflater = LayoutInflater.from(context);
         this.defaultEventList = defaultEventList;

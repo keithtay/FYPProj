@@ -31,6 +31,11 @@ import java.util.ArrayList;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 
+/**
+ * Fragment to display the personal information form in creating patient
+ *
+ * @author  Sutrisno Suryajaya Dwi Putra
+ */
 public class CreatePatientInfoFormPersonalInfoFragment extends CreatePatientInfoFormFragment {
 
     private LinearLayout rootView;

@@ -31,7 +31,7 @@ import java.util.List;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 /**
- * Created by Sutrisno on 20/9/2015.
+ * An {@link android.support.v7.widget.RecyclerView.Adapter} to display list of problem log
  */
 public class ProblemLogListAdapter extends RecyclerView.Adapter<ProblemLogListAdapter.ProblemLogListViewHolder> implements Filterable {
 
@@ -41,6 +41,14 @@ public class ProblemLogListAdapter extends RecyclerView.Adapter<ProblemLogListAd
     private Patient patient;
     private Context context;
 
+    /**
+     * Create problem log list adapter with the specified values
+     *
+     * @param context context of the application
+     * @param fragment fragment of the UI
+     * @param problemLogList list of problem log to be displayed
+     * @param patient patient to be edited
+     */
     public ProblemLogListAdapter(Context context, PatientInfoFormListFragment fragment, List<ProblemLog> problemLogList, Patient patient) {
         this.inflater = LayoutInflater.from(context);
         this.problemLogList = problemLogList;

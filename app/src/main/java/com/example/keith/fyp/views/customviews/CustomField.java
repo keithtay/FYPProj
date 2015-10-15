@@ -23,7 +23,9 @@ import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
 
 /**
- * Created by Sutrisno on 19/9/2015.
+ * A custom view to create and editable and expandable input field
+ *
+ * @author      Sutrisno Suryajaya Dwi Putra
  */
 public class CustomField extends LinearLayout {
     private static String TAG = "CustomField";
@@ -62,26 +64,55 @@ public class CustomField extends LinearLayout {
 
     private String oldValue;
 
+    /**
+     * Create a custom field with the specified value
+     *
+     * @param context context of the application
+     */
     public CustomField(Context context) {
         super(context);
         initializeViews(context);
     }
 
+    /**
+     * Create a custom field with the specified value
+     *
+     * @param context context of the application
+     * @param attrs attributes of the view
+     */
     public CustomField(Context context, AttributeSet attrs) {
         super(context, attrs);
         initializeViews(context, attrs);
     }
 
+    /**
+     * Create a custom field with the specified value
+     *
+     * @param context context of the application
+     * @param attrs attributes of the view
+     * @param  defStyleAttr style attribute
+     */
     public CustomField(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initializeViews(context, attrs);
     }
 
+    /**
+     * Initialize the view by inflating the layout
+     *
+     * @param context context of the application
+     */
     protected void initializeViews(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.view_custom_field, this);
     }
 
+    /**
+     * Initialize the view by inflating the layout and read the attributes
+     *
+     * @param context context of the application
+     * @param attrs attributes of the view
+     */
     protected void initializeViews(Context context, AttributeSet attrs) {
         initializeViews(context);
 
@@ -180,6 +211,11 @@ public class CustomField extends LinearLayout {
         }
     }
 
+    /**
+     * Check whether the value is required.
+     * If yes, it must not be empty to be able to save.
+     * If no, save the value
+     */
     protected void checkAndSaveValue() {
         if (isRequired) {
             if (UtilsString.isEmpty(getText())) {
@@ -201,11 +237,19 @@ public class CustomField extends LinearLayout {
         }
     }
 
+    /**
+     * Enable to input field to be editable
+     *
+     * @param enable enable or disable
+     */
     protected void enableEditTextField(boolean enable) {
         fieldValueEditText.setFocusable(enable);
         fieldValueEditText.setFocusableInTouchMode(enable);
     }
 
+    /**
+     * Collapse the view from edit mode
+     */
     public void collapse() {
         fieldValueEditText.setBackgroundResource(R.color.transparent);
 
@@ -224,6 +268,9 @@ public class CustomField extends LinearLayout {
         fieldValueEditText.setError(null);
     }
 
+    /**
+     * Expand the view to be editable
+     */
     public void expand() {
         fieldValueEditText.setBackgroundResource(R.drawable.bottom_border);
 
@@ -295,14 +342,9 @@ public class CustomField extends LinearLayout {
         this.fieldTitleTextView.getLayoutParams().width = width;
     }
 
-    public int getFieldTitleWidth() {
-        return this.fieldTitleTextView.getLayoutParams().width;
-    }
-
-    public boolean isExpanded() {
-        return isExpanded;
-    }
-
+    /**
+     * Save the edited value
+     */
     protected void saveValue() {
         String newValue = fieldValueEditText.getText().toString();
         oldValue = newValue;
@@ -316,27 +358,52 @@ public class CustomField extends LinearLayout {
         }
     }
 
+    /**
+     * Set text displayed in the input field
+     *
+     * @param text text to be displayed
+     */
     public void setText(String text) {
         this.fieldValueEditText.setText(text);
         oldValue = text;
     }
 
+    /**
+     * @return current text in the input field
+     */
     public String getText() {
         return this.fieldValueEditText.getText().toString();
     }
 
+    /**
+     * Set text displayed in the input field
+     *
+     * @param text text to be displayed
+     */
     public void changeDisplayedText(String text) {
         this.fieldValueEditText.setText(text);
     }
 
+    /**
+     * OnCustomFieldSaveListener is an interface
+     * that provide a listener when the custom field is saved
+     */
     public interface OnCustomFieldSaveListener {
-        public void onCustomFieldSave(String newValue);
+        void onCustomFieldSave(String newValue);
     }
 
+    /**
+     * @param onCustomFieldSaveListener listener when the custom field is saved
+     */
     public void setOnCustomFieldSaveListener(OnCustomFieldSaveListener onCustomFieldSaveListener) {
         this.onCustomFieldSaveListener = onCustomFieldSaveListener;
     }
 
+    /**
+     * Set an error message to the input field
+     *
+     * @param errorMsg error message to be displayed
+     */
     public void setError(String errorMsg) {
         fieldValueEditText.setError(errorMsg);
     }

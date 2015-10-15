@@ -7,8 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,25 +16,21 @@ import android.view.inputmethod.InputMethodManager;
 import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.CreatePatientCommunicator;
-import com.example.keith.fyp.models.Allergy;
 import com.example.keith.fyp.models.Patient;
-import com.example.keith.fyp.models.Prescription;
-import com.example.keith.fyp.models.Routine;
-import com.example.keith.fyp.models.SocialHistory;
-import com.example.keith.fyp.models.Vital;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsUi;
-import com.example.keith.fyp.utils.ViewPatientFormFragmentDecoder;
+import com.example.keith.fyp.utils.ViewPatientFormFragmentEncoder;
 import com.example.keith.fyp.views.fragments.PatientInfoCategListFragment;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.MiniDrawer;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-import org.joda.time.DateTime;
-
 import java.util.ArrayList;
 
+/**
+ * Activity to display the patient information
+ */
 public class ViewPatientActivity extends AppCompatActivity  implements CreatePatientCommunicator, Drawer.OnDrawerItemClickListener {
 
     private PatientInfoCategListFragment infoCategListFragment;
@@ -96,7 +90,7 @@ public class ViewPatientActivity extends AppCompatActivity  implements CreatePat
             }
 
             // Change fragment
-            Fragment fragmentToBeDisplayed = ViewPatientFormFragmentDecoder.getFragment(index);
+            Fragment fragmentToBeDisplayed = ViewPatientFormFragmentEncoder.getFragment(index);
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.view_patient_info_form_fragment_container, fragmentToBeDisplayed);
             transaction.addToBackStack(null);

@@ -1,10 +1,13 @@
 package com.example.keith.fyp.utils;
 
+import com.example.keith.fyp.views.fragments.CreatePatientInfoFormFragment;
 import com.mikepenz.crossfader.Crossfader;
 import com.mikepenz.materialdrawer.interfaces.ICrossfader;
 
 /**
- * Created by Sutrisno on 3/9/2015.
+ * A wrapper class to be able to use mini drawer from <a href="https://github.com/mikepenz/MaterialDrawer">Material Drawer</a> library.
+ *
+ * @author      Sutrisno Suryajaya Dwi Putra
  */
 public class CrossfadeWrapper implements ICrossfader {
     private Crossfader mCrossfader;

@@ -8,7 +8,9 @@ import android.widget.TextView;
 import com.example.keith.fyp.R;
 
 /**
- * Created by Sutrisno on 21/9/2015.
+ * ContentUpdateInfoFieldRenderer is {@link Renderer} to render the content of a {@link com.example.keith.fyp.models.Notification} with type {@link com.example.keith.fyp.models.Notification#TYPE_UPDATE_INFO_FIELD}
+ *
+ * @author      Sutrisno Suryajaya Dwi Putra
  */
 public class ContentUpdateInfoFieldRenderer extends ContentRenderer {
 
@@ -17,6 +19,9 @@ public class ContentUpdateInfoFieldRenderer extends ContentRenderer {
     private String oldValue;
     private String newValue;
 
+    /**
+     * Create a content update info field renderer with the specified values.
+     */
     public ContentUpdateInfoFieldRenderer(LayoutInflater inflater, String fieldCategory, String fieldName, String oldValue, String newValue) {
         super(inflater);
         this.fieldCategory = fieldCategory;

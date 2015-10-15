@@ -32,7 +32,11 @@ import java.util.ArrayList;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 
-
+/**
+ * Fragment to display the care centre default event configuration
+ *
+ * @author  Sutrisno Suryajaya Dwi Putra
+ */
 public class CareCenterConfigDefaultEventFragment extends Fragment {
 
     private View rootView;
@@ -200,6 +204,11 @@ public class CareCenterConfigDefaultEventFragment extends Fragment {
                 InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
+    /**
+     * Delete a default event from the list
+     *
+     * @param selectedItemIdx index of event to be deleted
+     */
     public void deleteItem(int selectedItemIdx) {
         defaultEventList.remove(selectedItemIdx);
         defaultEventListAdapter.notifyItemRemoved(selectedItemIdx);
@@ -220,7 +229,7 @@ public class CareCenterConfigDefaultEventFragment extends Fragment {
         }
     }
 
-    public ArrayList<DefaultEvent> getDefaultEventList() {
+    private ArrayList<DefaultEvent> getDefaultEventList() {
         ArrayList<DefaultEvent> defaultEventList = DataHolder.getDefaultEventList();
 
         if (defaultEventList == null) {

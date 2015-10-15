@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Sutrisno on 4/9/2015.
+ * An {@link android.support.v7.widget.RecyclerView.Adapter} to display list of patient
  */
 public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.PatientListViewHolder> implements Filterable {
 
@@ -32,6 +32,12 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
     private List<Patient> filteredPatientList;
     private Context context;
 
+    /**
+     * Create patient list adapter with the specified values
+     *
+     * @param context context of the application
+     * @param patientList list of patient to be displayed
+     */
     public PatientListAdapter(Context context, List<Patient> patientList) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);

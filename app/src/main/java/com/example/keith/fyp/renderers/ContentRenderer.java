@@ -6,11 +6,19 @@ import android.view.View;
 import com.example.keith.fyp.models.Notification;
 
 /**
- * Created by Sutrisno on 21/9/2015.
+ * ContentRenderer is {@link Renderer} to render the content of a {@link com.example.keith.fyp.models.Notification}
+ *
+ * @author      Sutrisno Suryajaya Dwi Putra
  */
 public class ContentRenderer extends Renderer {
+    /**
+     * Notification object to be rendered
+     */
     protected Notification notification;
 
+    /**
+     * Create a content renderer with the specified values.
+     */
     public ContentRenderer(LayoutInflater inflater) {
         super(inflater);
     }
@@ -20,6 +28,9 @@ public class ContentRenderer extends Renderer {
         return null;
     }
 
+    /**
+     * @param notification notification to be rendered
+     */
     public void setNotification(Notification notification) {
         this.notification = notification;
     }
