@@ -8,7 +8,7 @@ import org.joda.time.DateTime;
  * UtilsString is a singleton class to
  * handle various operations to {@link String}
  *
- * @author      Sutrisno Suryajaya Dwi Putra
+ * @author Sutrisno Suryajaya Dwi Putra
  */
 public class UtilsString {
     /**
@@ -20,7 +20,7 @@ public class UtilsString {
     public static boolean isEmpty(String str) {
         boolean isEmpty = true;
 
-        if(str != null && !str.isEmpty()) {
+        if (str != null && !str.isEmpty()) {
             isEmpty = false;
         }
 
@@ -69,5 +69,64 @@ public class UtilsString {
      */
     public static boolean isEqual(Bitmap bitmap1, Bitmap bitmap2) {
         return (bitmap1 == null ? bitmap2 == null : bitmap1.equals(bitmap2));
+    }
+
+    /**
+     * Calculates the similarity (a number within 0 and 1) between two strings.
+     *
+     * @param s1 first string
+     * @param s2 second string
+     * @return similarity between 0 and 1 (1 is exact same)
+     */
+    public static double similarity(String s1, String s2, boolean isCaseSensitive) {
+        String longer = s1, shorter = s2;
+        if(!isCaseSensitive) {
+            s1 = s1.toLowerCase();
+            s2 = s2.toLowerCase();
+        }
+        if (s1.length() < s2.length()) { // longer should always have greater length
+            longer = s2;
+            shorter = s1;
+        }
+        int longerLength = longer.length();
+        if (longerLength == 0) {
+            return 1.0; /* both strings are zero length */
+        }
+
+        return (longerLength - editDistance(longer, shorter)) / (double) longerLength;
+    }
+
+    /**
+     * Implementation of the Levenshtein Edit Distance
+     *
+     * @param s1 first string
+     * @param s2 second string
+     * @return Levenshtein edit distance between {@code s1} and {@code s2}
+     */
+    private static int editDistance(String s1, String s2) {
+        s1 = s1.toLowerCase();
+        s2 = s2.toLowerCase();
+
+        int[] costs = new int[s2.length() + 1];
+        for (int i = 0; i <= s1.length(); i++) {
+            int lastValue = i;
+            for (int j = 0; j <= s2.length(); j++) {
+                if (i == 0)
+                    costs[j] = j;
+                else {
+                    if (j > 0) {
+                        int newValue = costs[j - 1];
+                        if (s1.charAt(i - 1) != s2.charAt(j - 1))
+                            newValue = Math.min(Math.min(newValue, lastValue),
+                                    costs[j]) + 1;
+                        costs[j - 1] = lastValue;
+                        lastValue = newValue;
+                    }
+                }
+            }
+            if (i > 0)
+                costs[s2.length()] = lastValue;
+        }
+        return costs[s2.length()];
     }
 }

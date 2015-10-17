@@ -10,7 +10,15 @@ import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +30,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
@@ -36,7 +45,10 @@ import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.fragments.PatientInfoCategListFragment;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.googlecode.leptonica.android.Pix;
+import com.googlecode.leptonica.android.Pixa;
 import com.googlecode.leptonica.android.ReadFile;
+import com.googlecode.tesseract.android.ResultIterator;
 import com.googlecode.tesseract.android.TessBaseAPI;
 import com.melnykov.fab.FloatingActionButton;
 import com.mikepenz.materialdrawer.Drawer;
@@ -44,6 +56,18 @@ import com.mikepenz.materialdrawer.MiniDrawer;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.joda.time.DateTime;
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
+import org.opencv.core.Core;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfFloat;
+import org.opencv.core.MatOfInt;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -52,6 +76,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -59,6 +84,7 @@ import java.util.HashMap;
  */
 public class CreatePatientActivity extends AppCompatActivity implements CreatePatientCommunicator, Drawer.OnDrawerItemClickListener {
 
+    public static final TessBaseAPI BASE_API = new TessBaseAPI();
     private PatientInfoCategListFragment infoCategListFragment;
     private Fragment fragmentDisplayed;
 
@@ -73,6 +99,9 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
     private String selectedPatientDraftId;
 
     private SharedPreferences mPrefs;
+
+    private static final int ACTION_CAPTURE_PICTURE = 1;
+    private static final int ACTION_CROP_PICTURE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +147,10 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
                     checkRequiredFields();
                 }
             });
+        }
+
+        if (!OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mOpenCVCallBack)) {
+            Log.e(TAG, "Cannot connect to OpenCV Manager");
         }
     }
 
@@ -209,17 +242,6 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.i(TAG, "resultCode: " + resultCode);
-
-        if (resultCode == -1) {
-            onPhotoTaken();
-        } else {
-            Log.v(TAG, "User cancelled");
-        }
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         overridePendingTransition(0, 0);
@@ -228,22 +250,6 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
             editor.putString(Global.STATE_SELECTED_PATIENT_DRAFT_ID, selectedPatientDraftId);
             editor.commit();
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            case R.id.action_ocr:
-                prepareOcrEnvirontment();
-                startCaptureImageOcrActivity();
-        }
-        return true;
     }
 
     @Override
@@ -322,7 +328,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
             mapKey = now.toString(Global.DATE_TIME_FORMAT);
 
             String firstName = createdPatient.getFirstName();
-            if(!UtilsString.isEmpty(firstName)) {
+            if (!UtilsString.isEmpty(firstName)) {
                 mapKey += " | " + firstName;
             }
         }
@@ -344,11 +350,144 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         startActivity(intent);
     }
 
+    /**
+     * ======================================================
+     * <p/>
+     * OCR Features
+     * <p/>
+     * =======================================================
+     */
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            case R.id.action_ocr:
+                prepareOcrEnvirontment();
+                startCaptureImageOcrActivity();
+        }
+        return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+
+        switch (requestCode) {
+            case ACTION_CAPTURE_PICTURE:
+                Intent cropIntent = new Intent("com.android.camera.action.CROP");
+
+                cropIntent.setDataAndType(outputFileUri, "image/*");
+                cropIntent.putExtra("crop", "true");
+                cropIntent.putExtra("scale", true);
+                cropIntent.putExtra("return-data", true);
+                cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+                startActivityForResult(cropIntent, ACTION_CROP_PICTURE);
+
+                break;
+            case ACTION_CROP_PICTURE:
+                if (checkIfNric()) {
+                    onPhotoTaken();
+                } else {
+                    showNoNricDetectedToast();
+                }
+                break;
+        }
+    }
+
+    private void showNoNricDetectedToast() {
+        Toast.makeText(this, "The captured image is not NRIC", Toast.LENGTH_LONG).show();
+    }
+
+    // To be able to use openCV library
+    private BaseLoaderCallback mOpenCVCallBack = new BaseLoaderCallback(this) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS:
+                    Log.i(TAG, "OpenCV Manager Connected");
+                    break;
+                case LoaderCallbackInterface.INIT_FAILED:
+                    Log.i(TAG, "Init Failed");
+                    break;
+                case LoaderCallbackInterface.INSTALL_CANCELED:
+                    Log.i(TAG, "Install Cancelled");
+                    break;
+                case LoaderCallbackInterface.INCOMPATIBLE_MANAGER_VERSION:
+                    Log.i(TAG, "Incompatible Version");
+                    break;
+                case LoaderCallbackInterface.MARKET_ERROR:
+                    Log.i(TAG, "Market Error");
+                    break;
+                default:
+                    Log.i(TAG, "OpenCV Manager Install");
+                    super.onManagerConnected(status);
+                    break;
+            }
+        }
+    };
+
+    private boolean checkIfNric() {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 4;
+
+        Bitmap photoTaken = BitmapFactory.decodeFile(path, options);
+        Bitmap nricTemplate = BitmapFactory.decodeResource(getResources(), R.drawable.nric_template);
+
+        photoTaken = Bitmap.createScaledBitmap(photoTaken, 100, 100, true);
+        nricTemplate = Bitmap.createScaledBitmap(nricTemplate, 100, 100, true);
+
+        Mat img1 = new Mat();
+        Utils.bitmapToMat(photoTaken, img1);
+        Mat img2 = new Mat();
+        Utils.bitmapToMat(nricTemplate, img2);
+
+        Imgproc.cvtColor(img1, img1, Imgproc.COLOR_RGBA2GRAY);
+        Imgproc.cvtColor(img2, img2, Imgproc.COLOR_RGBA2GRAY);
+        img1.convertTo(img1, CvType.CV_32F);
+        img2.convertTo(img2, CvType.CV_32F);
+
+        Mat hist1 = new Mat();
+        Mat hist2 = new Mat();
+        MatOfInt histSize = new MatOfInt(180);
+        MatOfInt channels = new MatOfInt(0);
+        ArrayList<Mat> bgr_planes1 = new ArrayList<Mat>();
+        ArrayList<Mat> bgr_planes2 = new ArrayList<Mat>();
+        Core.split(img1, bgr_planes1);
+        Core.split(img2, bgr_planes2);
+        MatOfFloat histRanges = new MatOfFloat(0f, 180f);
+        boolean accumulate = false;
+        Imgproc.calcHist(bgr_planes1, channels, new Mat(), hist1, histSize, histRanges, accumulate);
+        Core.normalize(hist1, hist1, 0, hist1.rows(), Core.NORM_MINMAX, -1, new Mat());
+        Imgproc.calcHist(bgr_planes2, channels, new Mat(), hist2, histSize, histRanges, accumulate);
+        Core.normalize(hist2, hist2, 0, hist2.rows(), Core.NORM_MINMAX, -1, new Mat());
+        img1.convertTo(img1, CvType.CV_32F);
+        img2.convertTo(img2, CvType.CV_32F);
+        hist1.convertTo(hist1, CvType.CV_32F);
+        hist2.convertTo(hist2, CvType.CV_32F);
+
+        double compare = Imgproc.compareHist(hist1, hist2, Imgproc.CV_COMP_CHISQR);
+        Log.i(TAG, "compare: " + compare);
+
+        if (compare < 10000) {
+            return true;
+        }
+
+        return false;
+    }
+
     private void prepareOcrEnvirontment() {
         String lang = Global.LANG;
         String DATA_PATH = Global.DATA_PATH;
 
-        String[] paths = new String[] { DATA_PATH, DATA_PATH + "tessdata/" };
+        String[] paths = new String[]{DATA_PATH, DATA_PATH + "tessdata/"};
 
         for (String path : paths) {
             File dir = new File(path);
@@ -394,16 +533,19 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         }
     }
 
-    private String path = Global.DATA_PATH + "ocr.jpg";;
+    private String path = Global.DATA_PATH + "ocr.jpg";
+    private String path_thres = Global.DATA_PATH + "ocr_thresholding.jpg";
+    private String path_patch = Global.DATA_PATH + "ocr_patching.jpg";
+    private Uri outputFileUri;
 
     private void startCaptureImageOcrActivity() {
         File file = new File(path);
-        Uri outputFileUri = Uri.fromFile(file);
+        outputFileUri = Uri.fromFile(file);
 
         final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
 
-        startActivityForResult(intent, 0);
+        startActivityForResult(intent, ACTION_CAPTURE_PICTURE);
     }
 
     private void onPhotoTaken() {
@@ -412,54 +554,20 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
 
         Bitmap bitmap = BitmapFactory.decodeFile(path, options);
 
+        // Thresholding (Binarization)
+        performAdaptiveThreshold(bitmap);
+
+        // Set unimportant area to be white (Patching)
+        bitmap = bitmap.copy(bitmap.getConfig(), true);
+        bitmap.setHasAlpha(true);
+        patchUnimportantArea(bitmap);
+
+        // Rotate bitmap
         try {
-            ExifInterface exif = new ExifInterface(path);
-            int exifOrientation = exif.getAttributeInt(
-                    ExifInterface.TAG_ORIENTATION,
-                    ExifInterface.ORIENTATION_NORMAL);
-
-            Log.v(TAG, "Orient: " + exifOrientation);
-
-            int rotate = 0;
-
-            switch (exifOrientation) {
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    rotate = 90;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    rotate = 180;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    rotate = 270;
-                    break;
-            }
-
-            Log.v(TAG, "Rotation: " + rotate);
-
-            if (rotate != 0) {
-
-                // Getting width & height of the given image.
-                int w = bitmap.getWidth();
-                int h = bitmap.getHeight();
-
-                // Setting pre rotate
-                Matrix mtx = new Matrix();
-                mtx.preRotate(rotate);
-
-                // Rotating Bitmap
-                bitmap = Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, false);
-            }
-
-            // Convert to ARGB_8888, required by tess
-            bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-
+            bitmap = autoRotateBitmap(bitmap);
         } catch (IOException e) {
-            Log.e(TAG, "Couldn't correct orientation: " + e.toString());
+            e.printStackTrace();
         }
-
-        // _image.setImageBitmap( bitmap );
-
-        Log.v(TAG, "Before baseApi");
 
         TessBaseAPI baseApi = new TessBaseAPI();
         baseApi.setDebug(true);
@@ -467,22 +575,116 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         baseApi.setImage(ReadFile.readBitmap(bitmap));
 
         String recognizedText = baseApi.getUTF8Text();
-
+        int meanConfidence = baseApi.meanConfidence();
+        ResultIterator resultIterator = baseApi.getResultIterator();
+        ArrayList<String> result = new ArrayList<>();
+        int level = TessBaseAPI.PageIteratorLevel.RIL_TEXTLINE;
+        do {
+            String line = resultIterator.getUTF8Text(level);
+            if (!UtilsString.isEmpty(line)) {
+                line = line.replaceAll("[^a-zA-Z0-9-]+", " ");
+                result.add(line);
+                Log.i(TAG, line);
+            }
+        } while (resultIterator.next(level));
         baseApi.end();
 
-        // You now have the text in recognizedText var, you can do anything with it.
-        // We will display a stripped out trimmed alpha-numeric version of it (if lang is eng)
-        // so that garbage doesn't make it to the display.
+        Log.i(TAG, "Mean Confidence: " + meanConfidence);
 
-        Log.v(TAG, "OCRED TEXT: " + recognizedText);
-
-
-        recognizedText = recognizedText.trim();
-
-        if ( recognizedText.length() != 0 ) {
-            Intent intent = new Intent(this, OcrReviewActivity.class);
-            intent.putExtra(Global.EXTRA_RECOGNIZED_TEXT, recognizedText);
-            startActivity(intent);
+        if (result.size() > 0) {
+            float similarityThreshold = (float) 0.8;
+            if(UtilsString.similarity(result.get(0), "Republic of Singapore", false) < similarityThreshold) {
+                showNoNricDetectedToast();
+            } else {
+                result.remove(0);
+                Intent intent = new Intent(this, OcrReviewActivity.class);
+                intent.putExtra(Global.EXTRA_RECOGNIZED_TEXT, result);
+                startActivity(intent);
+            }
         }
+    }
+
+    private Bitmap autoRotateBitmap(Bitmap bitmap) throws IOException {
+        ExifInterface exif = new ExifInterface(path);
+        int exifOrientation = exif.getAttributeInt(
+                ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_NORMAL);
+
+        Log.v(TAG, "Orient: " + exifOrientation);
+
+        int rotate = 0;
+
+        switch (exifOrientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                rotate = 90;
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                rotate = 180;
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                rotate = 270;
+                break;
+        }
+
+        Log.v(TAG, "Rotation: " + rotate);
+
+        if (rotate != 0) {
+
+            // Getting width & height of the given image.
+            int w = bitmap.getWidth();
+            int h = bitmap.getHeight();
+
+            // Setting pre rotate
+            Matrix mtx = new Matrix();
+            mtx.preRotate(rotate);
+
+            // Rotating Bitmap
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, false);
+        }
+
+        // Convert to ARGB_8888, required by tess
+        return bitmap.copy(Bitmap.Config.ARGB_8888, true);
+    }
+
+    private void patchUnimportantArea(Bitmap bitmap) {
+        float expandFactor = (float) 1.5;
+
+        RectF finBox = new RectF(5.03f - expandFactor, 5.21f - expandFactor, 64.32f + expandFactor, 23.28f + expandFactor);
+        RectF nameBox = new RectF(36.26f - expandFactor, 33.52f - expandFactor, 85.38f + expandFactor, 46.55f + expandFactor);
+        RectF dobAndSexBox = new RectF(36.26f - expandFactor, 59.59f - expandFactor, 60.82f + expandFactor, 63.31f + expandFactor);
+        ArrayList<RectF> boxList = new ArrayList<>();
+        boxList.add(finBox);
+        boxList.add(nameBox);
+        boxList.add(dobAndSexBox);
+
+        float width = bitmap.getWidth();
+        float height = bitmap.getHeight();
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                float xPostPercent = (float) (i * 100) / width;
+                float yPostPercent = (float) (j * 100) / height;
+
+                boolean isPointInsideBox = false;
+
+                for (RectF box : boxList) {
+                    if (box.contains(xPostPercent, yPostPercent)) {
+                        isPointInsideBox = true;
+                        break;
+                    }
+                }
+
+                if (!isPointInsideBox) {
+                    bitmap.setPixel(i, j, Color.argb(255, 255, 255, 255));
+                }
+            }
+        }
+    }
+
+    private void performAdaptiveThreshold(Bitmap bitmap) {
+        Mat mat = new Mat();
+        Utils.bitmapToMat(bitmap, mat);
+        Imgproc.cvtColor(mat, mat, Imgproc.COLOR_RGBA2GRAY);
+        Imgproc.adaptiveThreshold(mat, mat, 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY, 11, 2);
+        Utils.matToBitmap(mat, bitmap);
     }
 }

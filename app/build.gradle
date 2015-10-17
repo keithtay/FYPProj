@@ -56,6 +56,7 @@ dependencies {
     compile 'com.nhaarman.supertooltips:library:3.0.+'
     compile 'com.google.code.gson:gson:2.3.1'
     compile project(':libraries:tess-two')
+    compile project(':libraries:opencv')
 }
 
 repositories {

@@ -9,6 +9,8 @@ import android.widget.EditText;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.utils.Global;
 
+import java.util.ArrayList;
+
 /**
  * Activity to display the OCR result
  */
@@ -25,8 +27,8 @@ public class OcrReviewActivity extends AppCompatActivity {
 
         recognizedTextEditText = (EditText) findViewById(R.id.recognized_text_edit_text);
 
-        String recognizedText = getIntent().getStringExtra(Global.EXTRA_RECOGNIZED_TEXT);
-        recognizedTextEditText.setText(recognizedText);
+        ArrayList<String> recognizedText = getIntent().getStringArrayListExtra(Global.EXTRA_RECOGNIZED_TEXT);
+        recognizedTextEditText.setText(recognizedText.toString());
     }
 
     @Override
