@@ -130,6 +130,12 @@ public class UtilsString {
         return costs[s2.length()];
     }
 
+    /**
+     * Concatenate the string array with space separating each item
+     *
+     * @param arr string array to be converted
+     * @return cancatenated string with each item separated with space
+     */
     public static String arrayToString(String[] arr) {
         StringBuilder sb = new StringBuilder();
         for (String n : arr) {
@@ -141,6 +147,12 @@ public class UtilsString {
         return sb.toString();
     }
 
+    /**
+     * Capitalize the first letter of each word of {@code str}
+     *
+     * @param str string to be edited
+     * @return {@code str} with each first letter of the words capitalized
+     */
     public static String capsFirstLetter(String str) {
         String[] words = str.split(" ");
         StringBuilder ret = new StringBuilder();
