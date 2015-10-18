@@ -14,6 +14,10 @@ import org.joda.time.format.DateTimeFormatter;
  */
 public class Global {
     /**
+     * String date format of NRIC
+     */
+    public static final String NRIC_DATE_FORMAT_STR =  "dd-MM-yyyy";
+    /**
      * String date format
      */
     public static final String DATE_FORMAT_STR =  "d MMM yyyy";
@@ -29,6 +33,10 @@ public class Global {
      * Formatter to print date
      */
     public static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.forPattern(DATE_FORMAT_STR);
+    /**
+     * Formatter to print date for NRIC
+     */
+    public static final DateTimeFormatter NRIC_DATE_FORMAT = DateTimeFormat.forPattern(NRIC_DATE_FORMAT_STR);
     /**
      * Formatter to print time
      */

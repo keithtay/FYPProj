@@ -129,4 +129,39 @@ public class UtilsString {
         }
         return costs[s2.length()];
     }
+
+    public static String arrayToString(String[] arr) {
+        StringBuilder sb = new StringBuilder();
+        for (String n : arr) {
+            if (sb.length() > 0) {
+                sb.append(' ');
+            }
+            sb.append(n);
+        }
+        return sb.toString();
+    }
+
+    public static String capsFirstLetter(String str) {
+        String[] words = str.split(" ");
+        StringBuilder ret = new StringBuilder();
+
+            for(int i = 0; i < words.length; i++) {
+                if(words[i].length() == 0) {
+                    continue;
+                }
+
+                if(words[i].length() == 1) {
+                    ret.append(Character.toUpperCase(words[i].charAt(0)));
+                    ret.append(' ');
+                } else {
+                    ret.append(Character.toUpperCase(words[i].charAt(0)));
+                    ret.append(words[i].substring(1).toLowerCase());
+                    if(i < words.length - 1) {
+                        ret.append(' ');
+                    }
+                }
+            }
+
+        return ret.toString();
+    }
 }

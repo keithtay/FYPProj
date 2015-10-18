@@ -207,4 +207,12 @@
     <string name="notes">Notes</string>
     <string name="from_date">From Date</string>
     <string name="category_filter">Category filter:</string>
+    <string name="select_all">Select All</string>
+    <string name="nric">NRIC</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="dob">Date of Birth</string>
+    <string name="gender">Gender</string>
+    <string name="cancel">Cancel</string>
+    <string name="autofill_form">Auto-fill Form</string>
 </resources>

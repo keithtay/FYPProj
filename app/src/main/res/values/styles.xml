@@ -102,4 +102,27 @@
     <style name="custom_field_in_log_problem_dialog" parent="custom_field_in_dialog">
         <item name="fieldTitleWidth">80dp</item>
     </style>
+
+    <style name="ocr_review_table_row">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">72dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">@dimen/paper_card_padding</item>
+        <item name="android:paddingRight">@dimen/paper_card_padding</item>
+    </style>
+
+    <style name="ocr_review_table_col_1" parent="typo_body2">
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="ocr_review_table_col_2">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginLeft">@dimen/med_spacing</item>
+        <item name="android:layout_marginRight">@dimen/med_spacing</item>
+    </style>
+
 </resources>

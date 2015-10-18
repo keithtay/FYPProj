@@ -3,6 +3,7 @@ package com.example.keith.fyp.views.activities;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,14 +11,8 @@ import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -30,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -45,8 +41,6 @@ import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.fragments.PatientInfoCategListFragment;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.googlecode.leptonica.android.Pix;
-import com.googlecode.leptonica.android.Pixa;
 import com.googlecode.leptonica.android.ReadFile;
 import com.googlecode.tesseract.android.ResultIterator;
 import com.googlecode.tesseract.android.TessBaseAPI;
@@ -65,8 +59,6 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfFloat;
 import org.opencv.core.MatOfInt;
-import org.opencv.core.Scalar;
-import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
@@ -76,7 +68,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -394,7 +385,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
                 break;
             case ACTION_CROP_PICTURE:
                 if (checkIfNric()) {
-                    onPhotoTaken();
+                    onPhotoCropped();
                 } else {
                     showNoNricDetectedToast();
                 }
@@ -534,8 +525,6 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
     }
 
     private String path = Global.DATA_PATH + "ocr.jpg";
-    private String path_thres = Global.DATA_PATH + "ocr_thresholding.jpg";
-    private String path_patch = Global.DATA_PATH + "ocr_patching.jpg";
     private Uri outputFileUri;
 
     private void startCaptureImageOcrActivity() {
@@ -548,7 +537,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         startActivityForResult(intent, ACTION_CAPTURE_PICTURE);
     }
 
-    private void onPhotoTaken() {
+    private void onPhotoCropped() {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 4;
 
@@ -574,7 +563,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         baseApi.init(Global.DATA_PATH, Global.LANG);
         baseApi.setImage(ReadFile.readBitmap(bitmap));
 
-        String recognizedText = baseApi.getUTF8Text();
+
         int meanConfidence = baseApi.meanConfidence();
         ResultIterator resultIterator = baseApi.getResultIterator();
         ArrayList<String> result = new ArrayList<>();
@@ -588,6 +577,10 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
             }
         } while (resultIterator.next(level));
         baseApi.end();
+
+        // Delete captured photo
+        File file = new File(path);
+        file.delete();
 
         Log.i(TAG, "Mean Confidence: " + meanConfidence);
 
