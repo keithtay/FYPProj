@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.keith.fyp.comparators.ProblemLogComparator;
+import com.example.keith.fyp.managers.SessionManager;
 import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Event;
@@ -24,6 +25,7 @@ import com.example.keith.fyp.views.adapters.SimilarProblemListAdapter;
 import com.example.keith.fyp.views.customviews.DateField;
 import com.example.keith.fyp.views.customviews.SpinnerField;
 import com.example.keith.fyp.views.customviews.TextField;
+import com.melnykov.fab.FloatingActionButton;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.MiniDrawer;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
@@ -45,6 +47,7 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
 
     private FancyButton viewMoreButton;
     private FancyButton logProblemButton;
+    private FloatingActionButton editScheduleFab;
 
     private Drawer navDrawer;
     private MiniDrawer miniDrawer;
@@ -81,6 +84,12 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
 
         eventListContainer = (LinearLayout) findViewById(R.id.event_list_container);
         displaySchedule();
+
+        editScheduleFab = (FloatingActionButton) findViewById(R.id.edit_schedule_fab);
+        SessionManager session = new SessionManager(this);
+        if(!session.isUserSupervisor()) {
+            UtilsUi.removeView(editScheduleFab);
+        }
     }
 
     private void openViewPatientInfoActivity(Bundle bundle) {

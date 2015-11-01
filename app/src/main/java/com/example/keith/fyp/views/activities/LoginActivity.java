@@ -123,23 +123,17 @@ public class LoginActivity extends ActionBarActivity {
         }
 
         if (isFormValid) {
-            // TODO create proper user accounts
-            if (username.equals("admin") && password.equals("admin123")) {
-
-                // TODO change with proper user's name, email and photo
+            if (username.equals("supervisor") && password.equals("supervisor123")) {
                 Bitmap photo = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_06);
                 session.createLoginSession("Supervisor1", "supervisor1@gmail.com", SessionManager.USER_SUPERVISOR, photo);
 
-                // Staring MainActivity
                 Intent i = new Intent(getApplicationContext(), DashboardActivity.class);
                 startActivity(i);
                 finish();
-            } else if(username.equals("staff") && password.equals("staff123")) {
-                // TODO change with proper user's name, email and photo
+            } else if(username.equals("caregiver") && password.equals("caregiver123")) {
                 Bitmap photo = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_13);
                 session.createLoginSession("Caregiver1", "caregiver1@gmail.com", SessionManager.USER_CAREGIVER, photo);
 
-                // Staring MainActivity
                 Intent i = new Intent(getApplicationContext(), DashboardActivity.class);
                 startActivity(i);
                 finish();
