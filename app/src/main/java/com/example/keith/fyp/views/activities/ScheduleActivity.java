@@ -52,7 +52,9 @@ public class ScheduleActivity extends AppCompatActivity {
             }
         }
 
-        eventList = viewedPatient.getTodaySchedule().getEventList();
+        if(viewedPatient.getTodaySchedule() != null) {
+            eventList = viewedPatient.getTodaySchedule().getEventList();
+        }
 
         spacingBetweenEventView = (int) getResources().getDimension(R.dimen.paper_card_padding) / 2;
 

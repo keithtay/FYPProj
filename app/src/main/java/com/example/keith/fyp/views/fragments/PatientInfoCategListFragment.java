@@ -1,6 +1,7 @@
 package com.example.keith.fyp.views.fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.example.keith.fyp.utils.CreatedPatientEmptyFieldChecker;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.views.activities.CreatePatientActivity;
+import com.example.keith.fyp.views.activities.DashboardActivity;
 import com.example.keith.fyp.views.adapters.TextTooltipPairListAdapter;
 
 import java.util.ArrayList;
@@ -120,6 +122,10 @@ public class PatientInfoCategListFragment extends Fragment implements AdapterVie
             if(emptyFieldIdList.size() > 0) {
                 infoCategListView.setItemChecked(1,true);
                 communicator.respond(1, emptyFieldIdList);
+            } else {
+                DataHolder.getPatientList(getActivity()).add(createdPatient);
+                Intent intent = new Intent(getActivity(), DashboardActivity.class);
+                startActivity(intent);
             }
         }
     }

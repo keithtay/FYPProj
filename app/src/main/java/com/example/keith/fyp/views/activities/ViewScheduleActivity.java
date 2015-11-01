@@ -200,50 +200,52 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
         boolean isCurrentTimeMarkHasBeenDisplayed = false;
 
         // Adding event views to the layout
-        int lastIndex = eventList.size() - 1;
-        for (int i = 0; i <= lastIndex; i++) {
-            Event event = eventList.get(i);
+        if(eventList != null) {
+            int lastIndex = eventList.size() - 1;
+            for (int i = 0; i <= lastIndex; i++) {
+                Event event = eventList.get(i);
 
-            String eventTitle = event.getTitle();
-            String eventDescription = event.getDescription();
-            DateTime startTime = event.getStartTime();
-            DateTime endTime = event.getEndTime();
-            String startTimeStr = startTime.toString(Global.TIME_FORMAT);
-            String durationStr = UtilsUi.convertDurationToString(event.getDuration());
+                String eventTitle = event.getTitle();
+                String eventDescription = event.getDescription();
+                DateTime startTime = event.getStartTime();
+                DateTime endTime = event.getEndTime();
+                String startTimeStr = startTime.toString(Global.TIME_FORMAT);
+                String durationStr = UtilsUi.convertDurationToString(event.getDuration());
 
-            if (!isCurrentTimeMarkHasBeenDisplayed && currentTime.isBefore(startTime)) {
-                View currentTimeMarker = getLayoutInflater().inflate(R.layout.current_time_marker, eventListContainer, false);
-                if (i == 0) {
-                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    lp.setMargins(0, 0, 0, spacingBetweenEventView);
-                    currentTimeMarker.setLayoutParams(lp);
+                if (!isCurrentTimeMarkHasBeenDisplayed && currentTime.isBefore(startTime)) {
+                    View currentTimeMarker = getLayoutInflater().inflate(R.layout.current_time_marker, eventListContainer, false);
+                    if (i == 0) {
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        lp.setMargins(0, 0, 0, spacingBetweenEventView);
+                        currentTimeMarker.setLayoutParams(lp);
+                    }
+                    eventListContainer.addView(currentTimeMarker);
+                    isCurrentTimeMarkHasBeenDisplayed = true;
                 }
+
+                int layoutId;
+                int marginLeft = (int) getResources().getDimension(R.dimen.event_margin_left);
+
+                boolean isEventCurrentlyOccurring = (currentTime.isAfter(startTime) && currentTime.isBefore(endTime)) || currentTime.isEqual(startTime);
+                if (!isCurrentTimeMarkHasBeenDisplayed && isEventCurrentlyOccurring) {
+                    layoutId = R.layout.event_layout_current;
+                    isCurrentTimeMarkHasBeenDisplayed = true;
+                    marginLeft = 0;
+                } else {
+                    layoutId = R.layout.notification_detail_content_game_recommendation_layout;
+                }
+
+                View eventView = createEventViewWithLayout(layoutId, eventTitle, eventDescription, startTimeStr, durationStr, i, lastIndex, marginLeft);
+                eventListContainer.addView(eventView);
+            }
+
+            if (!isCurrentTimeMarkHasBeenDisplayed) {
+                View currentTimeMarker = getLayoutInflater().inflate(R.layout.current_time_marker, eventListContainer, false);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp.setMargins(0, spacingBetweenEventView, 0, 0);
+                currentTimeMarker.setLayoutParams(lp);
                 eventListContainer.addView(currentTimeMarker);
-                isCurrentTimeMarkHasBeenDisplayed = true;
             }
-
-            int layoutId;
-            int marginLeft = (int) getResources().getDimension(R.dimen.event_margin_left);
-
-            boolean isEventCurrentlyOccurring = (currentTime.isAfter(startTime) && currentTime.isBefore(endTime)) || currentTime.isEqual(startTime);
-            if (!isCurrentTimeMarkHasBeenDisplayed && isEventCurrentlyOccurring) {
-                layoutId = R.layout.event_layout_current;
-                isCurrentTimeMarkHasBeenDisplayed = true;
-                marginLeft = 0;
-            } else {
-                layoutId = R.layout.notification_detail_content_game_recommendation_layout;
-            }
-
-            View eventView = createEventViewWithLayout(layoutId, eventTitle, eventDescription, startTimeStr, durationStr, i, lastIndex, marginLeft);
-            eventListContainer.addView(eventView);
-        }
-
-        if (!isCurrentTimeMarkHasBeenDisplayed) {
-            View currentTimeMarker = getLayoutInflater().inflate(R.layout.current_time_marker, eventListContainer, false);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(0, spacingBetweenEventView, 0, 0);
-            currentTimeMarker.setLayoutParams(lp);
-            eventListContainer.addView(currentTimeMarker);
         }
     }
 
