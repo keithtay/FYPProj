@@ -203,5 +203,5 @@ public class Global {
      * Care centre configuration navigation identifier for the navigation bar
      */
     public static final int NAVIGATION_CARE_CENTER_CONFIG_ID = 4;
-
+    public static final int NAVIGATION_LOGOUT = 5;
 }

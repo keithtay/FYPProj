@@ -6,15 +6,21 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TimePicker;
 
+import com.example.keith.fyp.managers.SessionManager;
 import com.example.keith.fyp.models.Allergy;
 import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
@@ -46,6 +52,7 @@ import org.joda.time.Duration;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -285,8 +292,15 @@ public class UtilsUi {
      * @return pair of navigation drawer and mini navigation drawer
      */
     public static DrawerAndMiniDrawerPair setNavigationDrawer(Activity activity, View contentWrapper, Drawer.OnDrawerItemClickListener drawerItemClickListener, Bundle savedInstanceState) {
-        Resources resource = activity.getResources();
-        final IProfile profile = new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").withIcon(resource.getDrawable(R.drawable.avatar1));
+        SessionManager session = new SessionManager(activity);
+        HashMap<String, String> user = session.getUserDetails();
+        String userName = user.get(SessionManager.KEY_USER_NAME);
+        String userEmail = user.get(SessionManager.KEY_USER_EMAIL);
+        String userPhotoStr = user.get(SessionManager.KEY_USER_PHOTO);
+        byte[] imageAsBytes = Base64.decode(userPhotoStr.getBytes(), Base64.DEFAULT);
+        Bitmap userPhotoBitmap = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+        Drawable userPhoto = new BitmapDrawable(activity.getResources(), userPhotoBitmap);
+        final IProfile profile = new ProfileDrawerItem().withName(userName).withEmail(userEmail).withIcon(userPhoto);
 
         AccountHeader accountHeader = new AccountHeaderBuilder()
                 .withActivity(activity)
@@ -307,34 +321,37 @@ public class UtilsUi {
                 .withBadge(notificationCount)
                 .withBadgeStyle(getVisibleBadgeStyle(activity))
                 .withIdentifier(Global.NAVIGATION_NOTIFICATION_ID);
-        PrimaryDrawerItem accountDrawerItem = new PrimaryDrawerItem()
-                .withName(R.string.nav_account)
-                .withIcon(GoogleMaterial.Icon.gmd_person)
-                .withIdentifier(3);
         PrimaryDrawerItem settingsDrawerItem = new PrimaryDrawerItem()
                 .withName(R.string.nav_care_center_config)
                 .withIcon(FontAwesome.Icon.faw_building)
                 .withIdentifier(Global.NAVIGATION_CARE_CENTER_CONFIG_ID);
+        PrimaryDrawerItem logoutItem = new PrimaryDrawerItem()
+                .withName(R.string.nav_sign_out)
+                .withIcon(FontAwesome.Icon.faw_sign_out)
+                .withIdentifier(5);
 
-//        PrimaryDrawerItem logoutItem = new PrimaryDrawerItem()
-//                .withName(R.string.nav_care_center_config)
-//                .withIcon(FontAwesome.Icon.faw_sign_out)
-//                .withIdentifier(5);
 
-        Drawer navigationDrawer = new DrawerBuilder()
+        DrawerBuilder drawerBuilder = new DrawerBuilder()
                 .withActivity(activity)
                 .withTranslucentStatusBar(false)
                 .withAccountHeader(accountHeader)
-                .addDrawerItems(
-                        homeDrawerItem,
-                        notificationDrawerItem,
-                        accountDrawerItem,
-                        settingsDrawerItem
-//                        logoutItem
-                )
                 .withOnDrawerItemClickListener(drawerItemClickListener)
-                .withSavedInstance(savedInstanceState)
-                .buildView();
+                .withSavedInstance(savedInstanceState);
+        if(session.isUserSupervisor()) {
+            drawerBuilder.addDrawerItems(
+                    homeDrawerItem,
+                    notificationDrawerItem,
+                    settingsDrawerItem,
+                    logoutItem
+            );
+        } else {
+            drawerBuilder.addDrawerItems(
+                    homeDrawerItem,
+                    notificationDrawerItem,
+                    logoutItem
+            );
+        }
+        Drawer navigationDrawer = drawerBuilder.buildView();
 
         MiniDrawer miniDrawer = new MiniDrawer()
                 .withDrawer(navigationDrawer)

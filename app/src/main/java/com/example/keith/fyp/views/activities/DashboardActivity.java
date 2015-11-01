@@ -17,6 +17,7 @@ import android.view.View;
 import com.example.keith.fyp.broadcastreceiver.NotificationGroupUpdateReceiver;
 import com.example.keith.fyp.comparators.NotificationComparator;
 import com.example.keith.fyp.interfaces.OnNotificationGroupUpdateListener;
+import com.example.keith.fyp.managers.SessionManager;
 import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Notification;
@@ -257,17 +258,20 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
 
             switch (selectedIdentifier) {
                 case Global.NAVIGATION_PATIENT_LIST_ID:
-                    fragmentToBeDisplayed = new HomeScheduleFragment();
+                    fragmentToBeDisplayed = new PatientListFragment();
                     break;
                 case Global.NAVIGATION_NOTIFICATION_ID:
                     fragmentToBeDisplayed = new NotificationFragment();
                     break;
-                case 3:
-                    fragmentToBeDisplayed = new PatientListFragment();
-                    break;
                 case Global.NAVIGATION_CARE_CENTER_CONFIG_ID:
                     fragmentToBeDisplayed = new CareCenterConfigFragment();
                     break;
+                case  Global.NAVIGATION_LOGOUT:
+                    // TODO add dialog before logout
+                    // TODO remove session (shared preference) when logout
+                    SessionManager session = new SessionManager(this);
+                    session.logoutUser();
+                    return true;
             }
 
             miniDrawer.updateItem(currentDisplayedFragmentId);
