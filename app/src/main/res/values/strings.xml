@@ -122,7 +122,7 @@
         <item>Personal Information|</item>
         <item>Allergy|</item>
         <item>Vital|Measure \'s vital signs to check general physical health</item>
-        <item>Social History|Patient\'s past experiences and other supporting information</item>
+        <item>Social History|Patient\'s past experiences, preferences and other supporting information</item>
         <item>Prescription|</item>
         <item>Routine|Patient\'s activities that are followed regularly</item>
     </string-array>
@@ -131,7 +131,7 @@
         <item>Personal Information|</item>
         <item>Allergy|</item>
         <item>Vital|Measure patient\'s vital signs to check general physical health</item>
-        <item>Social History|Patient\'s past experiences and other supporting information</item>
+        <item>Social History|Patient\'s past experiences, preferences and other supporting information</item>
         <item>Prescription|</item>
         <item>Routine|Patient\'s activities that are followed regularly</item>
         <item>Problem Log|Take note of patient\'s problem</item>
