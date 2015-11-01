@@ -51,15 +51,6 @@ public class SessionManager {
         editor.commit();
     }
 
-    public void checkLogin(){
-        if(!this.isLoggedIn()){
-            Intent i = new Intent(context, LoginActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(i);
-        }
-    }
-
     public void logoutUser(){
         // Clearing all data from Shared Preferences
         editor.remove(KEY_IS_LOGIN);

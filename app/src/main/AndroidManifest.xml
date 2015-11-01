@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.keith.fyp">
+    package="com.example.keith.fyp" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -9,8 +9,13 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <permission android:name="com.example.keith.fyp.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+
+    <permission
+        android:name="com.example.keith.fyp.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
     <uses-permission android:name="com.example.keith.fyp.permission.C2D_MESSAGE" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -22,24 +27,29 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".views.activities.MainActivity"
+            android:label="@string/title_activity_main" >
+            <intent-filter android:label="@string/app_name" >
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".views.activities.LoginActivity"
             android:label="Pear"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:windowSoftInputMode="adjustResize">
-            <intent-filter android:label="@string/app_name">
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity
             android:name=".views.activities.PatientActivity"
             android:label="Person Centred Care" />
         <activity
             android:name=".views.activities.DashboardActivity"
-            android:label="@string/title_fragment_patientlist">
-            <intent-filter android:label="@string/app_name">
+            android:label="@string/title_fragment_patientlist" >
+            <intent-filter android:label="@string/app_name" >
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
 
@@ -50,7 +60,7 @@
         <activity
             android:name=".views.activities.CreatePatientActivity"
             android:label="@string/title_activity_create_patient"
-            android:parentActivityName=".views.activities.DashboardActivity">
+            android:parentActivityName=".views.activities.DashboardActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.activities.DashboardActivity" />
@@ -60,21 +70,21 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_create_patient_form"
             android:parentActivityName=".views.activities.CreatePatientActivity"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.activities.CreatePatientActivity" />
         </activity>
         <activity
             android:name=".views.activities.ViewScheduleActivity"
-            android:label="@string/title_activity_view_schedule">
+            android:label="@string/title_activity_view_schedule" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.activities.DashboardActivity" />
         </activity>
         <activity
             android:name=".views.activities.EditScheduleActivity"
-            android:label="@string/title_activity_edit_schedule">
+            android:label="@string/title_activity_edit_schedule" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.activities.ViewScheduleActivity" />
@@ -82,7 +92,7 @@
         <activity
             android:name=".views.activities.ViewPatientActivity"
             android:label="@string/title_activity_view_patient"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.activities.ViewScheduleActivity" />
@@ -92,7 +102,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_view_patient_form"
             android:parentActivityName=".views.activities.CreatePatientActivity"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.activities.ViewPatientActivity" />
@@ -100,7 +110,7 @@
         <activity
             android:name=".views.activities.NotificationDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_notification_detail">
+            android:label="@string/title_activity_notification_detail" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.activities.DashboardActivity" />
@@ -108,14 +118,14 @@
         <activity
             android:name=".views.activities.CareCenterConfigDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_care_center_config_detail">
+            android:label="@string/title_activity_care_center_config_detail" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.activities.DashboardActivity" />
         </activity>
         <activity
             android:name=".views.activities.OcrReviewActivity"
-            android:label="@string/title_activity_capture_image_ocr">
+            android:label="@string/title_activity_capture_image_ocr" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.activities.CreatePatientActivity" />
