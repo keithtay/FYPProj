@@ -216,4 +216,7 @@
     <string name="autofill_form">Auto-fill Form</string>
     <string name="nav_sign_out">Sign Out</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="dialog_logout_title">Logout</string>
+    <string name="dialog_logout_content">Are you sure to logout?</string>
+    <string name="button_logout">Logout</string>
 </resources>

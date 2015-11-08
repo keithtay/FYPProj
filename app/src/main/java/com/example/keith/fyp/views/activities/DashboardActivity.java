@@ -14,6 +14,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.keith.fyp.broadcastreceiver.NotificationGroupUpdateReceiver;
 import com.example.keith.fyp.comparators.NotificationComparator;
 import com.example.keith.fyp.interfaces.OnNotificationGroupUpdateListener;
@@ -27,7 +28,6 @@ import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.fragments.CareCenterConfigFragment;
-import com.example.keith.fyp.views.fragments.HomeScheduleFragment;
 import com.example.keith.fyp.views.fragments.NotificationFragment;
 import com.example.keith.fyp.views.fragments.PatientListFragment;
 import com.mikepenz.materialdrawer.Drawer;
@@ -70,11 +70,11 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
 
         Intent intent = getIntent();
 
-        if(savedInstanceState != null && savedInstanceState.containsKey(Global.STATE_LAST_DISPLAYED_FRAGMENT_ID)) {
+        if (savedInstanceState != null && savedInstanceState.containsKey(Global.STATE_LAST_DISPLAYED_FRAGMENT_ID)) {
             int lastFragmentId = savedInstanceState.getInt(Global.STATE_LAST_DISPLAYED_FRAGMENT_ID);
             navDrawer.setSelection(lastFragmentId);
             refreshMiniDrawer();
-        } else if(intent.hasExtra(Global.EXTRA_SELECTED_NAVIGATION_ID)) {
+        } else if (intent.hasExtra(Global.EXTRA_SELECTED_NAVIGATION_ID)) {
             int selectedNavigationId = intent.getIntExtra(Global.EXTRA_SELECTED_NAVIGATION_ID, 0);
             navDrawer.setSelection(selectedNavigationId);
             refreshMiniDrawer();
@@ -167,13 +167,13 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
 
         HashMap patientAndNotificationGroupMap = new HashMap();
 
-        for(Notification notification:notificationList) {
+        for (Notification notification : notificationList) {
             Patient currentPatient = notification.getAffectedPatient();
             String patientNric = currentPatient.getNric();
 
             if (patientAndNotificationGroupMap.containsKey(patientNric)) {
                 NotificationGroup notifGroup = (NotificationGroup) patientAndNotificationGroupMap.get(patientNric);
-                if(notification.getStatus() == Notification.STATUS_NONE) {
+                if (notification.getStatus() == Notification.STATUS_NONE) {
                     notifGroup.getUnprocessedNotif().add(notification);
                 } else {
                     notifGroup.getProcessedNotif().add(notification);
@@ -181,7 +181,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
             } else {
                 NotificationGroup newNotifGroup = new NotificationGroup();
                 newNotifGroup.setAffectedPatient(currentPatient);
-                if(notification.getStatus() == Notification.STATUS_NONE) {
+                if (notification.getStatus() == Notification.STATUS_NONE) {
                     newNotifGroup.getUnprocessedNotif().add(notification);
                 } else {
                     newNotifGroup.getProcessedNotif().add(notification);
@@ -217,7 +217,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
 
         PrimaryDrawerItem notificationNav = (PrimaryDrawerItem) navDrawer.getDrawerItem(Global.NAVIGATION_NOTIFICATION_ID);
 
-        if(notificationCount == 0) {
+        if (notificationCount == 0) {
             notificationNav = notificationNav.withBadgeStyle(UtilsUi.getInvisibleBadgeStyle(this));
         } else {
             String notificationCountStr = Integer.toString(notificationCount);
@@ -232,11 +232,11 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch(requestCode) {
-            case (NotificationFragment.REQUEST_OPEN_NOTIFICATION_DETAIL) : {
+        switch (requestCode) {
+            case (NotificationFragment.REQUEST_OPEN_NOTIFICATION_DETAIL): {
                 if (resultCode == Activity.RESULT_OK) {
                     boolean isFromNotificationDetailActivity = data.getBooleanExtra(Global.EXTRA_FROM_NOTIFICATION_DETAIL_ACTIVITY, false);
-                    if(isFromNotificationDetailActivity) {
+                    if (isFromNotificationDetailActivity) {
                         navDrawer.setSelection(Global.NAVIGATION_NOTIFICATION_ID);
                         miniDrawer.updateItem(Global.NAVIGATION_NOTIFICATION_ID);
                     }
@@ -266,11 +266,21 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
                 case Global.NAVIGATION_CARE_CENTER_CONFIG_ID:
                     fragmentToBeDisplayed = new CareCenterConfigFragment();
                     break;
-                case  Global.NAVIGATION_LOGOUT:
-                    // TODO add dialog before logout
-                    // TODO remove session (shared preference) when logout
-                    SessionManager session = new SessionManager(this);
-                    session.logoutUser();
+                case Global.NAVIGATION_LOGOUT:
+                    new MaterialDialog.Builder(this)
+                            .title(R.string.dialog_logout_title)
+                            .content(R.string.dialog_logout_content)
+                            .positiveText(R.string.button_logout)
+                            .negativeText(R.string.button_cancel)
+                            .callback(new MaterialDialog.ButtonCallback() {
+                                @Override
+                                public void onPositive(MaterialDialog dialog) {
+                                    super.onPositive(dialog);
+                                    SessionManager session = new SessionManager(DashboardActivity.this);
+                                    session.logoutUser();
+                                }
+                            })
+                            .show();
                     return true;
             }
 
@@ -289,7 +299,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
 
     private void refreshMiniDrawer() {
         int itemCount = navDrawer.getDrawerItems().size();
-        for(int i=1; i<=itemCount; i++) {
+        for (int i = 1; i <= itemCount; i++) {
             miniDrawer.updateItem(i);
         }
     }
