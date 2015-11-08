@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.util.Base64;
 
+import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.views.activities.LoginActivity;
 
 import java.io.ByteArrayOutputStream;
@@ -58,6 +59,8 @@ public class SessionManager {
         editor.remove(KEY_USER_EMAIL);
         editor.remove(KEY_USER_PHOTO);
         editor.commit();
+
+        DataHolder.resetNotificationGroupList();
 
         // After logout redirect user to Login Activity
         Intent i = new Intent(context, LoginActivity.class);

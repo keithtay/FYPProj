@@ -15,12 +15,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.example.keith.fyp.R;
 import com.example.keith.fyp.broadcastreceiver.NotificationGroupUpdateReceiver;
 import com.example.keith.fyp.comparators.NotificationComparator;
 import com.example.keith.fyp.interfaces.OnNotificationGroupUpdateListener;
 import com.example.keith.fyp.managers.SessionManager;
 import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
-import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Notification;
 import com.example.keith.fyp.models.NotificationGroup;
 import com.example.keith.fyp.models.Patient;
@@ -107,7 +107,12 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
     }
 
     private void retrieveNotification() {
-        if(DataHolder.getNotificationGroupList() == null || DataHolder.getNotificationGroupList().size() == 0) {
+        SessionManager sessionManager = new SessionManager(this);
+        boolean isSupervisor = sessionManager.isUserSupervisor();
+        ArrayList<NotificationGroup> notificationGroupList =  DataHolder.getNotificationGroupList();
+        boolean isNotificatioEmpty = notificationGroupList == null || notificationGroupList.size() == 0;
+
+        if(isSupervisor && isNotificatioEmpty) {
             Bitmap patientAvatar1 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_18);
             Bitmap patientAvatar2 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_19);
             Bitmap patientAvatar3 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_20);
@@ -186,7 +191,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
                 }
             }
 
-            ArrayList<NotificationGroup> notificationGroupList = new ArrayList<>();
+            notificationGroupList = new ArrayList<>();
             NotificationComparator comparator = new NotificationComparator();
             for (Object obj : patientAndNotificationGroupMap.values()) {
                 NotificationGroup notificationGroup = (NotificationGroup) obj;

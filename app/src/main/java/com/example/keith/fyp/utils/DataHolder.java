@@ -106,6 +106,13 @@ public class DataHolder {
     }
 
     /**
+     * Reset the {@link NotificationGroup} list being hold by the {@link DataHolder}
+     */
+    public static void resetNotificationGroupList() {
+        DataHolder.notificationGroupList = new ArrayList<>();
+    }
+
+    /**
      * @return list of {@link DefaultEvent} of the current care centre
      */
     public static ArrayList<DefaultEvent> getDefaultEventList() {
