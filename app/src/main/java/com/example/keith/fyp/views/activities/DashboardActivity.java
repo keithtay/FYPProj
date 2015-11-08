@@ -107,108 +107,105 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
     }
 
     private void retrieveNotification() {
+        if(DataHolder.getNotificationGroupList() == null || DataHolder.getNotificationGroupList().size() == 0) {
+            Bitmap patientAvatar1 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_18);
+            Bitmap patientAvatar2 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_19);
+            Bitmap patientAvatar3 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_20);
 
-        // =====================================================
-        // Creating Notification Model
-        // =====================================================
+            Patient patient1 = new Patient("Garry", "Reese", "123AB456", patientAvatar1);
+            Patient patient2 = new Patient("Lillian", "Wade", "987CD654", patientAvatar2);
+            Patient patient3 = new Patient("Laura", "Freeman", "AV12G64", patientAvatar3);
 
-        Bitmap patientAvatar1 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_18);
-        Bitmap patientAvatar2 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_19);
-        Bitmap patientAvatar3 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_20);
+            Bitmap caregiverAvatar1 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_01);
+            Bitmap caregiverAvatar2 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_02);
+            Bitmap caregiverAvatar3 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_03);
+            Bitmap caregiverAvatar4 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_04);
+            Bitmap caregiverAvatar5 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_05);
 
-        Patient patient1 = new Patient("Garry", "Reese", "123AB456", patientAvatar1);
-        Patient patient2 = new Patient("Lillian", "Wade", "987CD654", patientAvatar2);
-        Patient patient3 = new Patient("Laura", "Freeman", "AV12G64", patientAvatar3);
+            DateTime date1 = DateTime.now();
+            DateTime date2 = DateTime.now().minusDays(2).minusHours(2);
+            DateTime date3 = DateTime.now().minusDays(5).plusHours(1);
+            DateTime date4 = DateTime.now().minusDays(4).minusHours(2);
+            DateTime date5 = DateTime.now().minusDays(1).plusHours(1);
+            DateTime date6 = DateTime.now().minusDays(3).plusHours(5);
 
-        Bitmap caregiverAvatar1 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_01);
-        Bitmap caregiverAvatar2 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_02);
-        Bitmap caregiverAvatar3 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_03);
-        Bitmap caregiverAvatar4 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_04);
-        Bitmap caregiverAvatar5 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_05);
+            String caregiverName1 = "John Doe";
+            String caregiverName2 = "Jane Doe";
+            String caregiverName3 = "Tracy Lee";
+            String caregiverName4 = "Apple Tan";
+            String caregiverName5 = "Bethany Mandler";
 
-        DateTime date1 = DateTime.now();
-        DateTime date2 = DateTime.now().minusDays(2).minusHours(2);
-        DateTime date3 = DateTime.now().minusDays(5).plusHours(1);
-        DateTime date4 = DateTime.now().minusDays(4).minusHours(2);
-        DateTime date5 = DateTime.now().minusDays(1).plusHours(1);
-        DateTime date6 = DateTime.now().minusDays(3).plusHours(5);
+            String summary1 = "Updated information of patient Garry Reese";
+            String summary2 = "Log new problem for patient Lilian Wade";
+            String summary3 = "Create new patient Laura Freeman";
+            String summary4 = "Recommended the game category memory to patient Garry Reese";
+            String summary5 = "Updated the milk allergy of patient Lillian Wade";
+            String summary6 = "Log new problem for patient Garry Reese";
 
-        String caregiverName1 = "John Doe";
-        String caregiverName2 = "Jane Doe";
-        String caregiverName3 = "Tracy Lee";
-        String caregiverName4 = "Apple Tan";
-        String caregiverName5 = "Bethany Mandler";
+            Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_UPDATE_INFO_FIELD);
+            Notification notification2 = new Notification(date2, caregiverName2, caregiverAvatar2, summary2, patient2, Notification.STATUS_NONE, Notification.TYPE_NEW_INFO_OBJECT);
+            Notification notification3 = new Notification(date3, caregiverName3, caregiverAvatar3, summary3, patient3, Notification.STATUS_NONE, Notification.TYPE_NEW_PATIENT);
+            Notification notification4 = new Notification(date4, caregiverName4, caregiverAvatar4, summary4, patient1, Notification.STATUS_NONE, Notification.TYPE_GAME_RECOMMENDATION);
+            Notification notification5 = new Notification(date5, caregiverName5, caregiverAvatar5, summary5, patient2, Notification.STATUS_NONE, Notification.TYPE_UPDATE_INFO_OBJECT);
+            Notification notification6 = new Notification(date6, caregiverName3, caregiverAvatar3, summary6, patient1, Notification.STATUS_NONE, Notification.TYPE_NEW_INFO_OBJECT);
 
-        String summary1 = "Updated information of patient Garry Reese";
-        String summary2 = "Log new problem for patient Lilian Wade";
-        String summary3 = "Create new patient Laura Freeman";
-        String summary4 = "Recommended the game category memory to patient Garry Reese";
-        String summary5 = "Updated the milk allergy of patient Lillian Wade";
-        String summary6 = "Log new problem for patient Garry Reese";
+            ArrayList<Notification> notificationList = new ArrayList<>();
+            notificationList.add(notification1);
+            notificationList.add(notification2);
+            notificationList.add(notification3);
+            notificationList.add(notification4);
+            notificationList.add(notification5);
+            notificationList.add(notification6);
 
-        Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_UPDATE_INFO_FIELD);
-        Notification notification2 = new Notification(date2, caregiverName2, caregiverAvatar2, summary2, patient2, Notification.STATUS_NONE, Notification.TYPE_NEW_INFO_OBJECT);
-        Notification notification3 = new Notification(date3, caregiverName3, caregiverAvatar3, summary3, patient3, Notification.STATUS_NONE, Notification.TYPE_NEW_PATIENT);
-        Notification notification4 = new Notification(date4, caregiverName4, caregiverAvatar4, summary4, patient1, Notification.STATUS_NONE, Notification.TYPE_GAME_RECOMMENDATION);
-        Notification notification5 = new Notification(date5, caregiverName5, caregiverAvatar5, summary5, patient2, Notification.STATUS_NONE, Notification.TYPE_UPDATE_INFO_OBJECT);
-        Notification notification6 = new Notification(date6, caregiverName3, caregiverAvatar3, summary6, patient1, Notification.STATUS_NONE, Notification.TYPE_NEW_INFO_OBJECT);
+            // =====================================================
+            // Building the Notification Group based on the notification
+            // =====================================================
 
-        ArrayList<Notification> notificationList = new ArrayList<>();
-        notificationList.add(notification1);
-        notificationList.add(notification2);
-        notificationList.add(notification3);
-        notificationList.add(notification4);
-        notificationList.add(notification5);
-        notificationList.add(notification6);
+            HashMap patientAndNotificationGroupMap = new HashMap();
 
-        // =====================================================
-        // Building the Notification Group based on the notification
-        // =====================================================
+            for (Notification notification : notificationList) {
+                Patient currentPatient = notification.getAffectedPatient();
+                String patientNric = currentPatient.getNric();
 
-        HashMap patientAndNotificationGroupMap = new HashMap();
-
-        for (Notification notification : notificationList) {
-            Patient currentPatient = notification.getAffectedPatient();
-            String patientNric = currentPatient.getNric();
-
-            if (patientAndNotificationGroupMap.containsKey(patientNric)) {
-                NotificationGroup notifGroup = (NotificationGroup) patientAndNotificationGroupMap.get(patientNric);
-                if (notification.getStatus() == Notification.STATUS_NONE) {
-                    notifGroup.getUnprocessedNotif().add(notification);
+                if (patientAndNotificationGroupMap.containsKey(patientNric)) {
+                    NotificationGroup notifGroup = (NotificationGroup) patientAndNotificationGroupMap.get(patientNric);
+                    if (notification.getStatus() == Notification.STATUS_NONE) {
+                        notifGroup.getUnprocessedNotif().add(notification);
+                    } else {
+                        notifGroup.getProcessedNotif().add(notification);
+                    }
                 } else {
-                    notifGroup.getProcessedNotif().add(notification);
+                    NotificationGroup newNotifGroup = new NotificationGroup();
+                    newNotifGroup.setAffectedPatient(currentPatient);
+                    if (notification.getStatus() == Notification.STATUS_NONE) {
+                        newNotifGroup.getUnprocessedNotif().add(notification);
+                    } else {
+                        newNotifGroup.getProcessedNotif().add(notification);
+                    }
+                    patientAndNotificationGroupMap.put(patientNric, newNotifGroup);
                 }
-            } else {
-                NotificationGroup newNotifGroup = new NotificationGroup();
-                newNotifGroup.setAffectedPatient(currentPatient);
-                if (notification.getStatus() == Notification.STATUS_NONE) {
-                    newNotifGroup.getUnprocessedNotif().add(notification);
-                } else {
-                    newNotifGroup.getProcessedNotif().add(notification);
-                }
-                patientAndNotificationGroupMap.put(patientNric, newNotifGroup);
             }
+
+            ArrayList<NotificationGroup> notificationGroupList = new ArrayList<>();
+            NotificationComparator comparator = new NotificationComparator();
+            for (Object obj : patientAndNotificationGroupMap.values()) {
+                NotificationGroup notificationGroup = (NotificationGroup) obj;
+
+                // Set notification status
+                UtilsUi.setNotificationGroupStatus(this, notificationGroup);
+
+                // Sort the notifications by date
+                Collections.sort(notificationGroup.getProcessedNotif(), comparator);
+                Collections.sort(notificationGroup.getUnprocessedNotif(), comparator);
+
+                // Set the summary
+                UtilsUi.setNotificationGroupSummary(this, notificationGroup);
+
+                notificationGroupList.add(notificationGroup);
+            }
+
+            DataHolder.setNotificationGroupList(notificationGroupList);
         }
-
-        ArrayList<NotificationGroup> notificationGroupList = new ArrayList<>();
-        NotificationComparator comparator = new NotificationComparator();
-        for (Object obj : patientAndNotificationGroupMap.values()) {
-            NotificationGroup notificationGroup = (NotificationGroup) obj;
-
-            // Set notification status
-            UtilsUi.setNotificationGroupStatus(this, notificationGroup);
-
-            // Sort the notifications by date
-            Collections.sort(notificationGroup.getProcessedNotif(), comparator);
-            Collections.sort(notificationGroup.getUnprocessedNotif(), comparator);
-
-            // Set the summary
-            UtilsUi.setNotificationGroupSummary(this, notificationGroup);
-
-            notificationGroupList.add(notificationGroup);
-        }
-
-        DataHolder.setNotificationGroupList(notificationGroupList);
     }
 
     @Override
