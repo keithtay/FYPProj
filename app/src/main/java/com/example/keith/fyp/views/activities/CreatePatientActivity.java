@@ -3,7 +3,6 @@ package com.example.keith.fyp.views.activities;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,7 +24,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -59,6 +57,12 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfFloat;
 import org.opencv.core.MatOfInt;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
@@ -92,7 +96,8 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
     private SharedPreferences mPrefs;
 
     private static final int ACTION_CAPTURE_PICTURE = 1;
-    private static final int ACTION_CROP_PICTURE = 2;
+    private static final int ACTION_CAPTURE_PICTURE_MANUAL_CROP = 2;
+    private static final int ACTION_CROP_PICTURE = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -357,10 +362,15 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
-                return true;
+                break;
             case R.id.action_ocr:
                 prepareOcrEnvirontment();
                 startCaptureImageOcrActivity();
+                break;
+            case R.id.action_ocr_manual:
+                prepareOcrEnvirontment();
+                startCaptureImageOcrManualActivity();
+                break;
         }
         return true;
     }
@@ -373,6 +383,33 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
 
         switch (requestCode) {
             case ACTION_CAPTURE_PICTURE:
+
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 4;
+                Bitmap photoTaken = BitmapFactory.decodeFile(path, options);
+                Mat origImg = new Mat();
+                Utils.bitmapToMat(photoTaken, origImg);
+
+                Rect cropArea = getCropArea(origImg);
+                if(cropArea == null) {
+                    // Manual cropping
+                    Intent cropIntent = new Intent("com.android.camera.action.CROP");
+
+                    cropIntent.setDataAndType(outputFileUri, "image/*");
+                    cropIntent.putExtra("crop", "true");
+                    cropIntent.putExtra("scale", true);
+                    cropIntent.putExtra("return-data", true);
+                    cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+                    startActivityForResult(cropIntent, ACTION_CROP_PICTURE);
+                } else {
+                    // Automatic cropping
+                    Size size = origImg.size();
+                    Mat croppedImg = new Mat(origImg, cropArea);
+                    saveMatAsJpg(croppedImg, fileName);
+                    onPhotoCropped();
+                }
+                break;
+            case ACTION_CAPTURE_PICTURE_MANUAL_CROP:
                 Intent cropIntent = new Intent("com.android.camera.action.CROP");
 
                 cropIntent.setDataAndType(outputFileUri, "image/*");
@@ -381,16 +418,92 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
                 cropIntent.putExtra("return-data", true);
                 cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
                 startActivityForResult(cropIntent, ACTION_CROP_PICTURE);
-
                 break;
             case ACTION_CROP_PICTURE:
-                if (checkIfNric()) {
-                    onPhotoCropped();
-                } else {
-                    showNoNricDetectedToast();
-                }
+                onPhotoCropped();
                 break;
         }
+    }
+
+    private void onPhotoCropped() {
+        resizeImage();
+//        if (checkIfNric()) {
+            performOcr();
+//        } else {
+//            showNoNricDetectedToast();
+//        }
+    }
+
+    private void resizeImage() {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 4;
+        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+        Mat mat = new Mat();
+        Utils.bitmapToMat(bitmap, mat);
+        saveMatAsJpg(mat, fileName);
+    }
+
+
+    private void saveMatAsJpg(Mat mat, String fileName) {
+        Mat clone = mat.clone();
+        Imgproc.resize(clone, clone, new Size(3000,1880));
+        Bitmap bitmap = Bitmap.createBitmap(clone.cols(), clone.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(clone, bitmap);
+
+        String fullPath = Global.DATA_PATH + fileName;
+
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(fullPath);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out); // bmp is your Bitmap instance
+            // PNG is a lossless format, the compression factor (100) is ignored
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private Rect getCropArea(Mat origImg) {
+        Mat processedImg = origImg.clone();
+
+        Imgproc.cvtColor(processedImg, processedImg, Imgproc.COLOR_BGR2GRAY);
+        Imgproc.threshold(processedImg, processedImg, 127, 255, Imgproc.THRESH_BINARY);
+
+        ArrayList<MatOfPoint> contours = new ArrayList<>();
+        Mat hier = new Mat();
+        Imgproc.findContours(processedImg, contours, hier, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+
+        double maxArea = 0;
+        Rect cropArea = null;
+        MatOfPoint2f approxCurve = new MatOfPoint2f();
+        for (MatOfPoint contour : contours) {
+            double area = Imgproc.contourArea(contour);
+
+            if (area > 7500 && area < 200000 && area > maxArea) {
+                maxArea = area;
+
+                //Convert contours(i) from MatOfPoint to MatOfPoint2f
+                MatOfPoint2f contour2f = new MatOfPoint2f(contour.toArray());
+                //Processing on mMOP2f1 which is in type MatOfPoint2f
+                double approxDistance = Imgproc.arcLength(contour2f, true) * 0.02;
+                Imgproc.approxPolyDP(contour2f, approxCurve, approxDistance, true);
+
+                //Convert back to MatOfPoint
+                MatOfPoint points = new MatOfPoint(approxCurve.toArray());
+
+                // Get bounding rect of contour
+                cropArea = Imgproc.boundingRect(points);
+            }
+        }
+
+        return cropArea;
     }
 
     private void showNoNricDetectedToast() {
@@ -524,7 +637,8 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         }
     }
 
-    private String path = Global.DATA_PATH + "ocr.jpg";
+    private String fileName = "ocr.jpg";
+    private String path = Global.DATA_PATH + fileName;
     private Uri outputFileUri;
 
     private void startCaptureImageOcrActivity() {
@@ -537,7 +651,17 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         startActivityForResult(intent, ACTION_CAPTURE_PICTURE);
     }
 
-    private void onPhotoCropped() {
+    private void startCaptureImageOcrManualActivity() {
+        File file = new File(path);
+        outputFileUri = Uri.fromFile(file);
+
+        final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+
+        startActivityForResult(intent, ACTION_CAPTURE_PICTURE_MANUAL_CROP);
+    }
+
+    private void performOcr() {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 4;
 
@@ -585,8 +709,8 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         Log.i(TAG, "Mean Confidence: " + meanConfidence);
 
         if (result.size() > 0) {
-            float similarityThreshold = (float) 0.8;
-            if(UtilsString.similarity(result.get(0), "Republic of Singapore", false) < similarityThreshold) {
+            float similarityThreshold = (float) 0.7;
+            if (UtilsString.similarity(result.get(0), "Republic of Singapore", false) < similarityThreshold) {
                 showNoNricDetectedToast();
             } else {
                 result.remove(0);

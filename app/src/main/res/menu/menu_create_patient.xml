@@ -7,4 +7,9 @@
         android:icon="@drawable/ic_camera_alt_white_24dp"
         android:title="@string/action_ocr"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_ocr_manual"
+        android:icon="@drawable/ic_camera_white_24dp"
+        android:title="@string/action_ocr"
+        app:showAsAction="always" />
 </menu>
