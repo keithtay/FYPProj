@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.keith.fyp.database.dbfile;
+import com.example.keith.fyp.models.Allergy;
 import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.CreatePatientCommunicator;
@@ -143,16 +144,52 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
                 @Override
                 public void onClick(View v) {
                     checkRequiredFields();
-                    Toast.makeText(getBaseContext(),"Successfully Added!",Toast.LENGTH_LONG);
-                    dbfile db = new dbfile();
+                    Patient createdPatient = DataHolder.getCreatedPatient();
+                    String fName = createdPatient.getFirstName();
+                    String lName = createdPatient.getLastName();
+                    String nric = createdPatient.getNric();
+                    String phoneNumber = createdPatient.getPhoneNumber();
+                    String gufullname = createdPatient.getGuardianFullName();
+                    String guContact = createdPatient.getGuardianContactNumber();
+                    if(fName == null || lName == null || nric == null || phoneNumber == null || gufullname == null || guContact == null){
+                        Log.v("Never Fill up fields", "Testing");
+                    }else{
+                        dbfile db = new dbfile();
+                        db.insertNewPatient(createdPatient.getFirstName(), createdPatient.getLastName(), createdPatient.getNric(), createdPatient.getAddress(), createdPatient.getHomeNumber(), createdPatient.getPhoneNumber(), createdPatient.getGender(), createdPatient.getDob().toString(), createdPatient.getGuardianFullName(), createdPatient.getGuardianContactNumber(), createdPatient.getGuardianEmail());
 
-                    Patient createdPatient;
-                    createdPatient = DataHolder.getCreatedPatient();
+                        int id = db.getPatientId(createdPatient.getNric());
+                        String seeid = String.valueOf(id);
+                        Log.v("User id is", seeid);
+                        if (createdPatient.getAllergyList().size() >=1 ) {
+                            ArrayList<Allergy> t1 = createdPatient.getAllergyList();
+                            for (int i = 0; i < t1.size(); i++) {
+                                String name = t1.get(i).getName();
+                                String reaction = t1.get(i).getReaction();
+                                String notes = t1.get(i).getNotes();
+                                Log.v("Allergy Type", name + " " + reaction + " " + notes);
+                            }
+                        }
+                        DataHolder.resetCreatedPatient();
+                        Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+                        startActivity(intent);
 
-                    db.insertNewPatient(createdPatient.getFirstName(), createdPatient.getLastName(), createdPatient.getAddress(), createdPatient.getHomeNumber(), createdPatient.getPhoneNumber(), createdPatient.getGender(), createdPatient.getDob().toString(), createdPatient.getGuardianFullName(), createdPatient.getGuardianContactNumber(), createdPatient.getGuardianEmail());
-                    Log.i("Testing:", createdPatient.getFirstName());
-                    Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
-                    startActivity(intent);
+
+                        //allergy = 1; vital =2; social history=3; prescription =4; routine = 5;
+
+                    }
+//                    if (!createdpatient.getFirstName().equals(null)){
+//                        Log.v("Testing if htis works:", "Testing");
+//                    }
+//                    Toast.makeText(getBaseContext(),"Successfully Added!",Toast.LENGTH_LONG);
+//                    dbfile db = new dbfile();
+//                    Patient createdPatient;
+//                    createdPatient = DataHolder.getCreatedPatient();
+//                    if(createdPatient.getFirstName() != "" && createdPatient.getLastName() != "") {
+//                        db.insertNewPatient(createdPatient.getFirstName(), createdPatient.getLastName(), createdPatient.getAddress(), createdPatient.getHomeNumber(), createdPatient.getPhoneNumber(), createdPatient.getGender(), createdPatient.getDob().toString(), createdPatient.getGuardianFullName(), createdPatient.getGuardianContactNumber(), createdPatient.getGuardianEmail());
+//                        Log.i("Testing:", createdPatient.getFirstName());
+//                        Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+//                        startActivity(intent);
+//                    }
                 }
             });
         }

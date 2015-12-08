@@ -19,12 +19,36 @@ public class dbfile {
     String connString = "jdbc:jtds:sqlserver://PALM.arvixe.com:1433/dementiafypdb;encrypt=false;user=fyp2015;password=va5a7eve;instance=SQLEXPRESS;";
     String username = "fyp2015";
     String password = "va5a7eve";
-
+    int id;
     public void connectionSettings(){
 
     }
+    public int getPatientId(String nric){
 
-    public void insertNewPatient(String firstname,String lastname, String address, String officeno, String handphoneno, char gender, String date, String gname, String gcontactno, String gemail){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            ResultSet reset = stmt.executeQuery("select * from patient where nric='" + nric + "'");
+
+            while (reset.next()) {
+                id = reset.getInt("patientID");
+            }
+            conn.close();
+
+            return id;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return id;
+
+    }
+    public void insertNewPatient(String firstname,String lastname, String nric, String address, String officeno, String handphoneno, char gender, String date, String gname, String gcontactno, String gemail){
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -37,7 +61,7 @@ public class dbfile {
             Calendar cal = Calendar.getInstance();
             java.sql.Timestamp timestamp = new java.sql.Timestamp(cal.getTimeInMillis());
             String sql = "INSERT INTO patient " +
-                    "VALUES ('" + firstname + "','" + lastname + "','" + address + "','" + officeno + "','" + handphoneno + "','" + gender + "','" + date + "','" + gname + "','" + gcontactno + "','" + gemail + "'," + 0 + "," + 0 + ",'" + timestamp + "')";
+                    "VALUES ('" + firstname + "','" + lastname + "','" + nric + "','" + address + "','" + officeno + "','" + handphoneno + "','" + gender + "','" + date + "','" + gname + "','" + gcontactno + "','" + gemail + "'," + 0 + "," + 0 + ",'" + timestamp + "')";
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(sql);
 
