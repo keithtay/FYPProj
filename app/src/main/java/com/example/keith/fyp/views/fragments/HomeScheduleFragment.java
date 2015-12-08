@@ -8,10 +8,12 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +27,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.FilterList;
 import com.example.keith.fyp.models.Schedule;
 import com.example.keith.fyp.utils.Global;
@@ -35,6 +38,10 @@ import com.example.keith.fyp.views.adapters.HomeScheduleAdapter;
 import com.google.gson.Gson;
 import com.melnykov.fab.FloatingActionButton;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,6 +74,13 @@ public class HomeScheduleFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Patient's Current Activity");
 
 
+       dbfile db = new dbfile();
+        ArrayList<String> testing = new ArrayList<>();
+        testing = db.testingConnection();
+//        db.testInsert();
+        for(int i = 0; i < testing.size(); i=i+4){
+            Log.v("TESTING:)", testing.get(i) + " " + testing.get(i+1) + " " + testing.get(i+2) + " " + testing.get(i+3));
+        }
 
 
         refresh = new Runnable() {
@@ -106,6 +120,7 @@ public class HomeScheduleFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view,
                                        int position, long id) {
+
                 // Here you get the current item (a User object) that is selected by its position
                 FilterList filter = adapter.getItem(position);
                 List<Schedule> getFilterList = new ArrayList<Schedule>();

@@ -9,8 +9,8 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.google.android.gms.nearby.messages.internal.MessageType;
+//import com.google.android.gms.gcm.GoogleCloudMessaging;
+//import com.google.android.gms.nearby.messages.internal.MessageType;
 
 /**
  * Created by Keith on 30/9/2015.
