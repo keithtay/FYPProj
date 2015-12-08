@@ -11,7 +11,8 @@
         android:id="@+id/create_patient_info_categ_list_fragment"
         android:name="com.example.keith.fyp.views.fragments.PatientInfoCategListFragment"
         android:layout_width="300dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:layout="@layout/fragment_patient_info_categ_list" />
 
     <View
         android:id="@+id/info_categ_list_shadow"

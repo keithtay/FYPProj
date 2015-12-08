@@ -156,9 +156,9 @@ public class CreatePatientInfoFormPersonalInfoFragment extends CreatePatientInfo
     private void highlightEmptyField(Bundle bundle) {
         ArrayList<Integer> emptyFieldIdList = bundle.getIntegerArrayList(Global.EXTRA_EMPTY_FIELD_ID_LIST);
 
-        if (emptyFieldIdList.contains(Global.PHOTO)) {
-            Toast.makeText(getActivity(), R.string.error_msg_no_photo, Toast.LENGTH_SHORT).show();
-        }
+//        if (emptyFieldIdList.contains(Global.PHOTO)) {
+//            Toast.makeText(getActivity(), R.string.error_msg_no_photo, Toast.LENGTH_SHORT).show();
+//        }
         if (emptyFieldIdList.contains(Global.FIRST_NAME_FIELD)) {
             firstNameEditText.setError(activity.getString(R.string.error_msg_field_required));
         }

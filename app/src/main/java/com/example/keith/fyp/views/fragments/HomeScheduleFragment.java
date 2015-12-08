@@ -74,13 +74,13 @@ public class HomeScheduleFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Patient's Current Activity");
 
 
-       dbfile db = new dbfile();
-        ArrayList<String> testing = new ArrayList<>();
-        testing = db.testingConnection();
-//        db.testInsert();
-        for(int i = 0; i < testing.size(); i=i+4){
-            Log.v("TESTING:)", testing.get(i) + " " + testing.get(i+1) + " " + testing.get(i+2) + " " + testing.get(i+3));
-        }
+//       dbfile db = new dbfile();
+//        ArrayList<String> testing = new ArrayList<>();
+//        testing = db.testingConnection();
+////        db.testInsert();
+//        for(int i = 0; i < testing.size(); i=i+4){
+//            Log.v("TESTING:)", testing.get(i) + " " + testing.get(i+1) + " " + testing.get(i+2) + " " + testing.get(i+3));
+//        }
 
 
         refresh = new Runnable() {

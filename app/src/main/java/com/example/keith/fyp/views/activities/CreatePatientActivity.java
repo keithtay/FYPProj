@@ -27,6 +27,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.CreatePatientCommunicator;
@@ -71,7 +72,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 /**
@@ -79,7 +82,7 @@ import java.util.HashMap;
  */
 public class CreatePatientActivity extends AppCompatActivity implements CreatePatientCommunicator, Drawer.OnDrawerItemClickListener {
 
-    public static final TessBaseAPI BASE_API = new TessBaseAPI();
+//    public static final TessBaseAPI BASE_API = new TessBaseAPI();
     private PatientInfoCategListFragment infoCategListFragment;
     private Fragment fragmentDisplayed;
 
@@ -140,6 +143,16 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
                 @Override
                 public void onClick(View v) {
                     checkRequiredFields();
+                    Toast.makeText(getBaseContext(),"Successfully Added!",Toast.LENGTH_LONG);
+                    dbfile db = new dbfile();
+
+                    Patient createdPatient;
+                    createdPatient = DataHolder.getCreatedPatient();
+
+                    db.insertNewPatient(createdPatient.getFirstName(), createdPatient.getLastName(), createdPatient.getAddress(), createdPatient.getHomeNumber(), createdPatient.getPhoneNumber(), createdPatient.getGender(), createdPatient.getDob().toString(), createdPatient.getGuardianFullName(), createdPatient.getGuardianContactNumber(), createdPatient.getGuardianEmail());
+                    Log.i("Testing:", createdPatient.getFirstName());
+                    Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+                    startActivity(intent);
                 }
             });
         }
