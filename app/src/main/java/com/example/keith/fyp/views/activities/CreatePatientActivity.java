@@ -33,6 +33,9 @@ import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.CreatePatientCommunicator;
 import com.example.keith.fyp.models.Patient;
+import com.example.keith.fyp.models.Prescription;
+import com.example.keith.fyp.models.Routine;
+import com.example.keith.fyp.models.Vital;
 import com.example.keith.fyp.utils.CreatePatientFormFragmentEncoder;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
@@ -143,7 +146,10 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
             createNewPatientFab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    checkRequiredFields();
+
+                    //can either speed up the connection by not closing the conneciton till the end
+                    // or adding a loading bar at the add patient screen (Else Statement first line)
+
                     Patient createdPatient = DataHolder.getCreatedPatient();
                     String fName = createdPatient.getFirstName();
                     String lName = createdPatient.getLastName();
@@ -152,7 +158,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
                     String gufullname = createdPatient.getGuardianFullName();
                     String guContact = createdPatient.getGuardianContactNumber();
                     if(fName == null || lName == null || nric == null || phoneNumber == null || gufullname == null || guContact == null){
-                        Log.v("Never Fill up fields", "Testing");
+                        checkRequiredFields();
                     }else{
                         dbfile db = new dbfile();
                         db.insertNewPatient(createdPatient.getFirstName(), createdPatient.getLastName(), createdPatient.getNric(), createdPatient.getAddress(), createdPatient.getHomeNumber(), createdPatient.getPhoneNumber(), createdPatient.getGender(), createdPatient.getDob().toString(), createdPatient.getGuardianFullName(), createdPatient.getGuardianContactNumber(), createdPatient.getGuardianEmail());
@@ -166,7 +172,83 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
                                 String name = t1.get(i).getName();
                                 String reaction = t1.get(i).getReaction();
                                 String notes = t1.get(i).getNotes();
-                                Log.v("Allergy Type", name + " " + reaction + " " + notes);
+                                String concatString = name + ";" + reaction + ";" + notes;
+                                db.insertPatientSpec(concatString, id, 1);
+                            }
+                        }
+                        if (createdPatient.getVitalList().size() >= 1){
+                            ArrayList<Vital> v1 = createdPatient.getVitalList();
+                            for (int i = 0; i < v1.size(); i++) {
+                                String date = v1.get(i).getDateTimeTaken().toString();
+                                Boolean meal = v1.get(i).isBeforeMeal();
+                                String temperature = String.valueOf(v1.get(i).getTemperature());
+                                String bloodpressuresystol = String.valueOf(v1.get(i).getBloodPressureSystol());
+                                String bloodpressurediastol = String.valueOf(v1.get(i).getBloodPressureDiastol());
+                                String height = String.valueOf(v1.get(i).getHeight());
+                                String weight = String.valueOf(v1.get(i).getWeight());
+                                String notes = v1.get(i).getNotes();
+                                String concatString = date + ";" + meal.toString() + ";" + temperature+ ";" + bloodpressuresystol+ ";" + bloodpressurediastol+ ";" + height+ ";" + weight+ ";" + notes;
+                                db.insertPatientSpec(concatString,id,2);
+                            }
+
+                        }
+                        if (createdPatient.getSocialHistory().getLiveWith() != null || createdPatient.getSocialHistory().getDiet() !=null ||
+                                createdPatient.getSocialHistory().getReligion() !=null || createdPatient.getSocialHistory().getIsSecondhandSmoker() == true ||
+                                createdPatient.getSocialHistory().getIsSexuallyActive() == true || createdPatient.getSocialHistory().getPet() != null||
+                                createdPatient.getSocialHistory().getOccupation() != null || createdPatient.getSocialHistory().getLike() != null ||
+                                createdPatient.getSocialHistory().getExercise() != null){
+
+                            String livewith = createdPatient.getSocialHistory().getLiveWith();
+                            String diet = createdPatient.getSocialHistory().getDiet();
+                            String religion = createdPatient.getSocialHistory().getReligion();
+                            String sexuallyactive = createdPatient.getSocialHistory().getIsSexuallyActive().toString();
+                            String secondhandsmoker = createdPatient.getSocialHistory().getIsSecondhandSmoker().toString();
+                            String alcoholuse = createdPatient.getSocialHistory().getAlcoholUse();
+                            String caffineuse = createdPatient.getSocialHistory().getCaffeineUse();
+                            String tobbaco = createdPatient.getSocialHistory().getTobaccoUse();
+                            String druguse = createdPatient.getSocialHistory().getDrugUse();
+                            String pet = createdPatient.getSocialHistory().getPet();
+                            String occupation = createdPatient.getSocialHistory().getOccupation();
+                            String like = createdPatient.getSocialHistory().getLike();
+                            String dislike = createdPatient.getSocialHistory().getDislike();
+                            String hobby = createdPatient.getSocialHistory().getHobby();
+                            String habbit = createdPatient.getSocialHistory().getHabbit();
+                            String holidayExperience = createdPatient.getSocialHistory().getHolidayExperience();
+                            String education = createdPatient.getSocialHistory().getEducation();
+                            String exercise = createdPatient.getSocialHistory().getExercise();
+                            String concatString = livewith + ";" + diet + ";" + religion+ ";" + sexuallyactive+ ";" + secondhandsmoker+ ";" + alcoholuse+ ";" + caffineuse+ ";" + tobbaco
+                                    + ";" + druguse + ";" + pet + ";" + occupation + ";" + like+ ";" + dislike + ";" + hobby + ";" + habbit+ ";" + holidayExperience + ";" + education + ";" + exercise;
+                            db.insertPatientSpec(concatString,id,3);
+                        }
+                        if (createdPatient.getPrescriptionList().size() >= 1){
+                            ArrayList<Prescription> p1 = createdPatient.getPrescriptionList();
+                            for (int i = 0; i < p1.size(); i++) {
+                                String drugname = p1.get(i).getName();
+                                String dosage = p1.get(i).getDosage();
+                                String frequencyperday = String.valueOf(p1.get(i).getFreqPerDay());
+                                String instruction = p1.get(i).getInstruction();
+                                String startdate = p1.get(i).getStartDate().toString();
+                                String enddate = p1.get(i).getEndDate().toString();
+                                String aftermeal = p1.get(i).getBeforeAfterMeal().toString();
+                                String notes = p1.get(i).getNotes();
+                                String concatString = drugname + ";" + dosage + ";" + frequencyperday+ ";" + instruction+ ";" + startdate+ ";" + enddate+ ";" + aftermeal+ ";" + notes;
+                                db.insertPatientSpec(concatString,id,4);
+                            }
+
+                        }
+
+                        if (createdPatient.getRoutineList().size() >= 1) {
+                            ArrayList<Routine> r1 = createdPatient.getRoutineList();
+                            for (int i = 0; i < r1.size(); i++) {
+                                String eventname = r1.get(i).getName();
+                                String notes = r1.get(i).getNotes();
+                                String startdate = r1.get(i).getStartDate().toString();
+                                String enddate = r1.get(i).getEndDate().toString();
+                                String starttime = r1.get(i).getStartTime().toString();
+                                String endtime = r1.get(i).getEndTime().toString();
+                                String repeat = r1.get(i).getEveryLabel();
+                                String concatString = eventname + ";" + notes + ";" + startdate + ";" + enddate + ";" + starttime + ";" + endtime + ";" + repeat;
+                                db.insertPatientSpec(concatString, id, 5);
                             }
                         }
                         DataHolder.resetCreatedPatient();
@@ -177,19 +259,6 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
                         //allergy = 1; vital =2; social history=3; prescription =4; routine = 5;
 
                     }
-//                    if (!createdpatient.getFirstName().equals(null)){
-//                        Log.v("Testing if htis works:", "Testing");
-//                    }
-//                    Toast.makeText(getBaseContext(),"Successfully Added!",Toast.LENGTH_LONG);
-//                    dbfile db = new dbfile();
-//                    Patient createdPatient;
-//                    createdPatient = DataHolder.getCreatedPatient();
-//                    if(createdPatient.getFirstName() != "" && createdPatient.getLastName() != "") {
-//                        db.insertNewPatient(createdPatient.getFirstName(), createdPatient.getLastName(), createdPatient.getAddress(), createdPatient.getHomeNumber(), createdPatient.getPhoneNumber(), createdPatient.getGender(), createdPatient.getDob().toString(), createdPatient.getGuardianFullName(), createdPatient.getGuardianContactNumber(), createdPatient.getGuardianEmail());
-//                        Log.i("Testing:", createdPatient.getFirstName());
-//                        Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
-//                        startActivity(intent);
-//                    }
                 }
             });
         }
