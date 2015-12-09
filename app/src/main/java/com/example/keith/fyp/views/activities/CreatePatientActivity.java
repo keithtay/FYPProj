@@ -193,8 +193,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
 
                         }
                         if (createdPatient.getSocialHistory().getLiveWith() != null || createdPatient.getSocialHistory().getDiet() !=null ||
-                                createdPatient.getSocialHistory().getReligion() !=null || createdPatient.getSocialHistory().getIsSecondhandSmoker() == true ||
-                                createdPatient.getSocialHistory().getIsSexuallyActive() == true || createdPatient.getSocialHistory().getPet() != null||
+                                createdPatient.getSocialHistory().getReligion() !=null || createdPatient.getSocialHistory().getPet() != null||
                                 createdPatient.getSocialHistory().getOccupation() != null || createdPatient.getSocialHistory().getLike() != null ||
                                 createdPatient.getSocialHistory().getExercise() != null){
 

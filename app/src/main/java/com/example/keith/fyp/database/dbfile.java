@@ -4,6 +4,9 @@ import android.os.StrictMode;
 import android.util.Log;
 import android.widget.EditText;
 
+import com.example.keith.fyp.R;
+import com.example.keith.fyp.models.Schedule;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -23,7 +26,33 @@ public class dbfile {
     Calendar cal = Calendar.getInstance();
     java.sql.Timestamp timestamp = new java.sql.Timestamp(cal.getTimeInMillis());
 
+    public ArrayList<Schedule> getPatientSchedule(int careGiverID, String date){
+        ArrayList<Schedule> patientScheduleList = new ArrayList<>();
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            ResultSet reset = stmt.executeQuery("select * from patientAllocation AS pa INNER JOIN schedule AS s " +
+                    " ON pa.patientAllocationID = s.patientAllocationID" +
+                    " INNER JOIN patient as p ON p.patientID = pa.patientid where pa.caregiverID='" + careGiverID + "' AND s.dateStart ='" + date +"'");
 
+            while (reset.next()) {
+                Schedule schedule1 = new Schedule(R.drawable.avatar_01, reset.getString("firstName"), reset.getString("nric"), reset.getString("scheduleTitle"), reset.getString("timeStart"), reset.getString("timeEnd"));
+                patientScheduleList.add(schedule1);
+            }
+
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return patientScheduleList;
+    }
     public int getPatientId(String nric){
 
         if (android.os.Build.VERSION.SDK_INT > 9) {

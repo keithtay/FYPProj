@@ -270,6 +270,17 @@ public class HomeScheduleFragment extends Fragment {
 
 
     private List<Schedule> getScheduleList() {
+        //need to store locally into pref for the next day schedule
+        //have to ensure the schedule for today is stored too and filtered by date time
+        int caregiverId = 8;
+        Calendar cal = Calendar.getInstance();
+        java.sql.Timestamp timestamp = new java.sql.Timestamp(cal.getTimeInMillis());
+        String dateNow = timestamp.toString().substring(0,10);
+        String timeNow = timestamp.toString().substring(10,19);
+        dbfile db = new dbfile();
+        ArrayList<Schedule> patientScheduleList = new ArrayList<>();
+        patientScheduleList = db.getPatientSchedule(caregiverId, dateNow);
+        Log.v("Testing", patientScheduleList.get(0).getName() + patientScheduleList.get(0).getcActivity());
         List<Schedule> scheduleList = new ArrayList<>();
 
         int[] photoid = {R.drawable.avatar_01,
