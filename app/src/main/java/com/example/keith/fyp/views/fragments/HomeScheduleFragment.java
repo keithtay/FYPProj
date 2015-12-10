@@ -39,9 +39,15 @@ import com.google.gson.Gson;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.sql.Connection;
+//import java.sql.Date;
+//import java.sql.Date;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,7 +55,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-
 /**
  * Created by Keith on 22/9/2015.
  */
@@ -58,7 +63,10 @@ public class HomeScheduleFragment extends Fragment {
     private ScheduleRecycleView scheduleRecyclerView;
     private HomeScheduleAdapter scheduleAdapter;
     private FloatingActionButton createPatientFab;
-
+//    java.sql.Date date,date1,date2;
+    String nextActivityTime = "-No Time-";
+    String currentActivity = "-No Activity-";
+    String nextActivity = "-No Activity-";
     private SpinAdapter adapter;
     Handler handler = new Handler();
     Runnable refresh;
@@ -72,16 +80,6 @@ public class HomeScheduleFragment extends Fragment {
 
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Patient's Current Activity");
-
-
-//       dbfile db = new dbfile();
-//        ArrayList<String> testing = new ArrayList<>();
-//        testing = db.testingConnection();
-////        db.testInsert();
-//        for(int i = 0; i < testing.size(); i=i+4){
-//            Log.v("TESTING:)", testing.get(i) + " " + testing.get(i+1) + " " + testing.get(i+2) + " " + testing.get(i+3));
-//        }
-
 
         refresh = new Runnable() {
             public void run() {
@@ -277,86 +275,189 @@ public class HomeScheduleFragment extends Fragment {
         java.sql.Timestamp timestamp = new java.sql.Timestamp(cal.getTimeInMillis());
         String dateNow = timestamp.toString().substring(0,10);
         String timeNow = timestamp.toString().substring(10,19);
+
+//        DateFormat formatter = new SimpleDateFormat("HH:mm");
+//        try {
+//            date = (Date)formatter.parse(timeNow);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
         dbfile db = new dbfile();
         ArrayList<Schedule> patientScheduleList = new ArrayList<>();
         patientScheduleList = db.getPatientSchedule(caregiverId, dateNow);
-        Log.v("Testing", patientScheduleList.get(0).getName() + patientScheduleList.get(0).getcActivity());
         List<Schedule> scheduleList = new ArrayList<>();
+        if(patientScheduleList.size() != 0) {
+            Collections.sort(patientScheduleList, Schedule.COMPARE_BY_SCHEDULE);
+            Collections.sort(patientScheduleList, Schedule.COMPARE_BY_NAME);
+            for (int i = 0; i < patientScheduleList.size(); i++) {
+                Log.v("Printing:", patientScheduleList.get(i).getName() + patientScheduleList.get(i).getnActivityTime());
+            }
 
-        int[] photoid = {R.drawable.avatar_01,
-                R.drawable.avatar_02,
-                R.drawable.avatar_03,
-                R.drawable.avatar_04,
-                R.drawable.avatar_05,
-                R.drawable.avatar_06,
-                R.drawable.avatar_07,
-                R.drawable.avatar_08,
-                R.drawable.avatar_09,
-                R.drawable.avatar_10,
-                };
+            String holder = patientScheduleList.get(0).getNric();
+//
+//        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+            String date = timeNow;
+            Log.v("Testing:", date);
+            String d1 = date.substring(0, 3);
+            String d2 = date.substring(4, 6);
+            String d3 = d1 + "." + d2;
+            float dateHour = Float.parseFloat(d3);
 
-        String[] pname = {"Andy",
-                "Bob",
-                "Charlie",
-                "David",
-                "Eve",
-                "Florence",
-                "Gordon",
-                "Hilda",
-                "Ivan",
-                "Justin",
-                };
 
-        String[] pid = {"123456",
-                "654321",
-                "984203",
-                "562745",
-                "234745",
-                "234643",
-                "234534",
-                "234643",
-                "345634",
-                "743164",
-                };
+//        java.util.Date parsed = null;
+//        try {
+//            parsed = format.parse("17:00");
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        java.sql.Date sql = new java.sql.Date(parsed.getTime());
+//        Log.v("TIME IN DATE:", String.valueOf(sql.getTime()));
 
-        String[] cActivity = {"Sleep",
-                "Eat",
-                "Eat",
-                "Eat",
-                "Sleep",
-                "Bath",
-                "Bath",
-                "Talk",
-                "Eat",
-                "Game",
-        };
+            for (int i = 0; i < patientScheduleList.size(); i++) {
+                String date2 = patientScheduleList.get(i).getnActivityTime();
+                String e1 = date2.substring(0, 2);
+                String e2 = date2.substring(3, 5);
+                String e3 = e1 + "." + e2;
+                float date2Hour = Float.parseFloat(e3);
+                String date3 = patientScheduleList.get(i).getnActivity();
+                String f1 = date3.substring(0, 2);
+                String f2 = date3.substring(3, 5);
+                String f3 = f1 + "." + f2;
+                float date3Hour = Float.parseFloat(f3);
+//                if (date.after(date1) && date.before(date2)) {
+                //if currentTime falls within the timing interval
+                if (date2Hour <= dateHour && dateHour <= date3Hour) {
+                    currentActivity = patientScheduleList.get(i).getcActivity();
 
-        String[] nActivityTime = {"16:30hrs- 17:00hrs",
-                "16:30hrs- 17:00hrs",
-                "16:35hrs- 17:00hrs",
-                "16:40hrs- 17:00hrs",
-                "16:45hrs- 17:00hrs",
-                "16:50hrs- 17:00hrs",
-                "16:55hrs- 17:00hrs",
-                "17:00hrs- 17:00hrs",
-                "17:30hrs- 18:00hrs",
-                "17:30hrs- 18:00hrs",
-        };
-        String[] nActivity = {"Eat",
-                "Eat",
-                "Eat",
-                "Eat",
-                "Eat",
-                "Eat",
-                "Eat",
-                "Eat",
-                "Eat",
-                "Eat",
-        };
-        for (int i = 0; i < photoid.length; i++) {
-            Schedule schedule1 = new Schedule(photoid[i], pname[i], pid[i], cActivity[i],nActivityTime[i], nActivity[i]);
-            scheduleList.add(schedule1);
+                    //check if the next item in the list is the final node, if yes, get the current and stall and break loop
+                    if ((i + 1) >= patientScheduleList.size()) {
+                        Schedule schedule1 = new Schedule(R.drawable.avatar_01, patientScheduleList.get(i).getName(), patientScheduleList.get(i).getNric()
+                                , currentActivity, nextActivityTime, nextActivity);
+                        scheduleList.add(schedule1);
+                        break;
+                    }
+                    //check if the next tuple if it is stil the same user, if yes, assign the next activity
+                    if (patientScheduleList.get(i + 1).getNric().equals(holder)) {
+                        nextActivityTime = patientScheduleList.get(i + 1).getnActivityTime().substring(0, 5) + "-" + patientScheduleList.get(i + 1).getnActivity().substring(0,5);
+                        nextActivity = patientScheduleList.get(i + 1).getcActivity();
+                        Schedule schedule1 = new Schedule(R.drawable.avatar_01, patientScheduleList.get(i).getName(), patientScheduleList.get(i).getNric()
+                                , currentActivity, nextActivityTime, nextActivity);
+                        scheduleList.add(schedule1);
+                        nextActivityTime = "-No Time-";
+                        currentActivity = "-No Activity-";
+                        nextActivity = "-No Activity-";
+                        continue;
+                    }
+                    //if time interval not within, check if the next tuple if it is a diff user or no more tuple
+                } else if ((i + 1) >= patientScheduleList.size() || !patientScheduleList.get(i + 1).getNric().equals(holder)) {
+                    String date4 = patientScheduleList.get(i).getnActivity();
+                    String g1 = date4.substring(0, 2);
+                    String g2 = date4.substring(3, 5);
+                    String g3 = g1 + "." + g2;
+                    float date4Hour = Float.parseFloat(g3);
+                    if (date4Hour > dateHour) {
+                        Schedule schedule1 = new Schedule(R.drawable.avatar_01, patientScheduleList.get(i).getName(), patientScheduleList.get(i).getNric()
+                                , currentActivity, patientScheduleList.get(i).getnActivityTime().substring(0,5) + "-" + patientScheduleList.get(i).getnActivity().substring(0,5), patientScheduleList.get(i).getcActivity());
+                        scheduleList.add(schedule1);
+                    } else {
+                        Schedule schedule1 = new Schedule(R.drawable.avatar_01, patientScheduleList.get(i).getName(), patientScheduleList.get(i).getNric()
+                                , currentActivity, nextActivityTime, nextActivity);
+                        scheduleList.add(schedule1);
+                    }
+                }
+                if ((i + 1) >= patientScheduleList.size()) {
+                    break;
+                }
+                if (!patientScheduleList.get(i + 1).getNric().equals(holder)) {
+                    holder = patientScheduleList.get(i + 1).getNric();
+                    nextActivityTime = "-No Time-";
+                    currentActivity = "-No Activity-";
+                    nextActivity = "-No Activity-";
+                }
+
+            }
+            return scheduleList;
         }
+//
+////        Schedule schedule1 = new Schedule(photoid[i], pname[i], pid[i], cActivity[i],nActivityTime[i], nActivity[i]);
+////        scheduleList.add(schedule1);
+////        Log.v("Testing", patientScheduleList.get(0).getName() + patientScheduleList.get(0).getcActivity());
+
+
+//        int[] photoid = {R.drawable.avatar_01,
+//                R.drawable.avatar_02,
+//                R.drawable.avatar_03,
+//                R.drawable.avatar_04,
+//                R.drawable.avatar_05,
+//                R.drawable.avatar_06,
+//                R.drawable.avatar_07,
+//                R.drawable.avatar_08,
+//                R.drawable.avatar_09,
+//                R.drawable.avatar_10,
+//                };
+//
+//        String[] pname = {"Andy",
+//                "Bob",
+//                "Charlie",
+//                "David",
+//                "Eve",
+//                "Florence",
+//                "Gordon",
+//                "Hilda",
+//                "Ivan",
+//                "Justin",
+//                };
+//
+//        String[] pid = {"123456",
+//                "654321",
+//                "984203",
+//                "562745",
+//                "234745",
+//                "234643",
+//                "234534",
+//                "234643",
+//                "345634",
+//                "743164",
+//                };
+//
+//        String[] cActivity = {"Sleep",
+//                "Eat",
+//                "Eat",
+//                "Eat",
+//                "Sleep",
+//                "Bath",
+//                "Bath",
+//                "Talk",
+//                "Eat",
+//                "Game",
+//        };
+//
+//        String[] nActivityTime = {"16:30hrs- 17:00hrs",
+//                "16:30hrs- 17:00hrs",
+//                "16:35hrs- 17:00hrs",
+//                "16:40hrs- 17:00hrs",
+//                "16:45hrs- 17:00hrs",
+//                "16:50hrs- 17:00hrs",
+//                "16:55hrs- 17:00hrs",
+//                "17:00hrs- 17:00hrs",
+//                "17:30hrs- 18:00hrs",
+//                "17:30hrs- 18:00hrs",
+//        };
+//        String[] nActivity = {"Eat",
+//                "Eat",
+//                "Eat",
+//                "Eat",
+//                "Eat",
+//                "Eat",
+//                "Eat",
+//                "Eat",
+//                "Eat",
+//                "Eat",
+//        };
+//        for (int i = 0; i < photoid.length; i++) {
+//            Schedule schedule1 = new Schedule(photoid[i], pname[i], pid[i], cActivity[i],nActivityTime[i], nActivity[i]);
+//            scheduleList.add(schedule1);
+//        }
 
         return scheduleList;
     }

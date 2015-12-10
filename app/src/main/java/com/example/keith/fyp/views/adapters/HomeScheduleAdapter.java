@@ -59,6 +59,7 @@ public class HomeScheduleAdapter extends RecyclerView.Adapter<HomeScheduleAdapte
 
     @Override
     public void onBindViewHolder(HomeScheduleHolder holder, int position) {
+        String noTime = "-No Time-";
         Schedule currentSchedule = filteredScheduleList.get(position);
         holder.patientPhoto.setImageResource(currentSchedule.getPhotoid());
         holder.patientName.setText(currentSchedule.getName());
@@ -67,24 +68,28 @@ public class HomeScheduleAdapter extends RecyclerView.Adapter<HomeScheduleAdapte
 
         holder.nextActivityTime.setText(currentSchedule.getnActivityTime());
 
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm ");
-        String strDate = sdf.format(c.getTime());
-        int a1 = Integer.parseInt(strDate.substring(0, 2));
-        int a2 = Integer.parseInt(strDate.substring(3, 5));
-        String strDate2 = currentSchedule.getnActivityTime();
-        int b1 = Integer.parseInt(strDate2.substring(0, 2));
-        int b2 = Integer.parseInt(strDate2.substring(3, 5));
-        if (b1-a1 == 0 && b2-a2 <= 15){
-            holder.nextActivityTime.setTextColor(Color.rgb(255,0,0));
+        if (currentSchedule.getnActivityTime().equals(noTime)) {
+            holder.nextActivityTime.setTextColor(Color.rgb(0, 0, 0));
+            holder.nextActivity.setText(currentSchedule.getnActivity());
         }else{
-            holder.nextActivityTime.setTextColor(Color.rgb(0,0,0));
+            Calendar c = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm ");
+            String strDate = sdf.format(c.getTime());
+            int a1 = Integer.parseInt(strDate.substring(0, 2));
+            int a2 = Integer.parseInt(strDate.substring(3, 5));
+            String strDate2 = currentSchedule.getnActivityTime();
+            int b1 = Integer.parseInt(strDate2.substring(0, 2));
+            int b2 = Integer.parseInt(strDate2.substring(3, 5));
+            if (b1 - a1 == 0 && b2 - a2 <= 15) {
+                holder.nextActivityTime.setTextColor(Color.rgb(255, 0, 0));
+            } else {
+                holder.nextActivityTime.setTextColor(Color.rgb(0, 0, 0));
+            }
+
+            holder.nextActivity.setText(currentSchedule.getnActivity());
+
         }
-
-        holder.nextActivity.setText(currentSchedule.getnActivity());
-
     }
-
 
     @Override
     public int getItemCount() {
