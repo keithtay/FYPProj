@@ -3,8 +3,10 @@ package com.example.keith.fyp.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.Allergy;
 import com.example.keith.fyp.models.DefaultEvent;
 import com.example.keith.fyp.models.Event;
@@ -137,17 +139,29 @@ public class DataHolder {
      * @param context context of the application
      * @return list of {@link Patient} in the care centre
      */
+    public static ArrayList<Patient> getPatientList(Context context, String nric) {
+//        resetViewedPatient();
+
+            // Initialize mock patient list
+            dbfile db = new dbfile();
+
+            patientList = db.getAllPatientInformation(nric,context);
+            Log.v("Testing patient1 =", String.valueOf(patientList.size()));
+
+
+        return patientList;
+    }
     public static ArrayList<Patient> getPatientList(Context context) {
+
         if (patientList.size() == 0) {
             // Initialize mock patient list
-
             // ==========================
             // Patient 1
             // ==========================
             Patient patient1 = new Patient();
             patient1.setFirstName("Andy");
             patient1.setLastName("Perkins");
-            patient1.setNric("1000001");
+            patient1.setNric("S8487281J");
             patient1.setAddress("296 Route 64 The Villages");
             patient1.setHomeNumber("1234 5678");
             patient1.setPhoneNumber("1234 5678");
@@ -221,7 +235,7 @@ public class DataHolder {
             Patient patient2 = new Patient();
             patient2.setFirstName("Brooke");
             patient2.setLastName("Roberson");
-            patient2.setNric("1000002");
+            patient2.setNric("S9234567A");
             patient2.setAddress("869 Myrtle Avenue Winter Haven");
             patient2.setHomeNumber("2222 1111");
             patient2.setPhoneNumber("1111 2222");

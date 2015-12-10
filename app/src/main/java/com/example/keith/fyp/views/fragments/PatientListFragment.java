@@ -48,6 +48,7 @@ public class PatientListFragment extends Fragment {
         // ================
         // Prepare the patient list
         // ================
+
         patientListAdapter = new PatientListAdapter(getActivity(), DataHolder.getPatientList(getActivity()));
 
         patientListRecyclerView = (EmptyAndAutofitRecyclerView) rootView.findViewById(R.id.patient_list_grid);

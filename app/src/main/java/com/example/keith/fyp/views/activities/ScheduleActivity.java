@@ -44,14 +44,20 @@ public class ScheduleActivity extends AppCompatActivity {
 
         SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         selectedPatientNric = mPrefs.getString(Global.STATE_SELECTED_PATIENT_NRIC, "");
-        for(Patient patient : DataHolder.getPatientList(this)) {
-            if(patient.getNric().equals(selectedPatientNric)) {
+//        Patient patient;
+//        DataHolder.resetViewedPatient();
+//        ArrayList<Patient> pa = new ArrayList(DataHolder.getPatientList(this, selectedPatientNric));
+//        patient = pa.get(0);
+//        DataHolder.setViewedPatient(pa.get(0));
+//        viewedPatient = patient;
+        for(Patient patient : DataHolder.getPatientList(this, selectedPatientNric)) {
+            if (patient.getNric().equals(selectedPatientNric)) {
                 DataHolder.setViewedPatient(patient);
                 viewedPatient = patient;
                 break;
             }
-        }
 
+        }
         eventList = viewedPatient.getTodaySchedule().getEventList();
 
         spacingBetweenEventView = (int) getResources().getDimension(R.dimen.paper_card_padding) / 2;

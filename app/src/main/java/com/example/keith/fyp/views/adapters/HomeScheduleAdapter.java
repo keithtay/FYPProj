@@ -2,7 +2,9 @@ package com.example.keith.fyp.views.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.Schedule;
+import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.views.activities.DashboardActivity;
 import com.example.keith.fyp.views.activities.ViewScheduleActivity;
 
@@ -46,13 +49,21 @@ public class HomeScheduleAdapter extends RecyclerView.Adapter<HomeScheduleAdapte
     @Override
     public HomeScheduleHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View rootView = inflater.inflate(R.layout.home_schedule_data, parent, false);
-        rootView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, DashboardActivity.class);
-                context.startActivity(intent);
-            }
-        });
+//        rootView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+//                SharedPreferences.Editor editor = mPrefs.edit();
+//                editor.putString(Global.STATE_SELECTED_PATIENT_NRIC, patientNric.getText().toString());
+//                editor.commit();
+//
+//                Intent intent = new Intent(context, ViewScheduleActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//                context.startActivity(intent);
+////                Intent intent = new Intent(context, DashboardActivity.class);
+////                context.startActivity(intent);
+//            }
+//        });
         HomeScheduleHolder viewHolder = new HomeScheduleHolder(rootView);
         return viewHolder;
     }
@@ -119,6 +130,19 @@ public class HomeScheduleAdapter extends RecyclerView.Adapter<HomeScheduleAdapte
             currActivity = (TextView) itemView.findViewById(R.id.cActivity);
             nextActivityTime = (TextView) itemView.findViewById(R.id.nActivityTime);
             nextActivity = (TextView) itemView.findViewById(R.id.nActivity);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor editor = mPrefs.edit();
+                    editor.putString(Global.STATE_SELECTED_PATIENT_NRIC, patientNric.getText().toString());
+                    editor.commit();
+
+                    Intent intent = new Intent(context, ViewScheduleActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 

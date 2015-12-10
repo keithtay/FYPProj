@@ -347,6 +347,15 @@ public class HomeScheduleFragment extends Fragment {
                         currentActivity = "-No Activity-";
                         nextActivity = "-No Activity-";
                         continue;
+                    }else{
+                        nextActivityTime = "-No Time-";
+                        nextActivity = "-No Activity-";
+                        Schedule schedule1 = new Schedule(R.drawable.avatar_01, patientScheduleList.get(i).getName(), patientScheduleList.get(i).getNric()
+                                , currentActivity, nextActivityTime, nextActivity);
+                        scheduleList.add(schedule1);
+                        currentActivity = "-No Activity-";
+                        holder = patientScheduleList.get(i + 1).getNric();
+                        continue;
                     }
                     //if time interval not within, check if the next tuple if it is a diff user or no more tuple
                 } else if ((i + 1) >= patientScheduleList.size() || !patientScheduleList.get(i + 1).getNric().equals(holder)) {

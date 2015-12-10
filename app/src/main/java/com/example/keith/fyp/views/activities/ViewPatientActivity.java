@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.CreatePatientCommunicator;
@@ -27,6 +28,7 @@ import com.mikepenz.materialdrawer.MiniDrawer;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Activity to display the patient information
@@ -66,7 +68,12 @@ public class ViewPatientActivity extends AppCompatActivity  implements CreatePat
     private void getPatientInfoDetails() {
         SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         String selectedPatientNric = mPrefs.getString(Global.STATE_SELECTED_PATIENT_NRIC, "");
-        for(Patient patient : DataHolder.getPatientList(this)) {
+//        Patient patient;
+        Calendar cal = Calendar.getInstance();
+        java.sql.Timestamp timestamp = new java.sql.Timestamp(cal.getTimeInMillis());
+        String dateNow = timestamp.toString().substring(0,10);
+//        DataHolder.getPatientList(this, selectedPatientNric);
+        for(Patient patient : DataHolder.getPatientList(this, selectedPatientNric)) {
             if(patient.getNric().equals(selectedPatientNric)) {
                 viewedPatient = patient;
                 break;
