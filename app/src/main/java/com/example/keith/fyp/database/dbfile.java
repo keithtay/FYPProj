@@ -57,11 +57,7 @@ public class dbfile {
             Class.forName(driver).newInstance();
             conn = DriverManager.getConnection(connString, username, password);
             Statement stmt = conn.createStatement();
-//            ResultSet reset = stmt.executeQuery("select * from patient AS p INNER JOIN patientSpecInfo AS psi " +
-//                    " ON p.patientID = psi.patientID" +
-//                    " INNER JOIN specInfo as si ON si.specInfoID = psi.specInfoID " +
-//                    " INNER JOIN patientAllocation as pa ON pa.patientID=p.patientID " +
-//                    " where p.nric='" + nric + "'");
+
             ResultSet reset = stmt.executeQuery("select * from patient " +
                     " where nric='" + nric + "'");
 
@@ -91,89 +87,102 @@ public class dbfile {
                     patient1.setProblemLogList(new ArrayList<ProblemLog>());
                     count++;
                 }
-//                String specInfo = reset.getString("specInfoName");
-//                if (specInfo.equals("Allergy")) {
-//                    patient1.setHasAllergy(true);
-//                    String allg = reset.getString("patientSpecInfoValue");
-//                    String[] allg1 = allg.split(";");
-//                    Allergy allgery = new Allergy(allg1[0], allg1[1],allg1[2]);
-//                    patient1.getAllergyList().add(allgery);
-//                } else if (specInfo.equals("Vital")) {
-//                    String vital = reset.getString("patientSpecInfoValue");
-//                    String[] vital1 = vital.split(";");
-//                    String test = vital1[0];
-//                    DateTime a = DateTime.parse(test);
-//                    Vital vital2 = new Vital(a, Boolean.valueOf(vital1[1]),Float.parseFloat(vital1[2]),
-//                            Float.parseFloat(vital1[3]),Float.parseFloat(vital1[4]),Float.parseFloat(vital1[5]),Float.parseFloat(vital1[6]),
-//                            vital1[7]);
-//                    patient1.getVitalList().add(vital2);
-//                } else if (specInfo.equals("Social History")) {
-//                    String social = reset.getString("patientSpecInfoValue");
-//                    String[] socialList = social.split(";");
-//                    SocialHistory socialHistory = new SocialHistory();
-//                    socialHistory.setLiveWith(socialList[0]);
-//                    socialHistory.setDiet(socialList[1]);
-//                    socialHistory.setReligion(socialList[2]);
-//                    socialHistory.setIsSexuallyActive(Boolean.valueOf(socialList[3]));
-//                    socialHistory.setIsSecondhandSmoker(Boolean.valueOf(socialList[4]));
-//                    socialHistory.setAlcoholUse(socialList[5]);
-//                    socialHistory.setCaffeineUse(socialList[6]);
-//                    socialHistory.setTobaccoUse(socialList[7]);
-//                    socialHistory.setDrugUse(socialList[8]);
-//                    socialHistory.setPet(socialList[9]);
-//                    socialHistory.setOccupation(socialList[10]);
-//                    socialHistory.setLike(socialList[11]);
-//                    socialHistory.setDislike(socialList[12]);
-//                    socialHistory.setHobby(socialList[13]);
-//                    socialHistory.setHabbit(socialList[14]);
-//                    socialHistory.setHolidayExperience(socialList[15]);
-//                    socialHistory.setEducation(socialList[16]);
-//                    socialHistory.setExercise(socialList[17]);
-//                    patient1.setSocialHistory(socialHistory);
-//                } else if (specInfo.equals("Prescription")) {
-//                    String presc = reset.getString("patientSpecInfoValue");
-//                    String[] prescri = presc.split(";");
-//                    String dateStart = prescri[4];
-//                    String endDate = prescri[5];
-//                    int year = Integer.parseInt(dateStart.substring(0, 4));
-//                    int month = Integer.parseInt(dateStart.substring(5, 7));
-//                    int day = Integer.parseInt(dateStart.substring(8, 10));
-//                    int year1 = Integer.parseInt(endDate.substring(0, 4));
-//                    int month1 = Integer.parseInt(endDate.substring(5, 7));
-//                    int day1 = Integer.parseInt(endDate.substring(8, 10));
-//                    DateTime test = DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day);
-//                    DateTime test2 = DateTime.now().withYear(year1).withMonthOfYear(month1).withDayOfMonth(day1);
-//                    Prescription pe = new Prescription(prescri[0],prescri[1],Integer.parseInt(prescri[2]),prescri[3],test,
-//                            test2,prescri[6],prescri[7]);
-//                    patient1.getPrescriptionList().add(pe);
-//                } else if (specInfo.equals("Routine")) {
-//                    String routine = reset.getString("patientSpecInfoValue");
-//                    String[] ro = routine.split(";");
-//                    String dateStart = ro[2];
-//                    String endDate = ro[3];
-//                    int year = Integer.parseInt(dateStart.substring(0, 4));
-//                    int month = Integer.parseInt(dateStart.substring(5, 7));
-//                    int day = Integer.parseInt(dateStart.substring(8, 10));
-//                    int year1 = Integer.parseInt(endDate.substring(0, 4));
-//                    int month1 = Integer.parseInt(endDate.substring(5, 7));
-//                    int day1 = Integer.parseInt(endDate.substring(8, 10));
-//                    DateTime test = DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day);
-//                    DateTime test2 = DateTime.now().withYear(year1).withMonthOfYear(month1).withDayOfMonth(day1);
-//
-//                    String timeStart = ro[4];
-//                    String timeEnd = ro[5];
-//                    int hour = Integer.parseInt(timeStart.substring(11, 13));
-//                    int min = Integer.parseInt(timeStart.substring(14, 16));
-//                    int sec = Integer.parseInt(timeStart.substring(17, 19));
-//                    int hour1 = Integer.parseInt(timeEnd.substring(11, 13));
-//                    int min1 = Integer.parseInt(timeEnd.substring(14, 16));
-//                    int sec1 = Integer.parseInt(timeEnd.substring(17, 19));
-//                    DateTime test3 = DateTime.now().withHourOfDay(hour).withMinuteOfHour(min).withSecondOfMinute(sec);
-//                    DateTime test4 = DateTime.now().withHourOfDay(hour1).withMinuteOfHour(min1).withSecondOfMinute(sec1);
-//                    Routine rot = new Routine(ro[0],ro[1],test,test2,test3,test4
-//                            ,Integer.parseInt(ro[6]),ro[7]);
-//                    patient1.getRoutineList().add(rot);
-//                }
+                Statement stmt1 = conn.createStatement();
+                ResultSet reset1 = stmt1.executeQuery("select * from patient AS p INNER JOIN patientSpecInfo AS psi " +
+                        " ON p.patientID = psi.patientID" +
+                        " INNER JOIN specInfo as si ON si.specInfoID = psi.specInfoID " +
+                        " INNER JOIN patientAllocation as pa ON pa.patientID=p.patientID " +
+                        " where p.nric='" + nric + "'");
+                while(reset1.next()){
+                    Log.v("SpecInfoName:", String.valueOf(reset1.getString("specInfoName")));
+                String specInfo = reset1.getString("specInfoName");
+                if (specInfo.equals("Allergy")) {
+                    patient1.setHasAllergy(true);
+                    String allg = reset1.getString("patientSpecInfoValue");
+                    String[] allg1 = allg.split(";");
+                    Allergy allgery = new Allergy(allg1[0], allg1[1],allg1[2]);
+                    patient1.getAllergyList().add(allgery);
+                } else if (specInfo.equals("Vital")) {
+                    String vital = reset1.getString("patientSpecInfoValue");
+                    String[] vital1 = vital.split(";");
+                    String test = vital1[0];
+                    DateTime a = DateTime.parse(test);
+                    Vital vital2 = new Vital(a, Boolean.valueOf(vital1[1]),Float.parseFloat(vital1[2]),
+                            Float.parseFloat(vital1[3]),Float.parseFloat(vital1[4]),Float.parseFloat(vital1[5]),Float.parseFloat(vital1[6]),
+                            vital1[7]);
+                    patient1.getVitalList().add(vital2);
+                } else if (specInfo.equals("Social History")) {
+                    String social = reset1.getString("patientSpecInfoValue");
+                    String[] socialList = social.split(";");
+                    SocialHistory socialHistory = new SocialHistory();
+                    socialHistory.setLiveWith(socialList[0]);
+                    socialHistory.setDiet(socialList[1]);
+                    socialHistory.setReligion(socialList[2]);
+                    socialHistory.setIsSexuallyActive(Boolean.valueOf(socialList[3]));
+                    socialHistory.setIsSecondhandSmoker(Boolean.valueOf(socialList[4]));
+                    socialHistory.setAlcoholUse(socialList[5]);
+                    socialHistory.setCaffeineUse(socialList[6]);
+                    socialHistory.setTobaccoUse(socialList[7]);
+                    socialHistory.setDrugUse(socialList[8]);
+                    socialHistory.setPet(socialList[9]);
+                    socialHistory.setOccupation(socialList[10]);
+                    socialHistory.setLike(socialList[11]);
+                    socialHistory.setDislike(socialList[12]);
+                    socialHistory.setHobby(socialList[13]);
+                    socialHistory.setHabbit(socialList[14]);
+                    socialHistory.setHolidayExperience(socialList[15]);
+                    socialHistory.setEducation(socialList[16]);
+                    socialHistory.setExercise(socialList[17]);
+                    patient1.setSocialHistory(socialHistory);
+                } else if (specInfo.equals("Prescription")) {
+                    String presc = reset1.getString("patientSpecInfoValue");
+                    String[] prescri = presc.split(";");
+                    String dateStart = prescri[4];
+                    String endDate = prescri[5];
+                    int year = Integer.parseInt(dateStart.substring(0, 4));
+                    int month = Integer.parseInt(dateStart.substring(5, 7));
+                    int day = Integer.parseInt(dateStart.substring(8, 10));
+                    Log.v("Checking1", dateStart.substring(0, 4)+" "+dateStart.substring(5, 7)+" "+dateStart.substring(8, 10));
+                    int year1 = Integer.parseInt(endDate.substring(0, 4));
+                    int month1 = Integer.parseInt(endDate.substring(5, 7));
+                    int day1 = Integer.parseInt(endDate.substring(8, 10));
+                    
+                    DateTime test = DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day);
+                    DateTime test2 = DateTime.now().withYear(year1).withMonthOfYear(month1).withDayOfMonth(day1);
+                    Prescription pe = new Prescription(prescri[0],prescri[1],Integer.parseInt(prescri[2]),prescri[3],test,
+                            test2,prescri[6],prescri[7]);
+                    patient1.getPrescriptionList().add(pe);
+                } else if (specInfo.equals("Routine")) {
+                    String routine = reset1.getString("patientSpecInfoValue");
+                    String[] ro = routine.split(";");
+                    String dateStart = ro[2];
+                    String endDate = ro[3];
+                    int year = Integer.parseInt(dateStart.substring(0, 4));
+                    int month = Integer.parseInt(dateStart.substring(5, 7));
+                    int day = Integer.parseInt(dateStart.substring(8, 10));
+                    int year1 = Integer.parseInt(endDate.substring(0, 4));
+                    int month1 = Integer.parseInt(endDate.substring(5, 7));
+                    int day1 = Integer.parseInt(endDate.substring(8, 10));
+                    DateTime test = DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day);
+                    DateTime test2 = DateTime.now().withYear(year1).withMonthOfYear(month1).withDayOfMonth(day1);
+
+                    String timeStart = ro[4];
+                    String timeEnd = ro[5];
+                    int hour = Integer.parseInt(timeStart.substring(11, 13));
+                    int min = Integer.parseInt(timeStart.substring(14, 16));
+                    int sec = Integer.parseInt(timeStart.substring(17, 19));
+                    Log.v("Checking2", timeStart.substring(11, 13)+" "+timeStart.substring(14, 16)+" "+timeStart.substring(17, 19));
+                    int hour1 = Integer.parseInt(timeEnd.substring(11, 13));
+                    int min1 = Integer.parseInt(timeEnd.substring(14, 16));
+                    int sec1 = Integer.parseInt(timeEnd.substring(17, 19));
+                    Log.v("Checking2", timeEnd.substring(11, 13)+" "+timeEnd.substring(14, 16)+" "+timeEnd.substring(17, 19));
+                    DateTime test3 = DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day).withHourOfDay(hour).withMinuteOfHour(min).withSecondOfMinute(sec);
+                    DateTime test4 = DateTime.now().withYear(year1).withMonthOfYear(month1).withDayOfMonth(day1).withHourOfDay(hour1).withMinuteOfHour(min1).withSecondOfMinute(sec1);
+                    Routine rot = new Routine(ro[0],ro[1],test,test2,test3,test4,Integer.parseInt(ro[6]),ro[7]);
+                    patient1.getRoutineList().add(rot);
+                }
+                }
+
             }
             DateTimeFormatter formatter = Global.DATE_TIME_FORMAT;
             String todayDateStr = DateTime.now().toString(Global.DATE_FORMAT);

@@ -245,8 +245,9 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
                                 String enddate = r1.get(i).getEndDate().toString();
                                 String starttime = r1.get(i).getStartTime().toString();
                                 String endtime = r1.get(i).getEndTime().toString();
+                                String numberTimes = String.valueOf(r1.get(i).getEveryNumber());
                                 String repeat = r1.get(i).getEveryLabel();
-                                String concatString = eventname + ";" + notes + ";" + startdate + ";" + enddate + ";" + starttime + ";" + endtime + ";" + repeat;
+                                String concatString = eventname + ";" + notes + ";" + startdate + ";" + enddate + ";" + starttime + ";" + endtime + ";" + numberTimes +";"+ repeat;
                                 db.insertPatientSpec(concatString, id, 5);
                             }
                         }

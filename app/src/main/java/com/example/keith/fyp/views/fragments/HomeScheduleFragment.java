@@ -1,6 +1,7 @@
 package com.example.keith.fyp.views.fragments;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -144,6 +145,8 @@ public class HomeScheduleFragment extends Fragment {
         // ================
         // Prepare the patient list
         // ================
+
+
         scheduleAdapter = new HomeScheduleAdapter(getActivity(), getScheduleList());
 
         scheduleRecyclerView = (ScheduleRecycleView) rootView.findViewById(R.id.test);
@@ -282,6 +285,7 @@ public class HomeScheduleFragment extends Fragment {
 //        } catch (ParseException e) {
 //            e.printStackTrace();
 //        }
+
         dbfile db = new dbfile();
         ArrayList<Schedule> patientScheduleList = new ArrayList<>();
         patientScheduleList = db.getPatientSchedule(caregiverId, dateNow);
