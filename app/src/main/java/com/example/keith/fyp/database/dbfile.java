@@ -92,7 +92,7 @@ public class dbfile {
                         " ON p.patientID = psi.patientID" +
                         " INNER JOIN specInfo as si ON si.specInfoID = psi.specInfoID " +
                         " INNER JOIN patientAllocation as pa ON pa.patientID=p.patientID " +
-                        " where p.nric='" + nric + "'");
+                        " where p.nric='" + nric + "' AND psi.isApproved=1");
                 while(reset1.next()){
                     Log.v("SpecInfoName:", String.valueOf(reset1.getString("specInfoName")));
                 String specInfo = reset1.getString("specInfoName");
@@ -184,25 +184,23 @@ public class dbfile {
                 }
 
             }
-            DateTimeFormatter formatter = Global.DATE_TIME_FORMAT;
-            String todayDateStr = DateTime.now().toString(Global.DATE_FORMAT);
-
-            DateTime startTime1 = formatter.parseDateTime(todayDateStr + " 12:00");
-            DateTime endTime1 = formatter.parseDateTime(todayDateStr + " 12:30");
-            Event event1 = new Event("Lunch", "Patient is lactose intolerant", startTime1, endTime1);
-
-            DateTime startTime2 = formatter.parseDateTime(todayDateStr + " 12:30");
-            DateTime endTime2 = formatter.parseDateTime(todayDateStr + " 13:30");
-            Event event2 = new Event("Games", "Play memory games", startTime2, endTime2);
-
-            DateTime startTime3 = formatter.parseDateTime(todayDateStr + " 14:30");
-            DateTime endTime3 = formatter.parseDateTime(todayDateStr + " 15:30");
-            Event event3 = new Event("Games", "Play cognitive games", startTime3, endTime3);
 
             ArrayList<Event> eventList = new ArrayList<>();
-            eventList.add(event1);
-            eventList.add(event2);
-            eventList.add(event3);
+            Calendar cal = Calendar.getInstance();
+            java.sql.Timestamp timestamp = new java.sql.Timestamp(cal.getTimeInMillis());
+            String dateNow = timestamp.toString().substring(0, 10);
+            Statement stmt2 = conn.createStatement();
+            ResultSet reset2 = stmt2.executeQuery("select * from patientAllocation AS pa INNER JOIN schedule AS s " +
+                    " ON pa.patientAllocationID = s.patientAllocationID" +
+                    " INNER JOIN patient as p ON p.patientID = pa.patientid where p.nric='" + nric + "' AND s.dateStart ='" + dateNow + "' AND s.isApproved=1" +
+                    " ORDER BY timeStart");
+            DateTimeFormatter formatter = Global.DATE_TIME_FORMAT;
+            String todayDateStr = DateTime.now().toString(Global.DATE_FORMAT);
+            while (reset2.next()) {
+                Event event1 = new Event(reset2.getString("ScheduleTitle"), reset2.getString("ScheduleDesc"),
+                        formatter.parseDateTime(todayDateStr + " " + reset2.getString("timeStart").substring(0,5)), formatter.parseDateTime(todayDateStr + " " + reset2.getString("timeEnd").substring(0,5)));
+                eventList.add(event1);
+            }
 
             Schedule schedule = new Schedule();
             schedule.setEventList(eventList);
@@ -239,7 +237,7 @@ public class dbfile {
             Statement stmt = conn.createStatement();
             ResultSet reset = stmt.executeQuery("select * from patientAllocation AS pa INNER JOIN schedule AS s " +
                     " ON pa.patientAllocationID = s.patientAllocationID" +
-                    " INNER JOIN patient as p ON p.patientID = pa.patientid where pa.caregiverID='" + careGiverID + "' AND s.dateStart ='" + date +"'");
+                    " INNER JOIN patient as p ON p.patientID = pa.patientid where pa.caregiverID='" + careGiverID + "' AND s.dateStart ='" + date +"' AND s.isApproved=1");
 
             while (reset.next()) {
                 Schedule schedule1 = new Schedule(R.drawable.avatar_01, reset.getString("firstName"), reset.getString("nric"), reset.getString("scheduleTitle"), reset.getString("timeStart"), reset.getString("timeEnd"));
