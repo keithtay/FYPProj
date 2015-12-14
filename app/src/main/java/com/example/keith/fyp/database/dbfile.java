@@ -42,8 +42,43 @@ public class dbfile {
     Calendar cal = Calendar.getInstance();
     java.sql.Timestamp timestamp = new java.sql.Timestamp(cal.getTimeInMillis());
     ArrayList<Patient> patientList = new ArrayList<>();
+    ArrayList<Patient> patientList1 = new ArrayList<>();
+
+    public ArrayList<Patient> getAllPatients(Context context) {
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+
+            ResultSet reset = stmt.executeQuery("select * from patient where isApproved=1 ");
+
+            while (reset.next()) {
+                Patient patient1 = new Patient();
+                    patient1.setFirstName(reset.getString("firstName"));
+                    patient1.setLastName(reset.getString("lastName"));
+                    patient1.setNric(reset.getString("nric"));
+                    Bitmap photo = BitmapFactory.decodeResource(context.getResources(), R.drawable.avatar_01);
+                    patient1.setPhoto(photo);
+                patientList1.add(patient1);
+
+            }
 
 
+            conn.close();
+            return patientList1;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return patientList1;
+
+    }
     public ArrayList<Patient> getAllPatientInformation(String nric, Context context) {
         int count = 0;
 
@@ -59,7 +94,7 @@ public class dbfile {
             Statement stmt = conn.createStatement();
 
             ResultSet reset = stmt.executeQuery("select * from patient " +
-                    " where nric='" + nric + "'");
+                    " where nric='" + nric + "' AND isApproved=1");
 
             while (reset.next()) {
                 if (count == 0) {
