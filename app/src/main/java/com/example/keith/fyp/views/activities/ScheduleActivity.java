@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,8 +16,10 @@ import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Base Activity to display the patient's schedule
@@ -63,7 +66,14 @@ public class ScheduleActivity extends AppCompatActivity {
         spacingBetweenEventView = (int) getResources().getDimension(R.dimen.paper_card_padding) / 2;
 
         // Initialize current time (for display purpose) TODO: change with actual current time
-        currentTime = DateTime.now().withTime(13,30,0,0);
+
+        Calendar cal = Calendar.getInstance();
+        java.sql.Timestamp timestamp = new java.sql.Timestamp(cal.getTimeInMillis());
+        String timeNow = timestamp.toString().substring(10, 19);
+        int hr = Integer.parseInt(timeNow.substring(1, 3));
+        int min = Integer.parseInt(timeNow.substring(4, 6));
+        int sec = Integer.parseInt(timeNow.substring(7,9));
+        currentTime = DateTime.now().withTime(hr,min,sec,0);
     }
 
     private void setScheduleDate() {
