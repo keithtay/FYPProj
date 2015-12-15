@@ -18,6 +18,7 @@ import android.widget.Spinner;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.DefaultEvent;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
@@ -186,7 +187,8 @@ public class CareCenterConfigDefaultEventFragment extends Fragment {
 
         if (isValidForm) {
             Integer everyNum = Integer.parseInt(everyNumStr);
-
+            dbfile db = new dbfile();
+            db.addNewDefaultEvent(name, startTime, endTime, Integer.parseInt(everyNumStr), everyLabel);
             DefaultEvent newDefaultEvent = new DefaultEvent(name, startTime, endTime, everyNum, everyLabel, startDay);
             defaultEventList.add(0, newDefaultEvent);
             defaultEventListAdapter.notifyItemInserted(0);

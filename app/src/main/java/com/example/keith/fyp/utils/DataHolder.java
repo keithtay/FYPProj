@@ -111,6 +111,10 @@ public class DataHolder {
      * @return list of {@link DefaultEvent} of the current care centre
      */
     public static ArrayList<DefaultEvent> getDefaultEventList() {
+
+        dbfile db = new dbfile();
+        defaultEventList = db.retrieveAllDefaultEvent();
+        Log.v("The size is:", String.valueOf(defaultEventList.size()));
         return defaultEventList;
     }
 

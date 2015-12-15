@@ -139,6 +139,7 @@
 
     <string-array name="care_center_config_category">
         <item>Default Event|Care center\'s default activities to be automatically included in patients\' schedule</item>
+        <item>Generate Schedule|</item>
         <item>Notification Settings|</item>
     </string-array>
 
