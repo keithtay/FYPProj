@@ -1,6 +1,7 @@
 package com.example.keith.fyp.database;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.StrictMode;
@@ -24,6 +25,7 @@ import com.example.keith.fyp.utils.UtilsUi;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -46,6 +48,34 @@ public class dbfile {
     ArrayList<Patient> patientList1 = new ArrayList<>();
     ArrayList<DefaultEvent> defaultEvent = new ArrayList<>();
 
+    public ArrayList<Integer> checkUserExist(String username, String password){
+        ArrayList<Integer> al = new ArrayList<Integer>();
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+
+            ResultSet reset = stmt.executeQuery("select * from [user] " +
+                    " where firstName='" + username +"' AND password='" +  password + "' AND isApproved=1");
+            while(reset.next()){
+                al.add(reset.getInt("userID"));
+                al.add(reset.getInt("userTypeID"));
+                // Commit the edits!
+            }
+
+            conn.close();
+            return al;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return al;
+    }
     public void updateDefaultEvent(String scheduleTitle, String timeStart, String timeEnd, int interval, String scheduleDesc){
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();

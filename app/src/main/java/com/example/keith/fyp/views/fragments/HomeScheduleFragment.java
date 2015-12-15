@@ -273,7 +273,11 @@ public class HomeScheduleFragment extends Fragment {
     private List<Schedule> getScheduleList() {
         //need to store locally into pref for the next day schedule
         //have to ensure the schedule for today is stored too and filtered by date time
-        int caregiverId = 8;
+        SharedPreferences preferences = this.getActivity().getSharedPreferences("Login", Context.MODE_PRIVATE);
+        String caregiverI = preferences.getString("userid", "");
+        Log.v("UserTypeID", preferences.getString("userTypeId", ""));
+        int caregiverId = Integer.parseInt(caregiverI);
+
         Calendar cal = Calendar.getInstance();
         java.sql.Timestamp timestamp = new java.sql.Timestamp(cal.getTimeInMillis());
         String dateNow = timestamp.toString().substring(0,10);

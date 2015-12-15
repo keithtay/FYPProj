@@ -2,8 +2,10 @@ package com.example.keith.fyp.views.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,21 +13,25 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.database.dbfile;
+
+import java.util.ArrayList;
 
 /**
  * Activity to display the login user interface
  */
 public class LoginActivity extends ActionBarActivity {
     Button button;
-    EditText et1;
-    String Username;
+    EditText et1,et2;
+    String Username, Password;
     View activityRootView;
     View headerContainer;
     View appLogo;
     float displayDensity;
-
+    SharedPreferences sharedpreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +41,11 @@ public class LoginActivity extends ActionBarActivity {
 
         onKeyboardOpenned();
         loginButton();
+        sharedpreferences = getSharedPreferences(
+                "Login", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.clear();
+        editor.commit();
     }
 
     private void onKeyboardOpenned() {
@@ -77,15 +88,30 @@ public class LoginActivity extends ActionBarActivity {
 
         button = (Button) findViewById(R.id.loginButton);
         et1 = (EditText) findViewById(R.id.editText);
-
+        et2 = (EditText) findViewById(R.id.editText2);
         button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
-//                Username = et1.getText().toString();
-//                Toast.makeText(getApplicationContext(), "Welcome back " + Username + "!", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(context, DashboardActivity.class);
-                startActivity(intent);
+                Username = et1.getText().toString();
+                Password = et2.getText().toString();
+                dbfile db = new dbfile();
+                ArrayList<Integer> a1 = new ArrayList<Integer>();
+                a1 = db.checkUserExist(Username,Password);
+
+                if(a1.size() >= 1){
+                    sharedpreferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putString("userid", String.valueOf(a1.get(0)));
+                    editor.putString("userTypeId", String.valueOf(a1.get(0)));
+                    editor.commit();
+                    Toast.makeText(getApplicationContext(), "Welcome back " + Username + "!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(context, DashboardActivity.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(getApplicationContext(), "Invalid Credentials! Please Try Again", Toast.LENGTH_LONG).show();
+                }
+
             }
         });
     }
