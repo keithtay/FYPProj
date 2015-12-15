@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.Spinner;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.DefaultEvent;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
@@ -305,6 +307,13 @@ public class DefaultEventListAdapter extends RecyclerView.Adapter<DefaultEventLi
                     setFormEditable(true);
                     return true;
                 case R.id.action_item_delete:
+                    oldName = nameEditText.getText().toString();
+                    oldStartTime = startTimePicker.getText().toString() +"%";
+                    oldEndTime = endTimePicker.getText().toString() +"%";
+                    oldEveryNum = everyEditText.getText().toString();
+                    oldEveryLabel = everySpinner.getSelectedItem().toString();
+                    dbfile db=new dbfile();
+                    db.updateDefaultEvent(oldName,oldStartTime,oldEndTime,Integer.parseInt(oldEveryNum),oldEveryLabel);
                     int selectedItemIdx = getAdapterPosition();
                     fragment.deleteItem(selectedItemIdx);
                     return true;

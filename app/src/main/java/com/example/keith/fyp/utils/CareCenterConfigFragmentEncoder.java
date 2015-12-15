@@ -32,6 +32,9 @@ public class CareCenterConfigFragmentEncoder {
             case 1:
                 fragmentToBeDisplayed = new NotificationSettingsFragment();
                 break;
+            case 2:
+                fragmentToBeDisplayed = new NotificationSettingsFragment();
+                break;
         }
 
         return fragmentToBeDisplayed;

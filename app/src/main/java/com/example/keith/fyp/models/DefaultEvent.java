@@ -16,6 +16,7 @@ public class DefaultEvent {
     private String everyLabel;
     private String startDay;
 
+
     /**
      * Create a new default event with the specified {@code name}, {@code startTime}, {@code endTime}, {@code everyNumber}, {@code everyLabel} and {@code startDay} values.
      * {@code everyLabel} is the metrics of {@code everyNumber} (e.g. an event that happened every two days will have {@code everyNumber} equals to 2 and {@code everyLabel} equals to "day")

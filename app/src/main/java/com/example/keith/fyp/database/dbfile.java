@@ -9,6 +9,7 @@ import android.widget.EditText;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Allergy;
+import com.example.keith.fyp.models.DefaultEvent;
 import com.example.keith.fyp.models.Event;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.Prescription;
@@ -43,7 +44,87 @@ public class dbfile {
     java.sql.Timestamp timestamp = new java.sql.Timestamp(cal.getTimeInMillis());
     ArrayList<Patient> patientList = new ArrayList<>();
     ArrayList<Patient> patientList1 = new ArrayList<>();
+    ArrayList<DefaultEvent> defaultEvent = new ArrayList<>();
 
+    public void updateDefaultEvent(String scheduleTitle, String timeStart, String timeEnd, int interval, String scheduleDesc){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+
+           stmt.executeUpdate("UPDATE schedule " +
+                    " SET isDeleted=1 WHERE scheduleTitle='" + scheduleTitle + "' AND timeStart like '" + timeStart + "' AND timeEnd like '" + timeEnd
+                    + "' AND interval=" + interval + " AND scheduleDesc='" + scheduleDesc + "' AND scheduleTypeID=1002 AND isDeleted=0 AND isApproved=1");
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public ArrayList<DefaultEvent> retrieveAllDefaultEvent(){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+
+            ResultSet reset = stmt.executeQuery("select * from schedule " +
+                    " where scheduleTypeID=1002 AND isApproved=1 AND isDeleted=0");
+            while(reset.next()){
+                String title=reset.getString("scheduleTitle");
+                String timeStart=reset.getString("timeStart");
+                String timeEnd = reset.getString("timeEnd");
+                int hour = Integer.parseInt(timeStart.substring(0, 2));
+                int min = Integer.parseInt(timeStart.substring(3, 5));
+                int sec = Integer.parseInt(timeStart.substring(6, 8));
+                int hour1 = Integer.parseInt(timeEnd.substring(0, 2));
+                int min1 = Integer.parseInt(timeEnd.substring(3, 5));
+                int sec1 = Integer.parseInt(timeEnd.substring(6, 8));
+                DateTime test3 = DateTime.now().withHourOfDay(hour).withMinuteOfHour(min).withSecondOfMinute(sec);
+                DateTime test4 = DateTime.now().withHourOfDay(hour1).withMinuteOfHour(min1).withSecondOfMinute(sec1);
+
+                Integer interval =reset.getInt("interval");
+                String scheduleDesc = reset.getString("scheduleDesc");
+                DefaultEvent de = new DefaultEvent(title, test3,test4,interval,scheduleDesc,"Monday");
+                defaultEvent.add(de);
+            }
+
+            conn.close();
+            return defaultEvent;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return defaultEvent;
+    }
+
+    public void addNewDefaultEvent(String scheduleTitle, DateTime timeStart, DateTime timeEnd, int interval, String scheduleDesc){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+
+            String sql = "INSERT INTO schedule " +
+                    "VALUES ('" + scheduleTitle + "','" + timeStart + "','" + timeEnd + "','" + "2010-12-15" + "','" + "2010-12-15" + "'," + interval + ",'" + scheduleDesc + "'," + 1002 + "," + null + "," + 0 + "," + 1 + ",'" + timestamp + "')";
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public ArrayList<Patient> getAllPatients(Context context) {
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
@@ -56,7 +137,7 @@ public class dbfile {
             conn = DriverManager.getConnection(connString, username, password);
             Statement stmt = conn.createStatement();
 
-            ResultSet reset = stmt.executeQuery("select * from patient where isApproved=1 ");
+            ResultSet reset = stmt.executeQuery("select * from patient where isApproved=1 AND isDeleted=0 ");
 
             while (reset.next()) {
                 Patient patient1 = new Patient();
@@ -94,7 +175,7 @@ public class dbfile {
             Statement stmt = conn.createStatement();
 
             ResultSet reset = stmt.executeQuery("select * from patient " +
-                    " where nric='" + nric + "' AND isApproved=1");
+                    " where nric='" + nric + "' AND isApproved=1 AND isDeleted=0");
 
             while (reset.next()) {
                 if (count == 0) {
@@ -272,7 +353,7 @@ public class dbfile {
             Statement stmt = conn.createStatement();
             ResultSet reset = stmt.executeQuery("select * from patientAllocation AS pa INNER JOIN schedule AS s " +
                     " ON pa.patientAllocationID = s.patientAllocationID" +
-                    " INNER JOIN patient as p ON p.patientID = pa.patientid where pa.caregiverID='" + careGiverID + "' AND s.dateStart ='" + date +"' AND s.isApproved=1");
+                    " INNER JOIN patient as p ON p.patientID = pa.patientid where pa.caregiverID='" + careGiverID + "' AND s.dateStart ='" + date +"' AND s.isApproved=1 AND s.isDeleted=0");
 
             while (reset.next()) {
                 Schedule schedule1 = new Schedule(R.drawable.avatar_01, reset.getString("firstName"), reset.getString("nric"), reset.getString("scheduleTitle"), reset.getString("timeStart"), reset.getString("timeEnd"));
