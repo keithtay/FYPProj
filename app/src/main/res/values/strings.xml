@@ -135,6 +135,7 @@
         <item>Prescription|</item>
         <item>Routine|Patient\'s activities that are followed regularly</item>
         <item>Problem Log|Take note of patient\'s problem</item>
+        <item>Photo Album | patient photo album</item>
     </string-array>
 
     <string-array name="care_center_config_category">
