@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/photo_album_title_spinner"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-8dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                app:ms_alignLabels="false"
+                app:ms_arrowColor="@color/text_color_light"
+                app:ms_arrowSize="12dp"
+                app:ms_baseColor="@color/text_color_light"
+                app:ms_errorColor="@color/text_color_error"
+                app:ms_floatingLabelColor="@color/text_color_light"
+                app:ms_floatingLabelText="Where would you like to save the photo in?"
+                app:ms_hint="Where would you like to save the photo in?"
+                app:ms_multiline="false" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/paper_card_padding"
+                android:background="@color/list_item_divider" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/paper_card_row_spacing"
+                android:paddingBottom="@dimen/paper_card_row_spacing"
+                android:paddingLeft="@dimen/paper_card_padding"
+                android:paddingRight="@dimen/paper_card_padding">
+
+                <Button
+                    android:id="@+id/cancel_add_default_event_button"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/add_new_default_event_button"
+                    android:paddingLeft="@dimen/padding_flat_button"
+                    android:paddingRight="@dimen/padding_flat_button"
+                    android:text="@string/button_cancel"
+                    android:textAllCaps="true"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/add_new_default_event_button"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="@dimen/padding_flat_button"
+                    android:paddingRight="@dimen/padding_flat_button"
+                    android:text="Take Photo"
+                    android:textAllCaps="true"
+                    android:textColor="@color/primary"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
