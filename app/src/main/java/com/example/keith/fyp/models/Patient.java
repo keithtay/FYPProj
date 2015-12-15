@@ -34,6 +34,7 @@ public class Patient {
     private ArrayList<ProblemLog> problemLogList = new ArrayList<>();
     private SocialHistory socialHistory = new SocialHistory();
     private Schedule todaySchedule;
+    private ArrayList<PhotoAlbum> photoAlbumList = new ArrayList<>();
 
     // TODO: remove since it is only for testing (using local stored photo)
     private int photoId;
@@ -356,6 +357,14 @@ public class Patient {
      */
     public String getFullName() {
         return firstName + " " + lastName;
+    }
+
+    public ArrayList<PhotoAlbum> getPhotoAlbumList() {
+        return photoAlbumList;
+    }
+
+    public void setPhotoAlbumList(ArrayList<PhotoAlbum> photoAlbumList) {
+        this.photoAlbumList = photoAlbumList;
     }
 
     @Override

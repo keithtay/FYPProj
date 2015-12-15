@@ -16,6 +16,7 @@ import com.example.keith.fyp.views.fragments.ViewPatientInfoFormProblemLogFragme
 import com.example.keith.fyp.views.fragments.ViewPatientInfoFormRoutineFragment;
 import com.example.keith.fyp.views.fragments.ViewPatientInfoFormSocialHistoryFragment;
 import com.example.keith.fyp.views.fragments.ViewPatientInfoFormVitalFragment;
+import com.example.keith.fyp.views.fragments.ViewPatientPhotoAlbumFragment;
 
 /**
  * ViewPatientFormFragmentEncoder is a singleton class that
@@ -56,6 +57,9 @@ public class ViewPatientFormFragmentEncoder {
                 break;
             case 6:
                 fragmentToBeDisplayed = new ViewPatientInfoFormProblemLogFragment();
+                break;
+            case 7:
+                fragmentToBeDisplayed = new ViewPatientPhotoAlbumFragment();
                 break;
         }
 

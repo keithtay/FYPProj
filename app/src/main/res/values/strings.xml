@@ -68,6 +68,14 @@
         <item>Sunday</item>
     </string-array>
 
+    <string-array name="option_album_title">
+        <item>Profile Picture</item>
+        <item>Family</item>
+        <item>Friends</item>
+        <item>Scenery</item>
+        <item>Others</item>
+    </string-array>
+
     <string-array name="option_religion">
         <item>Christian</item>
         <item>Catholic</item>
