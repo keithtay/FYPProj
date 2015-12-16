@@ -111,7 +111,10 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         setContentView(R.layout.activity_create_patient);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        SharedPreferences preferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+        final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
+        final int UserID = Integer.parseInt(preferences.getString("userid", ""));
+        Log.v("this is,", String.valueOf(UserTypeID));
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         selectedPatientDraftId = mPrefs.getString(Global.STATE_SELECTED_PATIENT_DRAFT_ID, null);
         if (UtilsString.isEmpty(selectedPatientDraftId)) {
@@ -157,11 +160,13 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
                     String phoneNumber = createdPatient.getPhoneNumber();
                     String gufullname = createdPatient.getGuardianFullName();
                     String guContact = createdPatient.getGuardianContactNumber();
+
+
                     if(fName == null || lName == null || nric == null || phoneNumber == null || gufullname == null || guContact == null){
                         checkRequiredFields();
                     }else{
                         dbfile db = new dbfile();
-                        db.insertNewPatient(createdPatient.getFirstName(), createdPatient.getLastName(), createdPatient.getNric(), createdPatient.getAddress(), createdPatient.getHomeNumber(), createdPatient.getPhoneNumber(), createdPatient.getGender(), createdPatient.getDob().toString(), createdPatient.getGuardianFullName(), createdPatient.getGuardianContactNumber(), createdPatient.getGuardianEmail());
+                        db.insertNewPatient(createdPatient.getFirstName(), createdPatient.getLastName(), createdPatient.getNric(), createdPatient.getAddress(), createdPatient.getHomeNumber(), createdPatient.getPhoneNumber(), createdPatient.getGender(), createdPatient.getDob().toString(), createdPatient.getGuardianFullName(), createdPatient.getGuardianContactNumber(), createdPatient.getGuardianEmail(), UserTypeID, UserID);
 
                         int id = db.getPatientId(createdPatient.getNric());
                         String seeid = String.valueOf(id);
@@ -173,7 +178,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
                                 String reaction = t1.get(i).getReaction();
                                 String notes = t1.get(i).getNotes();
                                 String concatString = name + ";" + reaction + ";" + notes;
-                                db.insertPatientSpec(concatString, id, 1);
+                                db.insertPatientSpec(concatString, id, 1, UserTypeID, UserID);
                             }
                         }
                         if (createdPatient.getVitalList().size() >= 1){
@@ -188,7 +193,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
                                 String weight = String.valueOf(v1.get(i).getWeight());
                                 String notes = v1.get(i).getNotes();
                                 String concatString = date + ";" + meal.toString() + ";" + temperature+ ";" + bloodpressuresystol+ ";" + bloodpressurediastol+ ";" + height+ ";" + weight+ ";" + notes;
-                                db.insertPatientSpec(concatString,id,2);
+                                db.insertPatientSpec(concatString,id,2, UserTypeID, UserID);
                             }
 
                         }
@@ -217,7 +222,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
                             String exercise = createdPatient.getSocialHistory().getExercise();
                             String concatString = livewith + ";" + diet + ";" + religion+ ";" + sexuallyactive+ ";" + secondhandsmoker+ ";" + alcoholuse+ ";" + caffineuse+ ";" + tobbaco
                                     + ";" + druguse + ";" + pet + ";" + occupation + ";" + like+ ";" + dislike + ";" + hobby + ";" + habbit+ ";" + holidayExperience + ";" + education + ";" + exercise;
-                            db.insertPatientSpec(concatString,id,3);
+                            db.insertPatientSpec(concatString,id,3, UserTypeID, UserID);
                         }
                         if (createdPatient.getPrescriptionList().size() >= 1){
                             ArrayList<Prescription> p1 = createdPatient.getPrescriptionList();
@@ -231,7 +236,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
                                 String aftermeal = p1.get(i).getBeforeAfterMeal().toString();
                                 String notes = p1.get(i).getNotes();
                                 String concatString = drugname + ";" + dosage + ";" + frequencyperday+ ";" + instruction+ ";" + startdate+ ";" + enddate+ ";" + aftermeal+ ";" + notes;
-                                db.insertPatientSpec(concatString,id,4);
+                                db.insertPatientSpec(concatString,id,4, UserTypeID, UserID);
                             }
 
                         }
@@ -248,7 +253,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
                                 String numberTimes = String.valueOf(r1.get(i).getEveryNumber());
                                 String repeat = r1.get(i).getEveryLabel();
                                 String concatString = eventname + ";" + notes + ";" + startdate + ";" + enddate + ";" + starttime + ";" + endtime + ";" + numberTimes +";"+ repeat;
-                                db.insertPatientSpec(concatString, id, 5);
+                                db.insertPatientSpec(concatString, id, 5, UserTypeID, UserID);
                             }
                         }
                         DataHolder.resetCreatedPatient();

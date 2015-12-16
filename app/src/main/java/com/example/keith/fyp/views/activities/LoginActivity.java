@@ -103,7 +103,7 @@ public class LoginActivity extends ActionBarActivity {
                     sharedpreferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedpreferences.edit();
                     editor.putString("userid", String.valueOf(a1.get(0)));
-                    editor.putString("userTypeId", String.valueOf(a1.get(0)));
+                    editor.putString("userTypeId", String.valueOf(a1.get(1)));
                     editor.commit();
                     Toast.makeText(getApplicationContext(), "Welcome back " + Username + "!", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(context, DashboardActivity.class);

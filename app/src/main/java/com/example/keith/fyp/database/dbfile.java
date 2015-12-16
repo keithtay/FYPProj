@@ -28,6 +28,7 @@ import org.joda.time.format.DateTimeFormatter;
 import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -422,7 +423,8 @@ public class dbfile {
         return id;
 
     }
-    public void insertNewPatient(String firstname,String lastname, String nric, String address, String officeno, String handphoneno, char gender, String date, String gname, String gcontactno, String gemail){
+    public void insertNewPatient(String firstname,String lastname, String nric, String address, String officeno, String handphoneno, char gender, String date, String gname, String gcontactno, String gemail, int UserTypeID, int UserID){
+
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -431,13 +433,36 @@ public class dbfile {
         try {
             Class.forName(driver).newInstance();
             conn = DriverManager.getConnection(connString, username, password);
-
+            int checkIsSupervisor;
+            if(UserTypeID == 1){
+                checkIsSupervisor = 0;
+            }else{
+                checkIsSupervisor = 1;
+            }
             String sql = "INSERT INTO patient " +
-                    "VALUES ('" + firstname + "','" + lastname + "','" + nric + "','" + address + "','" + officeno + "','" + handphoneno + "','" + gender + "','" + date + "','" + gname + "','" + gcontactno + "','" + gemail + "'," + 0 + "," + 0 + ",'" + timestamp + "')";
-            Statement stmt = conn.createStatement();
-            stmt.executeUpdate(sql);
-
-
+                    "VALUES ('" + firstname + "','" + lastname + "','" + nric + "','" + address + "','" + officeno + "','" + handphoneno + "','" + gender + "','" + date + "','" + gname + "','" + gcontactno + "','" + gemail + "'," + 0 + "," + checkIsSupervisor + ",'" + timestamp + "')";
+//            Statement stmt = conn.createStatement();
+//            stmt.executeUpdate(sql);
+            PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            if(rs.next()){
+                int key = rs.getInt(1);
+                int checkIsSuper;
+                if(UserTypeID == 2){
+                    checkIsSuper = UserID;
+                }else{
+                    checkIsSuper = 0;
+                }
+                String allData = firstname +";" + lastname  +";" + gender + ";" + date;
+                String logDesc = "Create new patient " + firstname + " " + lastname;
+                String tableAffected = "patient";
+                String columnAffected = "all";
+                String sql1 = "INSERT INTO log " +
+                        "VALUES ('" + allData + "','" + logDesc + "'," + 3 + "," + key + "," + UserID + ",'" + checkIsSuper + "','" + tableAffected + "','" + columnAffected + "'," + key + ",'" + timestamp + "')";
+            Statement stmt1 = conn.createStatement();
+            stmt1.executeUpdate(sql1);
+            }
             conn.close();
 
         } catch (Exception e) {
@@ -445,7 +470,7 @@ public class dbfile {
         }
     }
 
-    public void insertPatientSpec(String info, int patientId, int specValue){
+    public void insertPatientSpec(String info, int patientId, int specValue, int UserTypeID, int UserID){
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -455,34 +480,39 @@ public class dbfile {
         try {
             Class.forName(driver).newInstance();
             conn = DriverManager.getConnection(connString, username, password);
-
+            int checkIsSupervisor;
+            if(UserTypeID == 1){
+                checkIsSupervisor = 0;
+            }else{
+                checkIsSupervisor = 1;
+            }
             if (specValue == 1){//allergy
                  String sql = "INSERT INTO patientSpecInfo " +
-                        "VALUES ('" + info + "'," + patientId + "," + 1 + "," + 0 + "," + 0 + ",'"+ timestamp + "')";
+                        "VALUES ('" + info + "'," + patientId + "," + 1 + "," + 0 + "," + checkIsSupervisor + ",'"+ timestamp + "')";
                 Statement stmt = conn.createStatement();
                 stmt.executeUpdate(sql);
                 conn.close();
             }else if(specValue == 2){//vital
                 String sql = "INSERT INTO patientSpecInfo " +
-                        "VALUES ('" + info + "'," + patientId + "," + 2 + "," + 0 + "," + 0 + ",'"+ timestamp + "')";
+                        "VALUES ('" + info + "'," + patientId + "," + 2 + "," + 0 + "," + checkIsSupervisor + ",'"+ timestamp + "')";
                 Statement stmt = conn.createStatement();
                 stmt.executeUpdate(sql);
                 conn.close();
             }else if(specValue == 3){
                 String sql = "INSERT INTO patientSpecInfo " +
-                        "VALUES ('" + info + "'," + patientId + "," + 3 + "," + 0 + "," + 0 + ",'"+ timestamp + "')";
+                        "VALUES ('" + info + "'," + patientId + "," + 3 + "," + 0 + "," + checkIsSupervisor + ",'"+ timestamp + "')";
                 Statement stmt = conn.createStatement();
                 stmt.executeUpdate(sql);
                 conn.close();
             }else if(specValue == 4){
                 String sql = "INSERT INTO patientSpecInfo " +
-                        "VALUES ('" + info + "'," + patientId + "," + 4 + "," + 0 + "," + 0 + ",'"+ timestamp + "')";
+                        "VALUES ('" + info + "'," + patientId + "," + 4 + "," + 0 + "," + checkIsSupervisor + ",'"+ timestamp + "')";
                 Statement stmt = conn.createStatement();
                 stmt.executeUpdate(sql);
                 conn.close();
             }else if(specValue == 5){
                 String sql = "INSERT INTO patientSpecInfo " +
-                        "VALUES ('" + info + "'," + patientId + "," + 5 + "," + 0 + "," + 0 + ",'"+ timestamp + "')";
+                        "VALUES ('" + info + "'," + patientId + "," + 5 + "," + 0 + "," + checkIsSupervisor + ",'"+ timestamp + "')";
                 Statement stmt = conn.createStatement();
                 stmt.executeUpdate(sql);
                 conn.close();
