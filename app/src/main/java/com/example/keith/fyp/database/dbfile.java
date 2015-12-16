@@ -459,7 +459,7 @@ public class dbfile {
                 String tableAffected = "patient";
                 String columnAffected = "all";
                 String sql1 = "INSERT INTO log " +
-                        "VALUES ('" + allData + "','" + logDesc + "'," + 3 + "," + key + "," + UserID + ",'" + checkIsSuper + "','" + tableAffected + "','" + columnAffected + "'," + key + ",'" + timestamp + "')";
+                        "VALUES ('" + allData + "','" + logDesc + "'," + 3 + "," + key + "," + UserID + ",'" + checkIsSuper + "'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + ",'" + timestamp + "')";
             Statement stmt1 = conn.createStatement();
             stmt1.executeUpdate(sql1);
             }
