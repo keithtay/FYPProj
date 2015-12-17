@@ -384,7 +384,7 @@ public class dbfile {
             Statement stmt = conn.createStatement();
             ResultSet reset = stmt.executeQuery("select * from patientAllocation AS pa INNER JOIN schedule AS s " +
                     " ON pa.patientAllocationID = s.patientAllocationID" +
-                    " INNER JOIN patient as p ON p.patientID = pa.patientid where pa.caregiverID='" + careGiverID + "' AND s.dateStart ='" + date +"' AND s.isApproved=1 AND s.isDeleted=0");
+                    " INNER JOIN patient as p ON p.patientID = pa.patientid where pa.caregiverID='" + careGiverID + "' AND s.dateStart ='" + date + "' AND s.isApproved=1 AND s.isDeleted=0");
 
             while (reset.next()) {
                 Schedule schedule1 = new Schedule(R.drawable.avatar_01, reset.getString("firstName"), reset.getString("nric"), reset.getString("scheduleTitle"), reset.getString("timeStart"), reset.getString("timeEnd"));
@@ -486,35 +486,86 @@ public class dbfile {
             }else{
                 checkIsSupervisor = 1;
             }
+            int checkSuper;
+            if (checkIsSupervisor ==1){
+                checkSuper = UserID;
+            }else{
+                checkSuper = 0;
+            }
+            String tableAffected = "patientSpecInfo";
+            String columnAffected ="all";
+            String logDesc = "New Patient Spec Info for patient";
             if (specValue == 1){//allergy
                  String sql = "INSERT INTO patientSpecInfo " +
                         "VALUES ('" + info + "'," + patientId + "," + 1 + "," + 0 + "," + checkIsSupervisor + ",'"+ timestamp + "')";
-                Statement stmt = conn.createStatement();
-                stmt.executeUpdate(sql);
+//                Statement stmt = conn.createStatement();
+//                stmt.executeUpdate(sql);
+                PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                stmt.executeUpdate();
+                ResultSet rs = stmt.getGeneratedKeys();
+                if(rs.next()) {
+                    int key = rs.getInt(1);
+                    String sql1 = "INSERT INTO log " +
+                            "VALUES ('" + info + "','" + logDesc + "'," + 2 + "," + patientId + "," + UserID + ",'" + checkSuper + "'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + ",'" + timestamp + "')";
+                    Statement stmt1 = conn.createStatement();
+                    stmt1.executeUpdate(sql1);
+                }
                 conn.close();
             }else if(specValue == 2){//vital
                 String sql = "INSERT INTO patientSpecInfo " +
                         "VALUES ('" + info + "'," + patientId + "," + 2 + "," + 0 + "," + checkIsSupervisor + ",'"+ timestamp + "')";
-                Statement stmt = conn.createStatement();
-                stmt.executeUpdate(sql);
+                PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                stmt.executeUpdate();
+                ResultSet rs = stmt.getGeneratedKeys();
+                if(rs.next()) {
+                    int key = rs.getInt(1);
+                    String sql1 = "INSERT INTO log " +
+                            "VALUES ('" + info + "','" + logDesc + "'," + 2 + "," + patientId + "," + UserID + ",'" + checkSuper + "'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + ",'" + timestamp + "')";
+                    Statement stmt1 = conn.createStatement();
+                    stmt1.executeUpdate(sql1);
+                }
                 conn.close();
             }else if(specValue == 3){
                 String sql = "INSERT INTO patientSpecInfo " +
                         "VALUES ('" + info + "'," + patientId + "," + 3 + "," + 0 + "," + checkIsSupervisor + ",'"+ timestamp + "')";
-                Statement stmt = conn.createStatement();
-                stmt.executeUpdate(sql);
+                PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                stmt.executeUpdate();
+                ResultSet rs = stmt.getGeneratedKeys();
+                if(rs.next()) {
+                    int key = rs.getInt(1);
+                    String sql1 = "INSERT INTO log " +
+                            "VALUES ('" + info + "','" + logDesc + "'," + 2 + "," + patientId + "," + UserID + ",'" + checkSuper + "'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + ",'" + timestamp + "')";
+                    Statement stmt1 = conn.createStatement();
+                    stmt1.executeUpdate(sql1);
+                }
                 conn.close();
             }else if(specValue == 4){
                 String sql = "INSERT INTO patientSpecInfo " +
                         "VALUES ('" + info + "'," + patientId + "," + 4 + "," + 0 + "," + checkIsSupervisor + ",'"+ timestamp + "')";
-                Statement stmt = conn.createStatement();
-                stmt.executeUpdate(sql);
+                PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                stmt.executeUpdate();
+                ResultSet rs = stmt.getGeneratedKeys();
+                if(rs.next()) {
+                    int key = rs.getInt(1);
+                    String sql1 = "INSERT INTO log " +
+                            "VALUES ('" + info + "','" + logDesc + "'," + 2 + "," + patientId + "," + UserID + ",'" + checkSuper + "'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + ",'" + timestamp + "')";
+                    Statement stmt1 = conn.createStatement();
+                    stmt1.executeUpdate(sql1);
+                }
                 conn.close();
             }else if(specValue == 5){
                 String sql = "INSERT INTO patientSpecInfo " +
                         "VALUES ('" + info + "'," + patientId + "," + 5 + "," + 0 + "," + checkIsSupervisor + ",'"+ timestamp + "')";
-                Statement stmt = conn.createStatement();
-                stmt.executeUpdate(sql);
+                PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                stmt.executeUpdate();
+                ResultSet rs = stmt.getGeneratedKeys();
+                if(rs.next()) {
+                    int key = rs.getInt(1);
+                    String sql1 = "INSERT INTO log " +
+                            "VALUES ('" + info + "','" + logDesc + "'," + 2 + "," + patientId + "," + UserID + ",'" + checkSuper + "'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + ",'" + timestamp + "')";
+                    Statement stmt1 = conn.createStatement();
+                    stmt1.executeUpdate(sql1);
+                }
                 conn.close();
             }
 
