@@ -7,8 +7,6 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -35,8 +33,6 @@ import com.mikepenz.materialdrawer.MiniDrawer;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-import org.joda.time.DateTime;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -58,7 +54,6 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-
         fragmentManager = getFragmentManager();
 
         retrieveNotification();

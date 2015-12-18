@@ -2,6 +2,8 @@ package com.example.keith.fyp.renderers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,21 +13,11 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.Notification;
-import com.example.keith.fyp.models.ProblemLog;
-import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsString;
-import com.example.keith.fyp.utils.UtilsUi;
-import com.example.keith.fyp.views.activities.ViewScheduleActivity;
-import com.example.keith.fyp.views.customviews.DateField;
-import com.example.keith.fyp.views.customviews.SpinnerField;
 import com.example.keith.fyp.views.customviews.TextField;
-
-import org.joda.time.DateTime;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * ActionRenderer is {@link Renderer} to render the action that can be done to a {@link Notification}
@@ -94,7 +86,19 @@ public class ActionRenderer extends Renderer {
             @Override
             public void onPositive(MaterialDialog dialog) {
                 super.onPositive(dialog);
-
+                SharedPreferences pref;
+                pref = context.getSharedPreferences("Login", 0);
+                final int UserID = Integer.parseInt(pref.getString("userid", ""));
+                int logid = notification.getLogid();
+                int rowid = notification.getRa();
+                String tablename = notification.getTa();
+                dbfile db = new dbfile();
+                int getNotificationId = notification.getType();
+                if (getNotificationId == 1 || getNotificationId == 2){
+                    db.updateNotificationTables(logid,rowid,tablename, UserID);
+                }else{
+                   //do something
+                }
                 notification.setStatus(Notification.STATUS_ACCEPTED);
                 finalRootView.removeAllViews();
                 View acceptedView = inflater.inflate(R.layout.notification_detail_action_accepted_layout, null);
