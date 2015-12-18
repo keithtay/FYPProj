@@ -12,6 +12,7 @@ import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Allergy;
 import com.example.keith.fyp.models.DefaultEvent;
 import com.example.keith.fyp.models.Event;
+import com.example.keith.fyp.models.Notification;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.Prescription;
 import com.example.keith.fyp.models.ProblemLog;
@@ -49,6 +50,72 @@ public class dbfile {
     ArrayList<Patient> patientList1 = new ArrayList<>();
     ArrayList<DefaultEvent> defaultEvent = new ArrayList<>();
 
+    public ArrayList<Notification> prepareNotificationList(Context context){
+        ArrayList<Notification> notificationList = new ArrayList<>();
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+
+            ResultSet reset = stmt.executeQuery("SELECT pa.firstName AS patientfirstname, pa.lastname AS patientlastname, pa.nric AS patientnric, lo.createDateTime as logdatetime," +
+                    "lo.logDesc AS logDescription, lo.logCategoryID AS logcatid, us.firstName AS userfirstname, us.lastName AS userlastname," +
+                    "lo.logID as logid, lo.logData AS logdata, lo.additionalInfo as additionalinfo, lo.tableAffected AS ta, lo.rowAffected AS ra " +
+                    "  FROM [dementiafypdb].[dbo].[log] AS lo " +
+                    "  INNER JOIN [dementiafypdb].[dbo].patient AS pa ON pa.patientID = lo.patientID" +
+                    "  INNER JOIN [dementiafypdb].[dbo].[user] AS us ON us.userID = lo.userIDInit" +
+                    "  WHERE lo.userIDApproved = 0 AND lo.isDeleted = 0 ");
+            while(reset.next()){
+                Bitmap patientAvatar1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.avatar_18);
+                Patient patient1 = new Patient(reset.getString("patientfirstname"), reset.getString("patientlastname"), reset.getString("patientnric"), patientAvatar1);
+                Bitmap caregiverAvatar1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.avatar_01);
+                String date = reset.getString("logdatetime");
+                int year = Integer.parseInt(date.substring(0, 4));
+                int month = Integer.parseInt(date.substring(5, 7));
+                int day = Integer.parseInt(date.substring(8, 10));
+                int hour = Integer.parseInt(date.substring(11,13));
+                int min = Integer.parseInt(date.substring(14,16));
+                int sec = Integer.parseInt(date.substring(17, 19));
+                DateTime date1 = DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day).withHourOfDay(hour).withMinuteOfHour(min).withSecondOfMinute(sec);
+                String caregiverName1 = reset.getString("userfirstname") + " " + reset.getString("userlastname");
+                String summary1 = reset.getString("logDescription");
+                int logid = reset.getInt("logid");
+                String logData = reset.getString("logdata");
+                String additionalinfo = reset.getString("additionalinfo");
+                String ta = reset.getString("ta");
+                int ra = reset.getInt("ra");
+                int seewhichCat = reset.getInt("logcatid");
+                if(seewhichCat == 1){//type game recommendation
+                    Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_GAME_RECOMMENDATION, logid,logData,additionalinfo, ta,ra);
+                    notificationList.add(notification1);
+                }else if(seewhichCat == 2){//typenewinfoobject
+                    Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_NEW_INFO_OBJECT, logid,logData,additionalinfo, ta ,ra);
+                    notificationList.add(notification1);
+                }else if(seewhichCat == 3) {//typenewpatient
+                    Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_NEW_PATIENT, logid,logData,additionalinfo, ta ,ra);
+                    notificationList.add(notification1);
+                }else if(seewhichCat == 4) {//typeupdateinfofield
+                    Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_UPDATE_INFO_FIELD, logid,logData,additionalinfo, ta ,ra);
+                    notificationList.add(notification1);
+                }else if(seewhichCat == 5) {//typeupdateinfoobject
+                    Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_UPDATE_INFO_OBJECT, logid,logData,additionalinfo, ta ,ra);
+                    notificationList.add(notification1);
+                }
+
+            }
+
+            conn.close();
+            return notificationList;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return notificationList;
+    }
     public ArrayList<Integer> checkUserExist(String username, String password){
         ArrayList<Integer> al = new ArrayList<Integer>();
         if (android.os.Build.VERSION.SDK_INT > 9) {
@@ -459,7 +526,7 @@ public class dbfile {
                 String tableAffected = "patient";
                 String columnAffected = "all";
                 String sql1 = "INSERT INTO log " +
-                        "VALUES ('" + allData + "','" + logDesc + "'," + 3 + "," + key + "," + UserID + ",'" + checkIsSuper + "'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + ",'" + timestamp + "')";
+                        "VALUES ('" + allData + "','" + logDesc + "'," + 3 + "," + key + "," + UserID + ",'" + checkIsSuper + "'," + null + "," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + "," + 0 + ",'" + timestamp + "')";
             Statement stmt1 = conn.createStatement();
             stmt1.executeUpdate(sql1);
             }
@@ -506,7 +573,7 @@ public class dbfile {
                 if(rs.next()) {
                     int key = rs.getInt(1);
                     String sql1 = "INSERT INTO log " +
-                            "VALUES ('" + info + "','" + logDesc + "'," + 2 + "," + patientId + "," + UserID + ",'" + checkSuper + "'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + ",'" + timestamp + "')";
+                            "VALUES ('" + info + "','" + logDesc + "'," + 2 + "," + patientId + "," + UserID + "," + checkSuper + ",'allergy'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + "," + 0 + ",'" + timestamp + "')";
                     Statement stmt1 = conn.createStatement();
                     stmt1.executeUpdate(sql1);
                 }
@@ -520,7 +587,7 @@ public class dbfile {
                 if(rs.next()) {
                     int key = rs.getInt(1);
                     String sql1 = "INSERT INTO log " +
-                            "VALUES ('" + info + "','" + logDesc + "'," + 2 + "," + patientId + "," + UserID + ",'" + checkSuper + "'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + ",'" + timestamp + "')";
+                            "VALUES ('" + info + "','" + logDesc + "'," + 2 + "," + patientId + "," + UserID + "," + checkSuper + ",'vital'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + "," + 0 + ",'" + timestamp + "')";
                     Statement stmt1 = conn.createStatement();
                     stmt1.executeUpdate(sql1);
                 }
@@ -534,7 +601,7 @@ public class dbfile {
                 if(rs.next()) {
                     int key = rs.getInt(1);
                     String sql1 = "INSERT INTO log " +
-                            "VALUES ('" + info + "','" + logDesc + "'," + 2 + "," + patientId + "," + UserID + ",'" + checkSuper + "'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + ",'" + timestamp + "')";
+                            "VALUES ('" + info + "','" + logDesc + "'," + 2 + "," + patientId + "," + UserID + "," + checkSuper + ",'social history'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + "," + 0 + ",'" + timestamp + "')";
                     Statement stmt1 = conn.createStatement();
                     stmt1.executeUpdate(sql1);
                 }
@@ -548,7 +615,7 @@ public class dbfile {
                 if(rs.next()) {
                     int key = rs.getInt(1);
                     String sql1 = "INSERT INTO log " +
-                            "VALUES ('" + info + "','" + logDesc + "'," + 2 + "," + patientId + "," + UserID + ",'" + checkSuper + "'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + ",'" + timestamp + "')";
+                            "VALUES ('" + info + "','" + logDesc + "'," + 2 + "," + patientId + "," + UserID + "," + checkSuper + ",'prescription'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + "," + 0 + ",'" + timestamp + "')";
                     Statement stmt1 = conn.createStatement();
                     stmt1.executeUpdate(sql1);
                 }
@@ -562,7 +629,7 @@ public class dbfile {
                 if(rs.next()) {
                     int key = rs.getInt(1);
                     String sql1 = "INSERT INTO log " +
-                            "VALUES ('" + info + "','" + logDesc + "'," + 2 + "," + patientId + "," + UserID + ",'" + checkSuper + "'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + ",'" + timestamp + "')";
+                            "VALUES ('" + info + "','" + logDesc + "'," + 2 + "," + patientId + "," + UserID + "," + checkSuper + ",'routine'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + "," + 0 + ",'" + timestamp + "')";
                     Statement stmt1 = conn.createStatement();
                     stmt1.executeUpdate(sql1);
                 }

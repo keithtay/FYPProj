@@ -1,9 +1,16 @@
 package com.example.keith.fyp.models;
 
+import com.example.keith.fyp.interfaces.ObjectToAttributeValueTransformer;
+import com.example.keith.fyp.utils.Global;
+
+import org.joda.time.DateTime;
+
+import java.util.ArrayList;
+
 /**
  * Created by Sutrisno on 12/9/2015.
  */
-public class SocialHistory {
+public class SocialHistory implements ObjectToAttributeValueTransformer {
     private String liveWith;
     private String diet;
     private String religion;
@@ -32,6 +39,49 @@ public class SocialHistory {
     /**
      * @return pet owned by the {@link Patient}
      */
+    public SocialHistory(String liveWith, String diet, String religion, Boolean isSexuallyActive, Boolean isSecondhandSmoker, String alcoholUse, String caffeineUse, String tobaccoUse
+    ,String drugUse, String pet, String occupation, String like, String dislike, String hobby, String habbit, String holidayExperience, String education, String exercise) {
+        this.liveWith = liveWith;
+        this.diet = diet;
+        this.religion = religion;
+        this.isSexuallyActive = isSexuallyActive;
+        this.isSecondhandSmoker = isSecondhandSmoker;
+        this.alcoholUse = alcoholUse;
+        this.caffeineUse = caffeineUse;
+        this.tobaccoUse = tobaccoUse;
+        this.drugUse = drugUse;
+        this.pet=pet;
+        this.occupation = occupation;
+        this.like = like;
+        this.dislike = dislike;
+        this.hobby = hobby;
+        this.habbit = habbit;
+        this.holidayExperience = holidayExperience;
+        this.education = education;
+        this.exercise = exercise;
+    }
+    public ArrayList<AttributeValuePair> transform() {
+        ArrayList<AttributeValuePair> list = new ArrayList<>();
+        list.add(new AttributeValuePair("Live with", getLiveWith()));
+        list.add(new AttributeValuePair("Diet", getDiet()));
+        list.add(new AttributeValuePair("Religion", getReligion()));
+        list.add(new AttributeValuePair("Is Sexually Active", getIsSexuallyActive().toString()));
+        list.add(new AttributeValuePair("Is Second Hand Smoker", getIsSecondhandSmoker().toString()));
+        list.add(new AttributeValuePair("Alcohol Use", getAlcoholUse()));
+        list.add(new AttributeValuePair("Caffine Use", getCaffeineUse()));
+        list.add(new AttributeValuePair("Tobacco Use", getTobaccoUse()));
+        list.add(new AttributeValuePair("Drug Use", getDrugUse()));
+        list.add(new AttributeValuePair("Pet", getPet()));
+        list.add(new AttributeValuePair("Occupation", getOccupation()));
+        list.add(new AttributeValuePair("Like", getLike()));
+        list.add(new AttributeValuePair("Dislike", getDislike()));
+        list.add(new AttributeValuePair("Hobby", getHobby()));
+        list.add(new AttributeValuePair("Habbit", getHabbit()));
+        list.add(new AttributeValuePair("Holiday Experience", getHolidayExperience()));
+        list.add(new AttributeValuePair("Education", getEducation()));
+        list.add(new AttributeValuePair("Exercise", getExercise()));
+        return list;
+    }
     public String getPet() {
         return pet;
     }

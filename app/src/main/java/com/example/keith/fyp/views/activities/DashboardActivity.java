@@ -16,6 +16,7 @@ import android.view.View;
 
 import com.example.keith.fyp.broadcastreceiver.NotificationGroupUpdateReceiver;
 import com.example.keith.fyp.comparators.NotificationComparator;
+import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.interfaces.OnNotificationGroupUpdateListener;
 import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
@@ -111,55 +112,57 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         // Creating Notification Model
         // =====================================================
 
-        Bitmap patientAvatar1 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_18);
-        Bitmap patientAvatar2 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_19);
-        Bitmap patientAvatar3 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_20);
-
-        Patient patient1 = new Patient("Garry", "Reese", "123AB456", patientAvatar1);
-        Patient patient2 = new Patient("Lillian", "Wade", "987CD654", patientAvatar2);
-        Patient patient3 = new Patient("Laura", "Freeman", "AV12G64", patientAvatar3);
-
-        Bitmap caregiverAvatar1 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_01);
-        Bitmap caregiverAvatar2 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_02);
-        Bitmap caregiverAvatar3 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_03);
-        Bitmap caregiverAvatar4 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_04);
-        Bitmap caregiverAvatar5 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_05);
-
-        DateTime date1 = DateTime.now();
-        DateTime date2 = DateTime.now().minusDays(2).minusHours(2);
-        DateTime date3 = DateTime.now().minusDays(5).plusHours(1);
-        DateTime date4 = DateTime.now().minusDays(4).minusHours(2);
-        DateTime date5 = DateTime.now().minusDays(1).plusHours(1);
-        DateTime date6 = DateTime.now().minusDays(3).plusHours(5);
-
-        String caregiverName1 = "John Doe";
-        String caregiverName2 = "Jane Doe";
-        String caregiverName3 = "Tracy Lee";
-        String caregiverName4 = "Apple Tan";
-        String caregiverName5 = "Bethany Mandler";
-
-        String summary1 = "Updated information of patient Garry Reese";
-        String summary2 = "Log new problem for patient Lilian Wade";
-        String summary3 = "Create new patient Laura Freeman";
-        String summary4 = "Recommended the game category memory to patient Garry Reese";
-        String summary5 = "Updated the milk allergy of patient Lillian Wade";
-        String summary6 = "Log new problem for patient Garry Reese";
-
-        Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_UPDATE_INFO_FIELD);
-        Notification notification2 = new Notification(date2, caregiverName2, caregiverAvatar2, summary2, patient2, Notification.STATUS_NONE, Notification.TYPE_NEW_INFO_OBJECT);
-        Notification notification3 = new Notification(date3, caregiverName3, caregiverAvatar3, summary3, patient3, Notification.STATUS_NONE, Notification.TYPE_NEW_PATIENT);
-        Notification notification4 = new Notification(date4, caregiverName4, caregiverAvatar4, summary4, patient1, Notification.STATUS_NONE, Notification.TYPE_GAME_RECOMMENDATION);
-        Notification notification5 = new Notification(date5, caregiverName5, caregiverAvatar5, summary5, patient2, Notification.STATUS_NONE, Notification.TYPE_UPDATE_INFO_OBJECT);
-        Notification notification6 = new Notification(date6, caregiverName3, caregiverAvatar3, summary6, patient1, Notification.STATUS_NONE, Notification.TYPE_NEW_INFO_OBJECT);
-
+//        Bitmap patientAvatar1 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_18);
+//        Bitmap patientAvatar2 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_19);
+//        Bitmap patientAvatar3 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_20);
+//
+//        Patient patient1 = new Patient("Garry", "Reese", "123AB456", patientAvatar1);
+//        Patient patient2 = new Patient("Lillian", "Wade", "987CD654", patientAvatar2);
+//        Patient patient3 = new Patient("Laura", "Freeman", "AV12G64", patientAvatar3);
+//
+//        Bitmap caregiverAvatar1 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_01);
+//        Bitmap caregiverAvatar2 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_02);
+//        Bitmap caregiverAvatar3 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_03);
+//        Bitmap caregiverAvatar4 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_04);
+//        Bitmap caregiverAvatar5 = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_05);
+//
+//        DateTime date1 = DateTime.now();
+//        DateTime date2 = DateTime.now().minusDays(2).minusHours(2);
+//        DateTime date3 = DateTime.now().minusDays(5).plusHours(1);
+//        DateTime date4 = DateTime.now().minusDays(4).minusHours(2);
+//        DateTime date5 = DateTime.now().minusDays(1).plusHours(1);
+//        DateTime date6 = DateTime.now().minusDays(3).plusHours(5);
+//
+//        String caregiverName1 = "John Doe";
+//        String caregiverName2 = "Jane Doe";
+//        String caregiverName3 = "Tracy Lee";
+//        String caregiverName4 = "Apple Tan";
+//        String caregiverName5 = "Bethany Mandler";
+//
+//        String summary1 = "Updated information of patient Garry Reese";
+//        String summary2 = "Log new problem for patient Lilian Wade";
+//        String summary3 = "Create new patient Laura Freeman";
+//        String summary4 = "Recommended the game category memory to patient Garry Reese";
+//        String summary5 = "Updated the milk allergy of patient Lillian Wade";
+//        String summary6 = "Log new problem for patient Garry Reese";
+//
+//        Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_UPDATE_INFO_FIELD);
+//        Notification notification2 = new Notification(date2, caregiverName2, caregiverAvatar2, summary2, patient2, Notification.STATUS_NONE, Notification.TYPE_NEW_INFO_OBJECT);
+//        Notification notification3 = new Notification(date3, caregiverName3, caregiverAvatar3, summary3, patient3, Notification.STATUS_NONE, Notification.TYPE_NEW_PATIENT);
+//        Notification notification4 = new Notification(date4, caregiverName4, caregiverAvatar4, summary4, patient1, Notification.STATUS_NONE, Notification.TYPE_GAME_RECOMMENDATION);
+//        Notification notification5 = new Notification(date5, caregiverName5, caregiverAvatar5, summary5, patient2, Notification.STATUS_NONE, Notification.TYPE_UPDATE_INFO_OBJECT);
+//        Notification notification6 = new Notification(date6, caregiverName3, caregiverAvatar3, summary6, patient1, Notification.STATUS_NONE, Notification.TYPE_NEW_INFO_OBJECT);
+//
         ArrayList<Notification> notificationList = new ArrayList<>();
-        notificationList.add(notification1);
-        notificationList.add(notification2);
-        notificationList.add(notification3);
-        notificationList.add(notification4);
-        notificationList.add(notification5);
-        notificationList.add(notification6);
+////        notificationList.add(notification1);
+////        notificationList.add(notification2);
+////        notificationList.add(notification3);
+////        notificationList.add(notification4);
+////        notificationList.add(notification5);
+////        notificationList.add(notification6);
 
+        dbfile db = new dbfile();
+        notificationList = db.prepareNotificationList(getApplicationContext());
         // =====================================================
         // Building the Notification Group based on the notification
         // =====================================================

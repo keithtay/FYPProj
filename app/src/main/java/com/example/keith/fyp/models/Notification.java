@@ -63,10 +63,57 @@ public class Notification {
     private int status;
     private int type;
 
+    private int logid;
+
+    public int getLogid() {
+        return logid;
+    }
+
+    public void setLogid(int logid) {
+        this.logid = logid;
+    }
+
+    public String getLogData() {
+        return logData;
+    }
+
+    public void setLogData(String logData) {
+        this.logData = logData;
+    }
+
+    public String getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
+
+    private String logData;
+    private String additionalInfo;
+
+    public String getTa() {
+        return ta;
+    }
+
+    public void setTa(String ta) {
+        this.ta = ta;
+    }
+
+    public int getRa() {
+        return ra;
+    }
+
+    public void setRa(int ra) {
+        this.ra = ra;
+    }
+
+    private String ta;
+    private int ra;
     /**
      * Create a new notification with the specified {@code creationDate}, {@code senderName}, {@code senderPhoto}, {@code summary}, {@code affectedPatient}, {@code status} and {@code type} values
      */
-    public Notification(DateTime creationDate, String senderName, Bitmap senderPhoto, String summary, Patient affectedPatient, int status, int type) {
+    public Notification(DateTime creationDate, String senderName, Bitmap senderPhoto, String summary, Patient affectedPatient, int status, int type, int logid, String logData, String additionalInfo, String ta, int ra) {
         this.creationDate = creationDate;
         this.senderName = senderName;
         this.senderPhoto = senderPhoto;
@@ -74,6 +121,11 @@ public class Notification {
         this.affectedPatient = affectedPatient;
         this.status = status;
         this.type = type;
+        this.logid = logid;
+        this.logData=logData;
+        this.additionalInfo = additionalInfo;
+        this.ta = ta;
+        this.ra = ra;
     }
 
     /**
