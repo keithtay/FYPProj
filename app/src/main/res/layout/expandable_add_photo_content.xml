@@ -47,11 +47,11 @@
                 android:paddingRight="@dimen/paper_card_padding">
 
                 <Button
-                    android:id="@+id/cancel_add_default_event_button"
+                    android:id="@+id/cancel_add_new_photos_event_button"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/add_new_default_event_button"
+                    android:layout_toLeftOf="@+id/add_new_photos_event_button"
                     android:paddingLeft="@dimen/padding_flat_button"
                     android:paddingRight="@dimen/padding_flat_button"
                     android:text="@string/button_cancel"
@@ -59,7 +59,7 @@
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/add_new_default_event_button"
+                    android:id="@+id/add_new_photos_event_button"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

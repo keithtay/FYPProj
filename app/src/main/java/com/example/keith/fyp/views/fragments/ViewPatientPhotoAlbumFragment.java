@@ -47,34 +47,24 @@ import java.util.UUID;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 /**
- * Fragment to display the patient's problem log information
+ * Fragment to display the patient's photo album fragment
  *
- * @author  Sutrisno Suryajaya Dwi Putra
+ * @author  ks
  */
 public class ViewPatientPhotoAlbumFragment extends Fragment {
 
     private LinearLayout rootView;
-    private LinearLayout addNewProblemLogHeaderContainer;
-    private RecyclerView problemLogRecyclerView;
-    private LinearLayoutManager layoutManager;
-    private ProblemLogListAdapter problemLogListAdapter;
-    private Button cancelNewProblemLogButton;
-    private Button addNewProblemLogButton;
-    private MaterialSpinner newProblemLogCategorySpinner;
-    private EditText addProblemLogFromDateEditText;
-    private EditText newProblemLogNotesEditText;
-    private ExpandableLayout addProblemLogExpandableLayout;
-    private Spinner problemLogFilterSpinner;
+    private LinearLayout addNewPhotosHeaderContainer;
+    private ExpandableLayout addNewPhotosExpandable;
+    private Button cancelAddNewPhotosButton;
     private ListView photoAlbumListView;
     private MaterialSpinner photoAlbumTitleSpinner;
 
-    private ArrayList<ProblemLog> problemLogList;
-    private ProblemLogComparator problemLogComparator = new ProblemLogComparator();
-
-    private String selectedCategoryFilter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+
 
         rootView = (LinearLayout) inflater.inflate(R.layout.fragment_view_patient_photo_album, container, false);
 
@@ -124,6 +114,45 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
         photoAlbumTitleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         photoAlbumTitleSpinner.setAdapter(photoAlbumTitleAdapter);
 
+
+        /////////////////////////////////////listeners////////////////////////////
+
+        addNewPhotosExpandable = (ExpandableLayout) rootView.findViewById(R.id.add_new_photo_expandable_layout);
+        addNewPhotosHeaderContainer = (LinearLayout) rootView.findViewById(R.id.add_new_photos_header);
+        addNewPhotosHeaderContainer.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (addNewPhotosExpandable.isOpened()) {
+                    resetAddNewPhotosFields();
+                    addNewPhotosExpandable.hide();
+                }
+                return false;
+            }
+        });
+
+        //'cancel' button listener
+        cancelAddNewPhotosButton = (Button) rootView.findViewById(R.id.cancel_add_new_photos_event_button);
+        cancelAddNewPhotosButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeExpandableAddNewPhotos();
+                resetAddNewPhotosFields();
+                photoAlbumTitleSpinner.setError(null);
+            }
+        });
+
         return rootView;
     }
+
+
+    private void resetAddNewPhotosFields() {
+        photoAlbumTitleSpinner.setSelection(0);
+    }
+
+    private void closeExpandableAddNewPhotos() {
+        if (addNewPhotosExpandable.isOpened()) {
+            addNewPhotosExpandable.hide();
+        }
+    }
+
 }
