@@ -136,6 +136,19 @@ public class ActionRenderer extends Renderer {
                 }
 
                 if (isValidForm) {
+                    SharedPreferences pref;
+                    pref = context.getSharedPreferences("Login", 0);
+                    final int UserID = Integer.parseInt(pref.getString("userid", ""));
+                    int logid = notification.getLogid();
+                    int rowid = notification.getRa();
+                    String tablename = notification.getTa();
+                    dbfile db = new dbfile();
+                    int getNotificationId = notification.getType();
+                    if (getNotificationId == 1 || getNotificationId == 2){
+                        db.updateRejectionNotificationTables(logid, rowid, tablename, UserID, reasonStr);
+                    }else{
+                        //do something
+                    }
                     notification.setStatus(Notification.STATUS_REJECTED);
                     notification.setRejectionReason(reasonStr);
                     finalRootView.removeAllViews();

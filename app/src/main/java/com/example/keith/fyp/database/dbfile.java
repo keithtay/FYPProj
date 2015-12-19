@@ -50,7 +50,28 @@ public class dbfile {
     ArrayList<Patient> patientList1 = new ArrayList<>();
     ArrayList<DefaultEvent> defaultEvent = new ArrayList<>();
 
-
+    public void updateRejectionNotificationTables(int logid, int rowid, String tablename,int UserID, String reason ){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            if (tablename.equals("patient")){
+                stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID + ", remarks='" + reason + "' WHERE logID=" + logid);
+                stmt.executeUpdate("UPDATE patient SET isApproved=0, isDeleted=1 WHERE patientID=" + rowid);
+            }else if(tablename.equals("patientSpecInfo")){
+                stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID + ", remarks='" + reason + "' WHERE logID=" + logid);
+                stmt.executeUpdate("UPDATE patientSpecInfo SET isApproved=0, isDeleted=1 WHERE patientSpecInfoID=" + rowid);
+            }
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void updateNotificationTables(int logid, int rowid, String tablename,int UserID ){
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();

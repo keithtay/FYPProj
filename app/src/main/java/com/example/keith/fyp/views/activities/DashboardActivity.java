@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -56,7 +57,11 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         setContentView(R.layout.activity_dashboard);
         fragmentManager = getFragmentManager();
 
-        retrieveNotification();
+        SharedPreferences preferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+        final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
+        if(UserTypeID ==2) {
+            retrieveNotification();
+        }
 
         View contentWrapper = findViewById(R.id.dashboard_fragment_container);
         DrawerAndMiniDrawerPair drawerAndMiniDrawerPair = UtilsUi.setNavigationDrawer(this, contentWrapper, this, savedInstanceState);
