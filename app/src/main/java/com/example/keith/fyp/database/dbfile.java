@@ -85,14 +85,45 @@ public class dbfile {
             if (tablename.equals("patient")){
                 stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID +" WHERE logID=" + logid);
                 stmt.executeUpdate("UPDATE patient SET isApproved=1 WHERE patientID=" + rowid);
+                stmt.executeUpdate("UPDATE patientAllocation SET isApproved=1 WHERE patientID=" + rowid);
             }else if(tablename.equals("patientSpecInfo")){
                 stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID + " WHERE logID=" + logid);
                 stmt.executeUpdate("UPDATE patientSpecInfo SET isApproved=1 WHERE patientSpecInfoID=" + rowid);
+                stmt.executeUpdate("UPDATE patientAllocation SET isApproved=1 WHERE patientID=" + rowid);
             }
              conn.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public int getLeastCareGiverID(){
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            ResultSet reset = stmt.executeQuery("SELECT TOP 1 caregiverID, count(pa.caregiverID) as valueCount FROM [dementiafypdb].[dbo].[user] AS u\n" +
+                    "INNER JOIN [dementiafypdb].[dbo].[patientAllocation] AS pa ON pa.caregiverID = u.userID\n" +
+                    "WHERE u.userTypeID = 1\n" +
+                    "GROUP BY pa.caregiverID\n" +
+                    "ORDER BY valueCount\n");
+
+            while (reset.next()) {
+                id = reset.getInt("caregiverID");
+            }
+            conn.close();
+
+            return id;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return id;
+
     }
     public ArrayList<Notification> prepareNotificationList(Context context){
         ArrayList<Notification> notificationList = new ArrayList<>();
@@ -174,6 +205,34 @@ public class dbfile {
 
             ResultSet reset = stmt.executeQuery("select * from [user] " +
                     " where firstName='" + username +"' AND password='" +  password + "' AND isApproved=1");
+            while(reset.next()){
+                al.add(reset.getInt("userID"));
+                al.add(reset.getInt("userTypeID"));
+                // Commit the edits!
+            }
+
+            conn.close();
+            return al;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return al;
+    }
+    public ArrayList<Integer> checkUserValid(int id, String username, String password){
+        ArrayList<Integer> al = new ArrayList<Integer>();
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+
+            ResultSet reset = stmt.executeQuery("select * from [user] " +
+                    " where userID="+  id + " AND firstName='" + username +"' AND password='" +  password + "' AND isApproved=1");
             while(reset.next()){
                 al.add(reset.getInt("userID"));
                 al.add(reset.getInt("userTypeID"));
@@ -279,13 +338,17 @@ public class dbfile {
             conn = DriverManager.getConnection(connString, username, password);
             Statement stmt = conn.createStatement();
 
-            ResultSet reset = stmt.executeQuery("select * from patient where isApproved=1 AND isDeleted=0 ");
-
+//            ResultSet reset = stmt.executeQuery("select * from patient where isApproved=1 AND isDeleted=0 ");
+            ResultSet reset = stmt.executeQuery("select p.firstName AS firstName, p.lastName as lastName, p.nric as nric, pa.patientallocationID as allocationID " +
+                    "FROM [patient] AS p " +
+                    "INNER JOIN [patientAllocation] AS pa ON pa.patientID = p.patientID " +
+                    "where p.isApproved=1 AND p.isDeleted=0");
             while (reset.next()) {
                 Patient patient1 = new Patient();
                     patient1.setFirstName(reset.getString("firstName"));
                     patient1.setLastName(reset.getString("lastName"));
                     patient1.setNric(reset.getString("nric"));
+                    patient1.setAllocatonID(reset.getInt("allocationID"));
                     Bitmap photo = BitmapFactory.decodeResource(context.getResources(), R.drawable.avatar_01);
                     patient1.setPhoto(photo);
                 patientList1.add(patient1);
@@ -573,6 +636,11 @@ public class dbfile {
                         "VALUES ('" + allData + "','" + logDesc + "'," + 3 + "," + key + "," + UserID + ",'" + checkIsSuper + "'," + null + "," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + "," + 0 + ",'" + timestamp + "')";
             Statement stmt1 = conn.createStatement();
             stmt1.executeUpdate(sql1);
+                int caregiverid = getLeastCareGiverID();
+                String sql2 = "INSERT INTO patientAllocation " +
+                        "VALUES (" + key + "," + 10 + "," + caregiverid + "," + 0 + "," + checkIsSupervisor + ",'" + timestamp + "')";
+                Statement stmt2 = conn.createStatement();
+                stmt2.executeUpdate(sql2);
             }
             conn.close();
 

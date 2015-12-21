@@ -35,6 +35,15 @@ public class Patient {
     private SocialHistory socialHistory = new SocialHistory();
     private Schedule todaySchedule;
     private ArrayList<PhotoAlbum> photoAlbumList = new ArrayList<>();
+    private int AllocatonID;
+
+    public int getAllocatonID() {
+        return AllocatonID;
+    }
+
+    public void setAllocatonID(int allocatonID) {
+        AllocatonID = allocatonID;
+    }
 
     // TODO: remove since it is only for testing (using local stored photo)
     private int photoId;

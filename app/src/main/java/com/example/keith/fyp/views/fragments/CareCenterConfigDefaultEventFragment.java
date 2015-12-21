@@ -1,6 +1,7 @@
 package com.example.keith.fyp.views.fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
@@ -186,17 +188,23 @@ public class CareCenterConfigDefaultEventFragment extends Fragment {
         }
 
         if (isValidForm) {
-            Integer everyNum = Integer.parseInt(everyNumStr);
-            dbfile db = new dbfile();
-            db.addNewDefaultEvent(name, startTime, endTime, Integer.parseInt(everyNumStr), everyLabel);
-            DefaultEvent newDefaultEvent = new DefaultEvent(name, startTime, endTime, everyNum, everyLabel, startDay);
-            defaultEventList.add(0, newDefaultEvent);
-            defaultEventListAdapter.notifyItemInserted(0);
+            SharedPreferences preferences = this.getActivity().getSharedPreferences("Login", Context.MODE_PRIVATE);
+            final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
+            if(UserTypeID ==2) {
+                Integer everyNum = Integer.parseInt(everyNumStr);
+                dbfile db = new dbfile();
+                db.addNewDefaultEvent(name, startTime, endTime, Integer.parseInt(everyNumStr), everyLabel);
+                DefaultEvent newDefaultEvent = new DefaultEvent(name, startTime, endTime, everyNum, everyLabel, startDay);
+                defaultEventList.add(0, newDefaultEvent);
+                defaultEventListAdapter.notifyItemInserted(0);
 
-            resetNewDefaultEventFields();
+                resetNewDefaultEventFields();
 
-            closeExpandableAddDefaultEvent();
-            hideKeyboard();
+                closeExpandableAddDefaultEvent();
+                hideKeyboard();
+            }else{
+                Toast.makeText(getActivity(), "Sorry, you do not have the privilege to access this function", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -232,33 +240,37 @@ public class CareCenterConfigDefaultEventFragment extends Fragment {
     }
 
     private ArrayList<DefaultEvent> getDefaultEventList() {
-        ArrayList<DefaultEvent> defaultEventList = DataHolder.getDefaultEventList();
-
-        if (defaultEventList == null) {
-            defaultEventList = new ArrayList<>();
-
-            defaultEventList.add(new DefaultEvent("Lunch",
-                    DateTime.now().withHourOfDay(12).withMinuteOfHour(0),
-                    DateTime.now().withHourOfDay(13).withMinuteOfHour(0),
-                    1,
-                    "Day",
-                    null));
-
-            defaultEventList.add(new DefaultEvent("Tea Break",
-                    DateTime.now().withHourOfDay(16).withMinuteOfHour(0),
-                    DateTime.now().withHourOfDay(16).withMinuteOfHour(30),
-                    2,
-                    "Day",
-                    "Monday"));
-
-            defaultEventList.add(new DefaultEvent("Aerobics",
-                    DateTime.now().withHourOfDay(9).withMinuteOfHour(0),
-                    DateTime.now().withHourOfDay(10).withMinuteOfHour(0),
-                    1,
-                    "Week",
-                    "Wednesday"));
+        SharedPreferences preferences = this.getActivity().getSharedPreferences("Login", Context.MODE_PRIVATE);
+        final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
+        if(UserTypeID ==2) {
+            ArrayList<DefaultEvent> defaultEventList = DataHolder.getDefaultEventList();
+            return defaultEventList;
+//            if (defaultEventList == null) {
+//                defaultEventList = new ArrayList<>();
+//
+//                defaultEventList.add(new DefaultEvent("Lunch",
+//                        DateTime.now().withHourOfDay(12).withMinuteOfHour(0),
+//                        DateTime.now().withHourOfDay(13).withMinuteOfHour(0),
+//                        1,
+//                        "Day",
+//                        null));
+//
+//                defaultEventList.add(new DefaultEvent("Tea Break",
+//                        DateTime.now().withHourOfDay(16).withMinuteOfHour(0),
+//                        DateTime.now().withHourOfDay(16).withMinuteOfHour(30),
+//                        2,
+//                        "Day",
+//                        "Monday"));
+//
+//                defaultEventList.add(new DefaultEvent("Aerobics",
+//                        DateTime.now().withHourOfDay(9).withMinuteOfHour(0),
+//                        DateTime.now().withHourOfDay(10).withMinuteOfHour(0),
+//                        1,
+//                        "Week",
+//                        "Wednesday"));
+//            }
         }
-
+        defaultEventList = new ArrayList<>();
         return defaultEventList;
     }
 }
