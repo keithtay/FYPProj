@@ -109,7 +109,7 @@ public class dbfile {
             Statement stmt = conn.createStatement();
             ResultSet reset = stmt.executeQuery("SELECT TOP 1 caregiverID, count(pa.caregiverID) as valueCount FROM [dementiafypdb].[dbo].[user] AS u\n" +
                     "INNER JOIN [dementiafypdb].[dbo].[patientAllocation] AS pa ON pa.caregiverID = u.userID\n" +
-                    "WHERE u.userTypeID = 1\n" +
+                    "WHERE u.userTypeID = 1 AND pa.isApproved=1 AND pa.isDeleted=0\n" +
                     "GROUP BY pa.caregiverID\n" +
                     "ORDER BY valueCount\n");
 
