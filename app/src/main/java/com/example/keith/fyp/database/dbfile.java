@@ -63,6 +63,7 @@ public class dbfile {
             if (tablename.equals("patient")){
                 stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID + ", remarks='" + reason + "' WHERE logID=" + logid);
                 stmt.executeUpdate("UPDATE patient SET isApproved=0, isDeleted=1 WHERE patientID=" + rowid);
+                stmt.executeUpdate("UPDATE patientAllocation SET isApproved=0, isDeleted=1 WHERE patientID=" + rowid);
             }else if(tablename.equals("patientSpecInfo")){
                 stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID + ", remarks='" + reason + "' WHERE logID=" + logid);
                 stmt.executeUpdate("UPDATE patientSpecInfo SET isApproved=0, isDeleted=1 WHERE patientSpecInfoID=" + rowid);
@@ -89,7 +90,6 @@ public class dbfile {
             }else if(tablename.equals("patientSpecInfo")){
                 stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID + " WHERE logID=" + logid);
                 stmt.executeUpdate("UPDATE patientSpecInfo SET isApproved=1 WHERE patientSpecInfoID=" + rowid);
-                stmt.executeUpdate("UPDATE patientAllocation SET isApproved=1 WHERE patientID=" + rowid);
             }
              conn.close();
         } catch (Exception e) {
