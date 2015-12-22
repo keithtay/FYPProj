@@ -190,7 +190,7 @@ public class CareCenterConfigDefaultEventFragment extends Fragment {
         if (isValidForm) {
             SharedPreferences preferences = this.getActivity().getSharedPreferences("Login", Context.MODE_PRIVATE);
             final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
-            if(UserTypeID ==2) {
+            if(UserTypeID ==3) {
                 Integer everyNum = Integer.parseInt(everyNumStr);
                 dbfile db = new dbfile();
                 db.addNewDefaultEvent(name, startTime, endTime, Integer.parseInt(everyNumStr), everyLabel);
@@ -242,7 +242,7 @@ public class CareCenterConfigDefaultEventFragment extends Fragment {
     private ArrayList<DefaultEvent> getDefaultEventList() {
         SharedPreferences preferences = this.getActivity().getSharedPreferences("Login", Context.MODE_PRIVATE);
         final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
-        if(UserTypeID ==2) {
+        if(UserTypeID ==3) {
             ArrayList<DefaultEvent> defaultEventList = DataHolder.getDefaultEventList();
             return defaultEventList;
 //            if (defaultEventList == null) {

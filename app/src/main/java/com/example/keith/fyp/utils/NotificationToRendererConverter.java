@@ -155,6 +155,7 @@ public class NotificationToRendererConverter {
                 int month = Integer.parseInt(dat.substring(5, 7));
                 int day = Integer.parseInt(dat.substring(8,10));
                 newPatient.setDob(DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day));
+                newPatient.setNric(patientDetail[4]);
                 newPatient.setPhoto(BitmapFactory.decodeResource(context.getResources(), R.drawable.avatar_20));
                 contentRenderer = new ContentNewPatientRenderer(inflater, newPatient);
                 break;
