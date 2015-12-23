@@ -54,6 +54,7 @@ public class NotificationToRendererConverter {
         ContentRenderer contentRenderer = null;
         String logData = notification.getLogData();
         String additionalInfo = notification.getAdditionalInfo();
+        int k = notification.getRa();
         switch(notification.getType()) {
             case Notification.TYPE_GAME_RECOMMENDATION:
                 contentRenderer = new ContentGameRecommendationRenderer(inflater);
@@ -154,17 +155,78 @@ public class NotificationToRendererConverter {
                 int month = Integer.parseInt(dat.substring(5, 7));
                 int day = Integer.parseInt(dat.substring(8,10));
                 newPatient.setDob(DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day));
+                newPatient.setNric(patientDetail[4]);
                 newPatient.setPhoto(BitmapFactory.decodeResource(context.getResources(), R.drawable.avatar_20));
                 contentRenderer = new ContentNewPatientRenderer(inflater, newPatient);
                 break;
             case Notification.TYPE_UPDATE_INFO_OBJECT:
-//                Allergy oldAllergy = new Allergy("Milk", "Itchy skin", "");
-//                Allergy newAllergy = new Allergy("Milk", "Itchy skin", "Wash the skin with cold cloth");
+//                DateTime d = DateTime.now();
+//                Routine oldAllergy = new Routine("Milk", "Itchy skin", d,d,d,d,5,"String");
+//                Routine newAllergy = new Routine("Rubbish", "Itchy skin", d,d,d,d,5,"String");
 //                contentRenderer = new ContentUpdateInfoObjectRenderer(inflater, oldAllergy, newAllergy);
-                DateTime d = DateTime.now();
-                Routine oldAllergy = new Routine("Milk", "Itchy skin", d,d,d,d,5,"String");
-                Routine newAllergy = new Routine("Rubbish", "Itchy skin", d,d,d,d,5,"String");
-                contentRenderer = new ContentUpdateInfoObjectRenderer(inflater, oldAllergy, newAllergy);
+
+                //have to use variable k to go to patientspecinfo and retrieve information
+                if(additionalInfo.equals("allergy")){
+                    String[] allg1 = logData.split(";");
+                    Allergy allgery = new Allergy(allg1[0], allg1[1],allg1[2]);
+                    contentRenderer = new ContentUpdateInfoObjectRenderer(inflater, allgery, allgery);
+                }else if(additionalInfo.equals("vital")){
+                    String[] vital1 = logData.split(";");
+                    String test = vital1[0];
+                    DateTime a = DateTime.parse(test);
+                    Vital vital2 = new Vital(a, Boolean.valueOf(vital1[1]),Float.parseFloat(vital1[2]),
+                            Float.parseFloat(vital1[3]),Float.parseFloat(vital1[4]),Float.parseFloat(vital1[5]),Float.parseFloat(vital1[6]),
+                            vital1[7]);
+                    contentRenderer = new ContentUpdateInfoObjectRenderer(inflater, vital2, vital2);
+                }else if(additionalInfo.equals("social history")){
+                    String[] socialList = logData.split(";");
+                    SocialHistory socialHistory = new SocialHistory(socialList[0],socialList[1],socialList[2], Boolean.valueOf(socialList[3]), Boolean.valueOf(socialList[4]),
+                            socialList[5],socialList[6],socialList[7],socialList[8],socialList[9],socialList[10],socialList[11],socialList[12],socialList[13],socialList[14],
+                            socialList[15],socialList[16],socialList[17]);
+                    contentRenderer = new ContentUpdateInfoObjectRenderer(inflater, socialHistory, socialHistory);
+                }else if(additionalInfo.equals("prescription")){
+                    String[] prescri = logData.split(";");
+                    String dateStart = prescri[4];
+                    String endDate = prescri[5];
+                    int year2 = Integer.parseInt(dateStart.substring(0, 4));
+                    int month2 = Integer.parseInt(dateStart.substring(5, 7));
+                    int day2 = Integer.parseInt(dateStart.substring(8, 10));
+                    Log.v("Checking1", dateStart.substring(0, 4) + " " + dateStart.substring(5, 7) + " " + dateStart.substring(8, 10));
+                    int year1 = Integer.parseInt(endDate.substring(0, 4));
+                    int month1 = Integer.parseInt(endDate.substring(5, 7));
+                    int day1 = Integer.parseInt(endDate.substring(8, 10));
+
+                    DateTime test = DateTime.now().withYear(year2).withMonthOfYear(month2).withDayOfMonth(day2);
+                    DateTime test2 = DateTime.now().withYear(year1).withMonthOfYear(month1).withDayOfMonth(day1);
+                    Prescription pe = new Prescription(prescri[0],prescri[1],Integer.parseInt(prescri[2]),prescri[3],test,
+                            test2,prescri[6],prescri[7]);
+                    contentRenderer = new ContentUpdateInfoObjectRenderer(inflater, pe, pe);
+                }else if(additionalInfo.equals("routine")){
+                    String[] ro = logData.split(";");
+                    String dateStart = ro[2];
+                    String endDate = ro[3];
+                    int year2 = Integer.parseInt(dateStart.substring(0, 4));
+                    int month2 = Integer.parseInt(dateStart.substring(5, 7));
+                    int day2 = Integer.parseInt(dateStart.substring(8, 10));
+                    int year1 = Integer.parseInt(endDate.substring(0, 4));
+                    int month1 = Integer.parseInt(endDate.substring(5, 7));
+                    int day1 = Integer.parseInt(endDate.substring(8, 10));
+                    DateTime test = DateTime.now().withYear(year2).withMonthOfYear(month2).withDayOfMonth(day2);
+                    DateTime test2 = DateTime.now().withYear(year1).withMonthOfYear(month1).withDayOfMonth(day1);
+
+                    String timeStart = ro[4];
+                    String timeEnd = ro[5];
+                    int hour = Integer.parseInt(timeStart.substring(11, 13));
+                    int min = Integer.parseInt(timeStart.substring(14, 16));
+                    int sec = Integer.parseInt(timeStart.substring(17, 19));
+                    int hour1 = Integer.parseInt(timeEnd.substring(11, 13));
+                    int min1 = Integer.parseInt(timeEnd.substring(14, 16));
+                    int sec1 = Integer.parseInt(timeEnd.substring(17, 19));
+                    DateTime test3 = DateTime.now().withYear(year2).withMonthOfYear(month2).withDayOfMonth(day2).withHourOfDay(hour).withMinuteOfHour(min).withSecondOfMinute(sec);
+                    DateTime test4 = DateTime.now().withYear(year1).withMonthOfYear(month1).withDayOfMonth(day1).withHourOfDay(hour1).withMinuteOfHour(min1).withSecondOfMinute(sec1);
+                    Routine rot = new Routine(ro[0],ro[1],test,test2,test3,test4,Integer.parseInt(ro[6]),ro[7]);
+                    contentRenderer = new ContentUpdateInfoObjectRenderer(inflater, rot, rot);
+                }
                 break;
             case Notification.TYPE_UPDATE_INFO_FIELD:
                 contentRenderer = new ContentUpdateInfoFieldRenderer(inflater, "Personal Information", "Address", "32 Nanyang Avenue #12-7-23", "32 Nanyang Avenue #12-7-24");

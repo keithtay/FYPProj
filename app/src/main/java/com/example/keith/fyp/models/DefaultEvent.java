@@ -2,6 +2,8 @@ package com.example.keith.fyp.models;
 
 import org.joda.time.DateTime;
 
+import java.util.Comparator;
+
 /**
  * DefaultEvent is a model to represent the care centre default events.
  * Default event is an activity that will be done by all the patients in the care centre at the same time (e.g. lunch time)
@@ -116,4 +118,11 @@ public class DefaultEvent {
     public void setStartDay(String startDay) {
         this.startDay = startDay;
     }
+
+    public static Comparator<DefaultEvent> COMPARE_BY_TIME = new Comparator<DefaultEvent>(){
+        @Override
+        public int compare(DefaultEvent lhs, DefaultEvent rhs) {
+            return lhs.getStartTime().compareTo(rhs.getStartTime());
+        }
+    };
 }

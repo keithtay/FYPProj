@@ -3,8 +3,11 @@ package com.example.keith.fyp.renderers;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Image;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +20,7 @@ import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.activities.ViewPatientActivity;
+import com.example.keith.fyp.views.activities.ViewScheduleActivity;
 
 import mehdi.sakout.fancybuttons.FancyButton;
 
@@ -53,7 +57,13 @@ public class ContentNewPatientRenderer extends ContentRenderer {
             viewNewPatientButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, ViewPatientActivity.class);
+                    SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor editor = mPrefs.edit();
+                    editor.putString(Global.STATE_SELECTED_PATIENT_NRIC, newPatient.getNric());
+                    editor.commit();
+                    Intent intent = new Intent(context, ViewScheduleActivity.class);
+//                    Intent intent = new Intent(context, ViewPatientActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     context.startActivity(intent);
                 }
             });

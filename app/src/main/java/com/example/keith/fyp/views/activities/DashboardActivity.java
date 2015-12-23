@@ -59,7 +59,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
 
         SharedPreferences preferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
         final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
-        if(UserTypeID ==2) {
+        if(UserTypeID ==3) {
             retrieveNotification();
         }
 
