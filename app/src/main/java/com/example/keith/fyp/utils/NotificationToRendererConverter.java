@@ -28,6 +28,8 @@ import com.example.keith.fyp.renderers.NotificationRenderer;
 
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
+
 /**
  * NotificationToRendererConverter is a singleton class to
  * convert a {@link Notification} to its {@link NotificationRenderer}
@@ -156,7 +158,18 @@ public class NotificationToRendererConverter {
                 int day = Integer.parseInt(dat.substring(8,10));
                 newPatient.setDob(DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day));
                 newPatient.setNric(patientDetail[4]);
+                newPatient.setAddress(patientDetail[5]);
+                newPatient.setHomeNumber(patientDetail[6]);
+                newPatient.setPhoneNumber(patientDetail[7]);
+                newPatient.setGuardianFullName(patientDetail[8]);
+                newPatient.setGuardianContactNumber(patientDetail[9]);
+                newPatient.setGuardianEmail(patientDetail[10]);
                 newPatient.setPhoto(BitmapFactory.decodeResource(context.getResources(), R.drawable.avatar_20));
+                newPatient.setHasAllergy(false);
+                newPatient.setAllergyList(new ArrayList<Allergy>());
+                newPatient.setVitalList(new ArrayList<Vital>());
+                newPatient.setRoutineList(new ArrayList<Routine>());
+                newPatient.setProblemLogList(new ArrayList<ProblemLog>());
                 contentRenderer = new ContentNewPatientRenderer(inflater, newPatient);
                 break;
             case Notification.TYPE_UPDATE_INFO_OBJECT:

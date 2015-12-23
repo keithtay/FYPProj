@@ -28,6 +28,8 @@ import com.example.keith.fyp.models.ScheduleList;
 import com.example.keith.fyp.scheduler.scheduleScheduler;
 import com.example.keith.fyp.utils.DataHolder;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -39,7 +41,7 @@ import java.util.Random;
 public class GenerateScheduleFragment extends Fragment {
     private View rootView;
     private RadioGroup radioGroup;
-    private RadioButton sound, vibration;
+    private RadioButton day, week, tomorrow;
     private Button button;
     private TextView userName, userPw;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -62,8 +64,9 @@ public class GenerateScheduleFragment extends Fragment {
 
         }});
 
-        sound = (RadioButton) rootView.findViewById(R.id.radioDay);
-        vibration = (RadioButton) rootView.findViewById(R.id.radioWeek);
+        day = (RadioButton) rootView.findViewById(R.id.radioDay);
+        tomorrow = (RadioButton) rootView.findViewById(R.id.radioTomorrow);
+        week = (RadioButton) rootView.findViewById(R.id.radioWeek);
 
         userName = (TextView) rootView.findViewById(R.id.userName);
         userPw = (TextView) rootView.findViewById(R.id.userPw);
@@ -94,17 +97,24 @@ public class GenerateScheduleFragment extends Fragment {
                     al = db.checkUserValid(UserID,userName.getText().toString(),userPw.getText().toString());
                     if(al.size() != 0){
                         int selectedId = radioGroup.getCheckedRadioButtonId();
-                        if (selectedId == sound.getId()) {
-                            ArrayList<Patient> patient = new ArrayList<Patient>();
-                            ArrayList<DefaultEvent> de = new ArrayList<DefaultEvent>();
-                            patient = DataHolder.getPatientList(getActivity());
-                            de = DataHolder.getDefaultEventList();
-                            Collections.sort(de, DefaultEvent.COMPARE_BY_TIME);
-                            scheduleScheduler ss = new scheduleScheduler();
+                        DateTime date1;
+                        ArrayList<Patient> patient = new ArrayList<Patient>();
+                        ArrayList<DefaultEvent> de = new ArrayList<DefaultEvent>();
+                        patient = DataHolder.getPatientList(getActivity());
+                        de = DataHolder.getDefaultEventList();
+                        Collections.sort(de, DefaultEvent.COMPARE_BY_TIME);
+                        scheduleScheduler ss = new scheduleScheduler();
+                        if (selectedId == day.getId()) {
                             Toast.makeText(getActivity(), "Please wait while the scheduler process", Toast.LENGTH_LONG).show();
-                            ss.insertNewSchedules(patient, de);
+                            date1 = DateTime.now();
+                            ss.insertNewSchedules(patient, de, date1);
                             Toast.makeText(getActivity(), "Successfully inserted", Toast.LENGTH_LONG).show();
-                        }else{
+                        }else if (selectedId == tomorrow.getId()){
+                            Toast.makeText(getActivity(), "Please wait while the scheduler process", Toast.LENGTH_LONG).show();
+                            date1 = DateTime.now().plusDays(1);
+                            ss.insertNewSchedules(patient, de, date1);
+                            Toast.makeText(getActivity(), "Successfully inserted", Toast.LENGTH_LONG).show();
+                        }else if(selectedId == week.getId()){
 
                         }
                     }else{

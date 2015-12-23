@@ -59,12 +59,15 @@ public class ContentNewPatientRenderer extends ContentRenderer {
                 public void onClick(View v) {
                     SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
                     SharedPreferences.Editor editor = mPrefs.edit();
-                    editor.putString(Global.STATE_SELECTED_PATIENT_NRIC, newPatient.getNric());
+                    editor.putString(Global.STATE_SELECTED_PATIENT_NRIC, newPatient.getNric().toString());
                     editor.commit();
+
                     Intent intent = new Intent(context, ViewScheduleActivity.class);
-//                    Intent intent = new Intent(context, ViewPatientActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     context.startActivity(intent);
+//                    Intent intent = new Intent(context, ViewScheduleActivity.class);
+//                    Intent intent = new Intent(context, ViewPatientActivity.class);
+
                 }
             });
         }

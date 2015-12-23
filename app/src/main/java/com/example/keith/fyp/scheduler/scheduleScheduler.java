@@ -33,8 +33,10 @@ public class scheduleScheduler {
     Calendar cal = Calendar.getInstance();
     java.sql.Timestamp timestamp = new java.sql.Timestamp(cal.getTimeInMillis());
     String dateNow = timestamp.toString().substring(0, 10);
+    DateTime testDateNow;
     int x = 0;
-    public void insertNewSchedules(ArrayList<Patient> patient, ArrayList<DefaultEvent> de){
+
+    public void insertNewSchedules(ArrayList<Patient> patient, ArrayList<DefaultEvent> de, DateTime testDateNow){
         ArrayList<ScheduleList> schedule= getEvent();
         DateTime startDay;
         DateTime endDay;
@@ -72,7 +74,7 @@ public class scheduleScheduler {
                 }
                 //always check if the default event is in turn to do it
                 if(de1.size() != 0 && deCurrent.getHourOfDay() == startDay.getHourOfDay() && deCurrent.getMinuteOfDay() == startDay.getMinuteOfDay()){
-                    addnewSchedule(de1.get(x).getName(), de1.get(x).getStartTime().withMillisOfSecond(0), de1.get(x).getEndTime().withMillisOfSecond(0), 0, "Defaulted Event", 5, patient.get(i).getAllocatonID());
+                    addnewSchedule(de1.get(x).getName(), de1.get(x).getStartTime().withMillisOfSecond(0), de1.get(x).getEndTime().withMillisOfSecond(0), 0, "Default Event", 1, patient.get(i).getAllocatonID(),testDateNow);
                     DateTime time1 = de1.get(x).getStartTime();
                     DateTime time2 = de1.get(x).getEndTime();
                     int a1 = time1.getHourOfDay();
@@ -87,7 +89,7 @@ public class scheduleScheduler {
                     continue;
                 }
                 Integer randomInt = rand.nextInt(schedule.size());
-                addnewSchedule(schedule.get(randomInt).getEventName(), startDay, startDay.plusHours(1), 0, schedule.get(randomInt).getEventDesc(), 1, patient.get(i).getAllocatonID());
+                addnewSchedule(schedule.get(randomInt).getEventName(), startDay, startDay.plusHours(1), 0, schedule.get(randomInt).getEventDesc(), 1, patient.get(i).getAllocatonID(),testDateNow);
                 startDay= startDay.plusHours(1);
                 continue;
 
@@ -101,11 +103,11 @@ public class scheduleScheduler {
         }
     }
 
-    public void addnewSchedule(String scheduleTitle, DateTime timeStart, DateTime timeEnd, int interval, String scheduleDesc,int scheduleTypeID, int patientAllocationID){
-
+    public void addnewSchedule(String scheduleTitle, DateTime timeStart, DateTime timeEnd, int interval, String scheduleDesc,int scheduleTypeID, int patientAllocationID, DateTime testDateNow){
+        String date1 = testDateNow.toString().substring(0,10);
         try {
             String sql = "INSERT INTO schedule " +
-                    "VALUES ('" + scheduleTitle + "','" + timeStart + "','" + timeEnd + "','" + dateNow + "','" + dateNow + "'," + interval + ",'" + scheduleDesc + "'," + scheduleTypeID + "," + patientAllocationID + "," + 0 + "," + 1 + ",'" + timestamp + "')";
+                    "VALUES ('" + scheduleTitle + "','" + timeStart + "','" + timeEnd + "','" + date1 + "','" + date1 + "'," + interval + ",'" + scheduleDesc + "'," + scheduleTypeID + "," + patientAllocationID + "," + 0 + "," + 1 + ",'" + timestamp + "')";
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(sql);
 
