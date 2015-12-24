@@ -404,9 +404,10 @@ public class dbfile {
             Class.forName(driver).newInstance();
             conn = DriverManager.getConnection(connString, username, password);
             Statement stmt = conn.createStatement();
-
             ResultSet reset = stmt.executeQuery("select * from patient " +
-                    " where nric='" + nric + "' AND isApproved=1 AND isDeleted=0");
+                    " where nric='" + nric + "' AND  isDeleted=0");
+//            ResultSet reset = stmt.executeQuery("select * from patient " +
+//                    " where nric='" + nric + "' AND isApproved=1 AND isDeleted=0");
 
             while (reset.next()) {
                 if (count == 0) {
@@ -660,7 +661,7 @@ public class dbfile {
                 }else{
                     k=1;
                 }
-                String allData = firstname +";" + lastname  +";" + gender + ";" + date + ";" + nric;
+                String allData = firstname +";" + lastname  +";" + gender + ";" + date + ";" + nric + ";" + address + ";" + officeno + ";" + handphoneno + ";" + gname + ";" + gcontactno + ";" + gemail   ;
                 String logDesc = "Create new patient " + firstname + " " + lastname;
                 String tableAffected = "patient";
                 String columnAffected = "all";

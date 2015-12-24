@@ -73,8 +73,16 @@
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="Generate for tomorrow"
+                    android:id="@+id/radioTomorrow"
+                    android:paddingRight="30dp" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="Generate for the week"
                     android:id="@+id/radioWeek" />
+
             </RadioGroup>
         </LinearLayout>
 
@@ -84,7 +92,7 @@
             android:layout_height="match_parent">
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:text="Generate Patient&apos;s Schedule"
                 android:id="@+id/generateButton"
