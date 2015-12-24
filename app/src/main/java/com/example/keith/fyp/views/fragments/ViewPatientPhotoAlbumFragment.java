@@ -32,8 +32,11 @@ import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.andexert.expandablelayout.library.ExpandableLayoutListView;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.comparators.ProblemLogComparator;
+import com.example.keith.fyp.database.dbfile;
+import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.PhotoAlbum;
 import com.example.keith.fyp.models.ProblemLog;
+import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
@@ -77,8 +80,8 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-
+        dbfile db = new dbfile();
+        Patient createdPatient = DataHolder.getCreatedPatient();
 
         rootView = (LinearLayout) inflater.inflate(R.layout.fragment_view_patient_photo_album, container, false);
 
@@ -86,7 +89,13 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
 
         ArrayList<PhotoAlbum> photoAlbumList = new ArrayList<>();
 
+        //ArrayList<Bitmap> profilePicBitmapList = new ArrayList<>();
+
+        ;
+        photoAlbumList.add(new PhotoAlbum("Profile Picture", db.getProfilePic(db.getPatientId(createdPatient.getNric()), 1)));
+
         ArrayList<Bitmap> familyBitmapList = new ArrayList<>();
+
         familyBitmapList.add(BitmapFactory.decodeResource(getResources(), R.drawable.avatar_01));
         familyBitmapList.add(BitmapFactory.decodeResource(getResources(), R.drawable.avatar_02));
         familyBitmapList.add(BitmapFactory.decodeResource(getResources(), R.drawable.avatar_03));
@@ -147,6 +156,7 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
         cancelAddNewPhotosButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 closeExpandableAddNewPhotos();
                 resetAddNewPhotosFields();
                 photoAlbumTitleSpinner.setError(null);

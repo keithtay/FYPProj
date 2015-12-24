@@ -23,6 +23,7 @@ import com.example.keith.fyp.models.Vital;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsUi;
 
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -34,6 +35,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by Keith on 4/12/2015.
@@ -841,5 +843,35 @@ public class dbfile {
         }
         return listofCategory;
 }
+    public ArrayList <Bitmap> getProfilePic (int patientId , int albumCatId){
+        ArrayList <Bitmap> profilePicBitmapList = new ArrayList<>();
+        ArrayList<String> albumFilePath = new ArrayList<String>();
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            ResultSet reset = stmt.executeQuery("Select albumPath\n" +
+                                                "From album\n" +
+                                                "where albumCatID= '" +albumCatId+ "' AND patientID= '"+patientId+ "';");
+
+            while (reset.next()) {
+                albumFilePath.add(reset.toString());
+                //Bitmap photo = BitmapFactory.decodeResource(getResources(), albumFilePath);
+                //profilePicBitmapList.add(photo);
+            }
+
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+      return profilePicBitmapList;
+    }
 
 }
