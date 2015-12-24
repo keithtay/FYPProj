@@ -21,7 +21,7 @@
             app:cardElevation="5dp">
 
             <com.andexert.expandablelayout.library.ExpandableLayout xmlns:expandable="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/add_problem_log_expandable_layout"
+                android:id="@+id/add_new_photo_expandable_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 expandable:el_contentLayout="@layout/expandable_add_photo_content"
