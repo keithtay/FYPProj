@@ -1,8 +1,10 @@
 package com.example.keith.fyp.views.customviews;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.drawable.TransitionDrawable;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,8 +19,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.database.dbfile;
+import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
 
@@ -346,8 +351,28 @@ public class CustomField extends LinearLayout {
      * Save the edited value
      */
     protected void saveValue() {
-        String newValue = fieldValueEditText.getText().toString();
-        oldValue = newValue;
+        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String selectedPatientNric = mPrefs.getString(Global.STATE_SELECTED_PATIENT_NRIC, "");
+
+        Log.v("Testing Testing", selectedPatientNric);
+        Log.v("whats this", fieldTitleStr);
+
+        SharedPreferences pref = getContext().getSharedPreferences("Login", 0);
+        final int UserID = Integer.parseInt(pref.getString("userid", ""));
+        final int UserTypeID = Integer.parseInt(pref.getString("userTypeId", ""));
+        dbfile db = new dbfile();
+        String newValue="";
+
+        int x = db.getPatientId(selectedPatientNric);
+        if (UserTypeID ==3){
+            newValue = fieldValueEditText.getText().toString();
+            db.insertNewPatientInfo(oldValue, newValue, fieldTitleStr, x, UserTypeID, UserID);
+            oldValue = newValue;
+        }else{
+            newValue = fieldValueEditText.getText().toString();
+            db.insertNewPatientInfo(oldValue, newValue, fieldTitleStr, x, UserTypeID, UserID);
+            Toast.makeText(getContext(), "Pending Supervisor Approval", Toast.LENGTH_SHORT).show();
+        }
 
         toggleMode();
 

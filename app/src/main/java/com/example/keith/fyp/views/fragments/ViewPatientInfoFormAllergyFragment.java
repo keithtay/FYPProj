@@ -1,5 +1,7 @@
 package com.example.keith.fyp.views.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,10 +17,12 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.Allergy;
 import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.views.adapters.AllergyListAdapter;
@@ -186,9 +190,20 @@ public class ViewPatientInfoFormAllergyFragment extends ViewPatientInfoFormFragm
         }
 
         if(isValidForm) {
-            Allergy newAllergy = new Allergy(allergyName, allergyReaction, allergyNotes);
-            allergyList.add(0, newAllergy);
-            allergyListAdapter.notifyItemInserted(0);
+            SharedPreferences preferences = this.getActivity().getSharedPreferences("Login", Context.MODE_PRIVATE);
+            final int UserID = Integer.parseInt(preferences.getString("userid", ""));
+            final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
+            if(UserTypeID == 3){
+                Allergy newAllergy = new Allergy(allergyName, allergyReaction, allergyNotes);
+                allergyList.add(0, newAllergy);
+                allergyListAdapter.notifyItemInserted(0);
+            }else{
+                Toast.makeText(getActivity(), "Pending Supervisor Approval",Toast.LENGTH_LONG).show();
+            }
+            dbfile db = new dbfile();
+            String concatString = allergyName + ";" + allergyReaction + ";" + allergyNotes;
+            int id = db.getPatientId(viewedPatient.getNric());
+            db.insertPatientSpec(concatString, id, 1, UserTypeID, UserID);
 
             resetNewAllergyFields();
 

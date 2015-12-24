@@ -110,10 +110,20 @@ public class Notification {
 
     private String ta;
     private int ra;
+    private int patientID;
+
+    public int getPatientID() {
+        return patientID;
+    }
+
+    public void setPatientID(int patientID) {
+        this.patientID = patientID;
+    }
+
     /**
      * Create a new notification with the specified {@code creationDate}, {@code senderName}, {@code senderPhoto}, {@code summary}, {@code affectedPatient}, {@code status} and {@code type} values
      */
-    public Notification(DateTime creationDate, String senderName, Bitmap senderPhoto, String summary, Patient affectedPatient, int status, int type, int logid, String logData, String additionalInfo, String ta, int ra) {
+    public Notification(DateTime creationDate, String senderName, Bitmap senderPhoto, String summary, Patient affectedPatient, int status, int type, int logid, String logData, String additionalInfo, String ta, int ra, int patientID) {
         this.creationDate = creationDate;
         this.senderName = senderName;
         this.senderPhoto = senderPhoto;
@@ -126,6 +136,7 @@ public class Notification {
         this.additionalInfo = additionalInfo;
         this.ta = ta;
         this.ra = ra;
+        this.patientID = patientID;
     }
 
     /**

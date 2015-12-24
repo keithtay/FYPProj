@@ -242,7 +242,8 @@ public class NotificationToRendererConverter {
                 }
                 break;
             case Notification.TYPE_UPDATE_INFO_FIELD:
-                contentRenderer = new ContentUpdateInfoFieldRenderer(inflater, "Personal Information", "Address", "32 Nanyang Avenue #12-7-23", "32 Nanyang Avenue #12-7-24");
+                String[] info = logData.split(";");
+                contentRenderer = new ContentUpdateInfoFieldRenderer(inflater, "Personal Information", additionalInfo, info[0], info[1]);
                 break;
         }
 

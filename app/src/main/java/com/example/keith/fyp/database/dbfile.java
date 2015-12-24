@@ -56,6 +56,58 @@ public class dbfile {
     ArrayList<Patient> patientList1 = new ArrayList<>();
     ArrayList<DefaultEvent> defaultEvent = new ArrayList<>();
 
+    public void insertNewPatientInfo(String oldData, String newData, String columnAffected, int patientId, int UserTypeID, int UserID){
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            int checkIsSupervisor, checkIsSuper;
+            if(UserTypeID == 3){
+                checkIsSupervisor = 1;
+            }else{
+                checkIsSupervisor = 0;
+            }
+            if(checkIsSupervisor ==1){
+                checkIsSuper = UserID;
+            }else{
+                checkIsSuper = 0;
+            }
+            String allData = oldData +";"+ newData;
+            String logDesc = "New Update to Patient Particulars";
+            String tableAffected = "patient";
+            String sql1 = "INSERT INTO log " +
+                    "VALUES ('" + allData + "','" + logDesc + "'," + 4 + "," + patientId + "," + UserID + ",'" + checkIsSuper + "','" + columnAffected + "'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + null + "," + checkIsSupervisor + ",'" + timestamp + "')";
+            Statement stmt1 = conn.createStatement();
+            stmt1.executeUpdate(sql1);
+
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void updateRejectionNewPatientInfo(int logid,int UserID, String reason ){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID + ", remarks='" + reason + "' WHERE logID=" + logid);
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void updateRejectionNotificationTables(int logid, int rowid, String tablename,int UserID, String reason ){
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -79,11 +131,31 @@ public class dbfile {
             e.printStackTrace();
         }
     }
+    public void updateLogPatientInfo(int logid, int patientid, String newData, String columnname,int UserID ){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            Log.v("WHY NEVER READ","W");
+                stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID +" WHERE logID=" + logid);
+                stmt.executeUpdate("UPDATE patient SET " + columnname + "='" + newData + "' WHERE patientID=" + patientid);
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void updateNotificationTables(int logid, int rowid, String tablename,int UserID ){
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+
         Connection conn = null;
         try {
             Class.forName(driver).newInstance();
@@ -146,7 +218,7 @@ public class dbfile {
 
             ResultSet reset = stmt.executeQuery("SELECT pa.firstName AS patientfirstname, pa.lastname AS patientlastname, pa.nric AS patientnric, lo.createDateTime as logdatetime," +
                     "lo.logDesc AS logDescription, lo.logCategoryID AS logcatid, us.firstName AS userfirstname, us.lastName AS userlastname," +
-                    "lo.logID as logid, lo.logData AS logdata, lo.additionalInfo as additionalinfo, lo.tableAffected AS ta, lo.rowAffected AS ra " +
+                    "lo.logID as logid, lo.logData AS logdata, lo.additionalInfo as additionalinfo, lo.tableAffected AS ta, lo.rowAffected AS ra, lo.patientID as patientsid " +
                     "  FROM [dementiafypdb].[dbo].[log] AS lo " +
                     "  INNER JOIN [dementiafypdb].[dbo].patient AS pa ON pa.patientID = lo.patientID" +
                     "  INNER JOIN [dementiafypdb].[dbo].[user] AS us ON us.userID = lo.userIDInit" +
@@ -171,20 +243,21 @@ public class dbfile {
                 String ta = reset.getString("ta");
                 int ra = reset.getInt("ra");
                 int seewhichCat = reset.getInt("logcatid");
+                int patientid = reset.getInt("patientsid");
                 if(seewhichCat == 1){//type game recommendation
-                    Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_GAME_RECOMMENDATION, logid,logData,additionalinfo, ta,ra);
+                    Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_GAME_RECOMMENDATION, logid,logData,additionalinfo, ta,ra, patientid);
                     notificationList.add(notification1);
                 }else if(seewhichCat == 2){//typenewinfoobject
-                    Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_NEW_INFO_OBJECT, logid,logData,additionalinfo, ta ,ra);
+                    Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_NEW_INFO_OBJECT, logid,logData,additionalinfo, ta ,ra, patientid);
                     notificationList.add(notification1);
                 }else if(seewhichCat == 3) {//typenewpatient
-                    Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_NEW_PATIENT, logid,logData,additionalinfo, ta ,ra);
+                    Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_NEW_PATIENT, logid,logData,additionalinfo, ta ,ra, patientid);
                     notificationList.add(notification1);
                 }else if(seewhichCat == 4) {//typeupdateinfofield
-                    Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_UPDATE_INFO_FIELD, logid,logData,additionalinfo, ta ,ra);
+                    Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_UPDATE_INFO_FIELD, logid,logData,additionalinfo, ta ,ra, patientid);
                     notificationList.add(notification1);
                 }else if(seewhichCat == 5) {//typeupdateinfoobject
-                    Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_UPDATE_INFO_OBJECT, logid,logData,additionalinfo, ta ,ra);
+                    Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_UPDATE_INFO_OBJECT, logid,logData,additionalinfo, ta ,ra, patientid);
                     notificationList.add(notification1);
                 }
 
@@ -636,10 +709,10 @@ public class dbfile {
             Class.forName(driver).newInstance();
             conn = DriverManager.getConnection(connString, username, password);
             int checkIsSupervisor;
-            if(UserTypeID == 4){
-                checkIsSupervisor = 0;
-            }else{
+            if(UserTypeID == 3){
                 checkIsSupervisor = 1;
+            }else{
+                checkIsSupervisor = 0;
             }
             String sql = "INSERT INTO patient " +
                     "VALUES ('" + firstname + "','" + lastname + "','" + nric + "','" + address + "','" + officeno + "','" + handphoneno + "','" + gender + "','" + date + "','" + gname + "','" + gcontactno + "','" + gemail + "'," + 0 + "," + checkIsSupervisor + ",'" + timestamp + "')";
