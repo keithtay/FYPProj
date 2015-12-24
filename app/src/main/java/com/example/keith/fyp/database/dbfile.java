@@ -28,6 +28,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.lang.reflect.Array;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -844,8 +845,9 @@ public class dbfile {
         }
         return listofCategory;
 }
-    public ArrayList <Bitmap> getProfilePic (int patientId , int albumCatId){
-        ArrayList <Bitmap> profilePicBitmapList = new ArrayList<>();
+    public ArrayList <String> getProfilePic (int patientId , int albumCatId){
+        String path = "http://dementiafypdb.com/";
+        //ArrayList <Bitmap> profilePicBitmapList = new ArrayList<>();
         ArrayList<String> albumFilePath = new ArrayList<String>();
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
@@ -857,22 +859,22 @@ public class dbfile {
             Class.forName(driver).newInstance();
             conn = DriverManager.getConnection(connString, username, password);
             Statement stmt = conn.createStatement();
+            Log.v("testing1", "hi bye");
             ResultSet reset = stmt.executeQuery("Select albumPath\n" +
                                                 "From album\n" +
                                                 "where albumCatID= '" +albumCatId+ "' AND patientID= '"+patientId+ "';");
 
             while (reset.next()) {
-                albumFilePath.add(reset.toString());
-                //Bitmap photo = BitmapFactory.decodeResource(getResources(), albumFilePath);
-                //profilePicBitmapList.add(photo);
+                albumFilePath.add(path + reset.getString("albumPath").replace("\\","/"));
+                Log.v("Testing", path + reset.getString("albumPath").replace("\\", "/")); //test file path.
             }
-
             conn.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-      return profilePicBitmapList;
+      return albumFilePath;
     }
+
+
 
 }

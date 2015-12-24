@@ -3,10 +3,13 @@ package com.example.keith.fyp.views.fragments;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +17,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +54,10 @@ import org.joda.time.DateTime;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -78,22 +87,92 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
     private String path = Global.DATA_PATH + fileName;
     private Uri outputFileUri;
 
+    ArrayList <Bitmap> pulledUrlImageProfilePic = new ArrayList<Bitmap>();
+    ArrayList <Bitmap> pulledUrlImageFamily = new ArrayList<Bitmap>();
+    ArrayList <Bitmap> pulledUrlImageScenery = new ArrayList<Bitmap>();
+    ArrayList <Bitmap> pulledUrlImageFriends = new ArrayList<Bitmap>();
+    ArrayList <Bitmap> pulledUrlImageOthers = new ArrayList<Bitmap>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         dbfile db = new dbfile();
-        Patient createdPatient = DataHolder.getCreatedPatient();
+
+        //code to select selected patient Nric.
+        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String selectedPatientNric = mPrefs.getString(Global.STATE_SELECTED_PATIENT_NRIC, "");
+        //end of code to select selected patient Nric.
+
 
         rootView = (LinearLayout) inflater.inflate(R.layout.fragment_view_patient_photo_album, container, false);
-
         photoAlbumListView = (ListView) rootView.findViewById(R.id.photo_album_list_view);
-
         ArrayList<PhotoAlbum> photoAlbumList = new ArrayList<>();
 
-        //ArrayList<Bitmap> profilePicBitmapList = new ArrayList<>();
 
-        ;
-        photoAlbumList.add(new PhotoAlbum("Profile Picture", db.getProfilePic(db.getPatientId(createdPatient.getNric()), 1)));
+        ArrayList <String> urlToPullImageProfile = new ArrayList<String>();
+        Log.v("test patient nric", selectedPatientNric); //test nric.
+        urlToPullImageProfile = db.getProfilePic(db.getPatientId(selectedPatientNric), 1);
+        // Create an object for subclass of AsyncTask
+        GetXMLTask task_ProfilePic = new GetXMLTask();
+        // Execute the task
+        for (int i = 0; i < urlToPullImageProfile.size(); i++){
+            task_ProfilePic.execute(new String[]{urlToPullImageProfile.get(i)});
+        }
 
+        photoAlbumList.add(new PhotoAlbum("Profile Picture", pulledUrlImageProfilePic));
+
+        ArrayList <String> urlToPullImageFamily = new ArrayList<String>();
+
+        Log.v("test patient nric", selectedPatientNric);
+        urlToPullImageFamily = db.getProfilePic(db.getPatientId(selectedPatientNric), 1);
+        // Create an object for subclass of AsyncTask
+        GetXMLTask task_Family = new GetXMLTask();
+        // Execute the task
+        for (int i = 0; i < urlToPullImageFamily.size(); i++){
+            task_Family.execute(new String[]{urlToPullImageFamily.get(i)});
+        }
+
+        photoAlbumList.add(new PhotoAlbum("Family", pulledUrlImageFamily));
+
+        ArrayList <String> urlToPullImageScenery = new ArrayList<String>();
+
+        Log.v("test patient nric", selectedPatientNric);
+        urlToPullImageScenery = db.getProfilePic(db.getPatientId(selectedPatientNric), 1);
+        // Create an object for subclass of AsyncTask
+        GetXMLTask task_Scenery = new GetXMLTask();
+        // Execute the task
+        for (int i = 0; i < urlToPullImageScenery.size(); i++){
+            task_Scenery.execute(new String[]{urlToPullImageScenery.get(i)});
+        }
+
+        photoAlbumList.add(new PhotoAlbum("Scenery", pulledUrlImageScenery));
+
+        ArrayList <String> urlToPullImageFriends = new ArrayList<String>();
+
+        Log.v("test patient nric", selectedPatientNric);
+        urlToPullImageFriends = db.getProfilePic(db.getPatientId(selectedPatientNric), 1);
+        // Create an object for subclass of AsyncTask
+        GetXMLTask task_Friends = new GetXMLTask();
+        // Execute the task
+        for (int i = 0; i < urlToPullImageFriends.size(); i++){
+            task_Friends.execute(new String[]{urlToPullImageFriends.get(i)});
+        }
+
+        photoAlbumList.add(new PhotoAlbum("Friends", pulledUrlImageFriends));
+
+        ArrayList <String> urlToPullImageOthers = new ArrayList<String>();
+
+        Log.v("test patient nric", selectedPatientNric);
+        urlToPullImageOthers = db.getProfilePic(db.getPatientId(selectedPatientNric), 1);
+        // Create an object for subclass of AsyncTask
+        GetXMLTask task_Others = new GetXMLTask();
+        // Execute the task
+        for (int i = 0; i < urlToPullImageOthers.size(); i++){
+            task_Others.execute(new String[]{urlToPullImageOthers.get(i)});
+        }
+
+        photoAlbumList.add(new PhotoAlbum("Others", pulledUrlImageOthers));
+
+        /* STATIC IMAGES
         ArrayList<Bitmap> familyBitmapList = new ArrayList<>();
 
         familyBitmapList.add(BitmapFactory.decodeResource(getResources(), R.drawable.avatar_01));
@@ -125,6 +204,7 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
 
 
         photoAlbumList.add(new PhotoAlbum("Others", others));
+        END OF STATIC IMAGES */
 
         photoAlbumListView.setAdapter(new PhotoAlbumTitleAdapter(getActivity(), photoAlbumList));
 
@@ -216,5 +296,63 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
 
         startActivityForResult(intent, REQUEST_TAKE_PHOTO);
     }
+
+
+    private class GetXMLTask extends AsyncTask<String, Void, Bitmap> {
+        @Override
+        protected Bitmap doInBackground(String... urls) {
+            Bitmap map = null;
+            for (String url : urls) {
+                map = downloadImage(url);
+            }
+            return map;
+        }
+
+        // Sets the Bitmap returned by doInBackground
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            pulledUrlImageProfilePic.add(result);
+        }
+
+        // Creates Bitmap from InputStream and returns it
+        private Bitmap downloadImage(String url) {
+            Bitmap bitmap = null;
+            InputStream stream = null;
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            bmOptions.inSampleSize = 1;
+
+            try {
+                stream = getHttpConnection(url);
+                bitmap = BitmapFactory.
+                        decodeStream(stream, null, bmOptions);
+                stream.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        // Makes HttpURLConnection and returns InputStream
+        private InputStream getHttpConnection(String urlString)
+                throws IOException {
+            InputStream stream = null;
+            URL url = new URL(urlString);
+            URLConnection connection = url.openConnection();
+
+            try {
+                HttpURLConnection httpConnection = (HttpURLConnection) connection;
+                httpConnection.setRequestMethod("GET");
+                httpConnection.connect();
+
+                if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    stream = httpConnection.getInputStream();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return stream;
+        }
+    }
+
 
 }
