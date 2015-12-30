@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -26,17 +25,12 @@ import android.widget.ListView;
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.andexert.expandablelayout.library.ExpandableLayoutListView;
 import com.example.keith.fyp.R;
-
 import com.example.keith.fyp.database.dbfile;
-
 import com.example.keith.fyp.models.PhotoAlbum;
-
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsString;
-
 import com.example.keith.fyp.views.adapters.PhotoAlbumTitleAdapter;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
+
 
 
 import java.io.File;
@@ -71,22 +65,28 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
     private String path = Global.DATA_PATH + fileName;
     private Uri outputFileUri;
 
-    ArrayList<Bitmap> pulledUrlImageProfilePic = new ArrayList<Bitmap>();
-    ArrayList<Bitmap> pulledUrlImageFamily = new ArrayList<Bitmap>();
-    ArrayList<Bitmap> pulledUrlImageScenery = new ArrayList<Bitmap>();
-    ArrayList<Bitmap> pulledUrlImageFriends = new ArrayList<Bitmap>();
-    ArrayList<Bitmap> pulledUrlImageOthers = new ArrayList<Bitmap>();
+    private ArrayList<Bitmap> pulledUrlImageProfilePic = new ArrayList<Bitmap>();
+    private ArrayList<Bitmap> pulledUrlImageFamily = new ArrayList<Bitmap>();
+    private ArrayList<Bitmap> pulledUrlImageScenery = new ArrayList<Bitmap>();
+    private ArrayList<Bitmap> pulledUrlImageFriends = new ArrayList<Bitmap>();
+    private ArrayList<Bitmap> pulledUrlImageOthers = new ArrayList<Bitmap>();
 
-    ArrayList<String> urlToPullImageProfile = new ArrayList<String>();
-    ArrayList<String> urlToPullImageFamily = new ArrayList<String>();
-    ArrayList<String> urlToPullImageFriends = new ArrayList<String>();
-    ArrayList<String> urlToPullImageScenery = new ArrayList<String>();
-    ArrayList<String> urlToPullImageOthers = new ArrayList<String>();
-    ArrayList<String> combinedURLSOfAll = new ArrayList<String>();
+    private ArrayList<String> urlToPullImageProfile = new ArrayList<String>();
+    private ArrayList<String> urlToPullImageFamily = new ArrayList<String>();
+    private ArrayList<String> urlToPullImageFriends = new ArrayList<String>();
+    private ArrayList<String> urlToPullImageScenery = new ArrayList<String>();
+    private ArrayList<String> urlToPullImageOthers = new ArrayList<String>();
+    private ArrayList<String> combinedURLSOfAll = new ArrayList<String>();
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         dbfile db = new dbfile();
+        boolean familyURLExistCheck = true;
+        boolean friendsURLExistCheck = true;
+        boolean sceneryURLExistCheck = true;
+        boolean othersURLExistCheck = true;
 
         //code to select selected patient Nric.
         SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -98,18 +98,43 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
         photoAlbumListView = (ListView) rootView.findViewById(R.id.photo_album_list_view);
         ArrayList<PhotoAlbum> photoAlbumList = new ArrayList<>();
 
-
-        Log.v("test patient nric", selectedPatientNric); //test nric.
+        Log.v("check patient nric", selectedPatientNric); //test nric.
         urlToPullImageProfile = db.getPicturesURLS(db.getPatientId(selectedPatientNric), 1);
         urlToPullImageFamily = db.getPicturesURLS(db.getPatientId(selectedPatientNric), 2);
         urlToPullImageFriends = db.getPicturesURLS(db.getPatientId(selectedPatientNric), 3);
         urlToPullImageScenery = db.getPicturesURLS(db.getPatientId(selectedPatientNric), 4);
         urlToPullImageOthers = db.getPicturesURLS(db.getPatientId(selectedPatientNric), 5);
-        combinedURLSOfAll.addAll(urlToPullImageProfile);
-        combinedURLSOfAll.addAll(urlToPullImageFamily);
-        combinedURLSOfAll.addAll(urlToPullImageFriends);
-        combinedURLSOfAll.addAll(urlToPullImageScenery);
-        combinedURLSOfAll.addAll(urlToPullImageOthers);
+        combinedURLSOfAll.addAll(urlToPullImageProfile); //only 1 profile pic and is mandatory.
+
+        if (urlToPullImageFamily.size() == 0) {
+            familyURLExistCheck = turnBoolFalse();
+        }
+        if (urlToPullImageFriends.size() == 0) {
+            friendsURLExistCheck = turnBoolFalse();
+        }
+        if (urlToPullImageScenery.size() == 0) {
+            sceneryURLExistCheck = turnBoolFalse();
+        }
+        if (urlToPullImageOthers.size() == 0) {
+            othersURLExistCheck = turnBoolFalse();
+        }
+
+        if (familyURLExistCheck) {
+            combinedURLSOfAll.addAll(urlToPullImageFamily);
+            Log.v("adding family pics", " ");
+        }
+        if (friendsURLExistCheck) {
+            combinedURLSOfAll.addAll(urlToPullImageFriends);
+            Log.v("adding friends pics", " ");
+        }
+        if (sceneryURLExistCheck) {
+            combinedURLSOfAll.addAll(urlToPullImageScenery);
+            Log.v("adding scenery pics", " ");
+        }
+        if (othersURLExistCheck) {
+            combinedURLSOfAll.addAll(urlToPullImageOthers);
+            Log.v("adding others pics", " ");
+        }
 
         // Create an object for subclass of AsyncTask
         GetXMLTask task = new GetXMLTask();
@@ -169,9 +194,6 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
             }
 
         });
-
-
-
         return rootView;
     }
 
@@ -215,6 +237,9 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
 
         startActivityForResult(intent, REQUEST_TAKE_PHOTO);
     }
+    private static boolean turnBoolFalse(){
+        return false;
+    }
 
     private class GetXMLTask extends AsyncTask< ArrayList<String>, Void, ArrayList<Bitmap> > {
 
@@ -231,55 +256,40 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
         @Override
         protected void onPostExecute(ArrayList<Bitmap> result) {
             int numberOfItemsCleared = 0;
-            for (int i = 0; i < urlToPullImageProfile.size(); i++) {
-                pulledUrlImageProfilePic.add(result.get(i));
-            }
+            pulledUrlImageProfilePic.add(result.get(0)); //only 1 profile pic and is mandatory.
             numberOfItemsCleared += pulledUrlImageProfilePic.size();
 
-            for (int i = 0; i < urlToPullImageFamily.size(); i++) {
-                pulledUrlImageFamily.add(result.get(numberOfItemsCleared + i));
+            if (urlToPullImageFamily.size() > 0) {
+                for (int i = 0; i < urlToPullImageFamily.size(); i++) {
+                    pulledUrlImageFamily.add(result.get(numberOfItemsCleared + i));
+                    //Log.v("loading family pics", " ");
+                }
             }
             numberOfItemsCleared += urlToPullImageFamily.size();
 
-            for (int i = 0; i < urlToPullImageFriends.size(); i++) {
-                pulledUrlImageFriends.add(result.get(numberOfItemsCleared + i));
+            if (urlToPullImageFriends.size() > 0) {
+                for (int i = 0; i < urlToPullImageFriends.size(); i++) {
+                    pulledUrlImageFriends.add(result.get(numberOfItemsCleared + i));
+                    //Log.v("loading friends pics", " ");
+                }
             }
             numberOfItemsCleared += urlToPullImageFriends.size();
 
-            for (int i = 0; i < urlToPullImageScenery.size(); i++) {
-                pulledUrlImageScenery.add(result.get(numberOfItemsCleared + i));
+            if (urlToPullImageScenery.size() > 0) {
+                for (int i = 0; i < urlToPullImageScenery.size(); i++) {
+                    pulledUrlImageScenery.add(result.get(numberOfItemsCleared + i));
+                    //Log.v("loading scenery pics", " ");
+                }
             }
             numberOfItemsCleared += urlToPullImageScenery.size();
 
-            for (int i = 0; i < urlToPullImageOthers.size(); i++) {
-                pulledUrlImageOthers.add(result.get(numberOfItemsCleared + i));
+            if (urlToPullImageOthers.size() > 0) {
+                for (int i = 0; i < urlToPullImageOthers.size(); i++) {
+                    pulledUrlImageOthers.add(result.get(numberOfItemsCleared + i));
+                    //Log.v("loading others pics", " ");
+                }
             }
         }
-            /*switch (typeOfAlbum) {
-                case 1:
-                    pulledUrlImageProfilePic.add(result);
-                    break;
-
-                case 2:
-                    pulledUrlImageFamily.add(result);
-                    break;
-
-                case 3:
-                    pulledUrlImageScenery.add(result);
-                    break;
-
-                case 4:
-                    pulledUrlImageFriends.add(result);
-                    break;
-                case 5:
-                    pulledUrlImageOthers.add(result);
-                    break;
-
-            }
-
-
-            */
-
 
         // Creates Bitmap from InputStream and returns it
         private Bitmap downloadImage(String url) {
