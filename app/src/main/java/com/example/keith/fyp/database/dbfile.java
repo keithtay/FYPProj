@@ -918,9 +918,8 @@ public class dbfile {
         }
         return listofCategory;
 }
-    public ArrayList <String> getProfilePic (int patientId , int albumCatId){
+    public ArrayList <String> getPicturesURLS (int patientId , int albumCatId){
         String path = "http://dementiafypdb.com/";
-        //ArrayList <Bitmap> profilePicBitmapList = new ArrayList<>();
         ArrayList<String> albumFilePath = new ArrayList<String>();
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
@@ -932,7 +931,6 @@ public class dbfile {
             Class.forName(driver).newInstance();
             conn = DriverManager.getConnection(connString, username, password);
             Statement stmt = conn.createStatement();
-            Log.v("testing1", "hi bye");
             ResultSet reset = stmt.executeQuery("Select albumPath\n" +
                                                 "From album\n" +
                                                 "where albumCatID= '" +albumCatId+ "' AND patientID= '"+patientId+ "';");
@@ -947,7 +945,4 @@ public class dbfile {
         }
       return albumFilePath;
     }
-
-
-
 }
