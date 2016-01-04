@@ -490,8 +490,11 @@ public class dbfile{
             Class.forName(driver).newInstance();
             conn = DriverManager.getConnection(connString, username, password);
             Statement stmt = conn.createStatement();
-            ResultSet reset = stmt.executeQuery("select * from patient " +
-                    " where nric='" + nric + "' AND  isDeleted=0");
+            ResultSet reset = stmt.executeQuery("SELECT a.albumPath as albumPath, * from patient AS p INNER JOIN album AS a ON a.patientID = p.patientID " +
+                    " where p.nric='" + nric + "' AND  p.isDeleted=0 AND a.albumCatID=1 ");
+            //original executeQuery done by keith
+            /*ResultSet reset = stmt.executeQuery("select * from patient " +
+                    " where nric='" + nric + "' AND  isDeleted=0");*/
 //            ResultSet reset = stmt.executeQuery("select * from patient " +
 //                    " where nric='" + nric + "' AND isApproved=1 AND isDeleted=0");
 
@@ -509,8 +512,8 @@ public class dbfile{
                     int month = Integer.parseInt(bday.substring(5, 7));
                     int day = Integer.parseInt(bday.substring(8, 10));
                     patient1.setDob(DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day));
-                    Bitmap photo = BitmapFactory.decodeResource(context.getResources(), R.drawable.avatar_01);
-                    patient1.setPhoto(photo);
+                    //Bitmap photo = BitmapFactory.decodeResource(context.getResources(), R.drawable.avatar_01);
+                    patient1.setPhoto(getPatientProfilePic(reset.getString("albumPath")));
                     patient1.setGuardianFullName(reset.getString("guardianName"));
                     patient1.setGuardianContactNumber(reset.getString("guardianContactNo"));
                     patient1.setGuardianEmail(reset.getString("guardianEmail"));
