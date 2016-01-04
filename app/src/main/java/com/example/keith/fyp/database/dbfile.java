@@ -1,11 +1,12 @@
 package com.example.keith.fyp.database;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 
 import com.example.keith.fyp.R;
@@ -24,10 +25,14 @@ import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsUi;
 
 
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 
+
+import java.io.InputStream;
 import java.lang.reflect.Array;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -36,12 +41,11 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 /**
- * Created by Keith on 4/12/2015.
+ * Created by Keith and KokSang on 4/12/2015.
  */
-public class dbfile {
+public class dbfile{
     String driver = "net.sourceforge.jtds.jdbc.Driver";
     String connString = "jdbc:jtds:sqlserver://PALM.arvixe.com:1433/dementiafypdb;encrypt=false;user=fyp2015;password=va5a7eve;instance=SQLEXPRESS;";
 //    String connString = "jdbc:jtds:sqlserver://0.0.0.0:1433/dementiafypdb;encrypt=false;user=;password=;instance=SQLEXPRESS;";
@@ -142,7 +146,7 @@ public class dbfile {
             Class.forName(driver).newInstance();
             conn = DriverManager.getConnection(connString, username, password);
             Statement stmt = conn.createStatement();
-            Log.v("WHY NEVER READ","W");
+            Log.v("WHY NEVER READ", "W");
                 stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID +" WHERE logID=" + logid);
                 stmt.executeUpdate("UPDATE patient SET " + columnname + "='" + newData + "' WHERE patientID=" + patientid);
             conn.close();
@@ -437,20 +441,28 @@ public class dbfile {
             Class.forName(driver).newInstance();
             conn = DriverManager.getConnection(connString, username, password);
             Statement stmt = conn.createStatement();
-
 //            ResultSet reset = stmt.executeQuery("select * from patient where isApproved=1 AND isDeleted=0 ");
-            ResultSet reset = stmt.executeQuery("select p.firstName AS firstName, p.lastName as lastName, p.nric as nric, pa.patientallocationID as allocationID " +
+            ResultSet reset = stmt.executeQuery("SELECT p.firstName AS firstName, p.lastName as lastName, p.nric as nric, pa.patientallocationID as allocationID, a.albumPath as albumPath " +
                     "FROM [patient] AS p " +
                     "INNER JOIN [patientAllocation] AS pa ON pa.patientID = p.patientID " +
-                    "where p.isApproved=1 AND p.isDeleted=0");
+                    "INNER JOIN [album] AS a ON a.patientID = p.patientID " +
+                    "where p.isApproved=1 AND p.isDeleted=0 AND a.albumCatID=1");
+            //original executeQuery done by keith
+            /*ResultSet reset = stmt.executeQuery("select p.firstName AS firstName, p.lastName as lastName, p.nric as nric, pa.patientallocationID as allocationID " +
+                    "FROM [patient] AS p " +
+                    "INNER JOIN [patientAllocation] AS pa ON pa.patientID = p.patientID " +
+                    "where p.isApproved=1 AND p.isDeleted=0");*/
+
             while (reset.next()) {
                 Patient patient1 = new Patient();
+                    Log.v("url path", ":"+reset.getString("albumPath"));
                     patient1.setFirstName(reset.getString("firstName"));
                     patient1.setLastName(reset.getString("lastName"));
                     patient1.setNric(reset.getString("nric"));
                     patient1.setAllocatonID(reset.getInt("allocationID"));
-                    Bitmap photo = BitmapFactory.decodeResource(context.getResources(), R.drawable.avatar_01);
-                    patient1.setPhoto(photo);
+                    patient1.setPhoto(getPatientProfilePic(reset.getString("albumPath")));
+                    //Bitmap photo = BitmapFactory.decodeResource(context.getResources(), R.drawable.avatar_01);
+                    //patient1.setPhoto(photo);
                 patientList1.add(patient1);
 
             }
@@ -945,4 +957,24 @@ public class dbfile {
         }
       return albumFilePath;
     }
+
+    public Bitmap getPatientProfilePic(String albumPath){
+        String path = "http://dementiafypdb.com/";
+        String modifiedpath;
+        Bitmap photo = null;
+        modifiedpath = albumPath.replace("\\","/");
+        path +=modifiedpath;
+        try {
+            URL ulrn = new URL(path);
+            HttpURLConnection con = (HttpURLConnection)ulrn.openConnection();
+            InputStream is = con.getInputStream();
+            photo = BitmapFactory.decodeStream(is);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return photo;
+    }
+
+
 }
