@@ -1,6 +1,7 @@
 package com.example.keith.fyp.views.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,10 +9,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.keith.fyp.comparators.ProblemLogComparator;
+import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Event;
@@ -165,12 +168,23 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
                 }
 
                 if (isValidForm) {
+                    SharedPreferences pref;
+                    pref = getApplicationContext().getSharedPreferences("Login", 0);
+                    final int UserID = Integer.parseInt(pref.getString("userid", ""));
+                    final int UserTypeID = Integer.parseInt(pref.getString("userTypeId", ""));
                     DateTime creationDate = Global.DATE_FORMAT.parseDateTime(fromDateDateField.getText().toString());
                     String category = categoryStr;
                     String notes = notesTextField.getText();
-                    ProblemLog newProblemLog = new ProblemLog(UtilsUi.generateUniqueId(), creationDate, category, notes);
-
-                    DataHolder.getViewedPatient().getProblemLogList().add(0, newProblemLog);
+                    if(UserTypeID ==3) {
+                        ProblemLog newProblemLog = new ProblemLog(UtilsUi.generateUniqueId(), creationDate, category, notes);
+                        DataHolder.getViewedPatient().getProblemLogList().add(0, newProblemLog);
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Pending Supervisor Approval", Toast.LENGTH_LONG).show();
+                    }
+                    String info = creationDate.toString() + ";" + category + ";" + notes;
+                    dbfile db = new dbfile();
+                    int x = db.getPatientId(viewedPatient.getNric());
+                    db.insertPatientSpec(info, x, 12, UserTypeID,UserID);
                     dialog.dismiss();
                 }
             }

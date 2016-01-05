@@ -1,5 +1,6 @@
 package com.example.keith.fyp.views.fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,10 +19,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.comparators.ProblemLogComparator;
+import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.ProblemLog;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsString;
@@ -163,28 +166,39 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
     }
 
     private void createAndAddProblemLog() {
-        DateTime creationDate = Global.DATE_FORMAT.parseDateTime(addProblemLogFromDateEditText.getText().toString());
-        String category = newProblemLogCategorySpinner.getSelectedItem().toString();
-        String notes = newProblemLogNotesEditText.getText().toString();
 
-        ProblemLog newProblemLog = new ProblemLog(UtilsUi.generateUniqueId(), creationDate, category, notes);
+             DateTime creationDate = Global.DATE_FORMAT.parseDateTime(addProblemLogFromDateEditText.getText().toString());
+             String category = newProblemLogCategorySpinner.getSelectedItem().toString();
+             String notes = newProblemLogNotesEditText.getText().toString();
+            ProblemLog newProblemLog = new ProblemLog(UtilsUi.generateUniqueId(), creationDate, category, notes);
+            addProblemLog(newProblemLog);
 
-        addProblemLog(newProblemLog);
+
+
     }
 
     private void addProblemLog(ProblemLog newProblemLog) {
-        viewedPatient.getProblemLogList().add(0, newProblemLog);
-        problemLogList.clear();
-        problemLogList.addAll(viewedPatient.getProblemLogList());
-
-        Collections.sort(problemLogList, problemLogComparator);
-        problemLogListAdapter.updateFilterOriginalList(problemLogList);
-        problemLogListAdapter.notifyDataSetChanged();
-
+        SharedPreferences pref;
+        pref = getActivity().getSharedPreferences("Login", 0);
+        final int UserID = Integer.parseInt(pref.getString("userid", ""));
+        final int UserTypeID = Integer.parseInt(pref.getString("userTypeId", ""));
+        if(UserTypeID ==3) {
+            viewedPatient.getProblemLogList().add(0, newProblemLog);
+            problemLogList.clear();
+            problemLogList.addAll(viewedPatient.getProblemLogList());
+            Collections.sort(problemLogList, problemLogComparator);
+            problemLogListAdapter.updateFilterOriginalList(problemLogList);
+            problemLogListAdapter.notifyDataSetChanged();
+        }else {
+            Toast.makeText(getActivity(),"Pending Supervisor Approval", Toast.LENGTH_LONG).show();
+        }
         if (selectedCategoryFilter != null) {
             problemLogListAdapter.getFilter().filter(selectedCategoryFilter);
         }
-
+        String info = newProblemLog.getCreationDate() + ";" + newProblemLog.getCategory() + ";" + newProblemLog.getNotes();
+        dbfile db = new dbfile();
+        int x = db.getPatientId(viewedPatient.getNric());
+        db.insertPatientSpec(info, x, 12, UserTypeID,UserID);
         resetNewProblemLogFields();
 
         closeExpandableAddProblemLog();

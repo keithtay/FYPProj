@@ -579,7 +579,6 @@ public class dbfile{
                     int year = Integer.parseInt(dateStart.substring(0, 4));
                     int month = Integer.parseInt(dateStart.substring(5, 7));
                     int day = Integer.parseInt(dateStart.substring(8, 10));
-                    Log.v("Checking1", dateStart.substring(0, 4)+" "+dateStart.substring(5, 7)+" "+dateStart.substring(8, 10));
                     int year1 = Integer.parseInt(endDate.substring(0, 4));
                     int month1 = Integer.parseInt(endDate.substring(5, 7));
                     int day1 = Integer.parseInt(endDate.substring(8, 10));
@@ -608,15 +607,24 @@ public class dbfile{
                     int hour = Integer.parseInt(timeStart.substring(11, 13));
                     int min = Integer.parseInt(timeStart.substring(14, 16));
                     int sec = Integer.parseInt(timeStart.substring(17, 19));
-                    Log.v("Checking2", timeStart.substring(11, 13)+" "+timeStart.substring(14, 16)+" "+timeStart.substring(17, 19));
                     int hour1 = Integer.parseInt(timeEnd.substring(11, 13));
                     int min1 = Integer.parseInt(timeEnd.substring(14, 16));
                     int sec1 = Integer.parseInt(timeEnd.substring(17, 19));
-                    Log.v("Checking2", timeEnd.substring(11, 13)+" "+timeEnd.substring(14, 16)+" "+timeEnd.substring(17, 19));
                     DateTime test3 = DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day).withHourOfDay(hour).withMinuteOfHour(min).withSecondOfMinute(sec);
                     DateTime test4 = DateTime.now().withYear(year1).withMonthOfYear(month1).withDayOfMonth(day1).withHourOfDay(hour1).withMinuteOfHour(min1).withSecondOfMinute(sec1);
                     Routine rot = new Routine(ro[0],ro[1],test,test2,test3,test4,Integer.parseInt(ro[6]),ro[7]);
                     patient1.getRoutineList().add(rot);
+
+                }else if (specInfo.equals("Problem Log")) {
+                    String problemlogdata = reset1.getString("patientSpecInfoValue");
+                    String[] pl = problemlogdata.split(";");
+                    String a = pl[0];
+                    int year = Integer.parseInt(a.substring(0, 4));
+                    int month = Integer.parseInt(a.substring(5, 7));
+                    int day = Integer.parseInt(a.substring(8, 10));
+                    DateTime test = DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day);
+                    ProblemLog p2 = new ProblemLog(UtilsUi.generateUniqueId(),test,pl[1],pl[2]);
+                    patient1.getProblemLogList().add(p2);
                 }
                 }
 
@@ -643,12 +651,12 @@ public class dbfile{
             schedule.setEventList(eventList);
             patient1.setTodaySchedule(schedule);
 
-            ArrayList<ProblemLog> problemLogList = new ArrayList<>();
-
-            problemLogList.add(new ProblemLog(UtilsUi.generateUniqueId(), DateTime.now().minusDays(5), "Communication", "Patient did not respond to question"));
-            problemLogList.add(new ProblemLog(UtilsUi.generateUniqueId(), DateTime.now().minusDays(3), "Communication", "Patient did not respond to when called"));
-            problemLogList.add(new ProblemLog(UtilsUi.generateUniqueId(), DateTime.now().minusDays(1), "Communication", "Patient seems to be not socializing with the other patient"));
-            patient1.setProblemLogList(problemLogList);
+//            ArrayList<ProblemLog> problemLogList = new ArrayList<>();
+//
+//            problemLogList.add(new ProblemLog(UtilsUi.generateUniqueId(), DateTime.now().minusDays(5), "Communication", "Patient did not respond to question"));
+//            problemLogList.add(new ProblemLog(UtilsUi.generateUniqueId(), DateTime.now().minusDays(3), "Communication", "Patient did not respond to when called"));
+//            problemLogList.add(new ProblemLog(UtilsUi.generateUniqueId(), DateTime.now().minusDays(1), "Communication", "Patient seems to be not socializing with the other patient"));
+//            patient1.setProblemLogList(problemLogList);
             patientList.add(patient1);
 
                 conn.close();
@@ -870,6 +878,20 @@ public class dbfile{
                     int key = rs.getInt(1);
                     String sql1 = "INSERT INTO log " +
                             "VALUES ('" + info + "','" + logDesc + "'," + 2 + "," + patientId + "," + UserID + "," + checkSuper + ",'routine'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + "," + k + ",'" + timestamp + "')";
+                    Statement stmt1 = conn.createStatement();
+                    stmt1.executeUpdate(sql1);
+                }
+                conn.close();
+            }else if(specValue == 12){
+                String sql = "INSERT INTO patientSpecInfo " +
+                        "VALUES ('" + info + "'," + patientId + "," + 12 + "," + 0 + "," + checkIsSupervisor + ",'"+ timestamp + "')";
+                PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                stmt.executeUpdate();
+                ResultSet rs = stmt.getGeneratedKeys();
+                if(rs.next()) {
+                    int key = rs.getInt(1);
+                    String sql1 = "INSERT INTO log " +
+                            "VALUES ('" + info + "','" + logDesc + "'," + 2 + "," + patientId + "," + UserID + "," + checkSuper + ",'problem log'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + "," + k + ",'" + timestamp + "')";
                     Statement stmt1 = conn.createStatement();
                     stmt1.executeUpdate(sql1);
                 }

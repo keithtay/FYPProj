@@ -142,6 +142,15 @@ public class NotificationToRendererConverter {
                     DateTime test4 = DateTime.now().withYear(year1).withMonthOfYear(month1).withDayOfMonth(day1).withHourOfDay(hour1).withMinuteOfHour(min1).withSecondOfMinute(sec1);
                     Routine rot = new Routine(ro[0],ro[1],test,test2,test3,test4,Integer.parseInt(ro[6]),ro[7]);
                     contentRenderer = new ContentNewInfoObjectRenderer(inflater, rot);
+                }else if(additionalInfo.equals("problem log")){
+                    String[] pl = logData.split(";");
+                    String dateStart = pl[0];
+                    int year = Integer.parseInt(dateStart.substring(0,4));
+                    int month = Integer.parseInt(dateStart.substring(5, 7));
+                    int day = Integer.parseInt(dateStart.substring(8, 10));
+                    DateTime test = DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day);
+                    ProblemLog newProblemLog = new ProblemLog(UtilsUi.generateUniqueId(), test, pl[1], pl[2]);
+                    contentRenderer = new ContentNewInfoObjectRenderer(inflater, newProblemLog);
                 }
 //                ProblemLog problemLog = new ProblemLog(UtilsUi.generateUniqueId(), DateTime.now(), "Emotion", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu odio diam. Morbi sit amet erat at libero ullamcorper mollis et at turpis. Nam consequat ex sem, non ultricies risus molestie vel. Aenean placerat bibendum ipsum, eu volutpat sem pharetra sit amet. Proin metus nisi, lacinia id pharetra a, sollicitudin sit amet sapien. Vestibulum vehicula magna sit amet justo convallis tempor");
 //                contentRenderer = new ContentNewInfoObjectRenderer(inflater, problemLog);
