@@ -10,6 +10,7 @@ import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Allergy;
@@ -982,10 +983,11 @@ public class dbfile{
                 Log.v("Testing", path + reset.getString("albumPath").replace("\\", "/")); //test file path.
             }
             conn.close();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
-      return albumFilePath;
+        return albumFilePath;
     }
 
     public Bitmap getPatientProfilePic(String albumPath, Context context){
@@ -1004,11 +1006,13 @@ public class dbfile{
         } catch (java.net.UnknownHostException e) {
             Log.d("No website exist error", "ya");
             photo = BitmapFactory.decodeResource(context.getResources(),R.drawable.avatar_01);
+            Toast.makeText(context, "There is an error with the url, please check. Loading local image.", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
 
         } catch (MalformedURLException e) {
             Log.d("File not found error", "ya");
             photo = BitmapFactory.decodeResource(context.getResources(), R.drawable.avatar_02);
+            Toast.makeText(context, "There is an error with the url, please check. Loading local image.", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
 
         } catch (Exception e) {
