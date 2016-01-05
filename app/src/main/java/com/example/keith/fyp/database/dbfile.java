@@ -1,6 +1,8 @@
 package com.example.keith.fyp.database;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -30,9 +32,11 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -446,7 +450,7 @@ public class dbfile{
                     "FROM [patient] AS p " +
                     "INNER JOIN [patientAllocation] AS pa ON pa.patientID = p.patientID " +
                     "INNER JOIN [album] AS a ON a.patientID = p.patientID " +
-                    "where p.isApproved=1 AND p.isDeleted=0 AND a.albumCatID=1");
+                    "where p.isApproved=1 AND p.isDeleted=0 AND a.albumCatID=1 AND a.isApproved=1 AND a.isDeleted=0");
             //original executeQuery done by keith
             /*ResultSet reset = stmt.executeQuery("select p.firstName AS firstName, p.lastName as lastName, p.nric as nric, pa.patientallocationID as allocationID " +
                     "FROM [patient] AS p " +
@@ -455,12 +459,12 @@ public class dbfile{
 
             while (reset.next()) {
                 Patient patient1 = new Patient();
-                    Log.v("url path", ":"+reset.getString("albumPath"));
+                    Log.d("url path", ":"+reset.getString("albumPath"));
                     patient1.setFirstName(reset.getString("firstName"));
                     patient1.setLastName(reset.getString("lastName"));
                     patient1.setNric(reset.getString("nric"));
                     patient1.setAllocatonID(reset.getInt("allocationID"));
-                    patient1.setPhoto(getPatientProfilePic(reset.getString("albumPath")));
+                    patient1.setPhoto(getPatientProfilePic(reset.getString("albumPath"),context));
                     //Bitmap photo = BitmapFactory.decodeResource(context.getResources(), R.drawable.avatar_01);
                     //patient1.setPhoto(photo);
                 patientList1.add(patient1);
@@ -513,7 +517,7 @@ public class dbfile{
                     int day = Integer.parseInt(bday.substring(8, 10));
                     patient1.setDob(DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day));
                     //Bitmap photo = BitmapFactory.decodeResource(context.getResources(), R.drawable.avatar_01);
-                    patient1.setPhoto(getPatientProfilePic(reset.getString("albumPath")));
+                    patient1.setPhoto(getPatientProfilePic(reset.getString("albumPath"), context));
                     patient1.setGuardianFullName(reset.getString("guardianName"));
                     patient1.setGuardianContactNumber(reset.getString("guardianContactNo"));
                     patient1.setGuardianEmail(reset.getString("guardianEmail"));
@@ -970,7 +974,8 @@ public class dbfile{
             Statement stmt = conn.createStatement();
             ResultSet reset = stmt.executeQuery("Select albumPath\n" +
                                                 "From album\n" +
-                                                "where albumCatID= '" +albumCatId+ "' AND patientID= '"+patientId+ "';");
+                                                "where albumCatID= '" +albumCatId+ "' AND patientID= '"+patientId+ "'" +
+                                                "AND isApproved=1 AND isDeleted=0");
 
             while (reset.next()) {
                 albumFilePath.add(path + reset.getString("albumPath").replace("\\","/"));
@@ -983,7 +988,7 @@ public class dbfile{
       return albumFilePath;
     }
 
-    public Bitmap getPatientProfilePic(String albumPath){
+    public Bitmap getPatientProfilePic(String albumPath, Context context){
         String path = "http://dementiafypdb.com/";
         String modifiedpath;
         Bitmap photo = null;
@@ -995,9 +1000,21 @@ public class dbfile{
             InputStream is = con.getInputStream();
             photo = BitmapFactory.decodeStream(is);
 
+
+        } catch (java.net.UnknownHostException e) {
+            Log.d("No website exist error", "ya");
+            photo = BitmapFactory.decodeResource(context.getResources(),R.drawable.avatar_01);
+            e.printStackTrace();
+
+        } catch (MalformedURLException e) {
+            Log.d("File not found error", "ya");
+            photo = BitmapFactory.decodeResource(context.getResources(), R.drawable.avatar_02);
+            e.printStackTrace();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return photo;
     }
 
