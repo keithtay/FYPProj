@@ -1,6 +1,8 @@
 package com.example.keith.fyp.views.fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -14,9 +16,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.Prescription;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsString;
@@ -217,10 +221,25 @@ public class ViewPatientInfoFormPrescriptionFragment extends ViewPatientInfoForm
         }
 
         if(isValidForm) {
-            Prescription newPrescription = new Prescription(name, dosage, freqPerDay, instruction, startDate, endDate, beforeAfterMealStr, notes);
-            prescriptionList.add(0, newPrescription);
-            prescriptionListAdapter.notifyItemInserted(0);
+            SharedPreferences pref;
+            pref = getActivity().getSharedPreferences("Login", 0);
+            final int UserID = Integer.parseInt(pref.getString("userid", ""));
+            final int UserTypeID = Integer.parseInt(pref.getString("userTypeId",""));
+            String info = name + ";" + dosage + ";" + freqPerDay + ";" +
+                    instruction + ";" + startDate.toString()
+                    +";"+ endDate.toString() + ";" + beforeAfterMealStr.toString() + ";" + notes;
+            dbfile db = new dbfile();
 
+            int x = db.getPatientId(viewedPatient.getNric());
+
+            db.insertPatientSpec(info, x, 4, UserTypeID,UserID);
+            if(UserTypeID ==3) {
+                Prescription newPrescription = new Prescription(name, dosage, freqPerDay, instruction, startDate, endDate, beforeAfterMealStr, notes);
+                prescriptionList.add(0, newPrescription);
+                prescriptionListAdapter.notifyItemInserted(0);
+            }else{
+                Toast.makeText(getActivity(), "Pending Supervisor Approval", Toast.LENGTH_LONG).show();
+            }
             resetNewPrescriptionFields();
 
             closeExpandableAddPrescription();

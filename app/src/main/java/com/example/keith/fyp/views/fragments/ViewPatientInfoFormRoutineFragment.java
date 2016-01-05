@@ -1,5 +1,6 @@
 package com.example.keith.fyp.views.fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,9 +13,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.Routine;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsString;
@@ -204,10 +207,25 @@ public class ViewPatientInfoFormRoutineFragment extends ViewPatientInfoFormFragm
         }
 
         if(isValidForm) {
-            Routine newRoutine = new Routine(name, notes, startDate, endDate, startTime, endTime, everyNum, everyLabel);
-            routineList.add(0, newRoutine);
-            routineListAdapter.notifyItemInserted(0);
+            SharedPreferences pref;
+            pref = getActivity().getSharedPreferences("Login", 0);
+            final int UserID = Integer.parseInt(pref.getString("userid", ""));
+            final int UserTypeID = Integer.parseInt(pref.getString("userTypeId",""));
+            String info = name + ";" + notes + ";" + startDate.toString() + ";" +
+                    endDate.toString() + ";" + startTime.toString()
+                    +";"+ endTime.toString() + ";" + String.valueOf(everyNum) + ";" + everyLabel;
+            dbfile db = new dbfile();
 
+            int x = db.getPatientId(viewedPatient.getNric());
+
+            db.insertPatientSpec(info, x, 5, UserTypeID,UserID);
+            if(UserTypeID ==3) {
+                Routine newRoutine = new Routine(name, notes, startDate, endDate, startTime, endTime, everyNum, everyLabel);
+                routineList.add(0, newRoutine);
+                routineListAdapter.notifyItemInserted(0);
+            }else{
+                Toast.makeText(getActivity(), "Pending Supervisor Approval", Toast.LENGTH_LONG).show();
+            }
             resetNewRoutineFields();
 
             closeExpandableAddRoutine();
