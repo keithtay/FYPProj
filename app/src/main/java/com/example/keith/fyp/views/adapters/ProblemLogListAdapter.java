@@ -1,8 +1,10 @@
 package com.example.keith.fyp.views.adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,17 +15,24 @@ import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.database.dbfile;
+import com.example.keith.fyp.models.Allergy;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.ProblemLog;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.fragments.PatientInfoFormListFragment;
 
 import org.joda.time.DateTime;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -78,31 +87,31 @@ public class ProblemLogListAdapter extends RecyclerView.Adapter<ProblemLogListAd
 
         holder.notesEditText.setText(problemLog.getNotes());
 
-        holder.saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<ProblemLog> problemLogList = patient.getProblemLogList();
-
-                for (ProblemLog log : problemLogList) {
-                    if (log.getId().equals(problemLog.getId())) {
-                        problemLog.setCategory(holder.categorySpinner.getSelectedItem().toString());
-                        problemLog.setNotes(holder.notesEditText.getText().toString());
-
-                        DateTime fromDate = Global.DATE_FORMAT.parseDateTime(holder.creationDateEditText.getText().toString());
-                        problemLog.setCreationDate(fromDate);
-
-                        holder.setFormEditable(false);
-                        if (holder.expandableLayout.isOpened()) {
-                            holder.expandableLayout.hide();
-                        }
-
-                        break;
-                    }
-                }
-
-                updateFilterOriginalList(problemLogList);
-            }
-        });
+//        holder.saveButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ArrayList<ProblemLog> problemLogList = patient.getProblemLogList();
+//
+//                for (ProblemLog log : problemLogList) {
+//                    if (log.getId().equals(problemLog.getId())) {
+//                        problemLog.setCategory(holder.categorySpinner.getSelectedItem().toString());
+//                        problemLog.setNotes(holder.notesEditText.getText().toString());
+//
+//                        DateTime fromDate = Global.DATE_FORMAT.parseDateTime(holder.creationDateEditText.getText().toString());
+//                        problemLog.setCreationDate(fromDate);
+//
+//                        holder.setFormEditable(false);
+//                        if (holder.expandableLayout.isOpened()) {
+//                            holder.expandableLayout.hide();
+//                        }
+//
+//                        break;
+//                    }
+//                }
+//
+//                updateFilterOriginalList(problemLogList);
+//            }
+//        });
     }
 
     @Override
@@ -160,6 +169,72 @@ public class ProblemLogListAdapter extends RecyclerView.Adapter<ProblemLogListAd
                         expandableLayout.hide();
                     }
                     restoreOldFieldsValue();
+                }
+            });
+            saveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String fromDate = creationDateEditText.getText().toString();
+                    String category =categorySpinner.getSelectedItem().toString();
+                    String notes = notesEditText.getText().toString();
+                    boolean isValidForm = true;
+                    String errorMessage = v.getContext().getResources().getString(R.string.error_msg_field_required);
+
+                    if(UtilsString.isEmpty(fromDate)) {
+                        creationDateEditText.setError(errorMessage);
+                        isValidForm = false;
+                    }
+
+                    if(UtilsString.isEmpty(notes)) {
+                        notesEditText.setError(errorMessage);
+                        isValidForm = false;
+                    }
+                    if(isValidForm) {
+                        ArrayList<ProblemLog> problemloglist = patient.getProblemLogList();
+                        ProblemLog pl = problemloglist.get(getAdapterPosition());
+                        dbfile db = new dbfile();
+                        int x = db.getPatientId(patient.getNric());
+                        String date1 = fromDate.substring(0, 10);
+
+                        SimpleDateFormat format1 = new SimpleDateFormat("dd MMM yyyy");
+                        SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
+                        java.util.Date date = null;
+                        try {
+                            date = format1.parse(date1);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        String a = format2.format(date).toString();
+                        int year = Integer.valueOf(a.substring(0, 4));
+                        int month = Integer.valueOf(a.substring(5, 7));
+                        int day = Integer.valueOf(a.substring(8,10));
+
+
+                        DateTime d1 = DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+
+
+                        String oldValue = pl.getCreationDate().withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0) + ";" + pl.getCategory() + ";" + pl.getNotes();
+                        String newValue = d1.toString()+ ";" + category + ";" + notes;
+                        int getRowID = db.getAllergyRowId(oldValue,x);
+                        SharedPreferences preferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
+                        final int UserID = Integer.parseInt(preferences.getString("userid", ""));
+                        final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
+                        db.updatePatientSpec(oldValue, newValue, x, 12, getRowID, UserTypeID, UserID);
+                        if(UserTypeID == 3){
+                            pl.setCreationDate(d1);
+                            pl.setCategory(category);
+                            pl.setNotes(notes);
+                            Toast.makeText(context, "Successfully Changed!", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(context, "Pending Supervisor Approval", Toast.LENGTH_LONG).show();
+                        }
+                        setFormEditable(false);
+                        if (expandableLayout.isOpened()) {
+                            expandableLayout.hide();
+                        }
+                    }
+
+//                    restoreOldFieldsValue();
                 }
             });
         }
