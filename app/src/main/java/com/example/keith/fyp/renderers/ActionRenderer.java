@@ -98,34 +98,37 @@ public class ActionRenderer extends Renderer {
                 String[] info = logdata.split(";");
                 dbfile db = new dbfile();
                 int getNotificationId = notification.getType();
-                if (getNotificationId == 1 || getNotificationId == 2){
-                    db.updateNotificationTables(logid,rowid,tablename, UserID);
-                }else if (getNotificationId == 3){
-                   //do something
+                if (getNotificationId == 1 || getNotificationId == 2) {
+                    db.updateNotificationTables(logid, rowid, tablename, UserID);
+                } else if (getNotificationId == 3) {
+                    //do something
 
-                    if (columnAffected.equals("First Name")){
+                    if (columnAffected.equals("First Name")) {
                         db.updateLogPatientInfo(logid, patientid, info[1], "firstName", UserID);
-                    }else if(columnAffected.equals("Last Name")){
+                    } else if (columnAffected.equals("Last Name")) {
                         db.updateLogPatientInfo(logid, patientid, info[1], "lastName", UserID);
-                    }else if(columnAffected.equals("NRIC")){
+                    } else if (columnAffected.equals("NRIC")) {
                         db.updateLogPatientInfo(logid, patientid, info[1], "nric", UserID);
-                    }else if(columnAffected.equals("Address")){
+                    } else if (columnAffected.equals("Address")) {
                         db.updateLogPatientInfo(logid, patientid, info[1], "address", UserID);
-                    }else if(columnAffected.equals("Home Number")){
+                    } else if (columnAffected.equals("Home Number")) {
                         db.updateLogPatientInfo(logid, patientid, info[1], "officeNo", UserID);
-                    }else if(columnAffected.equals("Phone Number")){
+                    } else if (columnAffected.equals("Phone Number")) {
                         db.updateLogPatientInfo(logid, patientid, info[1], "handphoneNo", UserID);
-                    }else if(columnAffected.equals("Gender")){
+                    } else if (columnAffected.equals("Gender")) {
                         db.updateLogPatientInfo(logid, patientid, info[1], "gender", UserID);
-                    }else if(columnAffected.equals("Date of Birth")){
+                    } else if (columnAffected.equals("Date of Birth")) {
                         db.updateLogPatientInfo(logid, patientid, info[1], "DOB", UserID);
-                    }else if(columnAffected.equals("Guardian Full Name")){
+                    } else if (columnAffected.equals("Guardian Full Name")) {
                         db.updateLogPatientInfo(logid, patientid, info[1], "guardianName", UserID);
-                    }else if(columnAffected.equals("Guardian Contact Number")){
+                    } else if (columnAffected.equals("Guardian Contact Number")) {
                         db.updateLogPatientInfo(logid, patientid, info[1], "guardianContactNo", UserID);
-                    }else if(columnAffected.equals("Guardian Email")){
+                    } else if (columnAffected.equals("Guardian Email")) {
                         db.updateLogPatientInfo(logid, patientid, info[1], "guardianEmail", UserID);
                     }
+                }else if (getNotificationId == 4) {
+                    String[] newData = logdata.split(":");
+                    db.updateLogPatientSpecInfo(logid, rowid, newData[0],UserID);
                 }
                 notification.setStatus(Notification.STATUS_ACCEPTED);
                 finalRootView.removeAllViews();
@@ -176,6 +179,8 @@ public class ActionRenderer extends Renderer {
                         db.updateRejectionNotificationTables(logid, rowid, tablename, UserID, reasonStr);
                     }else if(getNotificationId ==3){
                         db.updateRejectionNewPatientInfo(logid,UserID,reasonStr);
+                    }else if(getNotificationId ==4){
+                        db.updateRejectionUpdatePatientInfo(logid,UserID,reasonStr);
                     }
                     notification.setStatus(Notification.STATUS_REJECTED);
                     notification.setRejectionReason(reasonStr);

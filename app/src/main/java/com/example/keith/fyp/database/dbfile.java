@@ -117,6 +117,22 @@ public class dbfile{
         }
     }
 
+    public void updateRejectionUpdatePatientInfo(int logid,int UserID, String reason ){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID + ", remarks='" + reason + "' WHERE logID=" + logid);
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void updateRejectionNotificationTables(int logid, int rowid, String tablename,int UserID, String reason ){
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -159,6 +175,26 @@ public class dbfile{
             e.printStackTrace();
         }
     }
+
+    public void updateLogPatientSpecInfo(int logid, int rowid, String newData,int UserID ){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID +" WHERE logID=" + logid);
+            stmt.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + newData + "' WHERE patientSpecInfoID=" + rowid);
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void updateNotificationTables(int logid, int rowid, String tablename,int UserID ){
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -348,7 +384,7 @@ public class dbfile{
 
            stmt.executeUpdate("UPDATE schedule " +
                     " SET isDeleted=1 WHERE scheduleTitle='" + scheduleTitle + "' AND timeStart like '" + timeStart + "' AND timeEnd like '" + timeEnd
-                    + "' AND interval=" + interval + " AND scheduleDesc='" + scheduleDesc + "' AND scheduleTypeID=1002 AND isDeleted=0 AND isApproved=1");
+                    + "' AND interval=" + interval + " AND scheduleDesc='" + scheduleDesc + "' AND scheduleTypeID=5 AND isDeleted=0 AND isApproved=1");
             conn.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -726,6 +762,126 @@ public class dbfile{
         return id;
 
     }
+
+    public int getAllergyRowId(String old, int patientid){
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            ResultSet reset = stmt.executeQuery("select * from patientSpecInfo where patientSpecInfoValue='" + old + "' AND patientID=" + patientid);
+
+            while (reset.next()) {
+                id = reset.getInt("patientSpecInfoID");
+            }
+            conn.close();
+
+            return id;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return id;
+
+    }
+
+    public void updatePatientSpec(String oldValue, String newValue, int patientId, int specValue, int rowID, int UserTypeID, int UserID){
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            int checkIsSupervisor;
+            if(UserTypeID == 3){
+                checkIsSupervisor = 1;
+            }else{
+                checkIsSupervisor = 0;
+            }
+            int checkSuper;
+            if (checkIsSupervisor ==1){
+                checkSuper = UserID;
+            }else{
+                checkSuper = 0;
+            }
+            int k;
+            if (checkSuper==0){
+                k=0;
+            }else{
+                k=1;
+            }
+            String tableAffected = "patientSpecInfo";
+            String columnAffected ="all";
+            if (specValue == 1){//allergy
+                    String sql1 = "INSERT INTO log " +
+                            "VALUES ('" + newValue+"|"+oldValue + "','" + "Update Allergy Spec Info for patient" + "'," + 5 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"allergy" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
+                    Statement stmt1 = conn.createStatement();
+                    stmt1.executeUpdate(sql1);
+                    if(checkIsSupervisor == 1){
+                        stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + newValue + "' WHERE patientSpecInfoID=" + rowID);
+                    }
+                    conn.close();
+                //remember do update if supervisor
+            }else if(specValue == 2){//vital
+                    String sql1 = "INSERT INTO log " +
+                            "VALUES ('" + newValue+"|"+oldValue + "','" + "Update Vital Spec Info for patient" + "'," + 5 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"vital" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
+                    Statement stmt1 = conn.createStatement();
+                    stmt1.executeUpdate(sql1);
+                if(checkIsSupervisor == 1){
+                    stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + newValue + "' WHERE patientSpecInfoID=" + rowID);
+                }
+                conn.close();
+            }else if(specValue == 3){
+                    String sql1 = "INSERT INTO log " +
+                            "VALUES ('" + newValue+"|"+oldValue + "','" + "Update Social History Spec Info for patient" + "'," + 5 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"social history" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
+                    Statement stmt1 = conn.createStatement();
+                    stmt1.executeUpdate(sql1);
+                if(checkIsSupervisor == 1){
+                    stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + newValue + "' WHERE patientSpecInfoID=" + rowID);
+                }
+                    conn.close();
+            }else if(specValue == 4){
+                    String sql1 = "INSERT INTO log " +
+                            "VALUES ('" + newValue+"|"+oldValue + "','" + "Update Prescription Spec Info for patient" + "'," + 5 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"prescription" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
+                    Statement stmt1 = conn.createStatement();
+                    stmt1.executeUpdate(sql1);
+                if(checkIsSupervisor == 1){
+                    stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + newValue + "' WHERE patientSpecInfoID=" + rowID);
+                }
+                    conn.close();
+            }else if(specValue == 5){
+                    String sql1 = "INSERT INTO log " +
+                            "VALUES ('" + newValue+"|"+oldValue + "','" + "Update Routine Spec Info for patient" + "'," + 5 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"routine" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
+                    Statement stmt1 = conn.createStatement();
+                    stmt1.executeUpdate(sql1);
+                if(checkIsSupervisor == 1){
+                    stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + newValue + "' WHERE patientSpecInfoID=" + rowID);
+                }
+                    conn.close();
+            }else if(specValue == 12){
+                    String sql1 = "INSERT INTO log " +
+                            "VALUES ('" + newValue+"|"+oldValue + "','" + "Update Problem Log Spec Info for patient" + "'," + 5 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"problem log" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
+                    Statement stmt1 = conn.createStatement();
+                    stmt1.executeUpdate(sql1);
+                if(checkIsSupervisor == 1){
+                    stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + newValue + "' WHERE patientSpecInfoID=" + rowID);
+                }
+                    conn.close();
+            }
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void insertNewPatient(String firstname,String lastname, String nric, String address, String officeno, String handphoneno, char gender, String date, String gname, String gcontactno, String gemail, int UserTypeID, int UserID){
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
@@ -826,7 +982,7 @@ public class dbfile{
                 if(rs.next()) {
                     int key = rs.getInt(1);
                     String sql1 = "INSERT INTO log " +
-                            "VALUES ('" + info + "','" + logDesc + "'," + 2 + "," + patientId + "," + UserID + "," + checkSuper + ",'allergy'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + "," + k + ",'" + timestamp + "')";
+                            "VALUES ('" + info + "','" + "New Allergy Spec Info for patient" + "'," + 2 + "," + patientId + "," + UserID + "," + checkSuper + ",'allergy'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + "," + k + ",'" + timestamp + "')";
                     Statement stmt1 = conn.createStatement();
                     stmt1.executeUpdate(sql1);
                 }
@@ -840,7 +996,7 @@ public class dbfile{
                 if(rs.next()) {
                     int key = rs.getInt(1);
                     String sql1 = "INSERT INTO log " +
-                            "VALUES ('" + info + "','" + logDesc + "'," + 2 + "," + patientId + "," + UserID + "," + checkSuper + ",'vital'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + "," + k + ",'" + timestamp + "')";
+                            "VALUES ('" + info + "','" + "New Vital Spec Info for patient" + "'," + 2 + "," + patientId + "," + UserID + "," + checkSuper + ",'vital'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + "," + k + ",'" + timestamp + "')";
                     Statement stmt1 = conn.createStatement();
                     stmt1.executeUpdate(sql1);
                 }
@@ -854,7 +1010,7 @@ public class dbfile{
                 if(rs.next()) {
                     int key = rs.getInt(1);
                     String sql1 = "INSERT INTO log " +
-                            "VALUES ('" + info + "','" + logDesc + "'," + 2 + "," + patientId + "," + UserID + "," + checkSuper + ",'social history'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + "," + k + ",'" + timestamp + "')";
+                            "VALUES ('" + info + "','" + "New Social History Spec Info for patient" + "'," + 2 + "," + patientId + "," + UserID + "," + checkSuper + ",'social history'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + "," + k + ",'" + timestamp + "')";
                     Statement stmt1 = conn.createStatement();
                     stmt1.executeUpdate(sql1);
                 }
@@ -868,7 +1024,7 @@ public class dbfile{
                 if(rs.next()) {
                     int key = rs.getInt(1);
                     String sql1 = "INSERT INTO log " +
-                            "VALUES ('" + info + "','" + logDesc + "'," + 2 + "," + patientId + "," + UserID + "," + checkSuper + ",'prescription'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + "," + k + ",'" + timestamp + "')";
+                            "VALUES ('" + info + "','" + "New Prescription Spec Info for patient" + "'," + 2 + "," + patientId + "," + UserID + "," + checkSuper + ",'prescription'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + "," + k + ",'" + timestamp + "')";
                     Statement stmt1 = conn.createStatement();
                     stmt1.executeUpdate(sql1);
                 }
@@ -882,7 +1038,7 @@ public class dbfile{
                 if(rs.next()) {
                     int key = rs.getInt(1);
                     String sql1 = "INSERT INTO log " +
-                            "VALUES ('" + info + "','" + logDesc + "'," + 2 + "," + patientId + "," + UserID + "," + checkSuper + ",'routine'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + "," + k + ",'" + timestamp + "')";
+                            "VALUES ('" + info + "','" + "New Routine Spec Info for patient" + "'," + 2 + "," + patientId + "," + UserID + "," + checkSuper + ",'routine'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + "," + k + ",'" + timestamp + "')";
                     Statement stmt1 = conn.createStatement();
                     stmt1.executeUpdate(sql1);
                 }
@@ -896,7 +1052,7 @@ public class dbfile{
                 if(rs.next()) {
                     int key = rs.getInt(1);
                     String sql1 = "INSERT INTO log " +
-                            "VALUES ('" + info + "','" + logDesc + "'," + 2 + "," + patientId + "," + UserID + "," + checkSuper + ",'problem log'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + "," + k + ",'" + timestamp + "')";
+                            "VALUES ('" + info + "','" + "New Problem Log Spec Info for patient" + "'," + 2 + "," + patientId + "," + UserID + "," + checkSuper + ",'problem log'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + "," + k + ",'" + timestamp + "')";
                     Statement stmt1 = conn.createStatement();
                     stmt1.executeUpdate(sql1);
                 }

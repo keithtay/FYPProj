@@ -1,8 +1,10 @@
 package com.example.keith.fyp.views.adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,9 +12,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.Allergy;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.utils.DataHolder;
@@ -32,7 +36,7 @@ public class AllergyListAdapter extends RecyclerView.Adapter<AllergyListAdapter.
     private List<Allergy> allergyList;
     private PatientInfoFormListFragment fragment;
     private Patient patient;
-
+    private Context context;
     /**
      * Create allergy list adapter with the specified values
      *
@@ -46,6 +50,7 @@ public class AllergyListAdapter extends RecyclerView.Adapter<AllergyListAdapter.
         this.allergyList = allergyList;
         this.fragment = patientInfoFormAllergyFragment;
         this.patient = patient;
+        this.context = context;
     }
 
     @Override
@@ -131,9 +136,23 @@ public class AllergyListAdapter extends RecyclerView.Adapter<AllergyListAdapter.
                     if(isValidForm) {
                         ArrayList<Allergy> allergyList = patient.getAllergyList();
                         Allergy allergy = allergyList.get(getAdapterPosition());
-                        allergy.setName(allergyNameStr);
-                        allergy.setReaction(allergyReactionStr);
-                        allergy.setNotes(allergyNotesStr);
+                        dbfile db = new dbfile();
+                        int x = db.getPatientId(patient.getNric());
+                        String oldValue = allergy.getName() + ";" + allergy.getReaction() + ";" + allergy.getNotes();
+                        String newValue = allergyNameStr+ ";" + allergyReactionStr + ";" + allergyNotesStr;
+                        int getRowID = db.getAllergyRowId(oldValue,x);
+                        SharedPreferences preferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
+                        final int UserID = Integer.parseInt(preferences.getString("userid", ""));
+                        final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
+                        db.updatePatientSpec(oldValue, newValue, x, 1, getRowID, UserTypeID, UserID);
+                        if(UserTypeID == 3){
+                            allergy.setName(allergyNameStr);
+                            allergy.setReaction(allergyReactionStr);
+                            allergy.setNotes(allergyNotesStr);
+                            Toast.makeText(context, "Successfully Changed!", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(context, "Pending Supervisor Approval", Toast.LENGTH_LONG).show();
+                        }
 
                         setFormEditable(false);
                         if (expandableLayout.isOpened()) {
@@ -167,7 +186,6 @@ public class AllergyListAdapter extends RecyclerView.Adapter<AllergyListAdapter.
                     oldAllergyName = allergyName.getText().toString();
                     oldAllergyReaction = allergyReaction.getText().toString();
                     oldAllergyNotes = allergyNotes.getText().toString();
-
                     if(!expandableLayout.isOpened()) {
                         expandableLayout.show();
                     }

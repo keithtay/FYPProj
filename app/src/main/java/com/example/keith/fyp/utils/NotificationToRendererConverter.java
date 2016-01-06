@@ -189,9 +189,13 @@ public class NotificationToRendererConverter {
 
                 //have to use variable k to go to patientspecinfo and retrieve information
                 if(additionalInfo.equals("allergy")){
-                    String[] allg1 = logData.split(";");
-                    Allergy allgery = new Allergy(allg1[0], allg1[1],allg1[2]);
-                    contentRenderer = new ContentUpdateInfoObjectRenderer(inflater, allgery, allgery);
+                    String[] allg1 = logData.split(":");
+                    String[] allg2 = allg1[0].split(";");;
+                    String[] allg3 = allg1[1].split(";");
+                    Allergy allgery = new Allergy(allg2[0], allg2[1],allg2[2]);
+                    Allergy allgery1 = new Allergy(allg3[0], allg3[1],allg3[2]);
+                    //content renderer old then new. DB is stored new to old
+                    contentRenderer = new ContentUpdateInfoObjectRenderer(inflater, allgery1, allgery);
                 }else if(additionalInfo.equals("vital")){
                     String[] vital1 = logData.split(";");
                     String test = vital1[0];
