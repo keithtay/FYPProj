@@ -1,6 +1,7 @@
 package com.example.keith.fyp.views.adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -12,9 +13,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.Prescription;
 import com.example.keith.fyp.utils.DataHolder;
@@ -41,7 +44,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
     private List<Prescription> prescriptionList;
     private PatientInfoFormListFragment fragment;
     private Patient patient;
-
+    private Context context;
     /**
      * Create prescription list adapter with the specified values
      *
@@ -55,6 +58,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         this.prescriptionList = prescriptionList;
         this.fragment = createPatientInfoFormPrescriptionFragment;
         this.patient = patient;
+        this.context = context;
     }
 
     @Override
@@ -247,16 +251,36 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
                     if(isValidForm) {
                         ArrayList<Prescription> prescriptionList = patient.getPrescriptionList();
                         Prescription prescription = prescriptionList.get(getAdapterPosition());
-
-                        prescription.setName(nameStr);
-                        prescription.setDosage(dosageStr);
-                        prescription.setFreqPerDay(Integer.getInteger(freqStr));
-                        prescription.setInstruction(instructionStr);
-                        prescription.setStartDate(startDate);
-                        prescription.setEndDate(endDate);
-                        prescription.setNotes(notesStr);
-                        prescription.setBeforeAfterMeal(beforeOrAfterMealStr);
-
+                        dbfile db = new dbfile();
+                        int x = db.getPatientId(patient.getNric());
+                        DateTime d1 = prescription.getStartDate().withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+                        DateTime d2 = prescription.getEndDate().withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+                        String oldValue = prescription.getName() + ";" + prescription.getDosage() + ";" + prescription.getFreqPerDay()
+                                +";"+ prescription.getInstruction() + ";" + d1 + ";" +
+                                d2 + ";" + prescription.getBeforeAfterMeal().toString() +";"+
+                                prescription.getNotes();
+                        String newValue = nameStr + ";" + dosageStr + ";" + freqStr
+                                +";"+ instructionStr + ";" + startDate + ";" +
+                                endDate + ";" + beforeOrAfterMealStr +";"+
+                                notesStr;
+                        int getRowID = db.getAllergyRowId(oldValue,x);
+                        SharedPreferences preferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
+                        final int UserID = Integer.parseInt(preferences.getString("userid", ""));
+                        final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
+                        db.updatePatientSpec(oldValue, newValue, x, 4, getRowID, UserTypeID, UserID);
+                        if(UserTypeID == 3) {
+                            prescription.setName(nameStr);
+                            prescription.setDosage(dosageStr);
+                            prescription.setFreqPerDay(Integer.getInteger(freqStr));
+                            prescription.setInstruction(instructionStr);
+                            prescription.setStartDate(startDate);
+                            prescription.setEndDate(endDate);
+                            prescription.setNotes(notesStr);
+                            prescription.setBeforeAfterMeal(beforeOrAfterMealStr);
+                            Toast.makeText(context, "Successfully Changed!", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(context, "Pending Supervisor Approval", Toast.LENGTH_LONG).show();
+                        }
                         setFormEditable(false);
                         if (expandableLayout.isOpened()) {
                             expandableLayout.hide();

@@ -1,6 +1,7 @@
 package com.example.keith.fyp.views.adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,9 +12,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.Vital;
 import com.example.keith.fyp.utils.DataHolder;
@@ -38,7 +41,7 @@ public class VitalListAdapter extends RecyclerView.Adapter<VitalListAdapter.Vita
     private List<Vital> vitalList;
     private PatientInfoFormListFragment fragment;
     private Patient patient;
-
+    private Context context;
     /**
      * Create vital list adapter with the specified values
      *
@@ -52,6 +55,7 @@ public class VitalListAdapter extends RecyclerView.Adapter<VitalListAdapter.Vita
         this.vitalList = vitalList;
         this.fragment = createPatientInfoFormVitalFragment;
         this.patient = patient;
+        this.context = context;
     }
 
     @Override
@@ -134,7 +138,7 @@ public class VitalListAdapter extends RecyclerView.Adapter<VitalListAdapter.Vita
         public VitalListViewHolder(View itemView) {
             super(itemView);
 
-            Context context = itemView.getContext();
+            final Context context = itemView.getContext();
 
             dateTaken = (EditText) itemView.findViewById(R.id.vital_item_date_picker);
             UtilsUi.setupEditTextToBeDatePicker(dateTaken, context.getString(R.string.select_vital_date));
@@ -180,7 +184,10 @@ public class VitalListAdapter extends RecyclerView.Adapter<VitalListAdapter.Vita
                 public void onClick(View v) {
                     ArrayList<Vital> vitalList = patient.getVitalList();
                     Vital vital = vitalList.get(getAdapterPosition());
-
+                    String oldValue = vital.getDateTimeTaken().toString() + ";" + String.valueOf(vital.isBeforeMeal()) + ";" +
+                            String.valueOf(vital.getTemperature()) + ";" + String.valueOf(vital.getBloodPressureSystol()) + ";"+
+                            String.valueOf(vital.getBloodPressureDiastol()) + ";" + String.valueOf(vital.getHeight()) + ";" +
+                            String.valueOf(vital.getWeight()) + ";" + vital.getNotes();
                     DateTime date = Global.DATE_FORMAT.parseDateTime(dateTaken.getText().toString());
                     int mYear = date.getYear();
                     int mMonth = date.getMonthOfYear();
@@ -218,23 +225,37 @@ public class VitalListAdapter extends RecyclerView.Adapter<VitalListAdapter.Vita
                         vital.setBloodPressureSystol(Float.parseFloat(systolStr));
                     }
 
-                    String diastolStr = temperature.getText().toString();
+                    String diastolStr = bloodPressureDiastol.getText().toString();
                     if(diastolStr != null && !diastolStr.isEmpty()) {
                         vital.setBloodPressureDiastol(Float.parseFloat(diastolStr));
                     }
 
-                    String heightStr = temperature.getText().toString();
+                    String heightStr = height.getText().toString();
                     if(heightStr != null && !heightStr.isEmpty()) {
                         vital.setHeight(Float.parseFloat(heightStr));
                     }
 
-                    String weightStr = temperature.getText().toString();
+                    String weightStr = weight.getText().toString();
                     if(weightStr != null && !weightStr.isEmpty()) {
                         vital.setWeight(Float.parseFloat(weightStr));
                     }
-
+                    dbfile db = new dbfile();
                     vital.setNotes(notes.getText().toString());
-
+                    String newValue = savedDateTime + ";" + beforeOrAfterMeal + ";" +
+                            tempStr + ";" + systolStr + ";"+
+                            diastolStr + ";" + heightStr + ";" +
+                            weightStr + ";" + notes.getText().toString();
+                    int x = db.getPatientId(patient.getNric());
+                    int getRowID = db.getAllergyRowId(oldValue, x);
+                    SharedPreferences preferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
+                    final int UserID = Integer.parseInt(preferences.getString("userid", ""));
+                    final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
+                    db.updatePatientSpec(oldValue, newValue, x, 2, getRowID, UserTypeID, UserID);
+                    if(UserTypeID == 3){
+                        Toast.makeText(context, "Successfully Changed!", Toast.LENGTH_LONG).show();
+                    }else{
+                        Toast.makeText(context, "Pending Supervisor Approval", Toast.LENGTH_LONG).show();
+                    }
                     setFormEditable(false);
                     if (expandableLayout.isOpened()) {
                         expandableLayout.hide();

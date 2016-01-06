@@ -821,7 +821,7 @@ public class dbfile{
             String columnAffected ="all";
             if (specValue == 1){//allergy
                     String sql1 = "INSERT INTO log " +
-                            "VALUES ('" + newValue+"|"+oldValue + "','" + "Update Allergy Spec Info for patient" + "'," + 5 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"allergy" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
+                            "VALUES ('" + newValue+">"+oldValue + "','" + "Update Allergy Spec Info for patient" + "'," + 5 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"allergy" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
                     Statement stmt1 = conn.createStatement();
                     stmt1.executeUpdate(sql1);
                     if(checkIsSupervisor == 1){
@@ -831,7 +831,7 @@ public class dbfile{
                 //remember do update if supervisor
             }else if(specValue == 2){//vital
                     String sql1 = "INSERT INTO log " +
-                            "VALUES ('" + newValue+"|"+oldValue + "','" + "Update Vital Spec Info for patient" + "'," + 5 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"vital" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
+                            "VALUES ('" + newValue+">"+oldValue + "','" + "Update Vital Spec Info for patient" + "'," + 5 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"vital" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
                     Statement stmt1 = conn.createStatement();
                     stmt1.executeUpdate(sql1);
                 if(checkIsSupervisor == 1){
@@ -840,7 +840,7 @@ public class dbfile{
                 conn.close();
             }else if(specValue == 3){
                     String sql1 = "INSERT INTO log " +
-                            "VALUES ('" + newValue+"|"+oldValue + "','" + "Update Social History Spec Info for patient" + "'," + 5 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"social history" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
+                            "VALUES ('" + newValue+">"+oldValue + "','" + "Update Social History Spec Info for patient" + "'," + 5 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"social history" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
                     Statement stmt1 = conn.createStatement();
                     stmt1.executeUpdate(sql1);
                 if(checkIsSupervisor == 1){
@@ -849,7 +849,7 @@ public class dbfile{
                     conn.close();
             }else if(specValue == 4){
                     String sql1 = "INSERT INTO log " +
-                            "VALUES ('" + newValue+"|"+oldValue + "','" + "Update Prescription Spec Info for patient" + "'," + 5 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"prescription" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
+                            "VALUES ('" + newValue+">"+oldValue + "','" + "Update Prescription Spec Info for patient" + "'," + 5 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"prescription" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
                     Statement stmt1 = conn.createStatement();
                     stmt1.executeUpdate(sql1);
                 if(checkIsSupervisor == 1){
@@ -858,7 +858,7 @@ public class dbfile{
                     conn.close();
             }else if(specValue == 5){
                     String sql1 = "INSERT INTO log " +
-                            "VALUES ('" + newValue+"|"+oldValue + "','" + "Update Routine Spec Info for patient" + "'," + 5 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"routine" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
+                            "VALUES ('" + newValue+">"+oldValue + "','" + "Update Routine Spec Info for patient" + "'," + 5 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"routine" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
                     Statement stmt1 = conn.createStatement();
                     stmt1.executeUpdate(sql1);
                 if(checkIsSupervisor == 1){
@@ -867,7 +867,7 @@ public class dbfile{
                     conn.close();
             }else if(specValue == 12){
                     String sql1 = "INSERT INTO log " +
-                            "VALUES ('" + newValue+"|"+oldValue + "','" + "Update Problem Log Spec Info for patient" + "'," + 5 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"problem log" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
+                            "VALUES ('" + newValue+">"+oldValue + "','" + "Update Problem Log Spec Info for patient" + "'," + 5 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"problem log" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
                     Statement stmt1 = conn.createStatement();
                     stmt1.executeUpdate(sql1);
                 if(checkIsSupervisor == 1){

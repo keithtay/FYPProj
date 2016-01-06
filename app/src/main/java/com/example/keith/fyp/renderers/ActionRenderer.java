@@ -127,7 +127,7 @@ public class ActionRenderer extends Renderer {
                         db.updateLogPatientInfo(logid, patientid, info[1], "guardianEmail", UserID);
                     }
                 }else if (getNotificationId == 4) {
-                    String[] newData = logdata.split(":");
+                    String[] newData = logdata.split(">");
                     db.updateLogPatientSpecInfo(logid, rowid, newData[0],UserID);
                 }
                 notification.setStatus(Notification.STATUS_ACCEPTED);

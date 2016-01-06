@@ -1,9 +1,11 @@
 package com.example.keith.fyp.views.adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,8 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
+import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.Routine;
 import com.example.keith.fyp.utils.UtilsString;
@@ -277,16 +281,37 @@ public class RoutineListAdapter extends RecyclerView.Adapter<RoutineListAdapter.
                     if (isValidForm) {
                         ArrayList<Routine> routineList = patient.getRoutineList();
                         Routine routine = routineList.get(getAdapterPosition());
-
-                        routine.setName(nameStr);
-                        routine.setNotes(notesStr);
-                        routine.setStartDate(startDate);
-                        routine.setEndDate(endDate);
-                        routine.setStartTime(startTime);
-                        routine.setEndTime(endTime);
-                        routine.setEveryNumber(everyNum);
-                        routine.setEveryLabel(everyLabelStr);
-
+                        dbfile db = new dbfile();
+                        int x = db.getPatientId(patient.getNric());
+                        DateTime d1 = routine.getStartDate().withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+                        DateTime d2 = routine.getEndDate().withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+                        DateTime d3 = routine.getStartTime().withYear(1970).withMonthOfYear(1).withDayOfMonth(1).withMillisOfSecond(0);
+                        DateTime d4 = routine.getEndTime().withYear(1970).withMonthOfYear(1).withDayOfMonth(1).withMillisOfSecond(0);
+                        Log.v("Testing out",d4.getZone().toString());
+                        String oldValue = routine.getName() + ";" + routine.getNotes() + ";" + d1 +";"+
+                                d2 +";" + d3 +";"+ d4+
+                                ";"+ String.valueOf(routine.getEveryNumber()) + ";" + routine.getEveryLabel();
+                        String newValue = nameStr + ";" + notesStr + ";" + startDate +";"+
+                                endDate +";" + startTime +";"+ endTime+
+                                ";"+ everyNum + ";" + everyLabelStr;
+                        int getRowID = db.getAllergyRowId(oldValue,x);
+                        SharedPreferences preferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
+                        final int UserID = Integer.parseInt(preferences.getString("userid", ""));
+                        final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
+                        db.updatePatientSpec(oldValue, newValue, x, 5, getRowID, UserTypeID, UserID);
+                        if(UserTypeID == 3) {
+                            routine.setName(nameStr);
+                            routine.setNotes(notesStr);
+                            routine.setStartDate(startDate);
+                            routine.setEndDate(endDate);
+                            routine.setStartTime(startTime);
+                            routine.setEndTime(endTime);
+                            routine.setEveryNumber(everyNum);
+                            routine.setEveryLabel(everyLabelStr);
+                            Toast.makeText(context, "Successfully Changed!", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(context, "Pending Supervisor Approval", Toast.LENGTH_LONG).show();
+                        }
                         setFormEditable(false);
                         if (expandableLayout.isOpened()) {
                             expandableLayout.hide();
