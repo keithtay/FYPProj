@@ -81,7 +81,9 @@ public class PhotoListAdapter extends BaseAdapter{
                     public boolean onTouch(View v, MotionEvent event) {
                         Toast.makeText(context.getApplicationContext(), "item clicked at position " + position,
                                 Toast.LENGTH_SHORT).show();
+
                         Intent intent = new Intent(context.getApplicationContext(),FullScreenViewActivity.class);
+                        intent.putExtra("urlForFullScreen", photoList.get(position));
                         context.startActivity(intent);
 
                         return false;

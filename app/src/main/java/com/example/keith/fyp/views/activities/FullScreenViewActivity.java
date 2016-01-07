@@ -6,18 +6,22 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.views.adapters.FullScreenImageAdapter;
 
 /**
  * Created by ks on 7/1/2016.
  */
 public class FullScreenViewActivity extends Activity{
 
+    private FullScreenImageAdapter adapter;
+    private ViewPager viewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_album_photo_fullscreen);
 
-        //viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager = (ViewPager) findViewById(R.id.pager);
 
         //utils = new Utils(getApplicationContext());
 
@@ -27,11 +31,11 @@ public class FullScreenViewActivity extends Activity{
         //adapter = new FullScreenImageAdapter(FullScreenViewActivity.this,
           //      url);
 
-        //viewPager.setAdapter(adapter);
+        viewPager.setAdapter(adapter);
 
 
         // displaying selected image first
-        //viewPager.setCurrentItem(position);
+        viewPager.setCurrentItem(position);
 
 
     }
