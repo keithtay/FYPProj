@@ -261,17 +261,18 @@ public class dbfile{
             conn = DriverManager.getConnection(connString, username, password);
             Statement stmt = conn.createStatement();
 
-            ResultSet reset = stmt.executeQuery("SELECT pa.firstName AS patientfirstname, pa.lastname AS patientlastname, pa.nric AS patientnric, lo.createDateTime as logdatetime," +
-                    "lo.logDesc AS logDescription, lo.logCategoryID AS logcatid, us.firstName AS userfirstname, us.lastName AS userlastname," +
-                    "lo.logID as logid, lo.logData AS logdata, lo.additionalInfo as additionalinfo, lo.tableAffected AS ta, lo.rowAffected AS ra, lo.patientID as patientsid " +
+            ResultSet reset = stmt.executeQuery("SELECT pa.firstName AS patientfirstname, pa.lastname AS patientlastname, pa.nric AS patientnric, lo.createDateTime as logdatetime, " +
+                    "lo.logDesc AS logDescription, lo.logCategoryID AS logcatid, us.firstName AS userfirstname, us.lastName AS userlastname, " +
+                    "lo.logID as logid, lo.logData AS logdata, lo.additionalInfo as additionalinfo, lo.tableAffected AS ta, lo.rowAffected AS ra, lo.patientID as patientsid, a.albumpath as albumpath " +
                     "  FROM [dementiafypdb].[dbo].[log] AS lo " +
-                    "  INNER JOIN [dementiafypdb].[dbo].patient AS pa ON pa.patientID = lo.patientID" +
-                    "  INNER JOIN [dementiafypdb].[dbo].[user] AS us ON us.userID = lo.userIDInit" +
-                    "  WHERE lo.userIDApproved = 0 AND lo.isDeleted = 0 ");
+                    "   INNER JOIN [dementiafypdb].[dbo].patient AS pa ON pa.patientID = lo.patientID " +
+                    "    INNER JOIN [dementiafypdb].[dbo].[user] AS us ON us.userID = lo.userIDInit " +
+                    "INNER JOIN [dementiafypdb].[dbo].album AS a ON pa.patientID = a.patientID " +
+                    "  WHERE lo.userIDApproved = 0 AND lo.isDeleted = 0 AND a.isApproved=1 and a.isDeleted=0 and a.albumCatID=1");
             while(reset.next()){
-                Bitmap patientAvatar1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.avatar_18);
+                Bitmap patientAvatar1 = getPatientProfilePic(reset.getString("albumPath"),context);
                 Patient patient1 = new Patient(reset.getString("patientfirstname"), reset.getString("patientlastname"), reset.getString("patientnric"), patientAvatar1);
-                Bitmap caregiverAvatar1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.avatar_01);
+                Bitmap caregiverAvatar1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.anonymous_caregiver);
                 String date = reset.getString("logdatetime");
                 int year = Integer.parseInt(date.substring(0, 4));
                 int month = Integer.parseInt(date.substring(5, 7));
@@ -767,7 +768,33 @@ public class dbfile{
         return id;
 
     }
+    public String getImageFilePath(int patientID){
+        String abc=null;
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            ResultSet reset = stmt.executeQuery("SELECT * " +
+                    "  FROM [dementiafypdb].[dbo].[album] " +
+                    "  WHERE patientID = " + patientID + " AND albumCatID = 1 AND isDeleted=0 AND isApproved=1");
 
+            while (reset.next()) {
+                abc = reset.getString("albumPath");
+            }
+            conn.close();
+
+            return abc;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return abc;
+
+    }
     public int getAllergyRowId(String old, int patientid){
 
         if (android.os.Build.VERSION.SDK_INT > 9) {

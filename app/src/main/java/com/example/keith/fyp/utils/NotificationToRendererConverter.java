@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.Allergy;
 import com.example.keith.fyp.models.Notification;
 import com.example.keith.fyp.models.Patient;
@@ -173,7 +174,9 @@ public class NotificationToRendererConverter {
                 newPatient.setGuardianFullName(patientDetail[8]);
                 newPatient.setGuardianContactNumber(patientDetail[9]);
                 newPatient.setGuardianEmail(patientDetail[10]);
-                newPatient.setPhoto(BitmapFactory.decodeResource(context.getResources(), R.drawable.avatar_20));
+//                dbfile db=new dbfile();
+//                newPatient.setPhoto(db.getPatientProfilePic(db.getImageFilePath(k),context));
+                newPatient.setPhoto(BitmapFactory.decodeResource(context.getResources(), R.drawable.anonymous));
                 newPatient.setHasAllergy(false);
                 newPatient.setAllergyList(new ArrayList<Allergy>());
                 newPatient.setVitalList(new ArrayList<Vital>());
