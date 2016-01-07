@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -21,6 +22,7 @@ import com.example.keith.fyp.views.activities.FullScreenViewActivity;
 import com.example.keith.fyp.views.activities.ViewPatientActivity;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,6 +62,7 @@ public class PhotoListAdapter extends BaseAdapter{
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View photoItemView = convertView;
+        final ArrayList<String> listOfUrls = new ArrayList<String>();
 
         if (photoItemView == null) {
             LayoutInflater vi;
@@ -81,11 +84,12 @@ public class PhotoListAdapter extends BaseAdapter{
                     public boolean onTouch(View v, MotionEvent event) {
                         Toast.makeText(context.getApplicationContext(), "item clicked at position " + position,
                                 Toast.LENGTH_SHORT).show();
+                        listOfUrls.add(photoList.get(position)); //store url string in arraylist string.
 
                         Intent intent = new Intent(context.getApplicationContext(),FullScreenViewActivity.class);
-                        intent.putExtra("urlForFullScreen", photoList.get(position));
+                        intent.putStringArrayListExtra("urlPath", listOfUrls);
+                        intent.putExtra("position", position);
                         context.startActivity(intent);
-
                         return false;
                     }
                 });
