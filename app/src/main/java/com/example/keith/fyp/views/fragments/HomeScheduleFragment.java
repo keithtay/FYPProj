@@ -323,11 +323,13 @@ public class HomeScheduleFragment extends Fragment {
             boolean check = false;
             String nameCheck = "";
             for (int i = 0; i < patientScheduleList.size(); i++) {
+
                 if(check == true && nameCheck.equals(patientScheduleList.get(i).getName())){
                     continue;
                 }else{
                     check = false;
                 }
+                holder = patientScheduleList.get(i + 1).getNric();
                 String date2 = patientScheduleList.get(i).getnActivityTime();
                 String e1 = date2.substring(0, 2);
                 String e2 = date2.substring(3, 5);
@@ -340,6 +342,7 @@ public class HomeScheduleFragment extends Fragment {
                 float date3Hour = Float.parseFloat(f3);
 //                if (date.after(date1) && date.before(date2)) {
                 //if currentTime falls within the timing interval
+                //dateHOur is currentTime date2hour
                 if(dateHour<date2Hour&&dateHour<date3Hour){
                     check =true;
                     nameCheck = patientScheduleList.get(i).getName();
@@ -364,6 +367,8 @@ public class HomeScheduleFragment extends Fragment {
                     }
                     //check if the next tuple if it is stil the same user, if yes, assign the next activity
                     if (patientScheduleList.get(i + 1).getNric().equals(holder)) {
+                        check=true;
+                        nameCheck = patientScheduleList.get(i).getName();
                         nextActivityTime = patientScheduleList.get(i + 1).getnActivityTime().substring(0, 5) + "-" + patientScheduleList.get(i + 1).getnActivity().substring(0,5);
                         nextActivity = patientScheduleList.get(i + 1).getcActivity();
                         Schedule schedule1 = new Schedule(R.drawable.avatar_01, patientScheduleList.get(i).getName(), patientScheduleList.get(i).getNric()
@@ -374,17 +379,19 @@ public class HomeScheduleFragment extends Fragment {
                         nextActivity = "-No Activity-";
                         continue;
                     }else{
+                        check=false;
                         nextActivityTime = "-No Time-";
                         nextActivity = "-No Activity-";
                         Schedule schedule1 = new Schedule(R.drawable.avatar_01, patientScheduleList.get(i).getName(), patientScheduleList.get(i).getNric()
                                 , currentActivity, nextActivityTime, nextActivity);
                         scheduleList.add(schedule1);
                         currentActivity = "-No Activity-";
-                        holder = patientScheduleList.get(i + 1).getNric();
+
                         continue;
                     }
                     //if time interval not within, check if the next tuple if it is a diff user or no more tuple
                 } else if ((i + 1) >= patientScheduleList.size() || !patientScheduleList.get(i + 1).getNric().equals(holder)) {
+
                     String date4 = patientScheduleList.get(i).getnActivity();
                     String g1 = date4.substring(0, 2);
                     String g2 = date4.substring(3, 5);

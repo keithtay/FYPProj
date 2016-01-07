@@ -932,6 +932,10 @@ public class dbfile{
                         "VALUES (" + key + "," + 2 + "," + caregiverid + "," + 0 + "," + checkIsSupervisor + ",'" + timestamp + "')";
                 Statement stmt2 = conn.createStatement();
                 stmt2.executeUpdate(sql2);
+                String sql3 = "INSERT INTO album " +
+                        "VALUES (" + "'Images\\profilePic\\anonymous.jpg'" + "," + 1 + "," + key + "," + 0 + "," + 1 + ",'" + timestamp + "')";
+                Statement stmt3 = conn.createStatement();
+                stmt3.executeUpdate(sql3);
             }
             conn.close();
 
