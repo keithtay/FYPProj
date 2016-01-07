@@ -292,7 +292,7 @@ public class HomeScheduleFragment extends Fragment {
 
         dbfile db = new dbfile();
         ArrayList<Schedule> patientScheduleList = new ArrayList<>();
-        patientScheduleList = db.getPatientSchedule(caregiverId, dateNow);
+        patientScheduleList = db.getPatientSchedule(caregiverId, dateNow, getActivity().getApplicationContext());
         List<Schedule> scheduleList = new ArrayList<>();
         if(patientScheduleList.size() != 0) {
             Collections.sort(patientScheduleList, Schedule.COMPARE_BY_SCHEDULE);
@@ -348,7 +348,7 @@ public class HomeScheduleFragment extends Fragment {
                     nameCheck = patientScheduleList.get(i).getName();
                     nextActivityTime = patientScheduleList.get(i).getnActivityTime().substring(0, 5) + "-" + patientScheduleList.get(i).getnActivity().substring(0,5);
                     nextActivity = patientScheduleList.get(i).getcActivity();
-                    Schedule schedule1 = new Schedule(R.drawable.avatar_01, patientScheduleList.get(i).getName(), patientScheduleList.get(i).getNric()
+                    Schedule schedule1 = new Schedule(patientScheduleList.get(i).getPhoto(), patientScheduleList.get(i).getName(), patientScheduleList.get(i).getNric()
                             , currentActivity, nextActivityTime, nextActivity);
                     scheduleList.add(schedule1);
                     nextActivityTime = "-No Time-";
@@ -360,7 +360,7 @@ public class HomeScheduleFragment extends Fragment {
 
                     //check if the next item in the list is the final node, if yes, get the current and stall and break loop
                     if ((i + 1) >= patientScheduleList.size()) {
-                        Schedule schedule1 = new Schedule(R.drawable.avatar_01, patientScheduleList.get(i).getName(), patientScheduleList.get(i).getNric()
+                        Schedule schedule1 = new Schedule(patientScheduleList.get(i).getPhoto(), patientScheduleList.get(i).getName(), patientScheduleList.get(i).getNric()
                                 , currentActivity, nextActivityTime, nextActivity);
                         scheduleList.add(schedule1);
                         break;
@@ -371,7 +371,7 @@ public class HomeScheduleFragment extends Fragment {
                         nameCheck = patientScheduleList.get(i).getName();
                         nextActivityTime = patientScheduleList.get(i + 1).getnActivityTime().substring(0, 5) + "-" + patientScheduleList.get(i + 1).getnActivity().substring(0,5);
                         nextActivity = patientScheduleList.get(i + 1).getcActivity();
-                        Schedule schedule1 = new Schedule(R.drawable.avatar_01, patientScheduleList.get(i).getName(), patientScheduleList.get(i).getNric()
+                        Schedule schedule1 = new Schedule(patientScheduleList.get(i).getPhoto(), patientScheduleList.get(i).getName(), patientScheduleList.get(i).getNric()
                                 , currentActivity, nextActivityTime, nextActivity);
                         scheduleList.add(schedule1);
                         nextActivityTime = "-No Time-";
@@ -382,7 +382,7 @@ public class HomeScheduleFragment extends Fragment {
                         check=false;
                         nextActivityTime = "-No Time-";
                         nextActivity = "-No Activity-";
-                        Schedule schedule1 = new Schedule(R.drawable.avatar_01, patientScheduleList.get(i).getName(), patientScheduleList.get(i).getNric()
+                        Schedule schedule1 = new Schedule(patientScheduleList.get(i).getPhoto(), patientScheduleList.get(i).getName(), patientScheduleList.get(i).getNric()
                                 , currentActivity, nextActivityTime, nextActivity);
                         scheduleList.add(schedule1);
                         currentActivity = "-No Activity-";
@@ -398,11 +398,11 @@ public class HomeScheduleFragment extends Fragment {
                     String g3 = g1 + "." + g2;
                     float date4Hour = Float.parseFloat(g3);
                     if (date4Hour > dateHour) {
-                        Schedule schedule1 = new Schedule(R.drawable.avatar_01, patientScheduleList.get(i).getName(), patientScheduleList.get(i).getNric()
+                        Schedule schedule1 = new Schedule(patientScheduleList.get(i).getPhoto(), patientScheduleList.get(i).getName(), patientScheduleList.get(i).getNric()
                                 , currentActivity, patientScheduleList.get(i).getnActivityTime().substring(0,5) + "-" + patientScheduleList.get(i).getnActivity().substring(0,5), patientScheduleList.get(i).getcActivity());
                         scheduleList.add(schedule1);
                     } else {
-                        Schedule schedule1 = new Schedule(R.drawable.avatar_01, patientScheduleList.get(i).getName(), patientScheduleList.get(i).getNric()
+                        Schedule schedule1 = new Schedule(patientScheduleList.get(i).getPhoto(), patientScheduleList.get(i).getName(), patientScheduleList.get(i).getNric()
                                 , currentActivity, nextActivityTime, nextActivity);
                         scheduleList.add(schedule1);
                     }

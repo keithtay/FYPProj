@@ -532,7 +532,7 @@ public class dbfile{
             conn = DriverManager.getConnection(connString, username, password);
             Statement stmt = conn.createStatement();
             ResultSet reset = stmt.executeQuery("SELECT a.albumPath as albumPath, * from patient AS p INNER JOIN album AS a ON a.patientID = p.patientID " +
-                    " where p.nric='" + nric + "' AND  p.isDeleted=0 AND a.albumCatID=1 ");
+                    " where p.nric='" + nric + "' AND  p.isDeleted=0 AND a.albumCatID=1 AND a.isDeleted=0 AND a.isApproved=1");
             //original executeQuery done by keith
             /*ResultSet reset = stmt.executeQuery("select * from patient " +
                     " where nric='" + nric + "' AND  isDeleted=0");*/
@@ -710,7 +710,7 @@ public class dbfile{
 
         }
 
-    public ArrayList<Schedule> getPatientSchedule(int careGiverID, String date){
+    public ArrayList<Schedule> getPatientSchedule(int careGiverID, String date, Context context){
         ArrayList<Schedule> patientScheduleList = new ArrayList<>();
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -723,10 +723,15 @@ public class dbfile{
             Statement stmt = conn.createStatement();
             ResultSet reset = stmt.executeQuery("select * from patientAllocation AS pa INNER JOIN schedule AS s " +
                     " ON pa.patientAllocationID = s.patientAllocationID" +
-                    " INNER JOIN patient as p ON p.patientID = pa.patientid where pa.caregiverID='" + careGiverID + "' AND s.dateStart ='" + date + "' AND s.isApproved=1 AND s.isDeleted=0");
+                    " INNER JOIN patient as p ON p.patientID = pa.patientid " +
+                    " INNER JOIN album as a on a.patientID = p.patientID" +
+                    " where pa.caregiverID='" + careGiverID + "' AND s.dateStart ='" + date + "' AND s.isApproved=1 AND s.isDeleted=0 AND a.albumcatid=1 AND a.isapproved=1 AND a.isdeleted=0");
 
             while (reset.next()) {
-                Schedule schedule1 = new Schedule(R.drawable.avatar_01, reset.getString("firstName"), reset.getString("nric"), reset.getString("scheduleTitle"), reset.getString("timeStart"), reset.getString("timeEnd"));
+                Schedule schedule1 = new Schedule(getPatientProfilePic(reset.getString("albumPath"), context), reset.getString("firstName"), reset.getString("nric"), reset.getString("scheduleTitle"), reset.getString("timeStart"), reset.getString("timeEnd"));
+                schedule1.setPhoto(getPatientProfilePic(reset.getString("albumPath"),context));
+                Log.v("TABCDE", schedule1.getPhoto().toString());
+//                Schedule schedule1 = new Schedule(R.drawable.avatar_01, reset.getString("firstName"), reset.getString("nric"), reset.getString("scheduleTitle"), reset.getString("timeStart"), reset.getString("timeEnd"));
                 patientScheduleList.add(schedule1);
             }
 

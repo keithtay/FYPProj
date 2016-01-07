@@ -69,8 +69,8 @@ public class Schedule {
     /**
      * Create a new schedule with the specified values
      */
-    public Schedule(int photoid, String firstName, String nric, String cActivity, String nActivityTime, String nActivity) {
-        this.photoid = photoid;
+    public Schedule(Bitmap photo, String firstName, String nric, String cActivity, String nActivityTime, String nActivity) {
+        this.photo = photo;
         this.name = firstName;
         this.nric = nric;
         this.cActivity = cActivity;

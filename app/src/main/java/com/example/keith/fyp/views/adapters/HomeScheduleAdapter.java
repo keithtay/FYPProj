@@ -72,7 +72,7 @@ public class HomeScheduleAdapter extends RecyclerView.Adapter<HomeScheduleAdapte
     public void onBindViewHolder(HomeScheduleHolder holder, int position) {
         String noTime = "-No Time-";
         Schedule currentSchedule = filteredScheduleList.get(position);
-        holder.patientPhoto.setImageResource(currentSchedule.getPhotoid());
+        holder.patientPhoto.setImageBitmap(currentSchedule.getPhoto());
         holder.patientName.setText(currentSchedule.getName());
         holder.patientNric.setText(currentSchedule.getNric());
         holder.currActivity.setText(currentSchedule.getcActivity());
