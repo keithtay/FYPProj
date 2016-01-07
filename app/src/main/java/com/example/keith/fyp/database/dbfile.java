@@ -1152,7 +1152,7 @@ public class dbfile{
         }
         return listofCategory;
 }
-    public ArrayList <String> getPicturesURLS (int patientId , int albumCatId){
+    public ArrayList <String> getPicturesURLS (int patientId){
         String path = "http://dementiafypdb.com/";
         ArrayList<String> albumFilePath = new ArrayList<String>();
 
@@ -1165,9 +1165,9 @@ public class dbfile{
             Class.forName(driver).newInstance();
             conn = DriverManager.getConnection(connString, username, password);
             Statement stmt = conn.createStatement();
-            ResultSet reset = stmt.executeQuery("Select albumPath\n" +
-                                                "From album\n" +
-                                                "where albumCatID= '" +albumCatId+ "' AND patientID= '"+patientId+ "'" +
+            ResultSet reset = stmt.executeQuery("SELECT albumPath\n" +
+                                                "FROM album\n" +
+                                                "WHERE patientID= '"+patientId+ "'" +
                                                 "AND isApproved=1 AND isDeleted=0");
 
             while (reset.next()) {

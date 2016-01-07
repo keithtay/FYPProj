@@ -120,6 +120,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.activities.CreatePatientActivity" />
         </activity>
+        <!--
         <activity
             android:name=".views.activities.SettingsActivity"
             android:label="testingOut">
@@ -127,6 +128,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.activities.SettingsActivity" />
         </activity>
+        -->
+        <activity
+            android:name=".views.activities.FullScreenViewActivity"
+            android:theme="@android:style/Theme.Holo.NoActionBar">
+        </activity>
+
         <receiver android:name=".broadcastreceiver.SBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
