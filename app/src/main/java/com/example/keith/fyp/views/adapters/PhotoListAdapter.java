@@ -82,9 +82,11 @@ public class PhotoListAdapter extends BaseAdapter{
                 photoItemView.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
-                        Toast.makeText(context.getApplicationContext(), "item clicked at position " + position,
-                                Toast.LENGTH_SHORT).show();
-                        listOfUrls.add(photoList.get(position)); //store url string in arraylist string.
+                        Log.v("item position ", ""+ position);
+                        int numOfPhotosInAlbum = getCount();
+                        for (int i = 0; i< numOfPhotosInAlbum; i++){
+                            listOfUrls.add(photoList.get(i)); //store url string in arraylist string.
+                        }
 
                         Intent intent = new Intent(context.getApplicationContext(),FullScreenViewActivity.class);
                         intent.putStringArrayListExtra("urlPath", listOfUrls);
