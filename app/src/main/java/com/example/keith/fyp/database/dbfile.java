@@ -571,7 +571,7 @@ public class dbfile{
                         " ON p.patientID = psi.patientID" +
                         " INNER JOIN specInfo as si ON si.specInfoID = psi.specInfoID " +
                         " INNER JOIN patientAllocation as pa ON pa.patientID=p.patientID " +
-                        " where p.nric='" + nric + "' AND psi.isApproved=1");
+                        " where p.nric='" + nric + "' AND psi.isApproved=1 AND psi.isDeleted=0");
                 while(reset1.next()){
                     Log.v("SpecInfoName:", String.valueOf(reset1.getString("specInfoName")));
                 String specInfo = reset1.getString("specInfoName");
@@ -906,6 +906,100 @@ public class dbfile{
                     stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + newValue + "' WHERE patientSpecInfoID=" + rowID);
                 }
                     conn.close();
+            }
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deletePatientSpec(String oldValue, int patientId, int specValue, int rowID, int UserTypeID, int UserID){
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            int checkIsSupervisor;
+            if(UserTypeID == 3){
+                checkIsSupervisor = 1;
+            }else{
+                checkIsSupervisor = 0;
+            }
+            int checkSuper;
+            if (checkIsSupervisor ==1){
+                checkSuper = UserID;
+            }else{
+                checkSuper = 0;
+            }
+            int k;
+            if (checkSuper==0){
+                k=0;
+            }else{
+                k=1;
+            }
+            String tableAffected = "patientSpecInfo";
+            String columnAffected ="all";
+            if (specValue == 1){//allergy
+                String sql1 = "INSERT INTO log " +
+                        "VALUES ('" + oldValue + "','" + "Delete Allergy Spec Info for patient" + "'," + 12 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"allergy" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
+                Statement stmt1 = conn.createStatement();
+                stmt1.executeUpdate(sql1);
+                if(checkIsSupervisor == 1){
+                    stmt1.executeUpdate("UPDATE patientSpecInfo SET isDeleted='" + 1 + "' WHERE patientSpecInfoID=" + rowID);
+                }
+                conn.close();
+                //remember do update if supervisor
+            }else if(specValue == 2){//vital
+                String sql1 = "INSERT INTO log " +
+                        "VALUES ('" + oldValue + "','" + "Delete Vital Spec Info for patient" + "'," + 12 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"vital" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
+                Statement stmt1 = conn.createStatement();
+                stmt1.executeUpdate(sql1);
+                if(checkIsSupervisor == 1){
+                    stmt1.executeUpdate("UPDATE patientSpecInfo SET isDeleted='" + 1 + "' WHERE patientSpecInfoID=" + rowID);
+                }
+                conn.close();
+            }else if(specValue == 3){
+                String sql1 = "INSERT INTO log " +
+                        "VALUES ('" + oldValue + "','" + "Delete Social History Spec Info for patient" + "'," + 12 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"social history" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
+                Statement stmt1 = conn.createStatement();
+                stmt1.executeUpdate(sql1);
+                if(checkIsSupervisor == 1){
+                    stmt1.executeUpdate("UPDATE patientSpecInfo SET isDeleted='" + 1 + "' WHERE patientSpecInfoID=" + rowID);
+                }
+                conn.close();
+            }else if(specValue == 4){
+                String sql1 = "INSERT INTO log " +
+                        "VALUES ('" + oldValue + "','" + "Delete Prescription Spec Info for patient" + "'," + 12 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"prescription" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
+                Statement stmt1 = conn.createStatement();
+                stmt1.executeUpdate(sql1);
+                if(checkIsSupervisor == 1){
+                    stmt1.executeUpdate("UPDATE patientSpecInfo SET isDeleted='" + 1 + "' WHERE patientSpecInfoID=" + rowID);
+                }
+                conn.close();
+            }else if(specValue == 5){
+                String sql1 = "INSERT INTO log " +
+                        "VALUES ('" + oldValue + "','" + "Delete Routine Spec Info for patient" + "'," + 12 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"routine" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
+                Statement stmt1 = conn.createStatement();
+                stmt1.executeUpdate(sql1);
+                if(checkIsSupervisor == 1){
+                    stmt1.executeUpdate("UPDATE patientSpecInfo SET isDeleted='" + 1 + "' WHERE patientSpecInfoID=" + rowID);
+                }
+                conn.close();
+            }else if(specValue == 12){
+                String sql1 = "INSERT INTO log " +
+                        "VALUES ('" + oldValue + "','" + "Delete Problem Log Spec Info for patient" + "'," + 12 + "," + patientId + "," + UserID + "," + checkSuper + ",'" +"problem log" +"'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + rowID + "," + k + ",'" + timestamp + "')";
+                Statement stmt1 = conn.createStatement();
+                stmt1.executeUpdate(sql1);
+                if(checkIsSupervisor == 1){
+                    stmt1.executeUpdate("UPDATE patientSpecInfo SET isDeleted='" + 1 + "' WHERE patientSpecInfoID=" + rowID);
+                }
+                conn.close();
             }
 
 

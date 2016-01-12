@@ -3,6 +3,7 @@ package com.example.keith.fyp.views.fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -24,6 +25,7 @@ import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.Allergy;
+import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.views.adapters.AllergyListAdapter;
 import com.example.keith.fyp.views.decorators.SpacesCardItemDecoration;
@@ -230,7 +232,23 @@ public class ViewPatientInfoFormAllergyFragment extends ViewPatientInfoFormFragm
      * @param selectedItemIdx index of allergy to be deleted
      */
     public void deleteItem(int selectedItemIdx) {
-        allergyList.remove(selectedItemIdx);
-        allergyListAdapter.notifyItemRemoved(selectedItemIdx);
+
+        String oldValue = allergyList.get(selectedItemIdx).getName() + ";" + allergyList.get(selectedItemIdx).getReaction() +";" + allergyList.get(selectedItemIdx).getNotes();
+        dbfile db = new dbfile();
+        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        String selectedPatientNric = mPrefs.getString(Global.STATE_SELECTED_PATIENT_NRIC, "");
+        int x = db.getPatientId(selectedPatientNric);
+        int getRowID = db.getAllergyRowId(oldValue, x);
+        SharedPreferences preferences = getActivity().getSharedPreferences("Login", Context.MODE_PRIVATE);
+        final int UserID = Integer.parseInt(preferences.getString("userid", ""));
+        final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
+        db.deletePatientSpec(oldValue, x, 1, getRowID, UserTypeID, UserID);
+        if(UserTypeID == 3) {
+            allergyList.remove(selectedItemIdx);
+            allergyListAdapter.notifyItemRemoved(selectedItemIdx);
+            Toast.makeText(getActivity(), "Successfully Changed", Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(getActivity(), "Pending Supervisor Approval", Toast.LENGTH_LONG).show();
+        }
     }
 }

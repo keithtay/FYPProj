@@ -1,7 +1,9 @@
 package com.example.keith.fyp.views.fragments;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -239,8 +241,26 @@ public class ViewPatientInfoFormRoutineFragment extends ViewPatientInfoFormFragm
      * @param selectedItemIdx index of routine to be deleted
      */
     public void deleteItem(int selectedItemIdx) {
-        routineList.remove(selectedItemIdx);
-        routineListAdapter.notifyItemRemoved(selectedItemIdx);
+        String oldValue = routineList.get(selectedItemIdx).getName() + ";" + routineList.get(selectedItemIdx).getNotes() +";" +
+                routineList.get(selectedItemIdx).getStartDate().withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0).toString() + ";" + routineList.get(selectedItemIdx).getEndDate().withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0).toString()
+                + ";" + routineList.get(selectedItemIdx).getStartTime().withDayOfYear(1).withMonthOfYear(1).withYear(1970).withMillisOfSecond(0).toString() + ";" + routineList.get(selectedItemIdx).getEndTime().withYear(1970).withMonthOfYear(1).withMillisOfSecond(0).withDayOfYear(1).toString()
+                + ";" + String.valueOf(routineList.get(selectedItemIdx).getEveryNumber()) + ";" + routineList.get(selectedItemIdx).getEveryLabel();
+        dbfile db = new dbfile();
+        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        String selectedPatientNric = mPrefs.getString(Global.STATE_SELECTED_PATIENT_NRIC, "");
+        int x = db.getPatientId(selectedPatientNric);
+        int getRowID = db.getAllergyRowId(oldValue, x);
+        SharedPreferences preferences = getActivity().getSharedPreferences("Login", Context.MODE_PRIVATE);
+        final int UserID = Integer.parseInt(preferences.getString("userid", ""));
+        final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
+        db.deletePatientSpec(oldValue, x, 5, getRowID, UserTypeID, UserID);
+        if(UserTypeID == 3) {
+            routineList.remove(selectedItemIdx);
+            routineListAdapter.notifyItemRemoved(selectedItemIdx);
+            Toast.makeText(getActivity(), "Successfully Changed", Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(getActivity(), "Pending Supervisor Approval", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void resetNewRoutineFields() {

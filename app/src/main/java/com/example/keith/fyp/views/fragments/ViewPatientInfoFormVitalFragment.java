@@ -1,10 +1,12 @@
 package com.example.keith.fyp.views.fragments;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -155,9 +157,34 @@ public class ViewPatientInfoFormVitalFragment extends ViewPatientInfoFormFragmen
      * @param selectedItemIdx index of vital to be deleted
      */
     public void deleteItem(int selectedItemIdx) {
-        vitalList.remove(selectedItemIdx);
-        vitalListAdapter.notifyItemRemoved(selectedItemIdx);
-    }
+        String isBeforeAfterMealValue;
+        if(vitalList.get(selectedItemIdx).isBeforeMeal() == false){
+            isBeforeAfterMealValue = "false";
+        }else{
+            isBeforeAfterMealValue = "true";
+
+        }
+        String oldValue = vitalList.get(selectedItemIdx).getDateTimeTaken().toString() + ";" + isBeforeAfterMealValue + ";" +
+                String.valueOf(vitalList.get(selectedItemIdx).getTemperature()) + ";" + String.valueOf(vitalList.get(selectedItemIdx).getBloodPressureSystol()) + ";"+
+                String.valueOf(vitalList.get(selectedItemIdx).getBloodPressureDiastol()) + ";" + String.valueOf(vitalList.get(selectedItemIdx).getHeight()) + ";" +
+                String.valueOf(vitalList.get(selectedItemIdx).getWeight()) + ";" + vitalList.get(selectedItemIdx).getNotes();
+        dbfile db = new dbfile();
+        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        String selectedPatientNric = mPrefs.getString(Global.STATE_SELECTED_PATIENT_NRIC, "");
+        int x = db.getPatientId(selectedPatientNric);
+        int getRowID = db.getAllergyRowId(oldValue, x);
+        SharedPreferences preferences = getActivity().getSharedPreferences("Login", Context.MODE_PRIVATE);
+        final int UserID = Integer.parseInt(preferences.getString("userid", ""));
+        final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
+        db.deletePatientSpec(oldValue, x, 2, getRowID, UserTypeID, UserID);
+        if(UserTypeID == 3){
+            vitalList.remove(selectedItemIdx);
+            vitalListAdapter.notifyItemRemoved(selectedItemIdx);
+            Toast.makeText(getActivity(), "Successfully Changed", Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(getActivity(), "Pending Supervisor Approval", Toast.LENGTH_LONG).show();
+        }
+        }
 
     private void closeExpandableAddVital() {
         if (addVitalExpandable.isOpened()) {

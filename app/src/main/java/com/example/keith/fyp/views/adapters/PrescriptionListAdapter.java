@@ -271,7 +271,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
                         if(UserTypeID == 3) {
                             prescription.setName(nameStr);
                             prescription.setDosage(dosageStr);
-                            prescription.setFreqPerDay(Integer.getInteger(freqStr));
+                            prescription.setFreqPerDay(Integer.parseInt(freqStr));
                             prescription.setInstruction(instructionStr);
                             prescription.setStartDate(startDate);
                             prescription.setEndDate(endDate);

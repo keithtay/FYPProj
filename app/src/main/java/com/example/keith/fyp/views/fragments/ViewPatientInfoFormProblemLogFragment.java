@@ -1,7 +1,9 @@
 package com.example.keith.fyp.views.fragments;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -223,7 +225,24 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
      * @param selectedItemIdx index of problem log to be deleted
      */
     public void deleteItem(int selectedItemIdx) {
-        problemLogList.remove(selectedItemIdx);
-        problemLogListAdapter.notifyItemRemoved(selectedItemIdx);
+        String oldValue = problemLogList.get(selectedItemIdx).getCreationDate().withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0).toString() + ";" + problemLogList.get(selectedItemIdx).getCategory() +";" +
+                problemLogList.get(selectedItemIdx).getNotes();
+        dbfile db = new dbfile();
+        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        String selectedPatientNric = mPrefs.getString(Global.STATE_SELECTED_PATIENT_NRIC, "");
+        int x = db.getPatientId(selectedPatientNric);
+        int getRowID = db.getAllergyRowId(oldValue, x);
+        SharedPreferences preferences = getActivity().getSharedPreferences("Login", Context.MODE_PRIVATE);
+        final int UserID = Integer.parseInt(preferences.getString("userid", ""));
+        final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
+        db.deletePatientSpec(oldValue, x, 12, getRowID, UserTypeID, UserID);
+        if(UserTypeID == 3) {
+             problemLogList.remove(selectedItemIdx);
+            problemLogListAdapter.notifyItemRemoved(selectedItemIdx);
+            Toast.makeText(getActivity(), "Successfully Changed", Toast.LENGTH_LONG).show();
+        }
+        else{
+            Toast.makeText(getActivity(), "Pending Supervisor Approval!", Toast.LENGTH_LONG).show();
+        }
     }
 }

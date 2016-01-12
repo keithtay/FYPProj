@@ -1,5 +1,6 @@
 package com.example.keith.fyp.views.fragments;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -270,7 +271,25 @@ public class ViewPatientInfoFormPrescriptionFragment extends ViewPatientInfoForm
      * @param selectedItemIdx index of prescription to be deleted
      */
     public void deleteItem(int selectedItemIdx) {
-        prescriptionList.remove(selectedItemIdx);
-        prescriptionListAdapter.notifyItemRemoved(selectedItemIdx);
+        String oldValue = prescriptionList.get(selectedItemIdx).getName() + ";" + prescriptionList.get(selectedItemIdx).getDosage() +";" +
+                String.valueOf(prescriptionList.get(selectedItemIdx).getFreqPerDay()) + ";" + prescriptionList.get(selectedItemIdx).getInstruction()
+                + ";" + prescriptionList.get(selectedItemIdx).getStartDate().withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0).toString() + ";" + prescriptionList.get(selectedItemIdx).getEndDate().withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0).toString()
+                + ";" + prescriptionList.get(selectedItemIdx).getBeforeAfterMeal().toString() + ";" + prescriptionList.get(selectedItemIdx).getNotes();
+        dbfile db = new dbfile();
+        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        String selectedPatientNric = mPrefs.getString(Global.STATE_SELECTED_PATIENT_NRIC, "");
+        int x = db.getPatientId(selectedPatientNric);
+        int getRowID = db.getAllergyRowId(oldValue, x);
+        SharedPreferences preferences = getActivity().getSharedPreferences("Login", Context.MODE_PRIVATE);
+        final int UserID = Integer.parseInt(preferences.getString("userid", ""));
+        final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
+        db.deletePatientSpec(oldValue, x, 4, getRowID, UserTypeID, UserID);
+        if(UserTypeID == 3) {
+            prescriptionList.remove(selectedItemIdx);
+            prescriptionListAdapter.notifyItemRemoved(selectedItemIdx);
+            Toast.makeText(getActivity(), "Successfully Changed", Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(getActivity(), "Pending Supervisor Approval", Toast.LENGTH_LONG).show();
+        }
     }
 }

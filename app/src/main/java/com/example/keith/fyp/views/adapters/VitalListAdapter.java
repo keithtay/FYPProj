@@ -184,10 +184,21 @@ public class VitalListAdapter extends RecyclerView.Adapter<VitalListAdapter.Vita
                 public void onClick(View v) {
                     ArrayList<Vital> vitalList = patient.getVitalList();
                     Vital vital = vitalList.get(getAdapterPosition());
-                    String oldValue = vital.getDateTimeTaken().toString() + ";" + String.valueOf(vital.isBeforeMeal()) + ";" +
-                            String.valueOf(vital.getTemperature()) + ";" + String.valueOf(vital.getBloodPressureSystol()) + ";"+
-                            String.valueOf(vital.getBloodPressureDiastol()) + ";" + String.valueOf(vital.getHeight()) + ";" +
-                            String.valueOf(vital.getWeight()) + ";" + vital.getNotes();
+                    Boolean a1;
+                    if (vital.isBeforeMeal() == true){
+                        a1 = true;
+                    }else{
+                        a1 = false;
+                    }
+                    float diastol= vital.getBloodPressureDiastol();
+                    float temp = vital.getTemperature();
+                    float weight1 = vital.getWeight();
+                    float sys = vital.getBloodPressureSystol();
+                    float height1 = vital.getHeight();
+                    String oldValue = vital.getDateTimeTaken().toString() + ";" + a1.toString() + ";" +
+                            String.valueOf(temp) + ";" + String.valueOf(sys) + ";"+
+                            String.valueOf(diastol) + ";" + String.valueOf(height1) + ";" +
+                           String.valueOf(weight1) + ";" + vital.getNotes();
                     DateTime date = Global.DATE_FORMAT.parseDateTime(dateTaken.getText().toString());
                     int mYear = date.getYear();
                     int mMonth = date.getMonthOfYear();
@@ -209,8 +220,10 @@ public class VitalListAdapter extends RecyclerView.Adapter<VitalListAdapter.Vita
                     String beforeOrAfterMeal = beforeAfterMeal.getSelectedItem().toString();
                     if(beforeOrAfterMeal.equals("Before meal")) {
                         vital.setIsBeforeMeal(true);
+                        beforeOrAfterMeal = "true";
                     } else if(beforeOrAfterMeal.equals("After meal")) {
                         vital.setIsBeforeMeal(false);
+                        beforeOrAfterMeal = "false";
                     } else {
                         vital.setIsBeforeMeal(null);
                     }
