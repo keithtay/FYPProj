@@ -7,13 +7,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.RecoverySystem;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.support.v7.app.AlertDialog;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -33,12 +34,15 @@ import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.PhotoAlbum;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsString;
+import com.example.keith.fyp.views.PHP.Request;
 import com.example.keith.fyp.views.adapters.PhotoAlbumTitleAdapter;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
-
+import java.util.HashMap;
+import java.util.Map;
 
 
 import fr.ganfra.materialspinner.MaterialSpinner;
@@ -60,7 +64,7 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
     private Button uploadAddNewPhotosButton;
     private ImageView uploadImage;
 
-    //will need to edit these 3 parameters to to save the picture directly into database. current in static.
+
     private String fileName = "new_photo.jpg";
     private String path = fileName;
     private Uri outputFileUri;
@@ -73,7 +77,8 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
     private ArrayList<String> combinedURLSOfAll = new ArrayList<String>();
 
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
-    private Context context;
+    public String SERVER = "http://dementiafypdb.com/fileUpload.php";
+    public String timestamp;
 
 
 
@@ -171,11 +176,12 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
         uploadAddNewPhotosButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toast = Toast.makeText(getActivity(), "Please take photo first before uploading.", Toast.LENGTH_SHORT);
                 if (uploadImage.getDrawable() == null){
-                    toast.show();
+                    Toast.makeText(getActivity(), "Please take photo first before uploading.", Toast.LENGTH_SHORT).show();
                 }else{
-                    //uploadPhoto();
+                    Bitmap image = ((BitmapDrawable) uploadImage.getDrawable()).getBitmap();
+                    //execute the async task and upload the image to server
+                    new Upload(image,"newPhoto_" + timestamp).execute();
                 }
             }
 
@@ -228,22 +234,23 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, path);
         // start the image capture Intent
         Log.v("launch camera", "yes!");
-        Log.v("file url", ":"+path);
         startActivityForResult(cameraIntent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // if the result is capturing Image
         if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK && data !=null) {
-
                 // successfully captured the image
-                // launching upload activity
                 Log.v("photo", "taken!");
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
                 uploadImage.setImageBitmap(photo);
-                launchUploadActivity(true);
+                //get the current timeStamp and strore that in the time Variable
+                Long tsLong = System.currentTimeMillis() / 1000;
+                timestamp = tsLong.toString();
+                String finalFilePath = path.replace(".jpg",timestamp+".jpg");
+                Log.v("file url", ":" + finalFilePath);
+
             } else if (resultCode == Activity.RESULT_CANCELED){
                 // failed to capture image
                 Toast.makeText(getActivity(), "User cancelled image capture", Toast.LENGTH_SHORT).show();
@@ -252,105 +259,75 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
         }
     }
 
-    private void launchUploadActivity(boolean isImage){
-        Log.v("testing", "test:" + path);
-        //new UploadFileToServer().execute();
-        // outputfileurl path: /storage/emulated/0/PearPCC/new_photo.jpg
-        /*
-        Intent i = new Intent(MainActivity.this, UploadActivity.class);
-        i.putExtra("filePath", outputFileUri.getPath());
-        i.putExtra("isImage", isImage);
-        startActivity(i);
-        */
-    }
-    /*
-    private class UploadFileToServer extends AsyncTask<Void, Integer, String> {
+    private String hashMapToUrl(HashMap<String, String> params) throws UnsupportedEncodingException {
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+        for(Map.Entry<String, String> entry : params.entrySet()){
+            if (first)
+                first = false;
+            else
+                result.append("&");
 
+            result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
+            result.append("=");
+            result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
+        }
+
+        return result.toString();
+    }
+
+    private class Upload extends AsyncTask<Void,Void,String>{
+        private Bitmap image;
+        private String name;
+
+        //Upload constructor.
+        public Upload(Bitmap image,String name){
+            this.image = image;
+            this.name = name;
+        }
 
         @Override
         protected String doInBackground(Void... params) {
-            return uploadFile();
-        }
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            //compress the image to jpg format
+            image.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+            /*
+            * encode image to base64 so that it can be picked by fileUpload.php file
+            * */
 
-        @SuppressWarnings("deprecation")
-        private String uploadFile() {
-            String responseString = null;
+            String encodeImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
 
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://dementiafypdb.com/fileUpload.php");
+            //generate hashMap to store encodedImage and the name
 
-            try {
-                AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
-                        new RecoverySystem.ProgressListener() {
+            HashMap<String,String> detail = new HashMap<>();
+            detail.put("name", name);
+            Log.v("name is:", name);
+            detail.put("image", encodeImage);
 
-                            @Override
-                            public void transferred(long num) {
-                                publishProgress((int) ((num / (float) totalSize) * 100));
-                            }
-                        });
 
-                File sourceFile = new File(filePath);
+            try{
+                //convert this HashMap to encodedUrl to send to php file
 
-                // Adding file data to http body
-                entity.addPart("image", new FileBody(sourceFile));
+                String dataToSend = hashMapToUrl(detail);
+                //make a Http request and send data to fileUpload.php file
 
-                // Extra parameters if you want to pass to server
-                entity.addPart("website",
-                        new StringBody("www.androidhive.info"));
-                entity.addPart("email", new StringBody("abc@gmail.com"));
+                String response = Request.post(SERVER, dataToSend);
 
-                totalSize = entity.getContentLength();
-                httppost.setEntity(entity);
+                //return the response
 
-                // Making server call
-                HttpResponse response = httpclient.execute(httppost);
-                HttpEntity r_entity = response.getEntity();
+                return response;
 
-                int statusCode = response.getStatusLine().getStatusCode();
-                if (statusCode == 200) {
-                    // Server response
-                    responseString = EntityUtils.toString(r_entity);
-                } else {
-                    responseString = "Error occurred! Http Status Code: "
-                            + statusCode;
-                }
-
-            } catch (ClientProtocolException e) {
-                responseString = e.toString();
-            } catch (IOException e) {
-                responseString = e.toString();
+            }catch (Exception e){
+                e.printStackTrace();
+                return null;
             }
-
-            return responseString;
-
         }
-
         @Override
-        protected void onPostExecute(String result) {
-            Log.e("test:", "Response from server: " + result);
-
-            // showing the server response in an alert dialog
-            showAlert(result);
-
-            super.onPostExecute(result);
+        protected void onPostExecute(String s) {
+            //show image uploaded
+            Toast.makeText(getActivity(),"Image Uploaded",Toast.LENGTH_SHORT).show();
+            uploadImage.setImageDrawable(null);
         }
-
-    }
-    */
-    /**
-     * Method to show alert dialog
-     * */
-    private void showAlert(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context.getApplicationContext());
-        builder.setMessage(message).setTitle("Response from Servers")
-                .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // do nothing
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
     }
 
 }
