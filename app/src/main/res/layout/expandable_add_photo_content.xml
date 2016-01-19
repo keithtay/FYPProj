@@ -15,6 +15,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+
             <fr.ganfra.materialspinner.MaterialSpinner
                 android:id="@+id/photo_album_title_spinner"
                 android:layout_width="fill_parent"
@@ -32,6 +33,12 @@
                 app:ms_hint="Where would you like to save the photo in?"
                 app:ms_multiline="false" />
 
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/uploading_image"/>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -45,6 +52,7 @@
                 android:paddingBottom="@dimen/paper_card_row_spacing"
                 android:paddingLeft="@dimen/paper_card_padding"
                 android:paddingRight="@dimen/paper_card_padding">
+
 
                 <Button
                     android:id="@+id/cancel_add_new_photos_event_button"
@@ -70,6 +78,20 @@
                     android:textAllCaps="true"
                     android:textColor="@color/primary"
                     android:textStyle="bold" />
+
+                <Button
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Upload Photo"
+                    android:id="@+id/upload_new_photo_button"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@+id/cancel_add_new_photos_event_button"
+                    android:layout_toStartOf="@+id/cancel_add_new_photos_event_button"
+                    android:textAllCaps="true"
+                    android:textColor="@color/primary"
+                    android:textStyle="bold" />
+
             </RelativeLayout>
 
         </LinearLayout>
