@@ -88,7 +88,7 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
         rootView = (LinearLayout) inflater.inflate(R.layout.fragment_view_patient_photo_album, container, false);
         photoAlbumListView = (ListView) rootView.findViewById(R.id.photo_album_list_view);
         ArrayList<PhotoAlbum> photoAlbumList = new ArrayList<>();
-        uploadAddNewPhotosButton = (Button) rootView.findViewById(R.id.upload_new_photo_button);
+
         uploadImage = (ImageView) rootView.findViewById(R.id.uploading_image);
 
 
@@ -165,18 +165,34 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
             }
 
         });
+
+        //'upload photo' button listener
+        uploadAddNewPhotosButton = (Button) rootView.findViewById(R.id.upload_new_photo_button);
+        uploadAddNewPhotosButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast toast = Toast.makeText(getActivity(), "Please take photo first before uploading.", Toast.LENGTH_SHORT);
+                if (uploadImage.getDrawable() == null){
+                    toast.show();
+                }else{
+                    //uploadPhoto();
+                }
+            }
+
+        });
         return rootView;
     }
 
 
     private void resetAddNewPhotosFields() {
         photoAlbumTitleSpinner.setSelection(0);
-        uploadImage.setImageBitmap(null);
+        uploadImage.setImageDrawable(null);
     }
 
     private void closeExpandableAddNewPhotos() {
         if (addNewPhotosExpandable.isOpened()) {
             addNewPhotosExpandable.hide();
+            uploadImage.setImageDrawable(null);
         }
     }
 
@@ -228,6 +244,9 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
                 uploadImage.setImageBitmap(photo);
                 launchUploadActivity(true);
+            } else if (resultCode == Activity.RESULT_CANCELED){
+                // failed to capture image
+                Toast.makeText(getActivity(), "User cancelled image capture", Toast.LENGTH_SHORT).show();
             }
 
         }
