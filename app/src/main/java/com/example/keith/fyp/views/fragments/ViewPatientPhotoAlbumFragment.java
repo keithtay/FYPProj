@@ -2,18 +2,20 @@ package com.example.keith.fyp.views.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.RecoverySystem;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,23 +29,27 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.PhotoAlbum;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsString;
-import com.example.keith.fyp.views.PHP.Request;
 import com.example.keith.fyp.views.adapters.PhotoAlbumTitleAdapter;
 
 import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 
@@ -61,13 +67,8 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
     private Button addnewPhotosButton;
     private ListView photoAlbumListView;
     private MaterialSpinner photoAlbumTitleSpinner;
-    private Button uploadAddNewPhotosButton;
-    private ImageView uploadImage;
 
 
-    private String fileName = "new_photo.jpg";
-    private String path = fileName;
-    private Uri outputFileUri;
 
     private ArrayList<String> urlToPullImageProfile = new ArrayList<String>();
     private ArrayList<String> urlToPullImageFamily = new ArrayList<String>();
@@ -77,8 +78,11 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
     private ArrayList<String> combinedURLSOfAll = new ArrayList<String>();
 
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
+    private static final String SERVER_ADDRESS = "http://dementiafypdb.com/";
     public String SERVER = "http://dementiafypdb.com/fileUpload.php";
     public String timestamp;
+    private String fileName = "newPhoto.jpg";
+    private String path;
 
 
 
@@ -93,9 +97,6 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
         rootView = (LinearLayout) inflater.inflate(R.layout.fragment_view_patient_photo_album, container, false);
         photoAlbumListView = (ListView) rootView.findViewById(R.id.photo_album_list_view);
         ArrayList<PhotoAlbum> photoAlbumList = new ArrayList<>();
-
-        uploadImage = (ImageView) rootView.findViewById(R.id.uploading_image);
-
 
         Log.v("check patient nric", selectedPatientNric); //test nric.
         combinedURLSOfAll = db.getPicturesURLS(db.getPatientId(selectedPatientNric));
@@ -154,7 +155,6 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
         cancelAddNewPhotosButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 closeExpandableAddNewPhotos();
                 resetAddNewPhotosFields();
                 photoAlbumTitleSpinner.setError(null);
@@ -170,35 +170,124 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
             }
 
         });
-
-        //'upload photo' button listener
-        uploadAddNewPhotosButton = (Button) rootView.findViewById(R.id.upload_new_photo_button);
-        uploadAddNewPhotosButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (uploadImage.getDrawable() == null){
-                    Toast.makeText(getActivity(), "Please take photo first before uploading.", Toast.LENGTH_SHORT).show();
-                }else{
-                    Bitmap image = ((BitmapDrawable) uploadImage.getDrawable()).getBitmap();
-                    //execute the async task and upload the image to server
-                    new Upload(image,"newPhoto_" + timestamp).execute();
-                }
-            }
-
-        });
         return rootView;
     }
 
+    private void dispatchTakePictureIntent(String albumCategory) {
+        //code to select selected patient Nric.
+        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String selectedPatientNric = mPrefs.getString(Global.STATE_SELECTED_PATIENT_NRIC, "");
+
+        path = "images/"+ albumCategory+"/"+selectedPatientNric +"_" + fileName; //create filepath for database.
+        Log.v("test",path);
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        File file = new File(Environment.getExternalStorageDirectory()+File.separator + fileName);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+        Log.v("test uri", Uri.fromFile(file).toString());
+        startActivityForResult(cameraIntent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                //Get our saved file into a bitmap object:
+                File file = new File(Environment.getExternalStorageDirectory()+File.separator + fileName);
+                Bitmap photo = decodeSampledBitmapFromFile(file.getAbsolutePath(), 1000, 700);
+                //get the current timeStamp and store that in the time Variable
+                Long tsLong = System.currentTimeMillis() / 1000;
+                timestamp = tsLong.toString();
+                String finalFilePath = path.replace(".jpg","_"+ timestamp +".jpg"); //final filepath for database.
+                Log.v("file url", finalFilePath);
+                new UploadImage(photo, "newPhoto_"+ timestamp).execute();
+            } else if (resultCode == Activity.RESULT_CANCELED){
+                // failed to capture image
+                Toast.makeText(getActivity(), "User cancelled image capture", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private class UploadImage extends AsyncTask <Void,Void,Void>{
+        Bitmap image;
+        String name;
+        // private ProgressDialog dialog;
+        private ProgressDialog dialog = new ProgressDialog(getActivity());
+
+        public UploadImage(Bitmap image, String name){
+            this.image = image;
+            this.name = name;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            String encodedImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
+
+            ArrayList<NameValuePair> dataToSend = new ArrayList<>();
+            dataToSend.add( new BasicNameValuePair("image", encodedImage));
+            dataToSend.add(new BasicNameValuePair("name", name));
+
+            HttpParams httpRequestParams = getHTTPRequestParams();
+            HttpClient client = new DefaultHttpClient(httpRequestParams);
+            HttpPost post = new HttpPost(SERVER_ADDRESS + "fileUpload.php");
+
+            try{
+                post.setEntity(new UrlEncodedFormEntity(dataToSend));
+                client.execute(post);
+
+            }catch (java.net.SocketException e){
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Connection Reset By Server")
+                        .setMessage("Please check internet connection and try uploading again later.")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // continue with delete
+                                dialog.dismiss();
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            dialog.setMessage("Uploading...");
+            dialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Toast.makeText(getActivity(), "Image Uploaded Successfully.",Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+        }
+
+
+    }
+
+    private HttpParams getHTTPRequestParams(){
+        HttpParams httpRequestParams = new BasicHttpParams();
+        HttpConnectionParams.setConnectionTimeout(httpRequestParams, 1000 * 30);
+        HttpConnectionParams.setSoTimeout(httpRequestParams, 1000 * 30);
+        return httpRequestParams;
+    }
 
     private void resetAddNewPhotosFields() {
         photoAlbumTitleSpinner.setSelection(0);
-        uploadImage.setImageDrawable(null);
     }
 
     private void closeExpandableAddNewPhotos() {
         if (addNewPhotosExpandable.isOpened()) {
             addNewPhotosExpandable.hide();
-            uploadImage.setImageDrawable(null);
         }
     }
 
@@ -215,119 +304,45 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
             photoAlbumTitleSpinner.setError(errorMessage);
             isValidForm = false;
         }
-
         if (isValidForm) {
             dispatchTakePictureIntent(addPhotosSpinnerText);
         }
 
     }
 
-    private void dispatchTakePictureIntent(String albumCategory) {
 
-        //code to select selected patient Nric.
-        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String selectedPatientNric = mPrefs.getString(Global.STATE_SELECTED_PATIENT_NRIC, "");
-        //end of code to select selected patient Nric.
+    public static Bitmap decodeSampledBitmapFromFile(String path, int reqWidth, int reqHeight)
+    { // BEST QUALITY MATCH
+        Log.v("entering","");
+        //First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
 
-        path = "images/"+ albumCategory+"/"+selectedPatientNric +"_" + fileName;
-        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, path);
-        // start the image capture Intent
-        Log.v("launch camera", "yes!");
-        startActivityForResult(cameraIntent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
-    }
+        // Calculate inSampleSize, Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        int inSampleSize = 1;
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK && data !=null) {
-                // successfully captured the image
-                Log.v("photo", "taken!");
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
-                uploadImage.setImageBitmap(photo);
-                //get the current timeStamp and strore that in the time Variable
-                Long tsLong = System.currentTimeMillis() / 1000;
-                timestamp = tsLong.toString();
-                String finalFilePath = path.replace(".jpg",timestamp+".jpg");
-                Log.v("file url", ":" + finalFilePath);
-
-            } else if (resultCode == Activity.RESULT_CANCELED){
-                // failed to capture image
-                Toast.makeText(getActivity(), "User cancelled image capture", Toast.LENGTH_SHORT).show();
-            }
-
+        if (height > reqHeight)
+        {
+            inSampleSize = Math.round((float)height / (float)reqHeight);
         }
-    }
+        int expectedWidth = width / inSampleSize;
 
-    private String hashMapToUrl(HashMap<String, String> params) throws UnsupportedEncodingException {
-        StringBuilder result = new StringBuilder();
-        boolean first = true;
-        for(Map.Entry<String, String> entry : params.entrySet()){
-            if (first)
-                first = false;
-            else
-                result.append("&");
-
-            result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
-            result.append("=");
-            result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
+        if (expectedWidth > reqWidth)
+        {
+            //if(Math.round((float)width / (float)reqWidth) > inSampleSize) // If bigger SampSize..
+            inSampleSize = Math.round((float)width / (float)reqWidth);
         }
 
-        return result.toString();
-    }
+        options.inSampleSize = inSampleSize;
 
-    private class Upload extends AsyncTask<Void,Void,String>{
-        private Bitmap image;
-        private String name;
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
 
-        //Upload constructor.
-        public Upload(Bitmap image,String name){
-            this.image = image;
-            this.name = name;
-        }
-
-        @Override
-        protected String doInBackground(Void... params) {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            //compress the image to jpg format
-            image.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
-            /*
-            * encode image to base64 so that it can be picked by fileUpload.php file
-            * */
-
-            String encodeImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
-
-            //generate hashMap to store encodedImage and the name
-
-            HashMap<String,String> detail = new HashMap<>();
-            detail.put("name", name);
-            Log.v("name is:", name);
-            detail.put("image", encodeImage);
-
-
-            try{
-                //convert this HashMap to encodedUrl to send to php file
-
-                String dataToSend = hashMapToUrl(detail);
-                //make a Http request and send data to fileUpload.php file
-
-                String response = Request.post(SERVER, dataToSend);
-
-                //return the response
-
-                return response;
-
-            }catch (Exception e){
-                e.printStackTrace();
-                return null;
-            }
-        }
-        @Override
-        protected void onPostExecute(String s) {
-            //show image uploaded
-            Toast.makeText(getActivity(),"Image Uploaded",Toast.LENGTH_SHORT).show();
-            uploadImage.setImageDrawable(null);
-        }
+        return BitmapFactory.decodeFile(path, options);
     }
 
 }

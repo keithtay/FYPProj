@@ -34,11 +34,6 @@
                 app:ms_multiline="false" />
 
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/uploading_image"/>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -79,18 +74,6 @@
                     android:textColor="@color/primary"
                     android:textStyle="bold" />
 
-                <Button
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Upload Photo"
-                    android:id="@+id/upload_new_photo_button"
-                    android:layout_alignParentTop="true"
-                    android:layout_toLeftOf="@+id/cancel_add_new_photos_event_button"
-                    android:layout_toStartOf="@+id/cancel_add_new_photos_event_button"
-                    android:textAllCaps="true"
-                    android:textColor="@color/primary"
-                    android:textStyle="bold" />
 
             </RelativeLayout>
 
