@@ -2,13 +2,13 @@ package com.example.keith.fyp.views.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,7 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -67,16 +67,15 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
     private Button addnewPhotosButton;
     private ListView photoAlbumListView;
     private MaterialSpinner photoAlbumTitleSpinner;
-
-
-
-    private ArrayList<String> urlToPullImageProfile = new ArrayList<String>();
+    //arrayList of all different category.
+    //private ArrayList<String> urlToPullImageProfile = new ArrayList<String>();
     private ArrayList<String> urlToPullImageFamily = new ArrayList<String>();
     private ArrayList<String> urlToPullImageFriends = new ArrayList<String>();
     private ArrayList<String> urlToPullImageScenery = new ArrayList<String>();
     private ArrayList<String> urlToPullImageOthers = new ArrayList<String>();
     private ArrayList<String> combinedURLSOfAll = new ArrayList<String>();
-
+    int selectedPatientID;
+    //variables required for uploading picture to server remotely.
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     private static final String SERVER_ADDRESS = "http://dementiafypdb.com/";
     public String SERVER = "http://dementiafypdb.com/fileUpload.php";
@@ -86,26 +85,25 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
 
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         dbfile db = new dbfile();
+
         //code to select selected patient Nric.
         SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String selectedPatientNric = mPrefs.getString(Global.STATE_SELECTED_PATIENT_NRIC, "");
-        //end of code to select selected patient Nric.
 
         rootView = (LinearLayout) inflater.inflate(R.layout.fragment_view_patient_photo_album, container, false);
         photoAlbumListView = (ListView) rootView.findViewById(R.id.photo_album_list_view);
         ArrayList<PhotoAlbum> photoAlbumList = new ArrayList<>();
 
         Log.v("check patient nric", selectedPatientNric); //test nric.
-        combinedURLSOfAll = db.getPicturesURLS(db.getPatientId(selectedPatientNric));
+        selectedPatientID = db.getPatientId(selectedPatientNric);
+        combinedURLSOfAll = db.getPicturesURLS(selectedPatientID);
 
         for (int i = 0; i< combinedURLSOfAll.size(); i++) {
-            if (combinedURLSOfAll.get(i).contains("profilePic")) {
-                urlToPullImageProfile.add(combinedURLSOfAll.get(i));
-            }
-            else if (combinedURLSOfAll.get(i).contains("Family")) {
+            if (combinedURLSOfAll.get(i).contains("Family")) {
                 urlToPullImageFamily.add(combinedURLSOfAll.get(i));
             }
             else if (combinedURLSOfAll.get(i).contains("Friends")) {
@@ -119,7 +117,7 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
             }
         }
 
-        photoAlbumList.add(new PhotoAlbum("Profile Picture", urlToPullImageProfile));
+        //photoAlbumList.add(new PhotoAlbum("Myself", urlToPullImageProfile));
         photoAlbumList.add(new PhotoAlbum("Family", urlToPullImageFamily));
         photoAlbumList.add(new PhotoAlbum("Friends", urlToPullImageFriends));
         photoAlbumList.add(new PhotoAlbum("Scenery", urlToPullImageScenery));
@@ -178,12 +176,11 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
         SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String selectedPatientNric = mPrefs.getString(Global.STATE_SELECTED_PATIENT_NRIC, "");
 
-        path = "images/"+ albumCategory+"/"+selectedPatientNric +"_" + fileName; //create filepath for database.
+        path = "Images/"+ albumCategory+"/"+selectedPatientNric +"_" + fileName; //create filepath for database.
         Log.v("test",path);
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStorageDirectory()+File.separator + fileName);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-        Log.v("test uri", Uri.fromFile(file).toString());
         startActivityForResult(cameraIntent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
     }
 
@@ -197,9 +194,11 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
                 //get the current timeStamp and store that in the time Variable
                 Long tsLong = System.currentTimeMillis() / 1000;
                 timestamp = tsLong.toString();
-                String finalFilePath = path.replace(".jpg","_"+ timestamp +".jpg"); //final filepath for database.
+                String finalFilePath = path.replace(".jpg","_"+ timestamp +".jpg");
                 Log.v("file url", finalFilePath);
-                new UploadImage(photo, "newPhoto_"+ timestamp).execute();
+                nameNewPhoto(finalFilePath, photo);
+                //new UploadImage(photo, holdFinalFilePath, holdFinalFilePath).execute();
+
             } else if (resultCode == Activity.RESULT_CANCELED){
                 // failed to capture image
                 Toast.makeText(getActivity(), "User cancelled image capture", Toast.LENGTH_SHORT).show();
@@ -210,12 +209,15 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
     private class UploadImage extends AsyncTask <Void,Void,Void>{
         Bitmap image;
         String name;
-        // private ProgressDialog dialog;
+        String filePath;
+        //ProgressDialog;
         private ProgressDialog dialog = new ProgressDialog(getActivity());
+        dbfile db = new dbfile();
 
-        public UploadImage(Bitmap image, String name){
+        public UploadImage(Bitmap image, String name, String filePath){
             this.image = image;
             this.name = name;
+            this.filePath = filePath;
         }
 
         @Override
@@ -252,6 +254,8 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
             }catch (Exception e){
                 e.printStackTrace();
             }
+            Log.v("patientID", "" + selectedPatientID);
+            db.insertPicture(filePath, selectedPatientID, getActivity());
 
             return null;
         }
@@ -259,7 +263,6 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
             dialog.setMessage("Uploading...");
             dialog.show();
         }
@@ -268,6 +271,8 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             Toast.makeText(getActivity(), "Image Uploaded Successfully.",Toast.LENGTH_SHORT).show();
+            //refresh current fragment.
+            //refreshCurrentFragment();
             dialog.dismiss();
         }
 
@@ -345,4 +350,43 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
         return BitmapFactory.decodeFile(path, options);
     }
 
+    private static Fragment refreshCurrentFragment(){
+        // Reload current fragment
+        Fragment fragmentToBeDisplayed = null;
+        fragmentToBeDisplayed = new ViewPatientPhotoAlbumFragment();
+        return fragmentToBeDisplayed;
+    }
+
+    protected void nameNewPhoto(final String defaultPath, final Bitmap photo) {
+
+        // get prompts.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+        View promptView = layoutInflater.inflate(R.layout.input_dialog_for_naming_new_photos, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setView(promptView);
+
+        final EditText photoName = (EditText) promptView.findViewById(R.id.edittext);
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String correctedPath = defaultPath;
+                        correctedPath = correctedPath.replace(("newPhoto_"+ timestamp), photoName.getText());
+                        correctedPath = correctedPath.replace(" ","_");
+                        Log.v("see edit", correctedPath);
+                        new UploadImage(photo, correctedPath, correctedPath).execute();
+
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        new UploadImage(photo, defaultPath, defaultPath).execute();
+                    }
+                });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
 }

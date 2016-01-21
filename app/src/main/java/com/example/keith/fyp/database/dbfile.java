@@ -2,6 +2,7 @@ package com.example.keith.fyp.database;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,6 +11,7 @@ import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.keith.fyp.R;
@@ -1306,6 +1308,53 @@ public class dbfile{
         }
 
         return photo;
+    }
+
+    public void insertPicture(String filePath, int patientID, Context context){
+        int albumCatID;
+        String modifiedpath;
+        String sql;
+        SharedPreferences pref = context.getSharedPreferences("Login", 0);
+        final int UserTypeID = Integer.parseInt(pref.getString("userTypeId", ""));
+
+        if (filePath.contains("Family")){
+            albumCatID = 2;
+        } else if (filePath.contains("Friends")){
+            albumCatID = 3;
+        } else if (filePath.contains("Scenery")){
+            albumCatID = 4;
+        } else if (filePath.contains("Others")){
+            albumCatID = 5;
+        } else{
+            Log.v("path prob","check");
+            albumCatID = 9;
+        }
+        modifiedpath = filePath.replace("/","\\");
+        Log.v("pathCheck",modifiedpath);
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            if (UserTypeID ==3){
+                sql = "INSERT INTO album (albumPath, albumCatID, patientID, isDeleted, isApproved)" +
+                        "VALUES ('"+ modifiedpath + "', '"+ albumCatID + "', '"+ patientID +"', "+ 0 +","+ 1 +")";
+            }
+            else {
+                sql = "INSERT INTO album (albumPath, albumCatID, patientID, isDeleted, isApproved)" +
+                    "VALUES ('"+ modifiedpath + "', '"+ albumCatID + "', '"+ patientID +"', "+ 0 +","+ 0 +")";
+            }
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //Log.v("pic added to DB","");
     }
 
 
