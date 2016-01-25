@@ -137,6 +137,23 @@ public class dbfile{
             e.printStackTrace();
         }
     }
+    public void updateDeletePatientInfo(int logid,int UserID, String reason,String name){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            String final1 = "Delete patient information for " + name + " was unsuccessful. Remark form supervisor is: " + reason;
+            stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID + ", remarks='" + final1 + "' WHERE logID=" + logid);
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void updateRejectionNotificationTables(int logid, int rowid, String tablename,int UserID, String reason, String name ){
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -221,6 +238,25 @@ public class dbfile{
                 stmt.executeUpdate("UPDATE patientSpecInfo SET isApproved=1 WHERE patientSpecInfoID=" + rowid);
             }
              conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void deletePatientInfoTable(int logid, int rowid,int UserID ){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID + " WHERE logID=" + logid);
+            stmt.executeUpdate("UPDATE patientSpecInfo SET isApproved=0, isDeleted=1 WHERE patientSpecInfoID=" + rowid);
+
+            conn.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -311,6 +347,9 @@ public class dbfile{
                     notificationList.add(notification1);
                 }else if(seewhichCat == 5) {//typeupdateinfoobject
                     Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_UPDATE_INFO_OBJECT, logid,logData,additionalinfo, ta ,ra, patientid,remarks);
+                    notificationList.add(notification1);
+                }else if(seewhichCat == 12){
+                    Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_DELETE_INFO_OBJECT, logid,logData,additionalinfo, ta ,ra, patientid,remarks);
                     notificationList.add(notification1);
                 }
 

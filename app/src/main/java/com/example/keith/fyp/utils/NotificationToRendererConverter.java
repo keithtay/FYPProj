@@ -82,27 +82,81 @@ public class NotificationToRendererConverter {
                     SocialHistory socialHistory = new SocialHistory(socialList[0],socialList[1],socialList[2], Boolean.valueOf(socialList[3]), Boolean.valueOf(socialList[4]),
                             socialList[5],socialList[6],socialList[7],socialList[8],socialList[9],socialList[10],socialList[11],socialList[12],socialList[13],socialList[14],
                             socialList[15],socialList[16],socialList[17]);
-//                    socialHistory.setLiveWith(socialList[0]);
-//                    socialHistory.setDiet(socialList[1]);
-//                    socialHistory.setReligion(socialList[2]);
-//                    socialHistory.setIsSexuallyActive(Boolean.valueOf(socialList[3]));
-//                    socialHistory.setIsSecondhandSmoker(Boolean.valueOf(socialList[4]));
-//                    socialHistory.setAlcoholUse(socialList[5]);
-//                    socialHistory.setCaffeineUse(socialList[6]);
-//                    socialHistory.setTobaccoUse(socialList[7]);
-//                    socialHistory.setDrugUse(socialList[8]);
-//                    socialHistory.setPet(socialList[9]);
-//                    socialHistory.setOccupation(socialList[10]);
-//                    socialHistory.setLike(socialList[11]);
-//                    socialHistory.setDislike(socialList[12]);
-//                    socialHistory.setHobby(socialList[13]);
-//                    socialHistory.setHabbit(socialList[14]);
-//                    socialHistory.setHolidayExperience(socialList[15]);
-//                    socialHistory.setEducation(socialList[16]);
-//                    socialHistory.setExercise(socialList[17]);
                     contentRenderer = new ContentNewInfoObjectRenderer(inflater, socialHistory);
-//                    ProblemLog problemLog = new ProblemLog(UtilsUi.generateUniqueId(), DateTime.now(), "Emotion", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu odio diam. Morbi sit amet erat at libero ullamcorper mollis et at turpis. Nam consequat ex sem, non ultricies risus molestie vel. Aenean placerat bibendum ipsum, eu volutpat sem pharetra sit amet. Proin metus nisi, lacinia id pharetra a, sollicitudin sit amet sapien. Vestibulum vehicula magna sit amet justo convallis tempor");
+                }else if(additionalInfo.equals("prescription")){
+                    String[] prescri = logData.split(";");
+                    String dateStart = prescri[4];
+                    String endDate = prescri[5];
+                    int year = Integer.parseInt(dateStart.substring(0, 4));
+                    int month = Integer.parseInt(dateStart.substring(5, 7));
+                    int day = Integer.parseInt(dateStart.substring(8, 10));
+                    Log.v("Checking1", dateStart.substring(0, 4) + " " + dateStart.substring(5, 7) + " " + dateStart.substring(8, 10));
+                    int year1 = Integer.parseInt(endDate.substring(0, 4));
+                    int month1 = Integer.parseInt(endDate.substring(5, 7));
+                    int day1 = Integer.parseInt(endDate.substring(8, 10));
+
+                    DateTime test = DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day);
+                    DateTime test2 = DateTime.now().withYear(year1).withMonthOfYear(month1).withDayOfMonth(day1);
+                    Prescription pe = new Prescription(prescri[0],prescri[1],Integer.parseInt(prescri[2]),prescri[3],test,
+                            test2,prescri[6],prescri[7]);
+                    contentRenderer = new ContentNewInfoObjectRenderer(inflater, pe);
+                }else if(additionalInfo.equals("routine")){
+                    String[] ro = logData.split(";");
+                    String dateStart = ro[2];
+                    String endDate = ro[3];
+                    int year = Integer.parseInt(dateStart.substring(0, 4));
+                    int month = Integer.parseInt(dateStart.substring(5, 7));
+                    int day = Integer.parseInt(dateStart.substring(8, 10));
+                    int year1 = Integer.parseInt(endDate.substring(0, 4));
+                    int month1 = Integer.parseInt(endDate.substring(5, 7));
+                    int day1 = Integer.parseInt(endDate.substring(8, 10));
+                    DateTime test = DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day);
+                    DateTime test2 = DateTime.now().withYear(year1).withMonthOfYear(month1).withDayOfMonth(day1);
+
+                    String timeStart = ro[4];
+                    String timeEnd = ro[5];
+                    int hour = Integer.parseInt(timeStart.substring(11, 13));
+                    int min = Integer.parseInt(timeStart.substring(14, 16));
+                    int sec = Integer.parseInt(timeStart.substring(17, 19));
+                    int hour1 = Integer.parseInt(timeEnd.substring(11, 13));
+                    int min1 = Integer.parseInt(timeEnd.substring(14, 16));
+                    int sec1 = Integer.parseInt(timeEnd.substring(17, 19));
+                    DateTime test3 = DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day).withHourOfDay(hour).withMinuteOfHour(min).withSecondOfMinute(sec);
+                    DateTime test4 = DateTime.now().withYear(year1).withMonthOfYear(month1).withDayOfMonth(day1).withHourOfDay(hour1).withMinuteOfHour(min1).withSecondOfMinute(sec1);
+                    Routine rot = new Routine(ro[0],ro[1],test,test2,test3,test4,Integer.parseInt(ro[6]),ro[7]);
+                    contentRenderer = new ContentNewInfoObjectRenderer(inflater, rot);
+                }else if(additionalInfo.equals("problem log")){
+                    String[] pl = logData.split(";");
+                    String dateStart = pl[0];
+                    int year = Integer.parseInt(dateStart.substring(0,4));
+                    int month = Integer.parseInt(dateStart.substring(5, 7));
+                    int day = Integer.parseInt(dateStart.substring(8, 10));
+                    DateTime test = DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day);
+                    ProblemLog newProblemLog = new ProblemLog(UtilsUi.generateUniqueId(), test, pl[1], pl[2]);
+                    contentRenderer = new ContentNewInfoObjectRenderer(inflater, newProblemLog);
+                }
+//                ProblemLog problemLog = new ProblemLog(UtilsUi.generateUniqueId(), DateTime.now(), "Emotion", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu odio diam. Morbi sit amet erat at libero ullamcorper mollis et at turpis. Nam consequat ex sem, non ultricies risus molestie vel. Aenean placerat bibendum ipsum, eu volutpat sem pharetra sit amet. Proin metus nisi, lacinia id pharetra a, sollicitudin sit amet sapien. Vestibulum vehicula magna sit amet justo convallis tempor");
 //                contentRenderer = new ContentNewInfoObjectRenderer(inflater, problemLog);
+                break;
+            case Notification.TYPE_DELETE_INFO_OBJECT:
+                if(additionalInfo.equals("allergy")){
+                    String[] allg1 = logData.split(";");
+                    Allergy allgery = new Allergy(allg1[0], allg1[1],allg1[2]);
+                    contentRenderer = new ContentNewInfoObjectRenderer(inflater, allgery);
+                }else if(additionalInfo.equals("vital")){
+                    String[] vital1 = logData.split(";");
+                    String test = vital1[0];
+                    DateTime a = DateTime.parse(test);
+                    Vital vital2 = new Vital(a, Boolean.valueOf(vital1[1]),Float.parseFloat(vital1[2]),
+                            Float.parseFloat(vital1[3]),Float.parseFloat(vital1[4]),Float.parseFloat(vital1[5]),Float.parseFloat(vital1[6]),
+                            vital1[7]);
+                    contentRenderer = new ContentNewInfoObjectRenderer(inflater, vital2);
+                }else if(additionalInfo.equals("social history")){
+                    String[] socialList = logData.split(";");
+                    SocialHistory socialHistory = new SocialHistory(socialList[0],socialList[1],socialList[2], Boolean.valueOf(socialList[3]), Boolean.valueOf(socialList[4]),
+                            socialList[5],socialList[6],socialList[7],socialList[8],socialList[9],socialList[10],socialList[11],socialList[12],socialList[13],socialList[14],
+                            socialList[15],socialList[16],socialList[17]);
+                    contentRenderer = new ContentNewInfoObjectRenderer(inflater, socialHistory);
                 }else if(additionalInfo.equals("prescription")){
                     String[] prescri = logData.split(";");
                     String dateStart = prescri[4];

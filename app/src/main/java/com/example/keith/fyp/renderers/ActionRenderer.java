@@ -126,9 +126,11 @@ public class ActionRenderer extends Renderer {
                     } else if (columnAffected.equals("Guardian Email")) {
                         db.updateLogPatientInfo(logid, patientid, info[1], "guardianEmail", UserID);
                     }
-                }else if (getNotificationId == 4) {
+                } else if (getNotificationId == 4) {
                     String[] newData = logdata.split(">");
-                    db.updateLogPatientSpecInfo(logid, rowid, newData[0],UserID);
+                    db.updateLogPatientSpecInfo(logid, rowid, newData[0], UserID);
+                }else if(getNotificationId == 12){
+                    db.deletePatientInfoTable(logid, rowid, UserID);
                 }
                 notification.setStatus(Notification.STATUS_ACCEPTED);
                 finalRootView.removeAllViews();
@@ -182,6 +184,8 @@ public class ActionRenderer extends Renderer {
                         db.updateRejectionNewPatientInfo(logid,UserID,reasonStr, name);
                     }else if(getNotificationId ==4){
                         db.updateRejectionUpdatePatientInfo(logid,UserID,reasonStr, name);
+                    }else if(getNotificationId == 12){
+                        db.updateDeletePatientInfo(logid,UserID,reasonStr, name);
                     }
                     notification.setStatus(Notification.STATUS_REJECTED);
                     notification.setRejectionReason(reasonStr);
