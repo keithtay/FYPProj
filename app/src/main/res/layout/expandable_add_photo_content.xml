@@ -15,6 +15,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+
             <fr.ganfra.materialspinner.MaterialSpinner
                 android:id="@+id/photo_album_title_spinner"
                 android:layout_width="fill_parent"
@@ -32,6 +33,7 @@
                 app:ms_hint="Where would you like to save the photo in?"
                 app:ms_multiline="false" />
 
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -45,6 +47,7 @@
                 android:paddingBottom="@dimen/paper_card_row_spacing"
                 android:paddingLeft="@dimen/paper_card_padding"
                 android:paddingRight="@dimen/paper_card_padding">
+
 
                 <Button
                     android:id="@+id/cancel_add_new_photos_event_button"
@@ -70,6 +73,8 @@
                     android:textAllCaps="true"
                     android:textColor="@color/primary"
                     android:textStyle="bold" />
+
+
             </RelativeLayout>
 
         </LinearLayout>
