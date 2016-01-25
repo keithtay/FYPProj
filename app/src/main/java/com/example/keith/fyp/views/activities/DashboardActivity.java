@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.example.keith.fyp.broadcastreceiver.NotificationGroupUpdateReceiver;
@@ -59,8 +60,11 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
 
         SharedPreferences preferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
         final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
+        final int UserID = Integer.parseInt(preferences.getString("userid",""));
         if(UserTypeID ==3) {
             retrieveNotification();
+        }else if(UserTypeID == 4){
+            retrieveNotificationforCareGiver(UserID);
         }
 
         View contentWrapper = findViewById(R.id.dashboard_fragment_container);
@@ -105,7 +109,57 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
             registerReceiver(notificationGroupUpdateReceiver, new IntentFilter(Global.ACTION_NOTIFICATION_GROUP_UPDATE));
         }
     }
+    private void retrieveNotificationforCareGiver(int userID) {
 
+        ArrayList<Notification> notificationList = new ArrayList<>();
+        dbfile db = new dbfile();
+        notificationList = db.rejectionList(getApplicationContext(), userID);
+        Log.v("HEHH", String.valueOf(notificationList.size()));
+        // =====================================================
+        // Building the Notification Group based on the notification
+        // =====================================================
+
+        HashMap patientAndNotificationGroupMap = new HashMap();
+
+        for(Notification notification:notificationList) {
+            Patient currentPatient = notification.getAffectedPatient();
+            String patientNric = currentPatient.getNric();
+
+            if (patientAndNotificationGroupMap.containsKey(patientNric)) {
+                NotificationGroup notifGroup = (NotificationGroup) patientAndNotificationGroupMap.get(patientNric);
+                if(notification.getStatus() == Notification.STATUS_REJECTED) {
+                    notifGroup.getProcessedNotif().add(notification);
+                }
+            } else {
+                NotificationGroup newNotifGroup = new NotificationGroup();
+                newNotifGroup.setAffectedPatient(currentPatient);
+                if(notification.getStatus() == Notification.STATUS_REJECTED) {
+                    newNotifGroup.getProcessedNotif().add(notification);
+                }
+                patientAndNotificationGroupMap.put(patientNric, newNotifGroup);
+            }
+        }
+
+        ArrayList<NotificationGroup> notificationGroupList = new ArrayList<>();
+        NotificationComparator comparator = new NotificationComparator();
+        for (Object obj : patientAndNotificationGroupMap.values()) {
+            NotificationGroup notificationGroup = (NotificationGroup) obj;
+
+            // Set notification status
+            UtilsUi.setNotificationGroupStatus(this, notificationGroup);
+
+            // Sort the notifications by date
+            Collections.sort(notificationGroup.getProcessedNotif(), comparator);
+            Collections.sort(notificationGroup.getUnprocessedNotif(), comparator);
+
+            // Set the summary
+            UtilsUi.setNotificationGroupSummary(this, notificationGroup);
+
+            notificationGroupList.add(notificationGroup);
+        }
+
+        DataHolder.setNotificationGroupList(notificationGroupList);
+    }
     private void retrieveNotification() {
 
         // =====================================================

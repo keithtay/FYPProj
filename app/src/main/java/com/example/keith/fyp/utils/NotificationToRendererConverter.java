@@ -21,6 +21,7 @@ import com.example.keith.fyp.renderers.BackgroundRenderer;
 import com.example.keith.fyp.renderers.ContentGameRecommendationRenderer;
 import com.example.keith.fyp.renderers.ContentNewInfoObjectRenderer;
 import com.example.keith.fyp.renderers.ContentNewPatientRenderer;
+import com.example.keith.fyp.renderers.ContentRejectionInfoRenderer;
 import com.example.keith.fyp.renderers.ContentRenderer;
 import com.example.keith.fyp.renderers.ContentUpdateInfoFieldRenderer;
 import com.example.keith.fyp.renderers.ContentUpdateInfoObjectRenderer;
@@ -57,6 +58,7 @@ public class NotificationToRendererConverter {
         ContentRenderer contentRenderer = null;
         String logData = notification.getLogData();
         String additionalInfo = notification.getAdditionalInfo();
+        String reject = notification.getRejectionReason();
         int k = notification.getRa();
         switch(notification.getType()) {
             case Notification.TYPE_GAME_RECOMMENDATION:
@@ -185,11 +187,6 @@ public class NotificationToRendererConverter {
                 contentRenderer = new ContentNewPatientRenderer(inflater, newPatient);
                 break;
             case Notification.TYPE_UPDATE_INFO_OBJECT:
-//                DateTime d = DateTime.now();
-//                Routine oldAllergy = new Routine("Milk", "Itchy skin", d,d,d,d,5,"String");
-//                Routine newAllergy = new Routine("Rubbish", "Itchy skin", d,d,d,d,5,"String");
-//                contentRenderer = new ContentUpdateInfoObjectRenderer(inflater, oldAllergy, newAllergy);
-
                 //have to use variable k to go to patientspecinfo and retrieve information
                 if(additionalInfo.equals("allergy")){
                     String[] allg1 = logData.split(">");
@@ -329,6 +326,9 @@ public class NotificationToRendererConverter {
             case Notification.TYPE_UPDATE_INFO_FIELD:
                 String[] info = logData.split(";");
                 contentRenderer = new ContentUpdateInfoFieldRenderer(inflater, "Personal Information", additionalInfo, info[0], info[1]);
+                break;
+            case Notification.TYPE_REJECTION_INFO_OBJECT:
+                contentRenderer = new ContentRejectionInfoRenderer(inflater, "Rejection of information", reject);
                 break;
         }
 

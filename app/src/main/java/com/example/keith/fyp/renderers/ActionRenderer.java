@@ -174,13 +174,14 @@ public class ActionRenderer extends Renderer {
                     int rowid = notification.getRa();
                     String tablename = notification.getTa();
                     dbfile db = new dbfile();
+                    String name = notification.getAffectedPatient().getFirstName() + " " + notification.getAffectedPatient().getLastName();
                     int getNotificationId = notification.getType();
                     if (getNotificationId == 1 || getNotificationId == 2){
-                        db.updateRejectionNotificationTables(logid, rowid, tablename, UserID, reasonStr);
+                        db.updateRejectionNotificationTables(logid, rowid, tablename, UserID, reasonStr, name);
                     }else if(getNotificationId ==3){
-                        db.updateRejectionNewPatientInfo(logid,UserID,reasonStr);
+                        db.updateRejectionNewPatientInfo(logid,UserID,reasonStr, name);
                     }else if(getNotificationId ==4){
-                        db.updateRejectionUpdatePatientInfo(logid,UserID,reasonStr);
+                        db.updateRejectionUpdatePatientInfo(logid,UserID,reasonStr, name);
                     }
                     notification.setStatus(Notification.STATUS_REJECTED);
                     notification.setRejectionReason(reasonStr);

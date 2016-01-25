@@ -39,6 +39,7 @@ public class Notification {
      */
     public static final int TYPE_UPDATE_INFO_OBJECT = 4;
 
+    public static final int TYPE_REJECTION_INFO_OBJECT = 5;
     /**
      * The identifier for a notification that have not been responded by the user
      */
@@ -123,7 +124,7 @@ public class Notification {
     /**
      * Create a new notification with the specified {@code creationDate}, {@code senderName}, {@code senderPhoto}, {@code summary}, {@code affectedPatient}, {@code status} and {@code type} values
      */
-    public Notification(DateTime creationDate, String senderName, Bitmap senderPhoto, String summary, Patient affectedPatient, int status, int type, int logid, String logData, String additionalInfo, String ta, int ra, int patientID) {
+    public Notification(DateTime creationDate, String senderName, Bitmap senderPhoto, String summary, Patient affectedPatient, int status, int type, int logid, String logData, String additionalInfo, String ta, int ra, int patientID, String rejectionReason) {
         this.creationDate = creationDate;
         this.senderName = senderName;
         this.senderPhoto = senderPhoto;
@@ -137,6 +138,7 @@ public class Notification {
         this.ta = ta;
         this.ra = ra;
         this.patientID = patientID;
+        this.rejectionReason = rejectionReason;
     }
 
     /**
