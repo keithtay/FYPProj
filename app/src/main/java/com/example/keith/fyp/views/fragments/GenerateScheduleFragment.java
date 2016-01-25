@@ -29,6 +29,7 @@ import com.example.keith.fyp.scheduler.scheduleScheduler;
 import com.example.keith.fyp.utils.DataHolder;
 
 import org.joda.time.DateTime;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,7 +44,7 @@ public class GenerateScheduleFragment extends Fragment {
     private RadioGroup radioGroup;
     private RadioButton day, week, tomorrow;
     private Button button;
-    private TextView userName, userPw;
+    private TextView userName, userPw, userNRIC;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 //        return super.onCreateView(inflater, container, savedInstanceState);
         rootView = inflater.inflate(R.layout.generateschedule, container, false);
@@ -67,7 +68,7 @@ public class GenerateScheduleFragment extends Fragment {
         day = (RadioButton) rootView.findViewById(R.id.radioDay);
         tomorrow = (RadioButton) rootView.findViewById(R.id.radioTomorrow);
         week = (RadioButton) rootView.findViewById(R.id.radioWeek);
-
+        userNRIC = (TextView) rootView.findViewById(R.id.patientNRICtext);
         userName = (TextView) rootView.findViewById(R.id.userName);
         userPw = (TextView) rootView.findViewById(R.id.userPw);
         SharedPreferences preferences = this.getActivity().getSharedPreferences("Login", Context.MODE_PRIVATE);
@@ -92,34 +93,80 @@ public class GenerateScheduleFragment extends Fragment {
                     Toast.makeText(getActivity(), "Sorry, you do not have the privilege to access this function",
                             Toast.LENGTH_SHORT).show();
                 }else{
-                    dbfile db = new dbfile();
-                    ArrayList<Integer> al = new ArrayList<Integer>();
-                    al = db.checkUserValid(UserID,userName.getText().toString(),userPw.getText().toString());
-                    if(al.size() != 0){
-                        int selectedId = radioGroup.getCheckedRadioButtonId();
-                        DateTime date1;
-                        ArrayList<Patient> patient = new ArrayList<Patient>();
-                        ArrayList<DefaultEvent> de = new ArrayList<DefaultEvent>();
-                        patient = DataHolder.getPatientList(getActivity());
-                        de = DataHolder.getDefaultEventList();
-                        Collections.sort(de, DefaultEvent.COMPARE_BY_TIME);
-                        scheduleScheduler ss = new scheduleScheduler();
-                        if (selectedId == day.getId()) {
-                            Toast.makeText(getActivity(), "Please wait while the scheduler process", Toast.LENGTH_LONG).show();
-                            date1 = DateTime.now();
-                            ss.insertNewSchedules(patient, de, date1);
-                            Toast.makeText(getActivity(), "Successfully inserted", Toast.LENGTH_LONG).show();
-                        }else if (selectedId == tomorrow.getId()){
-                            Toast.makeText(getActivity(), "Please wait while the scheduler process", Toast.LENGTH_LONG).show();
-                            date1 = DateTime.now().plusDays(1);
-                            ss.insertNewSchedules(patient, de, date1);
-                            Toast.makeText(getActivity(), "Successfully inserted", Toast.LENGTH_LONG).show();
-                        }else if(selectedId == week.getId()){
+                    if(userNRIC.getText().toString().equals(null) || userNRIC.getText().toString().equals("")||userNRIC.getText().toString().equals(" ")) {
+                        dbfile db = new dbfile();
+                        ArrayList<Integer> al = new ArrayList<Integer>();
+                        al = db.checkUserValid(UserID, userName.getText().toString(), userPw.getText().toString());
+                        if (al.size() != 0) {
+                            int selectedId = radioGroup.getCheckedRadioButtonId();
+                            DateTime date1;
+                            ArrayList<Patient> patient = new ArrayList<Patient>();
+                            ArrayList<DefaultEvent> de = new ArrayList<DefaultEvent>();
+                            patient = DataHolder.getPatientList(getActivity());
+                            de = DataHolder.getDefaultEventList();
+                            Collections.sort(de, DefaultEvent.COMPARE_BY_TIME);
+                            scheduleScheduler ss = new scheduleScheduler();
+                            if (selectedId == day.getId()) {
+                                Toast.makeText(getActivity(), "Please wait while the scheduler process", Toast.LENGTH_LONG).show();
+                                date1 = DateTime.now();
+                                ss.insertNewSchedules(patient, de, date1);
+                                Toast.makeText(getActivity(), "Successfully inserted", Toast.LENGTH_LONG).show();
+                            } else if (selectedId == tomorrow.getId()) {
+                                Toast.makeText(getActivity(), "Please wait while the scheduler process", Toast.LENGTH_LONG).show();
+                                date1 = DateTime.now().plusDays(1);
+                                ss.insertNewSchedules(patient, de, date1);
+                                Toast.makeText(getActivity(), "Successfully inserted", Toast.LENGTH_LONG).show();
+                            } else if (selectedId == week.getId()) {
 
+                            }
+                        } else {
+                            Toast.makeText(getActivity(), "Sorry, wrong credentials entered",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }else{
-                        Toast.makeText(getActivity(), "Sorry, wrong credentials entered",
-                                Toast.LENGTH_SHORT).show();
+                        ArrayList<Patient> patient = new ArrayList<Patient>();
+                        patient = DataHolder.getPatientList(getActivity());
+                        Boolean check =false;
+                        int k = 0;
+                        for(int i =0; i<patient.size();i++){
+                            if(userNRIC.getText().toString().equals(patient.get(i).getNric())){
+                                check = true;
+                                k = i;
+                                break;
+                            }
+                        }
+                        if (check == false){
+                            Toast.makeText(getActivity(), "No such NRIC detected", Toast.LENGTH_LONG).show();
+                        }else{
+                            dbfile db = new dbfile();
+                            ArrayList<Integer> al = new ArrayList<Integer>();
+                            al = db.checkUserValid(UserID, userName.getText().toString(), userPw.getText().toString());
+                            if (al.size() != 0) {
+                                int selectedId = radioGroup.getCheckedRadioButtonId();
+                                DateTime date1;
+                                ArrayList<DefaultEvent> de = new ArrayList<DefaultEvent>();
+                                patient = DataHolder.getPatientList(getActivity());
+                                de = DataHolder.getDefaultEventList();
+                                Collections.sort(de, DefaultEvent.COMPARE_BY_TIME);
+                                scheduleScheduler ss = new scheduleScheduler();
+                                if (selectedId == day.getId()) {
+                                    Toast.makeText(getActivity(), "Please wait while the scheduler process", Toast.LENGTH_LONG).show();
+                                    date1 = DateTime.now();
+                                    ss.insertNewSpecificPatient(patient, de, date1, k);
+                                    Toast.makeText(getActivity(), "Successfully inserted", Toast.LENGTH_LONG).show();
+                                } else if (selectedId == tomorrow.getId()) {
+                                    Toast.makeText(getActivity(), "Please wait while the scheduler process", Toast.LENGTH_LONG).show();
+                                    date1 = DateTime.now().plusDays(1);
+                                    ss.insertNewSpecificPatient(patient, de, date1,k);
+                                    Toast.makeText(getActivity(), "Successfully inserted", Toast.LENGTH_LONG).show();
+                                } else if (selectedId == week.getId()) {
+
+                                }
+                            } else {
+                                Toast.makeText(getActivity(), "Sorry, wrong credentials entered",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
                     }
                 }
             }

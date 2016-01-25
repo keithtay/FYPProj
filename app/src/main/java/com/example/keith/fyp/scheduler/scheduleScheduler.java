@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Random;
 
 /**
@@ -29,17 +30,18 @@ public class scheduleScheduler {
     String username = "fyp2015";
     String password = "va5a7eve";
     Random rand = new Random();
-    DateTime deCurrent;
+    DateTime deCurrent, deRoutineCurrent;
     Calendar cal = Calendar.getInstance();
     java.sql.Timestamp timestamp = new java.sql.Timestamp(cal.getTimeInMillis());
     String dateNow = timestamp.toString().substring(0, 10);
     DateTime testDateNow;
-    int x = 0;
+    int x = 0, y=0;
 
     public void insertNewSchedules(ArrayList<Patient> patient, ArrayList<DefaultEvent> de, DateTime testDateNow){
         ArrayList<ScheduleList> schedule= getEvent();
         DateTime startDay;
         DateTime endDay;
+
 //        dbfile db = new dbfile();
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -62,19 +64,45 @@ public class scheduleScheduler {
 
         //to insert for everypatient schedule
         for (int i = 0; i< patient.size(); i++){
+            dbfile db = new dbfile();
+
+            ArrayList<String> prescriptionCheck = new ArrayList<String>();
+            ArrayList<DefaultEvent> routineCheck = new ArrayList<DefaultEvent>();
+            String cDate = testDateNow.toString().substring(0,10);
+            String gameList = db.getGametoPlay(patient.get(i).getAllocatonID(),cDate);
+            prescriptionCheck = db.getPatientSpecInfoforPrescription(patient.get(i).getAllocatonID(), testDateNow.withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0));
+            routineCheck = db.getPatientSpecInfoforRoutine(patient.get(i).getAllocatonID(), testDateNow.withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0));
+            Collections.sort(routineCheck, DefaultEvent.COMPARE_BY_TIME);
             startDay = DateTime.now().withHourOfDay(9).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
             endDay = DateTime.now().withHourOfDay(17).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfDay(0);
             ArrayList<DefaultEvent> de1 = new ArrayList<DefaultEvent>();
             de1 = de;
             x=0;
+            y=0;
             //use as a condition to terminate if the time reached the end time of the day
             while(startDay.getHourOfDay() < 17){
                 if(de1.size() != 0 && x < de1.size()) {
                     deCurrent = de1.get(x).getStartTime();
                 }
+                if(routineCheck.size() != 0 && y < routineCheck.size()) {
+                    deRoutineCurrent = routineCheck.get(y).getStartTime();
+                }
+
                 //always check if the default event is in turn to do it
                 if(de1.size() != 0 && deCurrent.getHourOfDay() == startDay.getHourOfDay() && deCurrent.getMinuteOfDay() == startDay.getMinuteOfDay()){
-                    addnewSchedule(de1.get(x).getName(), de1.get(x).getStartTime().withMillisOfSecond(0), de1.get(x).getEndTime().withMillisOfSecond(0), 0, "Default Event", 1, patient.get(i).getAllocatonID(),testDateNow);
+                    if(de1.get(x).getName().equals("Lunch") && prescriptionCheck.size()!=0){
+                            if(prescriptionCheck.size() == 1){
+                                addnewSchedule(de1.get(x).getName(), de1.get(x).getStartTime().withMillisOfSecond(0), de1.get(x).getEndTime().withMillisOfSecond(0), 0, prescriptionCheck.get(0), 1, patient.get(i).getAllocatonID(),testDateNow);
+                            }else if(prescriptionCheck.size() > 1){
+                                String listofPrescription ="";
+                                for(int s=0;s<prescriptionCheck.size();s++){
+                                    listofPrescription += prescriptionCheck.get(s);
+                                }
+                                addnewSchedule(de1.get(x).getName(), de1.get(x).getStartTime().withMillisOfSecond(0), de1.get(x).getEndTime().withMillisOfSecond(0), 0, listofPrescription, 1, patient.get(i).getAllocatonID(),testDateNow);
+                            }
+                    }else{
+                        addnewSchedule(de1.get(x).getName(), de1.get(x).getStartTime().withMillisOfSecond(0), de1.get(x).getEndTime().withMillisOfSecond(0), 0, "Default Event", 1, patient.get(i).getAllocatonID(),testDateNow);
+                    }
                     DateTime time1 = de1.get(x).getStartTime();
                     DateTime time2 = de1.get(x).getEndTime();
                     int a1 = time1.getHourOfDay();
@@ -88,6 +116,27 @@ public class scheduleScheduler {
                     x++;
                     continue;
                 }
+
+                if(routineCheck.size() != 0 && deRoutineCurrent.getHourOfDay() == startDay.getHourOfDay() && deRoutineCurrent.getMinuteOfDay() == startDay.getMinuteOfDay()){
+                    addnewSchedule(routineCheck.get(y).getName(), routineCheck.get(y).getStartTime().withMillisOfSecond(0), routineCheck.get(y).getEndTime().withMillisOfSecond(0), 0, "Patient has routine to do", 1, patient.get(i).getAllocatonID(),testDateNow);
+                    DateTime time1 = routineCheck.get(y).getStartTime();
+                    DateTime time2 = routineCheck.get(y).getEndTime();
+                    int a1 = time1.getHourOfDay();
+                    int a2 = time1.getMinuteOfHour();
+                    int a3 = time2.getHourOfDay();
+                    int a4 = time2.getMinuteOfHour();
+                    int a5 = a3-a1;
+                    int a6 = a4-a2;
+                    startDay=startDay.plusHours(a5).plusMinutes(a6).withMillisOfSecond(0);
+                    y++;
+                    continue;
+                }
+                if(gameList.length() > 7){
+                    addnewSchedule("Android Game", startDay.withMillisOfSecond(0), startDay.plusHours(1).withMillisOfSecond(0), 0, gameList, 1, patient.get(i).getAllocatonID(),testDateNow);
+                    startDay=startDay.plusHours(1).plusMinutes(0).withMillisOfSecond(0);
+                    gameList ="";
+                    continue;
+                }
                 Integer randomInt = rand.nextInt(schedule.size());
                 addnewSchedule(schedule.get(randomInt).getEventName(), startDay, startDay.plusHours(1), 0, schedule.get(randomInt).getEventDesc(), 1, patient.get(i).getAllocatonID(),testDateNow);
                 startDay= startDay.plusHours(1);
@@ -96,6 +145,124 @@ public class scheduleScheduler {
             }
 
         }
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void insertNewSpecificPatient(ArrayList<Patient> patient, ArrayList<DefaultEvent> de, DateTime testDateNow, int k){
+        ArrayList<ScheduleList> schedule= getEvent();
+        DateTime startDay;
+        DateTime endDay;
+
+//        dbfile db = new dbfile();
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        try {
+            Class.forName(driver).newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            conn = DriverManager.getConnection(connString, username, password);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        //to insert for everypatient schedule
+
+            dbfile db = new dbfile();
+
+            ArrayList<String> prescriptionCheck = new ArrayList<String>();
+            ArrayList<DefaultEvent> routineCheck = new ArrayList<DefaultEvent>();
+            String cDate = testDateNow.toString().substring(0,10);
+            String gameList = db.getGametoPlay(patient.get(k).getAllocatonID(),cDate);
+
+            prescriptionCheck = db.getPatientSpecInfoforPrescription(patient.get(k).getAllocatonID(), testDateNow.withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0));
+            routineCheck = db.getPatientSpecInfoforRoutine(patient.get(k).getAllocatonID(), testDateNow.withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0));
+            Collections.sort(routineCheck, DefaultEvent.COMPARE_BY_TIME);
+            startDay = DateTime.now().withHourOfDay(9).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+            endDay = DateTime.now().withHourOfDay(17).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfDay(0);
+            ArrayList<DefaultEvent> de1 = new ArrayList<DefaultEvent>();
+            de1 = de;
+            x=0;
+            y=0;
+            //use as a condition to terminate if the time reached the end time of the day
+            while(startDay.getHourOfDay() < 17){
+                if(de1.size() != 0 && x < de1.size()) {
+                    deCurrent = de1.get(x).getStartTime();
+                }
+                if(routineCheck.size() != 0 && y < routineCheck.size()) {
+                    deRoutineCurrent = routineCheck.get(y).getStartTime();
+                }
+
+                //always check if the default event is in turn to do it
+                if(de1.size() != 0 && deCurrent.getHourOfDay() == startDay.getHourOfDay() && deCurrent.getMinuteOfDay() == startDay.getMinuteOfDay()){
+                    if(de1.get(x).getName().equals("Lunch") && prescriptionCheck.size()!=0){
+                        if(prescriptionCheck.size() == 1){
+                            addnewSchedule(de1.get(x).getName(), de1.get(x).getStartTime().withMillisOfSecond(0), de1.get(x).getEndTime().withMillisOfSecond(0), 0, prescriptionCheck.get(0), 1, patient.get(k).getAllocatonID(),testDateNow);
+                        }else if(prescriptionCheck.size() > 1){
+                            String listofPrescription ="";
+                            for(int s=0;s<prescriptionCheck.size();s++){
+                                listofPrescription += prescriptionCheck.get(s);
+                            }
+                            addnewSchedule(de1.get(x).getName(), de1.get(x).getStartTime().withMillisOfSecond(0), de1.get(x).getEndTime().withMillisOfSecond(0), 0, listofPrescription, 1, patient.get(k).getAllocatonID(),testDateNow);
+                        }
+                    }else{
+                        addnewSchedule(de1.get(x).getName(), de1.get(x).getStartTime().withMillisOfSecond(0), de1.get(x).getEndTime().withMillisOfSecond(0), 0, "Default Event", 1, patient.get(k).getAllocatonID(),testDateNow);
+                    }
+                    DateTime time1 = de1.get(x).getStartTime();
+                    DateTime time2 = de1.get(x).getEndTime();
+                    int a1 = time1.getHourOfDay();
+                    int a2 = time1.getMinuteOfHour();
+                    int a3 = time2.getHourOfDay();
+                    int a4 = time2.getMinuteOfHour();
+                    int a5 = a3-a1;
+                    int a6 = a4-a2;
+                    startDay=startDay.plusHours(a5).plusMinutes(a6).withMillisOfSecond(0);
+//                    de1.remove(0);
+                    x++;
+                    continue;
+                }
+
+                if(routineCheck.size() != 0 && deRoutineCurrent.getHourOfDay() == startDay.getHourOfDay() && deRoutineCurrent.getMinuteOfDay() == startDay.getMinuteOfDay()){
+                    addnewSchedule(routineCheck.get(y).getName(), routineCheck.get(y).getStartTime().withMillisOfSecond(0), routineCheck.get(y).getEndTime().withMillisOfSecond(0), 0, "Patient has routine to do", 1, patient.get(k).getAllocatonID(),testDateNow);
+                    DateTime time1 = routineCheck.get(y).getStartTime();
+                    DateTime time2 = routineCheck.get(y).getEndTime();
+                    int a1 = time1.getHourOfDay();
+                    int a2 = time1.getMinuteOfHour();
+                    int a3 = time2.getHourOfDay();
+                    int a4 = time2.getMinuteOfHour();
+                    int a5 = a3-a1;
+                    int a6 = a4-a2;
+                    startDay=startDay.plusHours(a5).plusMinutes(a6).withMillisOfSecond(0);
+                    y++;
+                    continue;
+                }
+
+                if(gameList.length() > 7){
+                    addnewSchedule("Android Game", startDay.withMillisOfSecond(0), startDay.plusHours(1).withMillisOfSecond(0), 0, gameList, 1, patient.get(k).getAllocatonID(),testDateNow);
+                    startDay=startDay.plusHours(1).plusMinutes(0).withMillisOfSecond(0);
+                    gameList ="";
+                    continue;
+                }
+                Integer randomInt = rand.nextInt(schedule.size());
+                addnewSchedule(schedule.get(randomInt).getEventName(), startDay, startDay.plusHours(1), 0, schedule.get(randomInt).getEventDesc(), 1, patient.get(k).getAllocatonID(),testDateNow);
+                startDay= startDay.plusHours(1);
+                continue;
+
+            }
+
+
         try {
             conn.close();
         } catch (SQLException e) {

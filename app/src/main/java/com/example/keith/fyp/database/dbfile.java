@@ -914,6 +914,142 @@ public class dbfile{
             e.printStackTrace();
         }
     }
+    public ArrayList<String> getPatientSpecInfoforPrescription(int patientAllocationID, DateTime current){
+        ArrayList<String> info = new ArrayList<String>();
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            ResultSet reset = stmt.executeQuery("SELECT * FROM [dementiafypdb].[dbo].patientallocation as pa\n" +
+                    "INNER JOIN [dementiafypdb].[dbo].patientspecinfo as psi ON psi.patientID = pa.patientID\n" +
+                    "WHERE psi.isApproved = 1 and psi.isDeleted = 0 and psi.specinfoid = 4 AND pa.patientAllocationID ="+patientAllocationID);
+
+            while (reset.next()) {
+                    String value = reset.getString("patientSpecInfoValue");
+                    String[] value1 = value.split(";");
+                    int year = Integer.valueOf(value1[4].substring(0, 4));
+                    int month = Integer.valueOf(value1[4].substring(5, 7));
+                    int day = Integer.valueOf(value1[4].substring(8, 10));
+                    DateTime start = DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+                    int year1 = Integer.valueOf(value1[5].substring(0, 4));
+                    int month1 = Integer.valueOf(value1[5].substring(5, 7));
+                    int day1 = Integer.valueOf(value1[5].substring(8, 10));
+                    DateTime end = DateTime.now().withYear(year1).withMonthOfYear(month1).withDayOfMonth(day1).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+//                    java.sql.Timestamp timestamp = new java.sql.Timestamp(cal.getTimeInMillis());
+//                    String dateNow = timestamp.toString().substring(0, 10);
+//                    int year2 = Integer.valueOf(dateNow.substring(0, 4));
+//                    int month2 = Integer.valueOf(dateNow.substring(5, 7));
+//                    int day2 = Integer.valueOf(dateNow.substring(8, 10));
+//                    DateTime current = DateTime.now().withYear(year2).withMonthOfYear(month2).withDayOfMonth(day2).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+                    if (current.isEqual(start)||current.isEqual(end)|| (current.isAfter(start)&&current.isBefore(end))){
+                        info.add("Patient has to take prescription " + value1[0] + " with a dosage of " + value1[1] +" times " + value1[6]);
+
+                }
+            }
+            conn.close();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+            return info;
+    }
+
+    public ArrayList<DefaultEvent> getPatientSpecInfoforRoutine(int patientAllocationID,DateTime current){
+        ArrayList<DefaultEvent> info = new ArrayList<DefaultEvent>();
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            ResultSet reset = stmt.executeQuery("SELECT * FROM [dementiafypdb].[dbo].patientallocation as pa\n" +
+                    "INNER JOIN [dementiafypdb].[dbo].patientspecinfo as psi ON psi.patientID = pa.patientID\n" +
+                    "WHERE psi.isApproved = 1 and psi.isDeleted = 0 and psi.specinfoid = 5 AND pa.patientAllocationID ="+patientAllocationID);
+
+            while (reset.next()) {
+                    String value = reset.getString("patientSpecInfoValue");
+                    String[] value1 = value.split(";");
+                    int year = Integer.valueOf(value1[2].substring(0, 4));
+                    int month = Integer.valueOf(value1[2].substring(5, 7));
+                    int day = Integer.valueOf(value1[2].substring(8, 10));
+                    DateTime start = DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+                    int year1 = Integer.valueOf(value1[3].substring(0, 4));
+                    int month1 = Integer.valueOf(value1[3].substring(5, 7));
+                    int day1 = Integer.valueOf(value1[3].substring(8, 10));
+                    DateTime end = DateTime.now().withYear(year1).withMonthOfYear(month1).withDayOfMonth(day1).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+
+                    if (current.isEqual(start)||current.isEqual(end)||(current.isAfter(start) && current.isBefore(end))){
+                        int hour = Integer.parseInt(value1[4].substring(11, 13));
+                        int min = Integer.parseInt(value1[4].substring(14, 16));
+                        int sec = Integer.parseInt(value1[4].substring(17, 19));
+                        DateTime startTime = DateTime.now().withHourOfDay(hour).withMinuteOfHour(min).withSecondOfMinute(sec).withMillisOfSecond(0);
+                        int hour1 = Integer.parseInt(value1[5].substring(11, 13));
+                        int min1 = Integer.parseInt(value1[5].substring(14, 16));
+                        int sec1 = Integer.parseInt(value1[5].substring(17, 19));
+                        DateTime endTime = DateTime.now().withHourOfDay(hour1).withMinuteOfHour(min1).withSecondOfMinute(sec1).withMillisOfSecond(0);
+                        DefaultEvent de = new DefaultEvent(value1[0],startTime,endTime, 0, "","");
+                        Log.v("HEH", value1[0] + startTime + endTime);
+                        info.add(de);
+                    }
+
+            }
+            conn.close();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return info;
+    }
+    public String getGametoPlay(int patientAllocationID ,String date1){
+        ArrayList<String> info = new ArrayList<String>();
+        String entire = "Games:";
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            ResultSet reset = stmt.executeQuery("SELECT *\n" +
+                    "  FROM [dementiafypdb].[dbo].[assignedGame] AS ag\n" +
+                    "  INNER JOIN [dementiafypdb].[dbo].[game] AS game ON game.gameID = ag.gameID \n" +
+                    "  WHERE [endDate] >= '" + date1 + "' AND patientAllocationID=" + patientAllocationID + " AND game.isApproved = 1 \n" +
+                    "  and game.isDeleted=0 and ag.isApproved=1 and ag.isDeleted=0");
+
+            while (reset.next()) {
+                info.add(reset.getString("gameName"));
+            }
+            conn.close();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        for (int s = 0; s<info.size(); s++){
+            if(s+1 != info.size()){
+                entire += info.get(s) + ",";
+            }else{
+                entire += info.get(s);
+            }
+
+        }
+        return entire;
+    }
 
     public void deletePatientSpec(String oldValue, int patientId, int specValue, int rowID, int UserTypeID, int UserID){
 
