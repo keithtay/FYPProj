@@ -5,6 +5,7 @@ import android.app.Fragment;
 import com.example.keith.fyp.models.Notification;
 import com.example.keith.fyp.renderers.Renderer;
 import com.example.keith.fyp.views.fragments.CareCenterConfigDefaultEventFragment;
+import com.example.keith.fyp.views.fragments.FlexibleEvent;
 import com.example.keith.fyp.views.fragments.GenerateScheduleFragment;
 import com.example.keith.fyp.views.fragments.NotificationSettingsFragment;
 
@@ -35,6 +36,9 @@ public class CareCenterConfigFragmentEncoder {
                 break;
             case 2:
                 fragmentToBeDisplayed = new NotificationSettingsFragment();
+                break;
+            case 3:
+                fragmentToBeDisplayed = new FlexibleEvent();
                 break;
         }
 

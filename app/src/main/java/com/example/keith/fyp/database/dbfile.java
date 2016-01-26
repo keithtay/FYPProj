@@ -24,6 +24,7 @@ import com.example.keith.fyp.models.Prescription;
 import com.example.keith.fyp.models.ProblemLog;
 import com.example.keith.fyp.models.Routine;
 import com.example.keith.fyp.models.Schedule;
+import com.example.keith.fyp.models.ScheduleList;
 import com.example.keith.fyp.models.SocialHistory;
 import com.example.keith.fyp.models.Vital;
 import com.example.keith.fyp.utils.Global;
@@ -93,6 +94,47 @@ public class dbfile{
             String tableAffected = "patient";
             String sql1 = "INSERT INTO log " +
                     "VALUES ('" + allData + "','" + logDesc + "'," + 4 + "," + patientId + "," + UserID + ",'" + checkIsSuper + "','" + columnAffected + "'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + null + "," + checkIsSupervisor + ",'" + timestamp + "')";
+            Statement stmt1 = conn.createStatement();
+            stmt1.executeUpdate(sql1);
+
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void removeFlexibleEvent(ArrayList<String> ab){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            for(int i =0; i <ab.size();i++) {
+                stmt.executeUpdate("UPDATE schedule SET isDeleted=1, isApproved=0 WHERE scheduleTypeID = 2 AND scheduleTitle='" + ab.get(i) + "'");
+            }
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void insertFlexibleEvent(String eventName, String eventDesc){
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            int checkIsSupervisor, checkIsSuper;
+
+            String sql1 = "INSERT INTO schedule " +
+                    "VALUES ('" + eventName + "','00:00:00', '00:00:00', '2010-12-15', '2010-12-15', 1,'" + eventDesc + "', 2, NULL, 0, 1, '" + timestamp + "')";
             Statement stmt1 = conn.createStatement();
             stmt1.executeUpdate(sql1);
 
@@ -288,6 +330,33 @@ public class dbfile{
             e.printStackTrace();
         }
         return id;
+
+    }
+
+    public ArrayList<ScheduleList> getAllFlexibleEvents(){
+        ArrayList<ScheduleList> sl = new ArrayList<ScheduleList>();
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            ResultSet reset = stmt.executeQuery("SELECT * from schedule WHERE scheduleTypeID=2 AND isApproved=1 AND isDeleted=0");
+
+            while (reset.next()) {
+                ScheduleList s1 = new ScheduleList(reset.getString("scheduleTitle"),reset.getString("scheduleDesc"),false);
+                sl.add(s1);
+            }
+            conn.close();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sl;
 
     }
     public ArrayList<Notification> prepareNotificationList(Context context){

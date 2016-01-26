@@ -149,6 +149,7 @@
         <item>Default Event|Care center\'s default activities to be automatically included in patients\' schedule</item>
         <item>Generate Schedule|</item>
         <item>Notification Settings|</item>
+        <item>Flexible Schedule|</item>
     </string-array>
 
     <string name="title_activity_view_schedule">Patient Schedule</string>
