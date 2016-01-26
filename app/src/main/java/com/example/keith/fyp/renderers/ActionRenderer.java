@@ -3,21 +3,32 @@ package com.example.keith.fyp.renderers;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.database.dbfile;
+import com.example.keith.fyp.models.DefaultEvent;
 import com.example.keith.fyp.models.Notification;
+import com.example.keith.fyp.models.Patient;
+import com.example.keith.fyp.scheduler.scheduleScheduler;
+import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.views.customviews.TextField;
+
+import org.joda.time.DateTime;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * ActionRenderer is {@link Renderer} to render the action that can be done to a {@link Notification}
@@ -92,6 +103,7 @@ public class ActionRenderer extends Renderer {
                 int logid = notification.getLogid();
                 int rowid = notification.getRa();
                 int patientid = notification.getPatientID();
+                String nric = notification.getAffectedPatient().getNric();
                 String columnAffected = notification.getAdditionalInfo();
                 String tablename = notification.getTa();
                 String logdata = notification.getLogData();
@@ -100,6 +112,9 @@ public class ActionRenderer extends Renderer {
                 int getNotificationId = notification.getType();
                 if (getNotificationId == 1 || getNotificationId == 2) {
                     db.updateNotificationTables(logid, rowid, tablename, UserID);
+                    if (columnAffected.equals("prescription") || columnAffected.equals("routine")){
+                        schedulerFunction(nric);
+                    }
                 } else if (getNotificationId == 3) {
                     //do something
 
@@ -129,8 +144,14 @@ public class ActionRenderer extends Renderer {
                 } else if (getNotificationId == 4) {
                     String[] newData = logdata.split(">");
                     db.updateLogPatientSpecInfo(logid, rowid, newData[0], UserID);
+                    if (columnAffected.equals("prescription") || columnAffected.equals("routine")){
+                        schedulerFunction(nric);
+                    }
                 }else if(getNotificationId == 12){
                     db.deletePatientInfoTable(logid, rowid, UserID);
+                    if (columnAffected.equals("prescription") || columnAffected.equals("routine")){
+                        schedulerFunction(nric);
+                    }
                 }
                 notification.setStatus(Notification.STATUS_ACCEPTED);
                 finalRootView.removeAllViews();
@@ -144,7 +165,29 @@ public class ActionRenderer extends Renderer {
 
         builder.show();
     }
+    public void schedulerFunction(String nric){
+        ArrayList<Patient> patient = new ArrayList<Patient>();
+        patient = DataHolder.getPatientList(context);
+        Boolean check =false;
+        int k = 0;
+        for(int i =0; i<patient.size();i++){
+            if(nric.equals(patient.get(i).getNric())){
+                check = true;
+                k = i;
+                Log.v("Foundamatch", patient.get(i).getNric());
+                break;
 
+            }
+        }
+        ArrayList<DefaultEvent> de = new ArrayList<DefaultEvent>();
+        patient = DataHolder.getPatientList(context);
+        de = DataHolder.getDefaultEventList();
+        Collections.sort(de, DefaultEvent.COMPARE_BY_TIME);
+        scheduleScheduler ss = new scheduleScheduler();
+        DateTime date1 = DateTime.now();
+        ss.removeThenInsert(patient, de, date1, k);
+        Toast.makeText(context, "Patient Schedule Successfully Changed", Toast.LENGTH_LONG).show();
+    }
     private void openRejectDialog(final Notification notification, final ViewGroup finalRootView) {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(context);
         builder.title(R.string.dialog_title_reject_notification);

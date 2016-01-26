@@ -22,7 +22,11 @@ import android.widget.Toast;
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.database.dbfile;
+import com.example.keith.fyp.models.DefaultEvent;
+import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.Prescription;
+import com.example.keith.fyp.scheduler.scheduleScheduler;
+import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
@@ -32,6 +36,7 @@ import com.example.keith.fyp.views.decorators.SpacesCardItemDecoration;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 
@@ -235,9 +240,29 @@ public class ViewPatientInfoFormPrescriptionFragment extends ViewPatientInfoForm
 
             db.insertPatientSpec(info, x, 4, UserTypeID,UserID);
             if(UserTypeID ==3) {
+                Toast.makeText(getActivity(), "Successfully Inserted. Processing new Patient Schedule List", Toast.LENGTH_LONG).show();
                 Prescription newPrescription = new Prescription(name, dosage, freqPerDay, instruction, startDate, endDate, beforeAfterMealStr, notes);
                 prescriptionList.add(0, newPrescription);
                 prescriptionListAdapter.notifyItemInserted(0);
+                ArrayList<Patient> patient = new ArrayList<Patient>();
+                patient = DataHolder.getPatientList(getActivity());
+                Boolean check =false;
+                int k = 0;
+                for(int i =0; i<patient.size();i++){
+                    if(viewedPatient.getNric().toString().equals(patient.get(i).getNric())){
+                        check = true;
+                        k = i;
+                        break;
+                    }
+                }
+                ArrayList<DefaultEvent> de = new ArrayList<DefaultEvent>();
+                patient = DataHolder.getPatientList(getActivity());
+                de = DataHolder.getDefaultEventList();
+                Collections.sort(de, DefaultEvent.COMPARE_BY_TIME);
+                scheduleScheduler ss = new scheduleScheduler();
+                DateTime date1 = DateTime.now();
+                ss.removeThenInsert(patient, de, date1, k);
+                Toast.makeText(getActivity(), "Schedule Successfully Changed", Toast.LENGTH_LONG).show();
             }else{
                 Toast.makeText(getActivity(), "Pending Supervisor Approval", Toast.LENGTH_LONG).show();
             }
@@ -285,9 +310,29 @@ public class ViewPatientInfoFormPrescriptionFragment extends ViewPatientInfoForm
         final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
         db.deletePatientSpec(oldValue, x, 4, getRowID, UserTypeID, UserID);
         if(UserTypeID == 3) {
+            Toast.makeText(getActivity(), "Successfully Changed, Processing new patient schedule", Toast.LENGTH_LONG).show();
             prescriptionList.remove(selectedItemIdx);
             prescriptionListAdapter.notifyItemRemoved(selectedItemIdx);
-            Toast.makeText(getActivity(), "Successfully Changed", Toast.LENGTH_LONG).show();
+
+            ArrayList<Patient> patient = new ArrayList<Patient>();
+            patient = DataHolder.getPatientList(getActivity());
+            Boolean check =false;
+            int k = 0;
+            for(int i =0; i<patient.size();i++){
+                if(viewedPatient.getNric().toString().equals(patient.get(i).getNric())){
+                    check = true;
+                    k = i;
+                    break;
+                }
+            }
+            ArrayList<DefaultEvent> de = new ArrayList<DefaultEvent>();
+            patient = DataHolder.getPatientList(getActivity());
+            de = DataHolder.getDefaultEventList();
+            Collections.sort(de, DefaultEvent.COMPARE_BY_TIME);
+            scheduleScheduler ss = new scheduleScheduler();
+            DateTime date1 = DateTime.now();
+            ss.removeThenInsert(patient, de, date1, k);
+            Toast.makeText(getActivity(), "Schedule Successfully Changed", Toast.LENGTH_LONG).show();
         }else{
             Toast.makeText(getActivity(), "Pending Supervisor Approval", Toast.LENGTH_LONG).show();
         }

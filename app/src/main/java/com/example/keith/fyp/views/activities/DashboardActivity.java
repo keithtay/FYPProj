@@ -114,7 +114,6 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         ArrayList<Notification> notificationList = new ArrayList<>();
         dbfile db = new dbfile();
         notificationList = db.rejectionList(getApplicationContext(), userID);
-        Log.v("HEHH", String.valueOf(notificationList.size()));
         // =====================================================
         // Building the Notification Group based on the notification
         // =====================================================
