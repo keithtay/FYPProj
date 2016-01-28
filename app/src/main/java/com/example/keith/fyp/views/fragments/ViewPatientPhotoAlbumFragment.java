@@ -352,8 +352,10 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
 
     private static Fragment refreshCurrentFragment(){
         // Reload current fragment
+        Log.v("reloading frag","");
         Fragment fragmentToBeDisplayed = null;
-        fragmentToBeDisplayed = new ViewPatientPhotoAlbumFragment();
+        fragmentToBeDisplayed = new ViewPatientInfoFormPersonalInfoFragment();
+        Log.v("frag changed","");
         return fragmentToBeDisplayed;
     }
 
