@@ -152,6 +152,23 @@ public class ActionRenderer extends Renderer {
                     if (columnAffected.equals("prescription") || columnAffected.equals("routine")){
                         schedulerFunction(nric);
                     }
+                }else if(getNotificationId == 6){
+                    db.updateNewUserStatus(logid, rowid, UserID);
+                }
+                else if(getNotificationId == 9){
+                    db.updateNewGamesCat(logid, rowid, UserID);
+                }
+                else if(getNotificationId == 8){
+                    String[] newData = logdata.split(">");
+                    db.updateUserDetails(logid, rowid, newData[0], UserID);
+                }
+                else if(getNotificationId == 11){
+                    String[] newData = logdata.split(">");
+                    db.updateUserGamesCat(logid, rowid, newData[0], UserID);
+                }else if(getNotificationId == 7){
+                    db.deleteUser(logid, rowid, UserID);
+                }else if(getNotificationId == 10){
+                    db.deleteGamesCat(logid, rowid, UserID);
                 }
                 notification.setStatus(Notification.STATUS_ACCEPTED);
                 finalRootView.removeAllViews();
@@ -229,7 +246,20 @@ public class ActionRenderer extends Renderer {
                         db.updateRejectionUpdatePatientInfo(logid,UserID,reasonStr, name);
                     }else if(getNotificationId == 12){
                         db.updateDeletePatientInfo(logid,UserID,reasonStr, name);
+                    }else if(getNotificationId == 6){
+                        db.updateRejectionNewUser(logid,UserID,reasonStr, name);
+                    }else if(getNotificationId == 9){
+                        db.updateRejectGamesCat(logid,UserID,reasonStr, name);
+                    }else if(getNotificationId == 8) {
+                        db.updateRejectionEditUser(logid, UserID, reasonStr, name);
+                    }else if(getNotificationId == 11) {
+                        db.updateRejectionEditGamesCat(logid, UserID, reasonStr, name);
+                    }else if(getNotificationId == 7) {
+                        db.updateRejectDeleteUser(logid, UserID, reasonStr, name);
+                    }else if(getNotificationId == 10) {
+                        db.updateRejectionDeleteGamesCat(logid, UserID, reasonStr, name);
                     }
+
                     notification.setStatus(Notification.STATUS_REJECTED);
                     notification.setRejectionReason(reasonStr);
                     finalRootView.removeAllViews();

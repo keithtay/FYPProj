@@ -162,6 +162,111 @@ public class dbfile{
         }
     }
 
+    public void updateRejectionNewUser(int logid,int UserID, String reason, String name ){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            String final1 = "Add new user " + name + " was unsucessful. Remark from Supervisor is: " + reason;
+            stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID + ", remarks='" + final1 + "' WHERE logID=" + logid);
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateRejectionEditUser(int logid,int UserID, String reason, String name ){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            String final1 = "Edit user " + name + " was unsucessful. Remark from Supervisor is: " + reason;
+            stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID + ", remarks='" + final1 + "' WHERE logID=" + logid);
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void updateRejectionEditGamesCat(int logid,int UserID, String reason, String name ){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            String final1 = "Edit games cat " + name + " was unsucessful. Remark from Supervisor is: " + reason;
+            stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID + ", remarks='" + final1 + "' WHERE logID=" + logid);
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateRejectionDeleteGamesCat(int logid,int UserID, String reason, String name ){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            String final1 = "Delete games cat " + name + " was unsucessful. Remark from Supervisor is: " + reason;
+            stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID + ", remarks='" + final1 + "' WHERE logID=" + logid);
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateRejectDeleteUser(int logid,int UserID, String reason, String name ){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            String final1 = "Delete user " + name + " was unsucessful. Remark from Supervisor is: " + reason;
+            stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID + ", remarks='" + final1 + "' WHERE logID=" + logid);
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void updateRejectGamesCat(int logid,int UserID, String reason, String name ){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            String final1 = "Add new games category " + name + " was unsucessful. Remark from Supervisor is: " + reason;
+            stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID + ", remarks='" + final1 + "' WHERE logID=" + logid);
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void updateRejectionUpdatePatientInfo(int logid,int UserID, String reason,String name){
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -240,7 +345,78 @@ public class dbfile{
             e.printStackTrace();
         }
     }
+    public void updateNewUserStatus(int logid, int patientid, int UserID ){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID +" WHERE logID=" + logid);
+            stmt.executeUpdate("UPDATE [dementiafypdb].[dbo].[user] SET isApproved=1 WHERE userID=" + patientid);
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void updateNewGamesCat(int logid, int patientid, int UserID ){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID +" WHERE logID=" + logid);
+            stmt.executeUpdate("UPDATE gamesTypeRecommendation SET isApproved=1 WHERE gamesTypeRecommendationID=" + patientid);
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void deleteGamesCat(int logid, int patientid, int UserID ){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID +" WHERE logID=" + logid);
+            stmt.executeUpdate("UPDATE gamesTypeRecommendation SET isDeleted=1, isApproved=0 WHERE gamesTypeRecommendationID=" + patientid);
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void deleteUser(int logid, int patientid, int UserID ){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID +" WHERE logID=" + logid);
+            stmt.executeUpdate("UPDATE [dementiafypdb].[dbo].[user] SET isDeleted=1, isApproved=0 WHERE userID=" + patientid);
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void updateLogPatientSpecInfo(int logid, int rowid, String newData,int UserID ){
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -260,6 +436,57 @@ public class dbfile{
         }
     }
 
+    public void updateUserDetails(int logid, int rowid, String newData,int UserID ){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            String[] newData1 = newData.split(";");
+            int x=0;
+            if (newData1[8].equals("Supervisor")){
+                x = 3;
+            }else if(newData1[8].equals("Caregiver")){
+                x=4;
+            }else if(newData1[8].equals("Doctor")){
+                x=2;
+            }else if(newData1[8].equals("System Administrator")){
+                x=1;
+        }
+
+            stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID +" WHERE logID=" + logid);
+            stmt.executeUpdate("UPDATE [dementiafypdb].[dbo].[user] SET email='" + newData1[3] + "', firstName='" + newData1[0] +"', lastName='" + newData1[1] + "'" +
+                    ", address='" + newData1[2] +"', officeNo='" + newData1[4] + "', handphoneNo='" + newData1[5] + "', gender='" + newData1[6] +"', DOB='" + newData1[7] +"', userTypeID='" + x +"' WHERE userID=" + rowid);
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateUserGamesCat(int logid, int rowid, String newData,int UserID ){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            String[] newData1 = newData.split(";");
+            stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID +" WHERE logID=" + logid);
+            stmt.executeUpdate("UPDATE gamesTypeRecommendation SET comments=" + newData1[1] + "', duration='" + newData1[2] + "',days='" + newData1[3] +"' WHERE gamesTypeRecommendationID=" + rowid);
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void updateNotificationTables(int logid, int rowid, String tablename,int UserID ){
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -379,7 +606,7 @@ public class dbfile{
                     "   INNER JOIN [dementiafypdb].[dbo].patient AS pa ON pa.patientID = lo.patientID " +
                     "    INNER JOIN [dementiafypdb].[dbo].[user] AS us ON us.userID = lo.userIDInit " +
                     "INNER JOIN [dementiafypdb].[dbo].album AS a ON pa.patientID = a.patientID " +
-                    "  WHERE lo.userIDApproved = 0 AND lo.isDeleted = 0 AND a.isApproved=1 and a.isDeleted=0 and a.albumCatID=1");
+                    "  WHERE lo.userIDApproved = 0 AND lo.isDeleted = 0 AND a.isApproved=1 and a.isDeleted=0 and a.albumCatID=1 and lo.patientID is not null");
             while(reset.next()){
                 Bitmap patientAvatar1 = getPatientProfilePic(reset.getString("albumPath"),context);
                 Patient patient1 = new Patient(reset.getString("patientfirstname"), reset.getString("patientlastname"), reset.getString("patientnric"), patientAvatar1);
@@ -419,6 +646,66 @@ public class dbfile{
                     notificationList.add(notification1);
                 }else if(seewhichCat == 12){
                     Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_DELETE_INFO_OBJECT, logid,logData,additionalinfo, ta ,ra, patientid,remarks);
+                    notificationList.add(notification1);
+                }
+
+            }
+
+            Statement stmt3 = conn.createStatement();
+            ResultSet reset3 = stmt3.executeQuery("SELECT lo.createDateTime as logdatetime, " +
+                    "lo.logDesc AS logDescription, lo.logCategoryID AS logcatid, us.firstName AS userfirstname, us.lastName AS userlastname, " +
+                    "lo.logID as logid, lo.logData AS logdata, lo.additionalInfo as additionalinfo, lo.tableAffected AS ta, lo.rowAffected AS ra, lo.patientID as patientsid, lo.remarks as remarks " +
+                    " FROM [dementiafypdb].[dbo].[log] AS lo " +
+                    " INNER JOIN [dementiafypdb].[dbo].[user] AS us ON us.userID = lo.userIDInit " +
+                    " WHERE lo.userIDApproved = 0 AND lo.isDeleted = 0 AND lo.patientID is null ");
+            while(reset3.next()){
+                Bitmap patientAvatar1 = null;
+                String logData = reset3.getString("logdata");
+                int seewhichCat = reset3.getInt("logcatid");
+                Patient patient1 =null;
+                if(seewhichCat == 6 || seewhichCat == 7 || seewhichCat==8) {
+                    String[] breakeven = logData.split(";");
+                    patientAvatar1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.systemadmin);
+                    patient1 = new Patient(breakeven[0], breakeven[1], breakeven[3], patientAvatar1);
+                }else{
+                    patientAvatar1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.anonymous_doctor);
+                    patient1 = new Patient("System:", "Games Category", "games", patientAvatar1);
+                }
+                Bitmap caregiverAvatar1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.anonymous_caregiver);
+                String date = reset3.getString("logdatetime");
+                int year = Integer.parseInt(date.substring(0, 4));
+                int month = Integer.parseInt(date.substring(5, 7));
+                int day = Integer.parseInt(date.substring(8, 10));
+                int hour = Integer.parseInt(date.substring(11,13));
+                int min = Integer.parseInt(date.substring(14,16));
+                int sec = Integer.parseInt(date.substring(17, 19));
+                DateTime date1 = DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day).withHourOfDay(hour).withMinuteOfHour(min).withSecondOfMinute(sec);
+                String caregiverName1 = reset3.getString("userfirstname") + " " + reset3.getString("userlastname");
+                String summary1 = reset3.getString("logDescription");
+                int logid = reset3.getInt("logid");
+
+                String additionalinfo = reset3.getString("additionalinfo");
+                String ta = reset3.getString("ta");
+                int ra = reset3.getInt("ra");
+
+                String remarks = reset3.getString("remarks");
+                if(seewhichCat == 6){//type game recommendation
+                    Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_NEW_USER, logid,logData,additionalinfo, ta,ra, ra,remarks);
+                    notificationList.add(notification1);
+                }else if(seewhichCat == 7){//typenewinfoobject
+                    Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_DELETE_USER, logid,logData,additionalinfo, ta ,ra, ra,remarks);
+                    notificationList.add(notification1);
+                }else if(seewhichCat == 8) {//typenewpatient
+                    Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_EDIT_USER, logid,logData,additionalinfo, ta ,ra, ra,remarks);
+                    notificationList.add(notification1);
+                }else if(seewhichCat == 9) {//typeupdateinfofield
+                    Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_NEW_GAMESCAT, logid,logData,additionalinfo, ta ,ra, ra,remarks);
+                    notificationList.add(notification1);
+                }else if(seewhichCat == 10) {//typeupdateinfoobject
+                    Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_DELETE_GAMESCAT, logid,logData,additionalinfo, ta ,ra, ra,remarks);
+                    notificationList.add(notification1);
+                }else if(seewhichCat == 11){
+                    Notification notification1 = new Notification(date1, caregiverName1, caregiverAvatar1, summary1, patient1, Notification.STATUS_NONE, Notification.TYPE_EDIT_GAMESCAT, logid,logData,additionalinfo, ta ,ra, ra,remarks);
                     notificationList.add(notification1);
                 }
 

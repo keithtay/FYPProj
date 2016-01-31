@@ -40,7 +40,12 @@ public class Notification {
     public static final int TYPE_UPDATE_INFO_OBJECT = 4;
 
     public static final int TYPE_REJECTION_INFO_OBJECT = 5;
-
+    public static final int TYPE_NEW_USER = 6;
+    public static final int TYPE_DELETE_USER = 7;
+    public static final int TYPE_EDIT_USER = 8;
+    public static final int TYPE_NEW_GAMESCAT = 9;
+    public static final int TYPE_DELETE_GAMESCAT = 10;
+    public static final int TYPE_EDIT_GAMESCAT = 11;
     public static final int TYPE_DELETE_INFO_OBJECT = 12;
     /**
      * The identifier for a notification that have not been responded by the user

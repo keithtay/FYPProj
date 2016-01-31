@@ -216,6 +216,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
 
         dbfile db = new dbfile();
         notificationList = db.prepareNotificationList(getApplicationContext());
+        Log.v("WHY LIKE THAT", String.valueOf(notificationList.size()));
         // =====================================================
         // Building the Notification Group based on the notification
         // =====================================================

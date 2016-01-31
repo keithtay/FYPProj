@@ -9,12 +9,14 @@ import android.view.LayoutInflater;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.Allergy;
+import com.example.keith.fyp.models.Games;
 import com.example.keith.fyp.models.Notification;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.Prescription;
 import com.example.keith.fyp.models.ProblemLog;
 import com.example.keith.fyp.models.Routine;
 import com.example.keith.fyp.models.SocialHistory;
+import com.example.keith.fyp.models.User;
 import com.example.keith.fyp.models.Vital;
 import com.example.keith.fyp.renderers.ActionRenderer;
 import com.example.keith.fyp.renderers.BackgroundRenderer;
@@ -383,6 +385,68 @@ public class NotificationToRendererConverter {
                 break;
             case Notification.TYPE_REJECTION_INFO_OBJECT:
                 contentRenderer = new ContentRejectionInfoRenderer(inflater, "Rejection of information", reject);
+                break;
+            case Notification.TYPE_NEW_USER:
+                String[] user = logData.split(";");
+                String dateStart = user[7];
+                int year3 = Integer.parseInt(dateStart.substring(0,4));
+                int month3 = Integer.parseInt(dateStart.substring(5, 7));
+                int day3 = Integer.parseInt(dateStart.substring(8, 10));
+                char a = user[6].charAt(0);
+                DateTime test = DateTime.now().withYear(year3).withMonthOfYear(month3).withDayOfMonth(day3);
+                User user1 = new User(user[0], user[1],user[2],user[3],user[4],user[5],a,test,user[8]);
+                contentRenderer = new ContentNewInfoObjectRenderer(inflater,user1);
+                break;
+            case Notification.TYPE_NEW_GAMESCAT:
+                String[] gamescat = logData.split(";");
+                Games game = new Games(gamescat[0], gamescat[1], Integer.valueOf(gamescat[2]), Integer.valueOf(gamescat[3]));
+                contentRenderer = new ContentNewInfoObjectRenderer(inflater,game);
+                break;
+            case Notification.TYPE_EDIT_USER:
+                //have to use variable k to go to patientspecinfo and retrieve information
+                String[] allg1 = logData.split(">");
+                String[] allg2 = allg1[0].split(";");
+                String[] allg3 = allg1[1].split(";");
+                char c = allg2[6].charAt(0);
+                char d = allg3[6].charAt(0);
+                String date1 = allg2[7];
+                int year5 = Integer.parseInt(date1.substring(0, 4));
+                int month5 = Integer.parseInt(date1.substring(5, 7));
+                int day5 = Integer.parseInt(date1.substring(8, 10));
+                String date2 = allg3[7];
+                int year6 = Integer.parseInt(date2.substring(0, 4));
+                int month6 = Integer.parseInt(date2.substring(5, 7));
+                int day6 = Integer.parseInt(date2.substring(8, 10));
+                DateTime test2 = DateTime.now().withYear(year5).withMonthOfYear(month5).withDayOfMonth(day5);
+                DateTime test3 = DateTime.now().withYear(year6).withMonthOfYear(month6).withDayOfMonth(day6);
+                User user5 = new User(allg2[0], allg2[1],allg2[2],allg2[3],allg2[4],allg2[5],c,test2,allg2[8]);
+                User user6 = new User(allg3[0], allg3[1],allg3[2],allg3[3],allg3[4],allg3[5],d,test3,allg3[8]);
+                //content renderer old then new. DB is stored new to old
+                contentRenderer = new ContentUpdateInfoObjectRenderer(inflater, user5, user6);
+                break;
+            case Notification.TYPE_EDIT_GAMESCAT:
+                String[] game2 = logData.split(">");
+                String[] game3 = game2[0].split(";");
+                String[] game4 = game2[1].split(";");
+                Games game20 = new Games(game3[0], game3[1], Integer.valueOf(game3[2]), Integer.valueOf(game3[3]));
+                Games game21 = new Games(game4[0], game4[1], Integer.valueOf(game4[2]), Integer.valueOf(game4[3]));
+                contentRenderer = new ContentUpdateInfoObjectRenderer(inflater, game20, game21);
+                break;
+            case Notification.TYPE_DELETE_USER:
+                String[] ge = logData.split(";");
+                String dateStarts = ge[7];
+                int year30 = Integer.parseInt(dateStarts.substring(0,4));
+                int month30 = Integer.parseInt(dateStarts.substring(5, 7));
+                int day30 = Integer.parseInt(dateStarts.substring(8, 10));
+                char az = ge[6].charAt(0);
+                DateTime testz = DateTime.now().withYear(year30).withMonthOfYear(month30).withDayOfMonth(day30);
+                User user22 = new User(ge[0], ge[1],ge[2],ge[3],ge[4],ge[5],az,testz,ge[8]);
+                contentRenderer = new ContentNewInfoObjectRenderer(inflater,user22);
+                break;
+            case Notification.TYPE_DELETE_GAMESCAT:
+                String[] gamescat22 = logData.split(";");
+                Games game22 = new Games(gamescat22[0], gamescat22[1], Integer.valueOf(gamescat22[2]), Integer.valueOf(gamescat22[3]));
+                contentRenderer = new ContentNewInfoObjectRenderer(inflater,game22);
                 break;
         }
 
