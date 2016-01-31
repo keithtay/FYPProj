@@ -1954,5 +1954,64 @@ public class dbfile{
         //Log.v("pic added to DB","");
     }
 
+    //test method to get assigned games of patient for future development.
+    public ArrayList <Integer> getAssignedGamesOfPatient (int patientId){
+        ArrayList <Integer> listOfAssignedGames = new ArrayList<Integer>();
+        int count = 1;
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            ResultSet reset = stmt.executeQuery("SELECT *\n" +
+                    "FROM assignedGame\n" +
+                    "WHERE patientAllocationID= (SELECT patientAllocationID\n"+
+                                                "FROM patientAllocation\n"+
+                                                "WHERE patientID = '"+patientId+ "' AND isApproved = "+ 1 +" AND isDeleted = "+0+" AND datediff(day, endDate, GETDATE())>=0 )");
+
+            while (reset.next()) {
+                listOfAssignedGames.add(count);
+                Log.v("numGames2", "" + listOfAssignedGames);
+                count++;
+
+            }
+            conn.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listOfAssignedGames;
+    }
+
+    //test method to insert game records after selected patient play finish the game. For future development.
+    public void insertGameRecord(int patientID, int gameID, int score, int time) {
+        String sql;
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            sql = "INSERT INTO gameRecord(Score, AssignedGameID, isDeleted, timeTaken)\n" +
+                    "VALUES('"+score+"',(SELECT TOP 1 AssignedGameID FROM assignedGame WHERE gameID = '"+gameID+"'\n"+
+                    "AND patientAllocationID= (SELECT patientAllocationID\n" +
+                                                "FROM patientAllocation\n"+
+                                                "WHERE patientID = '"+patientID+"')),"+0+",'"+time+"' )";
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 }
