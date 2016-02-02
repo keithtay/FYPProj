@@ -57,6 +57,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Patient is lactose intolerant" />
+            <Button
+                android:id="@+id/button_to_assigned_game"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Go to Game"
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 
