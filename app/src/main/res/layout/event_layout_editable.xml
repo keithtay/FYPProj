@@ -52,6 +52,7 @@
                 android:layout_height="wrap_content"
                 android:text="Patient is lactose intolerant" />
         </LinearLayout>
+
         <ImageView
             android:id="@+id/menu_button"
             android:layout_width="45dp"

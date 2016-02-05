@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -48,6 +49,7 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
 
     private FancyButton viewMoreButton;
     private FancyButton logProblemButton;
+    private Button gameButton;
 
     private Drawer navDrawer;
     private MiniDrawer miniDrawer;
@@ -257,11 +259,15 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
 
         TextView titleTextView = (TextView) eventView.findViewById(R.id.event_title_text_view);
         TextView descriptionTextView = (TextView) eventView.findViewById(R.id.event_description_text_view);
+        gameButton = (Button) eventView.findViewById(R.id.button_to_assigned_game);
         TextView startTimeTextView = (TextView) eventView.findViewById(R.id.event_start_time_text_view);
         TextView durationTextView = (TextView) eventView.findViewById(R.id.event_duration_text_view);
 
         titleTextView.setText(eventTitle);
         descriptionTextView.setText(eventDescription);
+        if (titleTextView.getText().equals("Android Game")){
+            gameButton.setVisibility(View.VISIBLE);
+        }
         startTimeTextView.setText(startTimeStr);
         durationTextView.setText(durationStr);
 
