@@ -27,6 +27,8 @@ import com.example.keith.fyp.models.Schedule;
 import com.example.keith.fyp.models.ScheduleList;
 import com.example.keith.fyp.models.SocialHistory;
 import com.example.keith.fyp.models.Vital;
+import com.example.keith.fyp.scheduler.scheduleScheduler;
+import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
 import com.example.keith.fyp.utils.UtilsUi;
 
@@ -49,6 +51,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 
 /**
  * Created by Keith and KokSang on 4/12/2015.
@@ -753,7 +756,7 @@ public class dbfile{
                 int year = Integer.parseInt(date.substring(0, 4));
                 int month = Integer.parseInt(date.substring(5, 7));
                 int day = Integer.parseInt(date.substring(8, 10));
-                int hour = Integer.parseInt(date.substring(11,13));
+                int hour = Integer.parseInt(date.substring(11, 13));
                 int min = Integer.parseInt(date.substring(14,16));
                 int sec = Integer.parseInt(date.substring(17, 19));
                 DateTime date1 = DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day).withHourOfDay(hour).withMinuteOfHour(min).withSecondOfMinute(sec);
@@ -1623,6 +1626,7 @@ public class dbfile{
             }else{
                 checkIsSupervisor = 0;
             }
+
             String sql = "INSERT INTO patient " +
                     "VALUES ('" + firstname + "','" + lastname + "','" + nric + "','" + address + "','" + officeno + "','" + handphoneno + "','" + gender + "','" + date + "','" + gname + "','" + gcontactno + "','" + gemail + "'," + 0 + "," + checkIsSupervisor + ",'" + timestamp + "')";
 //            Statement stmt = conn.createStatement();
@@ -1661,6 +1665,15 @@ public class dbfile{
                         "VALUES (" + "'Images\\profilePic\\anonymous.jpg'" + "," + 1 + "," + key + "," + 0 + "," + 1 + ",'" + timestamp + "')";
                 Statement stmt3 = conn.createStatement();
                 stmt3.executeUpdate(sql3);
+                String sql4 = "INSERT INTO patientSpecInfo " +
+                        "VALUES (" + "'Yes'" + "," + key + "," + 13 + "," + 0 + "," + 1 + ",'" + timestamp + "')";
+                Statement stmt4 = conn.createStatement();
+                stmt4.executeUpdate(sql4);
+                String sql5 = "INSERT INTO patientSpecInfo " +
+                        "VALUES (" + "'Alzheimer disease'" + "," + key + "," + 11 + "," + 0 + "," + 1 + ",'" + timestamp + "')";
+                Statement stmt5 = conn.createStatement();
+                stmt5.executeUpdate(sql5);
+
             }
             conn.close();
 
