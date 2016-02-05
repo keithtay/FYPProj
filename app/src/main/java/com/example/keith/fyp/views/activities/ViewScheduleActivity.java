@@ -1,5 +1,6 @@
 package com.example.keith.fyp.views.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -42,11 +43,12 @@ import java.util.Collections;
 
 import mehdi.sakout.fancybuttons.FancyButton;
 
+
 /**
  * Activity to display the patient schedule
  */
 public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnDrawerItemClickListener {
-
+    Context context;
     private FancyButton viewMoreButton;
     private FancyButton logProblemButton;
     private Button gameButton;
@@ -285,6 +287,15 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
             eventView.setLayoutParams(lastEventLayoutParams);
         }
 
+        //game button listener
+        //gameButton = (Button) findViewById(R.id.button_to_assigned_game);
+        gameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), AssignedGamesActivity.class);
+                startActivity(intent);
+            }
+        });
         return eventView;
     }
 

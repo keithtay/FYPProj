@@ -753,7 +753,7 @@ public class dbfile{
                 int year = Integer.parseInt(date.substring(0, 4));
                 int month = Integer.parseInt(date.substring(5, 7));
                 int day = Integer.parseInt(date.substring(8, 10));
-                int hour = Integer.parseInt(date.substring(11,13));
+                int hour = Integer.parseInt(date.substring(11, 13));
                 int min = Integer.parseInt(date.substring(14,16));
                 int sec = Integer.parseInt(date.substring(17, 19));
                 DateTime date1 = DateTime.now().withYear(year).withMonthOfYear(month).withDayOfMonth(day).withHourOfDay(hour).withMinuteOfHour(min).withSecondOfMinute(sec);
@@ -1859,9 +1859,9 @@ public class dbfile{
             conn = DriverManager.getConnection(connString, username, password);
             Statement stmt = conn.createStatement();
             ResultSet reset = stmt.executeQuery("SELECT albumPath\n" +
-                                                "FROM album\n" +
-                                                "WHERE patientID= '"+patientId+ "'" +
-                                                "AND isApproved=1 AND isDeleted=0");
+                    "FROM album\n" +
+                    "WHERE patientID= '" + patientId + "'" +
+                    "AND isApproved=1 AND isDeleted=0");
 
             while (reset.next()) {
                 albumFilePath.add(path + reset.getString("albumPath").replace("\\","/"));
@@ -1913,8 +1913,10 @@ public class dbfile{
         String sql;
         SharedPreferences pref = context.getSharedPreferences("Login", 0);
         final int UserTypeID = Integer.parseInt(pref.getString("userTypeId", ""));
-
-        if (filePath.contains("Family")){
+        if (filePath.contains("profilePic")){
+            albumCatID = 1;
+        }
+        else if (filePath.contains("Family")){
             albumCatID = 2;
         } else if (filePath.contains("Friends")){
             albumCatID = 3;
@@ -1936,12 +1938,18 @@ public class dbfile{
         try {
             Class.forName(driver).newInstance();
             conn = DriverManager.getConnection(connString, username, password);
-            sql = "INSERT INTO album (albumPath, albumCatID, patientID, isDeleted, isApproved)" +
-                        "VALUES ('"+ modifiedpath + "', '"+ albumCatID + "', '"+ patientID +"', "+ 0 +","+ 1 +")";
-
-
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate(sql);
+            if (albumCatID == 1){
+                stmt.executeUpdate("UPDATE album"+
+                                    " SET albumPath ='"+ modifiedpath + "'" +
+                                    " WHERE patientID = '"+ patientID +"' AND albumCatID = '1'");
+            }
+            else {
+                sql = "INSERT INTO album (albumPath, albumCatID, patientID, isDeleted, isApproved)" +
+                        "VALUES ('"+ modifiedpath + "', '"+ albumCatID + "', '"+ patientID +"', "+ 0 +","+ 1 +")";
+                stmt.executeUpdate(sql);
+            }
+
             conn.close();
 
         } catch (Exception e) {
@@ -1967,7 +1975,7 @@ public class dbfile{
                     "FROM assignedGame\n" +
                     "WHERE patientAllocationID= (SELECT patientAllocationID\n"+
                                                 "FROM patientAllocation\n"+
-                                                "WHERE patientID = '"+patientId+ "' AND isApproved = "+ 1 +" AND isDeleted = "+0+" AND datediff(day, endDate, GETDATE())>=0 )");
+                                                "WHERE patientID = '"+patientId+ "' AND isApproved = "+ 1 +" AND isDeleted = "+0+" AND datediff(day, endDate, GETDATE())<=0 )");
 
             while (reset.next()) {
                 listOfAssignedGames.add(count);

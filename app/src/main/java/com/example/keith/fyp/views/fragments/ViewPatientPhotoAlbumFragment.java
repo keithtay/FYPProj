@@ -68,7 +68,7 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
     private ListView photoAlbumListView;
     private MaterialSpinner photoAlbumTitleSpinner;
     //arrayList of all different category.
-    //private ArrayList<String> urlToPullImageProfile = new ArrayList<String>();
+    private ArrayList<String> urlToPullImageProfile = new ArrayList<String>();
     private ArrayList<String> urlToPullImageFamily = new ArrayList<String>();
     private ArrayList<String> urlToPullImageFriends = new ArrayList<String>();
     private ArrayList<String> urlToPullImageScenery = new ArrayList<String>();
@@ -103,7 +103,10 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
         combinedURLSOfAll = db.getPicturesURLS(selectedPatientID);
 
         for (int i = 0; i< combinedURLSOfAll.size(); i++) {
-            if (combinedURLSOfAll.get(i).contains("Family")) {
+            if (combinedURLSOfAll.get(i).contains("profilePic")) {
+                urlToPullImageProfile.add(combinedURLSOfAll.get(i));
+            }
+            else if (combinedURLSOfAll.get(i).contains("Family")) {
                 urlToPullImageFamily.add(combinedURLSOfAll.get(i));
             }
             else if (combinedURLSOfAll.get(i).contains("Friends")) {
@@ -117,7 +120,7 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
             }
         }
 
-        //photoAlbumList.add(new PhotoAlbum("Myself", urlToPullImageProfile));
+        photoAlbumList.add(new PhotoAlbum("Myself", urlToPullImageProfile));
         photoAlbumList.add(new PhotoAlbum("Family", urlToPullImageFamily));
         photoAlbumList.add(new PhotoAlbum("Friends", urlToPullImageFriends));
         photoAlbumList.add(new PhotoAlbum("Scenery", urlToPullImageScenery));
@@ -175,8 +178,12 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
         //code to select selected patient Nric.
         SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String selectedPatientNric = mPrefs.getString(Global.STATE_SELECTED_PATIENT_NRIC, "");
-
-        path = "Images/"+ albumCategory+"/"+selectedPatientNric +"_" + fileName; //create filepath for database.
+        if (albumCategory.contains("ProfilePicture") ){
+            path = "Images/profilePic/"+selectedPatientNric+".jpg"; //create filepath for profile pic database.
+        }
+        else {
+            path = "Images/"+ albumCategory+"/"+selectedPatientNric +"_" + fileName; //create filepath for database.
+        }
         Log.v("test",path);
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStorageDirectory()+File.separator + fileName);
@@ -186,6 +193,7 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String finalFilePath = "";
         if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 //Get our saved file into a bitmap object:
@@ -194,9 +202,15 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
                 //get the current timeStamp and store that in the time Variable
                 Long tsLong = System.currentTimeMillis() / 1000;
                 timestamp = tsLong.toString();
-                String finalFilePath = path.replace(".jpg","_"+ timestamp +".jpg");
+                if (path.contains("profilePic")){
+                    finalFilePath = path;
+                    new UploadImage(photo,path,path).execute();
+                }
+                else {
+                    finalFilePath = path.replace(".jpg","_"+ timestamp +".jpg");
+                    nameNewPhoto(finalFilePath, photo);
+                }
                 Log.v("file url", finalFilePath);
-                nameNewPhoto(finalFilePath, photo);
                 //new UploadImage(photo, holdFinalFilePath, holdFinalFilePath).execute();
 
             } else if (resultCode == Activity.RESULT_CANCELED){
