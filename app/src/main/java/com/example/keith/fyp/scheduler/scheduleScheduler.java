@@ -65,7 +65,7 @@ public class scheduleScheduler {
         //to insert for everypatient schedule
         for (int i = 0; i< patient.size(); i++){
             dbfile db = new dbfile();
-
+//            removeallschedule(testDateNow.toString().substring(0,10), patient.get(i).getAllocatonID());
             ArrayList<String> prescriptionCheck = new ArrayList<String>();
             ArrayList<DefaultEvent> routineCheck = new ArrayList<DefaultEvent>();
             String cDate = testDateNow.toString().substring(0,10);

@@ -112,7 +112,7 @@ public class ActionRenderer extends Renderer {
                 int getNotificationId = notification.getType();
                 if (getNotificationId == 1 || getNotificationId == 2) {
                     db.updateNotificationTables(logid, rowid, tablename, UserID);
-                    if (columnAffected.equals("prescription") || columnAffected.equals("routine")){
+                    if (tablename.equals("patient") || columnAffected.equals("prescription") || columnAffected.equals("routine")){
                         schedulerFunction(nric);
                     }
                 } else if (getNotificationId == 3) {

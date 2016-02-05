@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.Allergy;
+import com.example.keith.fyp.models.DefaultEvent;
 import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.interfaces.CreatePatientCommunicator;
@@ -36,6 +37,7 @@ import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.models.Prescription;
 import com.example.keith.fyp.models.Routine;
 import com.example.keith.fyp.models.Vital;
+import com.example.keith.fyp.scheduler.scheduleScheduler;
 import com.example.keith.fyp.utils.CreatePatientFormFragmentEncoder;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
@@ -79,6 +81,7 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 
 /**
@@ -256,6 +259,9 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
                                 db.insertPatientSpec(concatString, id, 5, UserTypeID, UserID);
                             }
                         }
+                        if(UserTypeID == 3){
+                            schedulerFunction(createdPatient.getNric());
+                        }
                         DataHolder.resetCreatedPatient();
                         Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
                         startActivity(intent);
@@ -272,7 +278,29 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
             Log.e(TAG, "Cannot connect to OpenCV Manager");
         }
     }
+    public void schedulerFunction(String nric){
+        ArrayList<Patient> patient = new ArrayList<Patient>();
+        patient = DataHolder.getPatientList(getBaseContext());
+        Boolean check =false;
+        int k = 0;
+        for(int i =0; i<patient.size();i++){
+            if(nric.equals(patient.get(i).getNric())){
+                check = true;
+                k = i;
+                Log.v("Foundamatch", patient.get(i).getNric());
+                break;
 
+            }
+        }
+        ArrayList<DefaultEvent> de = new ArrayList<DefaultEvent>();
+        patient = DataHolder.getPatientList(getBaseContext());
+        de = DataHolder.getDefaultEventList();
+        Collections.sort(de, DefaultEvent.COMPARE_BY_TIME);
+        scheduleScheduler ss = new scheduleScheduler();
+        DateTime date1 = DateTime.now();
+        ss.removeThenInsert(patient, de, date1, k);
+        Toast.makeText(getBaseContext(), "Patient Schedule Successfully Changed", Toast.LENGTH_LONG).show();
+    }
     private void checkRequiredFields() {
         Intent intent = new Intent(Global.ACTION_CREATE_NEW_PATIENT);
         sendBroadcast(intent);
