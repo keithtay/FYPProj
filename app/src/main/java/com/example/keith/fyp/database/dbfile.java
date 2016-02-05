@@ -1936,14 +1936,10 @@ public class dbfile{
         try {
             Class.forName(driver).newInstance();
             conn = DriverManager.getConnection(connString, username, password);
-            if (UserTypeID ==3){
-                sql = "INSERT INTO album (albumPath, albumCatID, patientID, isDeleted, isApproved)" +
+            sql = "INSERT INTO album (albumPath, albumCatID, patientID, isDeleted, isApproved)" +
                         "VALUES ('"+ modifiedpath + "', '"+ albumCatID + "', '"+ patientID +"', "+ 0 +","+ 1 +")";
-            }
-            else {
-                sql = "INSERT INTO album (albumPath, albumCatID, patientID, isDeleted, isApproved)" +
-                    "VALUES ('"+ modifiedpath + "', '"+ albumCatID + "', '"+ patientID +"', "+ 0 +","+ 0 +")";
-            }
+
+
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(sql);
             conn.close();
