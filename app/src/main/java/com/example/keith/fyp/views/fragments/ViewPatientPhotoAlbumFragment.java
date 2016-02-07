@@ -9,6 +9,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -198,16 +201,18 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
             if (resultCode == Activity.RESULT_OK) {
                 //Get our saved file into a bitmap object:
                 File file = new File(Environment.getExternalStorageDirectory()+File.separator + fileName);
-                Bitmap photo = decodeSampledBitmapFromFile(file.getAbsolutePath(), 1000, 700);
+
                 //get the current timeStamp and store that in the time Variable
                 Long tsLong = System.currentTimeMillis() / 1000;
                 timestamp = tsLong.toString();
                 if (path.contains("profilePic")){
                     finalFilePath = path;
-                    Bitmap photoProfile = photo.createScaledBitmap(photo, 70, 70, true);
+                    Bitmap photo = decodeSampledBitmapFromFile(file.getAbsolutePath(), 350, 250); //smaller width & height so when scaling won't lose so much quality.
+                    Bitmap photoProfile = scaleBitmap(photo, 150, 150); //scale bitmap to 150*150 pixels.
                     new UploadImage(photoProfile,path,path).execute();
                 }
                 else {
+                    Bitmap photo = decodeSampledBitmapFromFile(file.getAbsolutePath(), 1000, 700);
                     finalFilePath = path.replace(".jpg","_"+ timestamp +".jpg");
                     nameNewPhoto(finalFilePath, photo);
                 }
@@ -363,6 +368,24 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
         options.inJustDecodeBounds = false;
 
         return BitmapFactory.decodeFile(path, options);
+    }
+
+    public static Bitmap scaleBitmap(Bitmap bitmap, int newWidth, int newHeight) {
+        Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
+
+        float scaleX = newWidth / (float) bitmap.getWidth();
+        float scaleY = newHeight / (float) bitmap.getHeight();
+        float pivotX = 0;
+        float pivotY = 0;
+
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(scaleX, scaleY, pivotX, pivotY);
+
+        Canvas canvas = new Canvas(scaledBitmap);
+        canvas.setMatrix(scaleMatrix);
+        canvas.drawBitmap(bitmap, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
+
+        return scaledBitmap;
     }
 
     private static Fragment refreshCurrentFragment(){
