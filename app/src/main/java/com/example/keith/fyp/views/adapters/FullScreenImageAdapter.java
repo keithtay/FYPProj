@@ -26,6 +26,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.example.keith.fyp.views.customviews.TouchImageView;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -69,6 +71,8 @@ public class FullScreenImageAdapter extends PagerAdapter{
     public Object instantiateItem(ViewGroup container, int position) {
         TouchImageView imgDisplay;
         Button btnClose;
+        final FullScreenViewActivity fullScreenViewActivity = new FullScreenViewActivity();
+        final PhotoListAdapter photoListAdapter = new PhotoListAdapter(context);
 
         inflater = (LayoutInflater) _activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View viewLayout = inflater.inflate(R.layout.view_fullscreen_photo_layout, container, false);
@@ -76,14 +80,24 @@ public class FullScreenImageAdapter extends PagerAdapter{
         imgDisplay = (TouchImageView) viewLayout.findViewById(R.id.imgDisplay);
         btnClose = (Button) viewLayout.findViewById(R.id.btnClose);
 
-        Log.v("picURL ",_imagePaths.get(position) );
-        Picasso.with(this._activity).load(_imagePaths.get(position)).into(imgDisplay);
+        Log.v("picURL ", _imagePaths.get(position));
 
+        if (_imagePaths.get(position).contains("profilePic")) {
+            Picasso.with(this._activity).load(_imagePaths.get(position))
+                    .memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.NO_CACHE)
+                    .into(imgDisplay);
+            //Log.v("no cache", "profileF");
+        } else{
+            Picasso.with(this._activity).load(_imagePaths.get(position)).into(imgDisplay);
+            //Log.v("cache", "xcept profileF");
+        }
         // close button click event
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 _activity.finish();
+                fullScreenViewActivity.clearArrayListItems();
+                photoListAdapter.clearArrayListUrls();
             }
         });
 

@@ -20,6 +20,8 @@ import com.example.keith.fyp.R;
 
 import com.example.keith.fyp.views.activities.FullScreenViewActivity;
 import com.example.keith.fyp.views.activities.ViewPatientActivity;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ public class PhotoListAdapter extends BaseAdapter{
 
     private List<String> photoList;
     private Context context;
-
+    ArrayList<String> listOfUrls = new ArrayList<String>();
 
     public PhotoListAdapter(Context context) {
         this.context = context;
@@ -62,7 +64,6 @@ public class PhotoListAdapter extends BaseAdapter{
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View photoItemView = convertView;
-        final ArrayList<String> listOfUrls = new ArrayList<String>();
 
         if (photoItemView == null) {
             LayoutInflater vi;
@@ -75,7 +76,16 @@ public class PhotoListAdapter extends BaseAdapter{
         if (photoList.get(position) != null) {
             ImageView photoImageView = (ImageView) photoItemView.findViewById(R.id.photo_image_view);
             if(photoImageView != null) {
-                Picasso.with(context.getApplicationContext()).load(photoList.get(position)).into(photoImageView);
+                if (photoList.get(position).contains("profilePic")){
+                    Picasso.with(context.getApplicationContext()).load(photoList.get(position))
+                            .memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.NO_CACHE)
+                            .into(photoImageView);
+                    //Log.v("no cache","profile");
+                } else{
+                    Picasso.with(context.getApplicationContext()).load(photoList.get(position)).into(photoImageView);
+                    //Log.v("cache", "xcept profile");
+                }
+
                 /* Required if not using picasso library
                 photoImageView.setImageBitmap(photo);
                 */
@@ -84,13 +94,16 @@ public class PhotoListAdapter extends BaseAdapter{
                     public boolean onTouch(View v, MotionEvent event) {
                         Log.v("item position ", ""+ position);
                         int numOfPhotosInAlbum = getCount();
+                        Log.v("num_photos ", ""+ numOfPhotosInAlbum);
                         for (int i = 0; i< numOfPhotosInAlbum; i++){
                             listOfUrls.add(photoList.get(i)); //store url string in arraylist string.
                         }
 
                         Intent intent = new Intent(context.getApplicationContext(),FullScreenViewActivity.class);
+                        //Log.v("list_photos", ""+ listOfUrls);
                         intent.putStringArrayListExtra("urlPath", listOfUrls);
                         intent.putExtra("position", position);
+                        intent.putExtra("numOfObjects",numOfPhotosInAlbum);
                         context.startActivity(intent);
                         return false;
                     }
@@ -104,5 +117,10 @@ public class PhotoListAdapter extends BaseAdapter{
         */
         return photoItemView;
 
+    }
+    public void clearArrayListUrls (){
+        //clear arraylist to empty when exiting fullscreen mode to prevent duplicates.
+        listOfUrls.clear();
+        Log.v("clear", "array3" + listOfUrls);
     }
 }

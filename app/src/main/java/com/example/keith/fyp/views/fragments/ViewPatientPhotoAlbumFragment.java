@@ -204,7 +204,8 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
                 timestamp = tsLong.toString();
                 if (path.contains("profilePic")){
                     finalFilePath = path;
-                    new UploadImage(photo,path,path).execute();
+                    Bitmap photoProfile = photo.createScaledBitmap(photo, 70, 70, true);
+                    new UploadImage(photoProfile,path,path).execute();
                 }
                 else {
                     finalFilePath = path.replace(".jpg","_"+ timestamp +".jpg");
