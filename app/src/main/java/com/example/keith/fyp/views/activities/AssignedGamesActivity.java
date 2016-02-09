@@ -92,6 +92,10 @@ public class AssignedGamesActivity extends AppCompatActivity implements Drawer.O
                     assignedGamesSpinnerText = assignedGamesSpinner.getSelectedItem().toString();
                     String numberOnly= assignedGamesSpinnerText.replaceAll("[^0-9]", "");
                     Log.v("P-ID: "+getPatientID, "G-ID :"+numberOnly);
+                    Intent launchGameIntent = getPackageManager().getLaunchIntentForPackage("com.example.keith.fyp"); //androidManifest package name.
+                    launchGameIntent.putExtra("selectedPatientID", String.valueOf(getPatientID));
+                    launchGameIntent.putExtra("selectedGameID", numberOnly);
+                    startActivity(launchGameIntent);
                 }else{
                     assignedGamesSpinner.setError(errorMessage);
                 }
