@@ -87,14 +87,21 @@ public class AssignedGamesActivity extends AppCompatActivity implements Drawer.O
             @Override
             public void onClick(View v) {
                 String assignedGamesSpinnerText = null;
+                String[] splitGameName;
+                String gameName;
                 String errorMessage = getResources().getString(R.string.error_msg_field_required);
                 if (assignedGamesSpinner.getSelectedItemPosition() != 0) {
                     assignedGamesSpinnerText = assignedGamesSpinner.getSelectedItem().toString();
-                    String numberOnly= assignedGamesSpinnerText.replaceAll("[^0-9]", "");
-                    Log.v("P-ID: "+getPatientID, "G-ID :"+numberOnly);
-                    Intent launchGameIntent = getPackageManager().getLaunchIntentForPackage("com.example.keith.fyp"); //androidManifest package name.
+                    if (assignedGamesSpinnerText.contains(".")){
+                        splitGameName = assignedGamesSpinnerText.split("\\."); //split game name out via "fullstop" store in array [0].
+                        gameName = splitGameName[0];
+                        Log.v("gameName",gameName);
+                    }
+                    String chosenGameID= assignedGamesSpinnerText.replaceAll("[^0-9]", "");
+                    Log.v("P-ID: "+getPatientID, "G-ID :"+chosenGameID);
+                    Intent launchGameIntent = getPackageManager().getLaunchIntentForPackage("info.androidhive.camerafileupload"); //androidManifest package name.
                     launchGameIntent.putExtra("selectedPatientID", String.valueOf(getPatientID));
-                    launchGameIntent.putExtra("selectedGameID", numberOnly);
+                    launchGameIntent.putExtra("selectedGameID", chosenGameID);
                     startActivity(launchGameIntent);
                 }else{
                     assignedGamesSpinner.setError(errorMessage);
