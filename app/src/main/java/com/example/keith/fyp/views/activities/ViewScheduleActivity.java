@@ -292,7 +292,13 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
         gameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String patientName;
+                String patientNRIC;
+                patientName = viewedPatient.getFirstName()+" "+ viewedPatient.getLastName();
+                patientNRIC = viewedPatient.getNric().toString();
                 Intent intent = new Intent(getBaseContext(), AssignedGamesActivity.class);
+                intent.putExtra("patientName",patientName);
+                intent.putExtra("patientNRIC",patientNRIC);
                 startActivity(intent);
             }
         });

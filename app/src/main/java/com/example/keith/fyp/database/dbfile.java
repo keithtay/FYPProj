@@ -1972,9 +1972,10 @@ public class dbfile{
     }
 
     //test method to get assigned games of patient for future development.
-    public ArrayList <Integer> getAssignedGamesOfPatient (int patientId){
-        ArrayList <Integer> listOfAssignedGames = new ArrayList<Integer>();
-        int count = 1;
+    public ArrayList <String> getAssignedGamesOfPatient (int patientId){
+        //ArrayList <Integer> listOfAssignedGames = new ArrayList<Integer>();
+        ArrayList<String> listOfAssignedGames = new ArrayList<String>();
+        //int count = 1;
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -1984,17 +1985,22 @@ public class dbfile{
             Class.forName(driver).newInstance();
             conn = DriverManager.getConnection(connString, username, password);
             Statement stmt = conn.createStatement();
-            ResultSet reset = stmt.executeQuery("SELECT *\n" +
+            ResultSet reset = stmt.executeQuery("SELECT a.gameID, g.gameName\n" +
+                    "FROM assignedGame AS a\n" +
+                    "INNER JOIN game AS g\n" +
+                    "ON a.gameID = g.gameID\n" +
+                    "WHERE a.patientAllocationID= (SELECT p.patientAllocationID\n" +
+                    "FROM patientAllocation AS p\n" +
+                    "WHERE p.patientID = '" + patientId + "' AND p.isApproved = " + 1 + " AND p.isDeleted = " + 0+" AND datediff(day, endDate, GETDATE())<=0 )");
+            /*ResultSet reset = stmt.executeQuery("SELECT *\n" +
                     "FROM assignedGame\n" +
                     "WHERE patientAllocationID= (SELECT patientAllocationID\n"+
                                                 "FROM patientAllocation\n"+
                                                 "WHERE patientID = '"+patientId+ "' AND isApproved = "+ 1 +" AND isDeleted = "+0+" AND datediff(day, endDate, GETDATE())<=0 )");
-
+            */
             while (reset.next()) {
-                listOfAssignedGames.add(count);
-                Log.v("numGames2", "" + listOfAssignedGames);
-                count++;
-
+                listOfAssignedGames.add(reset.getString("gameName") + " "+ reset.getString("gameID"));
+                //Log.v("numGames2", "" + listOfAssignedGames);
             }
             conn.close();
         }
