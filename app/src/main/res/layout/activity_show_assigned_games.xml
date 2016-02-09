@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_content_container"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.keith.fyp.views.activities.AssignedGamesActivity">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Patient Name:"
+        android:id="@+id/patient_name_assigned_games" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Patient ID:"
+        android:id="@+id/patient_id_assigned_games" />
+
+    <fr.ganfra.materialspinner.MaterialSpinner
+        android:id="@+id/list_of_assigned_games"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-8dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        app:ms_alignLabels="false"
+        app:ms_arrowColor="@color/text_color_light"
+        app:ms_arrowSize="12dp"
+        app:ms_baseColor="@color/text_color_light"
+        app:ms_errorColor="@color/text_color_error"
+        app:ms_floatingLabelColor="@color/text_color_light"
+        app:ms_floatingLabelText="Select your game."
+        app:ms_hint="Select your game."
+        app:ms_multiline="false" />
+
+    <Button
+        android:id="@+id/run_game_button"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:paddingLeft="@dimen/padding_flat_button"
+        android:paddingRight="@dimen/padding_flat_button"
+        android:text="Run game"
+        android:textAllCaps="true"
+        android:textColor="@color/primary"
+        android:textStyle="bold" />
+</LinearLayout>

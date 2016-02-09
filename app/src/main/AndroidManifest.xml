@@ -127,7 +127,10 @@
         -->
         <activity
             android:name=".views.activities.AssignedGamesActivity"
-            android:theme="@android:style/Theme.Holo.NoActionBar">
+            android:label="@string/title_activity_view_assigned_games">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".views.activities.DashboardActivity" />
         </activity>
         <activity
             android:name=".views.activities.FullScreenViewActivity"
