@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.keith.fyp.R;
@@ -16,6 +17,7 @@ import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.utils.Global;
+import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
 import com.example.keith.fyp.views.customviews.TextField;
 import com.mikepenz.materialdrawer.Drawer;
@@ -41,6 +43,7 @@ public class AssignedGamesActivity extends AppCompatActivity implements Drawer.O
     ArrayList<String> allAssignedGameNames = new ArrayList<String>();
     protected Patient viewedPatient;
     private MaterialSpinner assignedGamesSpinner;
+    private Button runSelectedGameButton;
 
 
     @Override
@@ -57,6 +60,7 @@ public class AssignedGamesActivity extends AppCompatActivity implements Drawer.O
         dbfile db = new dbfile();
         patientName = (TextView) findViewById(R.id.patient_name_assigned_games);
         patientID = (TextView) findViewById(R.id.patient_id_assigned_games);
+        runSelectedGameButton = (Button) findViewById(R.id.run_game_button);
 
         //retrieval of details for assignedGames.
         getPatientID = db.getPatientId(i.getStringExtra("patientNRIC"));
@@ -69,15 +73,32 @@ public class AssignedGamesActivity extends AppCompatActivity implements Drawer.O
         patientName.setText("Patient Name: " + i.getStringExtra("patientName"));
         patientID.setText("Patient ID: " + getPatientID);
 
-        //set spinner with the respective values.
+        String[] mStringArray = new String[allAssignedGameNames.size()];
+        mStringArray = allAssignedGameNames.toArray(mStringArray);
+
+        //populate spinner with assigned games name and gameID of patient.
         assignedGamesSpinner = (MaterialSpinner) findViewById(R.id.list_of_assigned_games);
-        //ArrayAdapter<CharSequence> assignedGamesAdapter = ArrayAdapter.createFromResource(this,
-          //      allAssignedGameNames, android.R.layout.simple_spinner_item);
-        //assignedGamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //assignedGamesSpinner.setAdapter(assignedGamesAdapter);
+        ArrayAdapter<String> assignedGamesAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mStringArray);
+        assignedGamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        assignedGamesSpinner.setAdapter(assignedGamesAdapter);
 
+        //'run game' button on click listener.
+        runSelectedGameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String assignedGamesSpinnerText = null;
+                String errorMessage = getResources().getString(R.string.error_msg_field_required);
+                if (assignedGamesSpinner.getSelectedItemPosition() != 0) {
+                    assignedGamesSpinnerText = assignedGamesSpinner.getSelectedItem().toString();
+                    String numberOnly= assignedGamesSpinnerText.replaceAll("[^0-9]", "");
+                    Log.v("P-ID: "+getPatientID, "G-ID :"+numberOnly);
+                }else{
+                    assignedGamesSpinner.setError(errorMessage);
+                }
 
+            }
 
+        });
     }
 
     @Override
@@ -95,4 +116,5 @@ public class AssignedGamesActivity extends AppCompatActivity implements Drawer.O
 
         return true;
     }
+
 }

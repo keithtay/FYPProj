@@ -170,7 +170,14 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
         addnewPhotosButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                errorCheckingAndTakePhoto();
+                String addPhotosSpinnerText = null;
+                String errorMessage = getResources().getString(R.string.error_msg_field_required);
+                if (photoAlbumTitleSpinner.getSelectedItemPosition() != 0) {
+                    addPhotosSpinnerText = photoAlbumTitleSpinner.getSelectedItem().toString();
+                    dispatchTakePictureIntent(addPhotosSpinnerText);
+                }else{
+                    photoAlbumTitleSpinner.setError(errorMessage);
+                }
             }
 
         });
@@ -295,10 +302,7 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
             //refreshCurrentFragment();
             dialog.dismiss();
         }
-
-
     }
-
     private HttpParams getHTTPRequestParams(){
         HttpParams httpRequestParams = new BasicHttpParams();
         HttpConnectionParams.setConnectionTimeout(httpRequestParams, 1000 * 30);
@@ -315,26 +319,6 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
             addNewPhotosExpandable.hide();
         }
     }
-
-    private void errorCheckingAndTakePhoto() {
-        String addPhotosSpinnerText = null;
-        if (photoAlbumTitleSpinner.getSelectedItemPosition() != 0) {
-            addPhotosSpinnerText = photoAlbumTitleSpinner.getSelectedItem().toString();
-        }
-        // Input checking to see if album title has been selected a not.
-        boolean isValidForm = true;
-        String errorMessage = getResources().getString(R.string.error_msg_field_required);
-
-        if (UtilsString.isEmpty(addPhotosSpinnerText)) {
-            photoAlbumTitleSpinner.setError(errorMessage);
-            isValidForm = false;
-        }
-        if (isValidForm) {
-            dispatchTakePictureIntent(addPhotosSpinnerText);
-        }
-
-    }
-
 
     public static Bitmap decodeSampledBitmapFromFile(String path, int reqWidth, int reqHeight)
     { // BEST QUALITY MATCH

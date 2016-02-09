@@ -1971,7 +1971,6 @@ public class dbfile{
         //Log.v("pic added to DB","");
     }
 
-    //test method to get assigned games of patient for future development.
     public ArrayList <String> getAssignedGamesOfPatient (int patientId){
         //ArrayList <Integer> listOfAssignedGames = new ArrayList<Integer>();
         ArrayList<String> listOfAssignedGames = new ArrayList<String>();
@@ -1999,7 +1998,7 @@ public class dbfile{
                                                 "WHERE patientID = '"+patientId+ "' AND isApproved = "+ 1 +" AND isDeleted = "+0+" AND datediff(day, endDate, GETDATE())<=0 )");
             */
             while (reset.next()) {
-                listOfAssignedGames.add(reset.getString("gameName") + " "+ reset.getString("gameID"));
+                listOfAssignedGames.add(reset.getString("gameName") + ". GameID: "+ reset.getString("gameID"));
                 //Log.v("numGames2", "" + listOfAssignedGames);
             }
             conn.close();
