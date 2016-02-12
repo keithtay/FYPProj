@@ -23,6 +23,21 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:id="@+id/textEventName" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Duration (in mins):"
+            android:id="@+id/textView14" />
+
+        <EditText
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/numberText"
+            android:layout_weight="1" />
     </LinearLayout>
 
     <LinearLayout

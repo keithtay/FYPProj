@@ -33,7 +33,7 @@ import java.util.ArrayList;
 public class FlexibleEvent extends Fragment {
     private View rootView;
     Button btn;
-    EditText ed1, ed2;
+    EditText ed1, ed2, ed3;
     MyCustomAdapter dataAdapter = null;
     ArrayList<ScheduleList> schedule;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,6 +92,7 @@ public class FlexibleEvent extends Fragment {
         private class ViewHolder {
             TextView code;
             CheckBox name;
+            TextView duration;
         }
 
         @Override
@@ -107,6 +108,7 @@ public class FlexibleEvent extends Fragment {
                 holder = new ViewHolder();
                 holder.code = (TextView) convertView.findViewById(R.id.code);
                 holder.name = (CheckBox) convertView.findViewById(R.id.checkBox1);
+                holder.duration = (TextView) convertView.findViewById(R.id.duration);
                 convertView.setTag(holder);
 
                 holder.name.setOnClickListener( new View.OnClickListener() {
@@ -128,6 +130,7 @@ public class FlexibleEvent extends Fragment {
             ScheduleList s2 = countryList.get(position);
             holder.code.setText(" (" +  s2.getEventDesc() + ")");
             holder.name.setText(s2.getEventName());
+            holder.duration.setText(s2.getEventDuration());
             holder.name.setChecked(s2.isSelected());
             holder.name.setTag(s2);
 
@@ -182,18 +185,19 @@ public class FlexibleEvent extends Fragment {
         Button myButton1 = (Button) rootView.findViewById(R.id.button);
         ed1 = (EditText)rootView.findViewById(R.id.textEventName);
         ed2 = (EditText)rootView.findViewById(R.id.textScheduleDescription);
+        ed3 = (EditText)rootView.findViewById(R.id.numberText);
         myButton1.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                     String name = ed1.getText().toString();
                     String desc = ed2.getText().toString();
-
-                if(name.equals("")||name.equals(" ")||desc.equals("")|| desc.equals(" ")){
+                    String number = ed3.getText().toString();
+                if(name.equals("")||name.equals(" ")||desc.equals("")|| desc.equals(" ")||number.equals("")||number.equals(" ")){
                     Toast.makeText(getActivity(), "Please do not leave any field blank", Toast.LENGTH_LONG).show();
                 }else{
                     dbfile db = new dbfile();
-                    db.insertFlexibleEvent(name, desc);
+                    db.insertFlexibleEvent(name, desc, number);
                     Toast.makeText(getActivity(), "Successfully Inserted", Toast.LENGTH_LONG).show();
 
                 }

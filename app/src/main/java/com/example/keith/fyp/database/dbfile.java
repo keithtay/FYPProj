@@ -124,7 +124,7 @@ public class dbfile{
             e.printStackTrace();
         }
     }
-    public void insertFlexibleEvent(String eventName, String eventDesc){
+    public void insertFlexibleEvent(String eventName, String eventDesc, String number){
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -137,7 +137,7 @@ public class dbfile{
             int checkIsSupervisor, checkIsSuper;
 
             String sql1 = "INSERT INTO schedule " +
-                    "VALUES ('" + eventName + "','00:00:00', '00:00:00', '2010-12-15', '2010-12-15', 1,'" + eventDesc + "', 2, NULL, 0, 1, '" + timestamp + "')";
+                    "VALUES ('" + eventName + "','00:00:00', '00:00:00', '2010-12-15', '2010-12-15','" + number + "','" + eventDesc + "', 2, NULL, 0, 1, '" + timestamp + "')";
             Statement stmt1 = conn.createStatement();
             stmt1.executeUpdate(sql1);
 
@@ -577,7 +577,8 @@ public class dbfile{
             ResultSet reset = stmt.executeQuery("SELECT * from schedule WHERE scheduleTypeID=2 AND isApproved=1 AND isDeleted=0");
 
             while (reset.next()) {
-                ScheduleList s1 = new ScheduleList(reset.getString("scheduleTitle"),reset.getString("scheduleDesc"),false);
+                Log.v("Test",String.valueOf(reset.getInt("interval")));
+                ScheduleList s1 = new ScheduleList(reset.getString("scheduleTitle"),reset.getString("scheduleDesc"),false, String.valueOf(reset.getInt("interval")));
                 sl.add(s1);
             }
             conn.close();
