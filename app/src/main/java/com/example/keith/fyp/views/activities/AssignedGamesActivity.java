@@ -90,19 +90,34 @@ public class AssignedGamesActivity extends AppCompatActivity implements Drawer.O
                 String[] splitGameName;
                 String gameName;
                 String errorMessage = getResources().getString(R.string.error_msg_field_required);
+                String packageName;
                 if (assignedGamesSpinner.getSelectedItemPosition() != 0) {
                     assignedGamesSpinnerText = assignedGamesSpinner.getSelectedItem().toString();
                     if (assignedGamesSpinnerText.contains(".")){
                         splitGameName = assignedGamesSpinnerText.split("\\."); //split game name out via "fullstop" store in array [0].
                         gameName = splitGameName[0];
                         Log.v("gameName",gameName);
+                        packageName = gameName;
+                        if (packageName.contains("Memory Matrix")){
+                            packageName = "jb.esperanza";
+                        } else if (packageName.contains("Color Match")){
+                            packageName = "com.cgame.colourmatch";
+                        } else if (packageName.contains("Number Pop")){
+                            packageName = "com.example.numberpop";
+                        } else if (packageName.contains("Follow The Pattern")){
+                            packageName = "com.sng.followthepattern";
+                        } else if (packageName.contains("The Maze")){
+                            packageName = "com.example.amazinggame";
+                        }
+                        String chosenGameID= assignedGamesSpinnerText.replaceAll("[^0-9]", "");
+                        Log.v("P-ID: "+getPatientID, "G-ID :"+chosenGameID);
+                        Log.v("package Name", packageName);
+                        Intent launchGameIntent = getPackageManager().getLaunchIntentForPackage(packageName); //androidManifest package name.
+                        launchGameIntent.putExtra("selectedPatientID", String.valueOf(getPatientID));
+                        launchGameIntent.putExtra("selectedGameID", chosenGameID);
+                        startActivity(launchGameIntent);
                     }
-                    String chosenGameID= assignedGamesSpinnerText.replaceAll("[^0-9]", "");
-                    Log.v("P-ID: "+getPatientID, "G-ID :"+chosenGameID);
-                    Intent launchGameIntent = getPackageManager().getLaunchIntentForPackage("info.androidhive.camerafileupload"); //androidManifest package name.
-                    launchGameIntent.putExtra("selectedPatientID", String.valueOf(getPatientID));
-                    launchGameIntent.putExtra("selectedGameID", chosenGameID);
-                    startActivity(launchGameIntent);
+
                 }else{
                     assignedGamesSpinner.setError(errorMessage);
                 }
