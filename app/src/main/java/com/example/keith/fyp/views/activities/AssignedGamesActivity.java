@@ -90,7 +90,7 @@ public class AssignedGamesActivity extends AppCompatActivity implements Drawer.O
                 String[] splitGameName;
                 String gameName;
                 String errorMessage = getResources().getString(R.string.error_msg_field_required);
-                String packageName;
+                String packageName = "com.example.";
                 if (assignedGamesSpinner.getSelectedItemPosition() != 0) {
                     assignedGamesSpinnerText = assignedGamesSpinner.getSelectedItem().toString();
                     if (assignedGamesSpinnerText.contains(".")){
@@ -109,7 +109,7 @@ public class AssignedGamesActivity extends AppCompatActivity implements Drawer.O
                         } else if (packageName.contains("The Maze")){
                             packageName = "com.example.amazinggame";
                         }
-                        String chosenGameID= assignedGamesSpinnerText.replaceAll("[^0-9]", "");
+                        String chosenGameID= assignedGamesSpinnerText.replaceAll("[^0-9]", ""); //extract numbers(gameID) from spinnerText.
                         Log.v("P-ID: "+getPatientID, "G-ID :"+chosenGameID);
                         Log.v("package Name", packageName);
                         Intent launchGameIntent = getPackageManager().getLaunchIntentForPackage(packageName); //androidManifest package name.
@@ -144,3 +144,36 @@ public class AssignedGamesActivity extends AppCompatActivity implements Drawer.O
     }
 
 }
+/*
+//replace "runSelectedGameButton" on click listener when ALL game apps have a standardise naming convention in it's manifest.
+// standard proposed naming convention for game package: "com.example.[gameNameInLowerCaseAndNoSpacing]". can change as u fit.
+// FOR FUTURE DEVELOPMENT, sample source code for future developers (:
+
+                String assignedGamesSpinnerText = null;
+                String[] splitGameName;
+                String gameName;
+                String errorMessage = getResources().getString(R.string.error_msg_field_required);
+                String packageName = "com.example."; //set default string.
+                if (assignedGamesSpinner.getSelectedItemPosition() != 0) {
+                    assignedGamesSpinnerText = assignedGamesSpinner.getSelectedItem().toString();
+                    if (assignedGamesSpinnerText.contains(".")){
+                        splitGameName = assignedGamesSpinnerText.split("\\."); //split game name out via "fullstop" store in array [0].
+                        gameName = splitGameName[0];
+                        Log.v("gameName",gameName);
+                        packageName += gameName.replace(" ", "").toLowerCase();
+                        String chosenGameID= assignedGamesSpinnerText.replaceAll("[^0-9]", ""); //extract numbers(gameID) from spinnerText.
+                        Log.v("P-ID: "+getPatientID, "G-ID :"+chosenGameID); //check patient & game ID values.
+                        Log.v("package Name", packageName);
+                        Intent launchGameIntent = getPackageManager().getLaunchIntentForPackage(packageName); //androidManifest package name.
+                        launchGameIntent.putExtra("selectedPatientID", String.valueOf(getPatientID));
+                        launchGameIntent.putExtra("selectedGameID", chosenGameID);
+                        startActivity(launchGameIntent);
+                    }
+
+                }else{
+                    assignedGamesSpinner.setError(errorMessage);
+                }
+
+
+
+ */
