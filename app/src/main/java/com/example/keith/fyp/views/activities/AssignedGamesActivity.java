@@ -108,6 +108,8 @@ public class AssignedGamesActivity extends AppCompatActivity implements Drawer.O
                             packageName = "com.sng.followthepattern";
                         } else if (packageName.contains("The Maze")){
                             packageName = "com.example.amazinggame";
+                        } else if (packageName.contains("Puzzle")) {
+                            packageName = "com.example.elie.puzzle";
                         }
                         String chosenGameID= assignedGamesSpinnerText.replaceAll("[^0-9]", ""); //extract numbers(gameID) from spinnerText.
                         Log.v("P-ID: "+getPatientID, "G-ID :"+chosenGameID);
