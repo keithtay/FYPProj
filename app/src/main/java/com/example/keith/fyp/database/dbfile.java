@@ -1972,6 +1972,39 @@ public class dbfile{
         //Log.v("pic added to DB","");
     }
 
+    public void deletePicture(String filePath, Context context){
+        String modifiedpath;
+        String path = "http://dementiafypdb.com/";
+        modifiedpath = filePath.replace(path,"");
+        modifiedpath = modifiedpath.replace("/","\\");
+        Log.v("pathCheck",modifiedpath);
+
+        if (modifiedpath.contains("profilePic")){
+            Toast.makeText(context, "Unable to delete profile picture.", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            if (android.os.Build.VERSION.SDK_INT > 9) {
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+            }
+            Connection conn = null;
+            try {
+                Class.forName(driver).newInstance();
+                conn = DriverManager.getConnection(connString, username, password);
+                Statement stmt = conn.createStatement();
+                stmt.executeUpdate("UPDATE album" +
+                                " SET isDeleted ='1'" +
+                                " WHERE albumPath = '" + modifiedpath + "' ");
+                Toast.makeText(context, "Photo deleted successfully.", Toast.LENGTH_SHORT).show();
+                conn.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
     public ArrayList <String> getAssignedGamesOfPatient (int patientId){
         ArrayList<String> listOfAssignedGames = new ArrayList<String>();
         if (android.os.Build.VERSION.SDK_INT > 9) {

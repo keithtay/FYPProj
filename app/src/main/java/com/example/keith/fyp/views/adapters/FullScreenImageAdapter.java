@@ -85,11 +85,12 @@ public class FullScreenImageAdapter extends PagerAdapter {
         btnClose = (Button) viewLayout.findViewById(R.id.btnClose);
         btnDelete = (Button) viewLayout.findViewById(R.id.btnDelete);
 
-        Log.v("a:",this._imagePaths.get(position));
+        Log.v("check:",""+_imagePaths);
+
         if (this._imagePaths.get(position).contains("profilePic")) {
             Picasso.with(this._activity).load(this._imagePaths.get(position))
                     .memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.NO_CACHE)
-                    .into(imgDisplay);
+                    .into(imgDisplay); //no cache for profile pic.
             //Log.v("no cache", "profileF");
         } else{
             Picasso.with(this._activity).load(this._imagePaths.get(position)).into(imgDisplay);

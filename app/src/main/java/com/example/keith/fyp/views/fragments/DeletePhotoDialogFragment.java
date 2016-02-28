@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 
 import com.example.keith.fyp.R;
+import com.example.keith.fyp.database.dbfile;
 
 import java.util.ArrayList;
 
@@ -15,6 +16,7 @@ import java.util.ArrayList;
  */
 public class DeletePhotoDialogFragment extends DialogFragment {
     ArrayList<String> imageToDelete = new ArrayList<String>();
+    dbfile db = new dbfile();
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
@@ -22,15 +24,16 @@ public class DeletePhotoDialogFragment extends DialogFragment {
         Bundle mArgs = getArguments();
         imageToDelete = mArgs.getStringArrayList("key");
         builder.setTitle("Delete Photo");
-        builder.setMessage("Are you sure you want to delete the selected photo?"+ imageToDelete.get(0))
+        builder.setMessage("Are you sure you want to delete the selected photo?")
                 .setPositiveButton(R.string.deletePhotoDialogBoxYes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // FIRE ZE MISSILES!
+                        db.deletePicture(imageToDelete.get(0), getActivity());
+                        getActivity().finish();
                     }
                 })
                 .setNegativeButton(R.string.deletePhotoDialogBoxNo, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
+                        //user cancelled the dialog
                     }
                 });
         // Create the AlertDialog object and return it

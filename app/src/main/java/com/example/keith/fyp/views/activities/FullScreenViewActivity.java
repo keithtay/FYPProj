@@ -48,11 +48,11 @@ public class FullScreenViewActivity extends Activity{
                 confirmedUrlForFullScreen.add(urlForFullScreen.get(j));
                 Log.v("edited", "url " + confirmedUrlForFullScreen);
             }
-            toGiveAdapter.add(confirmedUrlForFullScreen.get(pos));
+            toGiveAdapter.add(confirmedUrlForFullScreen.get(pos)); //passing only selected image to fullscreen adapter.
             Log.v("edited", "urls " + toGiveAdapter);
             adapter = new FullScreenImageAdapter(FullScreenViewActivity.this, toGiveAdapter);
         } else {
-            toGiveAdapter.add(urlForFullScreen.get(pos));
+            toGiveAdapter.add(urlForFullScreen.get(pos)); //passing only selected image to fullscreen adapter.
             Log.v("edited", "urls " + toGiveAdapter);
             adapter = new FullScreenImageAdapter(FullScreenViewActivity.this, toGiveAdapter);
         }
