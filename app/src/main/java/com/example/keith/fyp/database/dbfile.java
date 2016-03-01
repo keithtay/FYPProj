@@ -1956,7 +1956,7 @@ public class dbfile{
             if (albumCatID == 1){
                 stmt.executeUpdate("UPDATE album"+
                                     " SET albumPath ='"+ modifiedpath + "'" +
-                                    " WHERE patientID = '"+ patientID +"' AND albumCatID = '1'");
+                                    " WHERE patientID = '"+ patientID +"' AND albumCatID = '1' AND isDeleted = '0' AND isApproved = '1'");
             }
             else {
                 sql = "INSERT INTO album (albumPath, albumCatID, patientID, isDeleted, isApproved)" +
@@ -1994,7 +1994,7 @@ public class dbfile{
                 Statement stmt = conn.createStatement();
                 stmt.executeUpdate("UPDATE album" +
                                 " SET isDeleted ='1'" +
-                                " WHERE albumPath = '" + modifiedpath + "' ");
+                                " WHERE albumPath = '" + modifiedpath + "' AND isApproved = 1");
                 Toast.makeText(context, "Photo deleted successfully.", Toast.LENGTH_SHORT).show();
                 conn.close();
 
@@ -2022,7 +2022,8 @@ public class dbfile{
                     "ON a.gameID = g.gameID\n" +
                     "WHERE a.patientAllocationID= (SELECT p.patientAllocationID\n" +
                     "FROM patientAllocation AS p\n" +
-                    "WHERE p.patientID = '" + patientId + "' AND p.isApproved = " + 1 + " AND p.isDeleted = " + 0+" AND datediff(day, endDate, GETDATE())<=0 )");
+                    "WHERE p.patientID = '" + patientId + "' AND p.isApproved = " + 1 + " AND p.isDeleted = " + 0+" AND datediff(day, endDate, GETDATE())<=0 )\n" +
+                    "AND a.isDeleted = 0 AND a.isApproved = 1 AND g.isDeleted = 0 AND g.isApproved = 1");
             /*ResultSet reset = stmt.executeQuery("SELECT *\n" +
                     "FROM assignedGame\n" +
                     "WHERE patientAllocationID= (SELECT patientAllocationID\n"+
