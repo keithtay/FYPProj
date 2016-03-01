@@ -315,7 +315,10 @@ public class UtilsUi {
                 .withName(R.string.nav_care_center_config)
                 .withIcon(FontAwesome.Icon.faw_building)
                 .withIdentifier(Global.NAVIGATION_CARE_CENTER_CONFIG_ID);
-
+        PrimaryDrawerItem logoutDrawerItem = new PrimaryDrawerItem()
+                .withName(R.string.nav_care_center_config)
+                .withIcon(GoogleMaterial.Icon.gmd_lock_outline)
+                .withIdentifier(5);
 //        PrimaryDrawerItem logoutItem = new PrimaryDrawerItem()
 //                .withName(R.string.nav_care_center_config)
 //                .withIcon(FontAwesome.Icon.faw_sign_out)
@@ -329,7 +332,8 @@ public class UtilsUi {
                         homeDrawerItem,
                         notificationDrawerItem,
                         accountDrawerItem,
-                        settingsDrawerItem
+                        settingsDrawerItem,
+                        logoutDrawerItem
 //                        logoutItem
                 )
                 .withOnDrawerItemClickListener(drawerItemClickListener)

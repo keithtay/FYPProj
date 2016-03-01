@@ -209,7 +209,10 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
                         nameEditText.setError(errorMessage);
                         isValidForm = false;
                     }
-
+                    if(UtilsString.isEmpty(notesStr)) {
+                        notesEditText.setError(errorMessage);
+                        isValidForm = false;
+                    }
                     if(UtilsString.isEmpty(dosageStr)) {
                         dosageEditText.setError(errorMessage);
                         isValidForm = false;

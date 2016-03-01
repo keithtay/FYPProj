@@ -29,16 +29,16 @@ public class CareCenterConfigFragmentEncoder {
 
         switch(index) {
             case 0:
-                fragmentToBeDisplayed = new CareCenterConfigDefaultEventFragment();
-                break;
-            case 1:
                 fragmentToBeDisplayed = new GenerateScheduleFragment();
                 break;
+            case 1:
+                fragmentToBeDisplayed = new CareCenterConfigDefaultEventFragment();
+                break;
             case 2:
-                fragmentToBeDisplayed = new NotificationSettingsFragment();
+                fragmentToBeDisplayed = new FlexibleEvent();
                 break;
             case 3:
-                fragmentToBeDisplayed = new FlexibleEvent();
+                fragmentToBeDisplayed = new NotificationSettingsFragment();
                 break;
         }
 

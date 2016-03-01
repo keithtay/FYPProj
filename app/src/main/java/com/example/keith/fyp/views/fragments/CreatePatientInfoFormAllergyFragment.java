@@ -174,7 +174,10 @@ public class CreatePatientInfoFormAllergyFragment extends CreatePatientInfoFormF
             newAllergyNameEditText.setError(errorMessage);
             isValidForm = false;
         }
-
+        if(UtilsString.isEmpty(allergyNotes)) {
+            newAllergyNotesEditText.setError(errorMessage);
+            isValidForm = false;
+        }
         if(UtilsString.isEmpty(allergyReaction)) {
             newAllergyReactionEditText.setError(errorMessage);
             isValidForm = false;

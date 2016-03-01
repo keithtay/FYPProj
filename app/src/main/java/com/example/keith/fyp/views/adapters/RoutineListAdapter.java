@@ -223,7 +223,10 @@ public class RoutineListAdapter extends RecyclerView.Adapter<RoutineListAdapter.
                         nameEditText.setError(errorMessage);
                         isValidForm = false;
                     }
-
+                    if (UtilsString.isEmpty(notesStr)) {
+                        notesEditText.setError(errorMessage);
+                        isValidForm = false;
+                    }
                     DateTime startDate = null;
                     if (UtilsString.isEmpty(startDateStr)) {
                         startDatePicker.setError(errorMessage);

@@ -127,7 +127,10 @@ public class AllergyListAdapter extends RecyclerView.Adapter<AllergyListAdapter.
                         allergyName.setError(errorMessage);
                         isValidForm = false;
                     }
-
+                    if(UtilsString.isEmpty(allergyNotesStr)) {
+                        allergyNotes.setError(errorMessage);
+                        isValidForm = false;
+                    }
                     if(UtilsString.isEmpty(allergyReactionStr)) {
                         allergyReaction.setError(errorMessage);
                         isValidForm = false;

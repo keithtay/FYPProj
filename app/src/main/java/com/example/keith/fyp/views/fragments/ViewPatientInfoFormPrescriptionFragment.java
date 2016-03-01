@@ -193,7 +193,10 @@ public class ViewPatientInfoFormPrescriptionFragment extends ViewPatientInfoForm
             nameEditText.setError(errorMessage);
             isValidForm = false;
         }
-
+        if(UtilsString.isEmpty(notes)) {
+            notesEditText.setError(errorMessage);
+            isValidForm = false;
+        }
         if(UtilsString.isEmpty(dosage)) {
             dosageEditText.setError(errorMessage);
             isValidForm = false;

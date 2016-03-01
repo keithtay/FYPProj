@@ -207,48 +207,71 @@ public class ViewPatientInfoFormVitalFragment extends ViewPatientInfoFormFragmen
     private void createAndAddVital() {
         String dateTakenStr = vitalDateTakenEditText.getText().toString();
         String timeTakenStr = vitalTimeTakenEditText.getText().toString();
-
+        Boolean isValid = true;
         Float temperature = null;
         String temperatureStr = temperatureEditText.getText().toString();
-        if(temperatureStr != null && !temperatureStr.isEmpty()) {
+        if (temperatureStr != null && !temperatureStr.isEmpty()) {
             temperature = Float.parseFloat(temperatureStr);
+        } else {
+            temperatureEditText.setError("This field is required!");
+            isValid = false;
         }
 
         Float bloodPressureSystol = null;
         String bloodPressureSystolStr = bloodPressureSystolEditText.getText().toString();
-        if(bloodPressureSystolStr != null && !bloodPressureSystolStr.isEmpty()) {
+        if (bloodPressureSystolStr != null && !bloodPressureSystolStr.isEmpty()) {
             bloodPressureSystol = Float.parseFloat(bloodPressureSystolStr);
+        } else {
+            bloodPressureSystolEditText.setError("This field is required!");
+            isValid = false;
         }
 
         Float bloodPressureDiastol = null;
         String bloodPressureDiastolStr = bloodPressureDiastolEditText.getText().toString();
-        if(bloodPressureDiastolStr != null && !bloodPressureDiastolStr.isEmpty()) {
+        if (bloodPressureDiastolStr != null && !bloodPressureDiastolStr.isEmpty()) {
             bloodPressureDiastol = Float.parseFloat(bloodPressureDiastolStr);
+        } else {
+            bloodPressureDiastolEditText.setError("This field is required!");
+            isValid = false;
         }
 
         Float height = null;
         String heightStr = heightEditText.getText().toString();
-        if(heightStr != null && !heightStr.isEmpty()) {
+        if (heightStr != null && !heightStr.isEmpty()) {
             height = Float.parseFloat(heightStr);
+        } else {
+            heightEditText.setError("This field is required!");
+            isValid = false;
         }
 
         Float weight = null;
         String weightStr = weightEditText.getText().toString();
-        if(weightStr != null && !weightStr.isEmpty()) {
+        if (weightStr != null && !weightStr.isEmpty()) {
             weight = Float.parseFloat(weightStr);
+        } else {
+            weightEditText.setError("This field is required!");
+            isValid = false;
         }
 
         String notes = notesEditText.getText().toString();
 
+        if (notes.equals(null) || notes.isEmpty()) {
+            notesEditText.setError("This field is required!");
+            isValid = false;
+        }
         String beforeOrAfterMealStr;
         Boolean isBeforeMeal = null;
-        if(vitalLabelSpinner.getSelectedItemPosition() != 0) {
+        if (vitalLabelSpinner.getSelectedItemPosition() != 0) {
             beforeOrAfterMealStr = vitalLabelSpinner.getSelectedItem().toString();
 
             if (beforeOrAfterMealStr.equals("Before meal")) {
                 isBeforeMeal = true;
-            } else if(beforeOrAfterMealStr.equals("After meal")) {
+            } else if (beforeOrAfterMealStr.equals("After meal")) {
                 isBeforeMeal = false;
+            }else{
+                isBeforeMeal = null;
+                vitalLabelSpinner.setError("This field is required");
+                isValid = false;
             }
         }
 
@@ -261,30 +284,32 @@ public class ViewPatientInfoFormVitalFragment extends ViewPatientInfoFormFragmen
         dateTimeToSave = dateTimeToSave.withHourOfDay(timeTaken.getHourOfDay());
         dateTimeToSave = dateTimeToSave.withMinuteOfHour(timeTaken.getMinuteOfHour());
 
-        SharedPreferences pref;
-        pref = getActivity().getSharedPreferences("Login", 0);
-        final int UserID = Integer.parseInt(pref.getString("userid", ""));
-        final int UserTypeID = Integer.parseInt(pref.getString("userTypeId",""));
-        String info = dateTimeToSave.toString() + ";" + isBeforeMeal.toString() + ";" + String.valueOf(temperature) + ";" +
-                String.valueOf(bloodPressureSystol) + ";" + String.valueOf(bloodPressureDiastol)
-                +";"+ String.valueOf(height) + ";" + String.valueOf(weight) + ";" + notes;
-        dbfile db = new dbfile();
+        if (isValid) {
+            SharedPreferences pref;
+            pref = getActivity().getSharedPreferences("Login", 0);
+            final int UserID = Integer.parseInt(pref.getString("userid", ""));
+            final int UserTypeID = Integer.parseInt(pref.getString("userTypeId", ""));
+            String info = dateTimeToSave.toString() + ";" + isBeforeMeal.toString() + ";" + String.valueOf(temperature) + ";" +
+                    String.valueOf(bloodPressureSystol) + ";" + String.valueOf(bloodPressureDiastol)
+                    + ";" + String.valueOf(height) + ";" + String.valueOf(weight) + ";" + notes;
+            dbfile db = new dbfile();
 
 
-        int x = db.getPatientId(viewedPatient.getNric());
+            int x = db.getPatientId(viewedPatient.getNric());
 
-        db.insertPatientSpec(info, x, 2, UserTypeID,UserID);
-        if(UserTypeID ==3){
-            Vital newVital = new Vital(dateTimeToSave, isBeforeMeal, temperature, bloodPressureSystol, bloodPressureDiastol, height, weight, notes);
-            vitalList.add(0,newVital);
-            vitalListAdapter.notifyItemInserted(0);
-        }else{
-            Toast.makeText(getActivity(),"Pending Supervisor Approval",  Toast.LENGTH_LONG).show();
+            db.insertPatientSpec(info, x, 2, UserTypeID, UserID);
+            if (UserTypeID == 3) {
+                Vital newVital = new Vital(dateTimeToSave, isBeforeMeal, temperature, bloodPressureSystol, bloodPressureDiastol, height, weight, notes);
+                vitalList.add(0, newVital);
+                vitalListAdapter.notifyItemInserted(0);
+            } else {
+                Toast.makeText(getActivity(), "Pending Supervisor Approval", Toast.LENGTH_LONG).show();
+            }
+
+            resetNewVitalFields();
+
+            closeExpandableAddVital();
+            hideKeyboard();
         }
-
-        resetNewVitalFields();
-
-        closeExpandableAddVital();
-        hideKeyboard();
     }
 }

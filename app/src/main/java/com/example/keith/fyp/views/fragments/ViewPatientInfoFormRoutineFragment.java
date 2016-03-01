@@ -159,6 +159,11 @@ public class ViewPatientInfoFormRoutineFragment extends ViewPatientInfoFormFragm
             isValidForm = false;
         }
 
+        if(UtilsString.isEmpty(notes)){
+            notesEditText.setError(errorMessage);
+            isValidForm = false;
+        }
+
         DateTime startDate = null;
         if(UtilsString.isEmpty(startDateStr)) {
             startDatePicker.setError(errorMessage);

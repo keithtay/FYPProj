@@ -325,6 +325,10 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
                 case Global.NAVIGATION_CARE_CENTER_CONFIG_ID:
                     fragmentToBeDisplayed = new CareCenterConfigFragment();
                     break;
+                case 5:
+                    finish();
+                    System.exit(0);
+                    break;
             }
 
             miniDrawer.updateItem(currentDisplayedFragmentId);

@@ -147,10 +147,10 @@
     </string-array>
 
     <string-array name="care_center_config_category">
-        <item>Default Event|Care center\'s default activities to be automatically included in patients\' schedule</item>
         <item>Generate Schedule|</item>
-        <item>Notification Settings|</item>
+        <item>Fixed Schedule|Care center\'s default activities to be automatically included in patients\' schedule</item>
         <item>Flexible Schedule|</item>
+        <item>Notification Settings|</item>
     </string-array>
     <string name="title_activity_view_assigned_games">Patient Assigned Games</string>
     <string name="title_activity_view_schedule">Patient Schedule</string>

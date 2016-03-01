@@ -172,9 +172,12 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
              DateTime creationDate = Global.DATE_FORMAT.parseDateTime(addProblemLogFromDateEditText.getText().toString());
              String category = newProblemLogCategorySpinner.getSelectedItem().toString();
              String notes = newProblemLogNotesEditText.getText().toString();
+        if(notes.isEmpty()) {
+            newProblemLogNotesEditText.setError("This field is required!");
+        }else{
             ProblemLog newProblemLog = new ProblemLog(UtilsUi.generateUniqueId(), creationDate, category, notes);
             addProblemLog(newProblemLog);
-
+        }
 
 
     }

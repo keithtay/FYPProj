@@ -185,20 +185,20 @@ public class VitalListAdapter extends RecyclerView.Adapter<VitalListAdapter.Vita
                     ArrayList<Vital> vitalList = patient.getVitalList();
                     Vital vital = vitalList.get(getAdapterPosition());
                     Boolean a1;
-                    if (vital.isBeforeMeal() == true){
+                    if (vital.isBeforeMeal() == true) {
                         a1 = true;
-                    }else{
+                    } else {
                         a1 = false;
                     }
-                    float diastol= vital.getBloodPressureDiastol();
+                    float diastol = vital.getBloodPressureDiastol();
                     float temp = vital.getTemperature();
                     float weight1 = vital.getWeight();
                     float sys = vital.getBloodPressureSystol();
                     float height1 = vital.getHeight();
                     String oldValue = vital.getDateTimeTaken().toString() + ";" + a1.toString() + ";" +
-                            String.valueOf(temp) + ";" + String.valueOf(sys) + ";"+
+                            String.valueOf(temp) + ";" + String.valueOf(sys) + ";" +
                             String.valueOf(diastol) + ";" + String.valueOf(height1) + ";" +
-                           String.valueOf(weight1) + ";" + vital.getNotes();
+                            String.valueOf(weight1) + ";" + vital.getNotes();
                     DateTime date = Global.DATE_FORMAT.parseDateTime(dateTaken.getText().toString());
                     int mYear = date.getYear();
                     int mMonth = date.getMonthOfYear();
@@ -216,62 +216,88 @@ public class VitalListAdapter extends RecyclerView.Adapter<VitalListAdapter.Vita
                     savedDateTime = savedDateTime.withMinuteOfHour(mMinutes);
 
                     vital.setDateTimeTaken(savedDateTime);
-
+                    Boolean isValid = true;
                     String beforeOrAfterMeal = beforeAfterMeal.getSelectedItem().toString();
-                    if(beforeOrAfterMeal.equals("Before meal")) {
+                    if (beforeOrAfterMeal.equals("Before meal")) {
                         vital.setIsBeforeMeal(true);
                         beforeOrAfterMeal = "true";
-                    } else if(beforeOrAfterMeal.equals("After meal")) {
+                    } else if (beforeOrAfterMeal.equals("After meal")) {
                         vital.setIsBeforeMeal(false);
                         beforeOrAfterMeal = "false";
                     } else {
                         vital.setIsBeforeMeal(null);
+                        beforeAfterMeal.setError("This field is required!");
+                        isValid = false;
                     }
 
+
                     String tempStr = temperature.getText().toString();
-                    if(tempStr != null && !tempStr.isEmpty()) {
+                    if (tempStr != null && !tempStr.isEmpty()) {
                         vital.setTemperature(Float.parseFloat(tempStr));
+                    } else {
+                        temperature.setError("This field is required!");
+                        isValid = false;
                     }
 
                     String systolStr = bloodPressureSystol.getText().toString();
-                    if(systolStr != null && !systolStr.isEmpty()) {
+                    if (systolStr != null && !systolStr.isEmpty()) {
                         vital.setBloodPressureSystol(Float.parseFloat(systolStr));
+                    } else {
+                        bloodPressureSystol.setError("This field is required!");
+                        isValid = false;
                     }
 
                     String diastolStr = bloodPressureDiastol.getText().toString();
-                    if(diastolStr != null && !diastolStr.isEmpty()) {
+                    if (diastolStr != null && !diastolStr.isEmpty()) {
                         vital.setBloodPressureDiastol(Float.parseFloat(diastolStr));
+                    } else {
+                        bloodPressureDiastol.setError("This field is required!");
+                        isValid = false;
                     }
 
                     String heightStr = height.getText().toString();
-                    if(heightStr != null && !heightStr.isEmpty()) {
+                    if (heightStr != null && !heightStr.isEmpty()) {
                         vital.setHeight(Float.parseFloat(heightStr));
+                    } else {
+                        height.setError("This field is required!");
+                        isValid = false;
                     }
 
                     String weightStr = weight.getText().toString();
-                    if(weightStr != null && !weightStr.isEmpty()) {
+                    if (weightStr != null && !weightStr.isEmpty()) {
                         vital.setWeight(Float.parseFloat(weightStr));
+                    } else {
+                        weight.setError("This field is required!");
+                        isValid = false;
                     }
-                    dbfile db = new dbfile();
+
                     vital.setNotes(notes.getText().toString());
-                    String newValue = savedDateTime + ";" + beforeOrAfterMeal + ";" +
-                            tempStr + ";" + systolStr + ";"+
-                            diastolStr + ";" + heightStr + ";" +
-                            weightStr + ";" + notes.getText().toString();
-                    int x = db.getPatientId(patient.getNric());
-                    int getRowID = db.getAllergyRowId(oldValue, x);
-                    SharedPreferences preferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
-                    final int UserID = Integer.parseInt(preferences.getString("userid", ""));
-                    final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
-                    db.updatePatientSpec(oldValue, newValue, x, 2, getRowID, UserTypeID, UserID);
-                    if(UserTypeID == 3){
-                        Toast.makeText(context, "Successfully Changed!", Toast.LENGTH_LONG).show();
-                    }else{
-                        Toast.makeText(context, "Pending Supervisor Approval", Toast.LENGTH_LONG).show();
+                    if (notes.getText().toString().equals(null) || notes.getText().toString().isEmpty()) {
+                        notes.setError("This field is required!");
+                        isValid = false;
                     }
-                    setFormEditable(false);
-                    if (expandableLayout.isOpened()) {
-                        expandableLayout.hide();
+                    if (isValid) {
+                        dbfile db = new dbfile();
+                        String newValue = savedDateTime + ";" + beforeOrAfterMeal + ";" +
+                                tempStr + ";" + systolStr + ";" +
+                                diastolStr + ";" + heightStr + ";" +
+                                weightStr + ";" + notes.getText().toString();
+                        int x = db.getPatientId(patient.getNric());
+                        int getRowID = db.getAllergyRowId(oldValue, x);
+                        SharedPreferences preferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
+                        final int UserID = Integer.parseInt(preferences.getString("userid", ""));
+                        final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
+                        db.updatePatientSpec(oldValue, newValue, x, 2, getRowID, UserTypeID, UserID);
+                        if (UserTypeID == 3) {
+                            Toast.makeText(context, "Successfully Changed!", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(context, "Pending Supervisor Approval", Toast.LENGTH_LONG).show();
+                        }
+                        setFormEditable(false);
+                        if (expandableLayout.isOpened()) {
+                            expandableLayout.hide();
+                        }
+
                     }
                 }
             });

@@ -105,6 +105,8 @@ public class LoginActivity extends ActionBarActivity {
                     editor.putString("userid", String.valueOf(a1.get(0)));
                     editor.putString("userTypeId", String.valueOf(a1.get(1)));
                     editor.commit();
+                    et1.setText("");
+                    et2.setText("");
                     Toast.makeText(getApplicationContext(), "Welcome back " + Username + "!", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(context, DashboardActivity.class);
                     startActivity(intent);

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.models.Allergy;
+import com.example.keith.fyp.models.ProblemLog;
 import com.example.keith.fyp.models.Vital;
 import com.example.keith.fyp.utils.DataHolder;
 import com.example.keith.fyp.utils.Global;
@@ -178,39 +179,57 @@ public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFra
     private void createAndAddVital() {
         String dateTakenStr = vitalDateTakenEditText.getText().toString();
         String timeTakenStr = vitalTimeTakenEditText.getText().toString();
-
+        Boolean isValid = true;
         Float temperature = null;
         String temperatureStr = temperatureEditText.getText().toString();
         if(temperatureStr != null && !temperatureStr.isEmpty()) {
             temperature = Float.parseFloat(temperatureStr);
+        }else{
+            temperatureEditText.setError("This field is required");
+            isValid = false;
         }
 
         Float bloodPressureSystol = null;
         String bloodPressureSystolStr = bloodPressureSystolEditText.getText().toString();
         if(bloodPressureSystolStr != null && !bloodPressureSystolStr.isEmpty()) {
             bloodPressureSystol = Float.parseFloat(bloodPressureSystolStr);
+        }else{
+            bloodPressureSystolEditText.setError("This field is required");
+            isValid = false;
         }
 
         Float bloodPressureDiastol = null;
         String bloodPressureDiastolStr = bloodPressureDiastolEditText.getText().toString();
         if(bloodPressureDiastolStr != null && !bloodPressureDiastolStr.isEmpty()) {
             bloodPressureDiastol = Float.parseFloat(bloodPressureDiastolStr);
+        }else{
+            bloodPressureDiastolEditText.setError("This field is required");
+            isValid = false;
         }
 
         Float height = null;
         String heightStr = heightEditText.getText().toString();
         if(heightStr != null && !heightStr.isEmpty()) {
             height = Float.parseFloat(heightStr);
+        }else{
+            heightEditText.setError("This field is required");
+            isValid = false;
         }
 
         Float weight = null;
         String weightStr = weightEditText.getText().toString();
         if(weightStr != null && !weightStr.isEmpty()) {
             weight = Float.parseFloat(weightStr);
+        }else{
+            weightEditText.setError("This field is required");
+            isValid = false;
         }
 
         String notes = notesEditText.getText().toString();
-
+        if(notes.isEmpty()){
+            notesEditText.setError("This field is required");
+            isValid = false;
+        }
         String beforeOrAfterMealStr;
         Boolean isBeforeMeal = null;
         if(vitalLabelSpinner.getSelectedItemPosition() != 0) {
@@ -220,6 +239,10 @@ public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFra
                 isBeforeMeal = true;
             } else if(beforeOrAfterMealStr.equals("After meal")) {
                 isBeforeMeal = false;
+            }else{
+                isBeforeMeal = null;
+                vitalLabelSpinner.setError("This field is required");
+                isValid = false;
             }
         }
 
@@ -232,13 +255,17 @@ public class CreatePatientInfoFormVitalFragment extends CreatePatientInfoFormFra
         dateTimeToSave = dateTimeToSave.withHourOfDay(timeTaken.getHourOfDay());
         dateTimeToSave = dateTimeToSave.withMinuteOfHour(timeTaken.getMinuteOfHour());
 
-        Vital newVital = new Vital(dateTimeToSave, isBeforeMeal, temperature, bloodPressureSystol, bloodPressureDiastol, height, weight, notes);
-        vitalList.add(0,newVital);
-        vitalListAdapter.notifyItemInserted(0);
+        if(isValid) {
 
-        resetNewVitalFields();
 
-        closeExpandableAddVital();
-        hideKeyboard();
+            Vital newVital = new Vital(dateTimeToSave, isBeforeMeal, temperature, bloodPressureSystol, bloodPressureDiastol, height, weight, notes);
+            vitalList.add(0, newVital);
+            vitalListAdapter.notifyItemInserted(0);
+
+            resetNewVitalFields();
+
+            closeExpandableAddVital();
+            hideKeyboard();
+        }
     }
 }
