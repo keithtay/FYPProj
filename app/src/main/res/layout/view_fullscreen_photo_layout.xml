@@ -23,4 +23,17 @@
         android:textColor="#ffffff"
         android:text="Close" />
 
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:background="@drawable/button_background"
+        android:textColor="#ffffff"
+        android:text="Delete"
+        android:layout_alignTop="@+id/btnClose"
+        android:layout_toLeftOf="@+id/btnClose"
+        android:layout_toStartOf="@+id/btnClose" />
+
 </RelativeLayout>

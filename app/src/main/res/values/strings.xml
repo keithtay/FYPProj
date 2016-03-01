@@ -226,4 +226,6 @@
     <string name="gender">Gender</string>
     <string name="cancel">Cancel</string>
     <string name="autofill_form">Auto-fill Form</string>
+    <string name="deletePhotoDialogBoxNo">No</string>
+    <string name="deletePhotoDialogBoxYes">Yes</string>
 </resources>
