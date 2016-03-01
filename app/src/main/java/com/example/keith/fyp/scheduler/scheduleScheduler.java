@@ -62,6 +62,7 @@ public class scheduleScheduler {
             e.printStackTrace();
         }
 
+        removeallpatientallschedule(testDateNow.toString().substring(0,10));
         //to insert for everypatient schedule
         for (int i = 0; i< patient.size(); i++){
             dbfile db = new dbfile();
@@ -181,6 +182,7 @@ public class scheduleScheduler {
         //to insert for everypatient schedule
 
             dbfile db = new dbfile();
+            removeallschedule(testDateNow.toString().substring(0,10), patient.get(k).getAllocatonID());
 
             ArrayList<String> prescriptionCheck = new ArrayList<String>();
             ArrayList<DefaultEvent> routineCheck = new ArrayList<DefaultEvent>();
@@ -405,6 +407,16 @@ public class scheduleScheduler {
         try {
         Statement stmt = conn.createStatement();
         stmt.executeUpdate("UPDATE schedule SET isDeleted=1, isApproved=0 WHERE patientAllocationID=" + patientAllocationID + " AND dateStart='" + dateStart + "'" );}
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+    public void removeallpatientallschedule(String dateStart){
+        try {
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("UPDATE schedule SET isDeleted=1, isApproved=0 WHERE dateStart='" + dateStart + "'" );}
         catch (Exception e) {
             e.printStackTrace();
         }

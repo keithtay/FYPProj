@@ -91,6 +91,10 @@ public class HomeScheduleAdapter extends RecyclerView.Adapter<HomeScheduleAdapte
             String strDate2 = currentSchedule.getnActivityTime();
             int b1 = Integer.parseInt(strDate2.substring(0, 2));
             int b2 = Integer.parseInt(strDate2.substring(3, 5));
+            if(a2 >= 45){
+                a1 +=1;
+                a2 = 0;
+            }
             if (b1 - a1 == 0 && b2 - a2 <= 15) {
                 holder.nextActivityTime.setTextColor(Color.rgb(255, 0, 0));
             } else {
