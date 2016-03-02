@@ -53,6 +53,6 @@
             android:layout_height="wrap_content"
             android:text="Go to Game"
             android:textStyle="bold"
-            android:visibility="gone"/>
+            android:visibility="gone"/> <!-- remove this button for the actual implementation purposes, DEMO PURPOSES usage only. -->
     </LinearLayout>
 </LinearLayout>

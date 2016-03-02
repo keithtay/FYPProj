@@ -2016,7 +2016,7 @@ public class dbfile{
             Class.forName(driver).newInstance();
             conn = DriverManager.getConnection(connString, username, password);
             Statement stmt = conn.createStatement();
-            ResultSet reset = stmt.executeQuery("SELECT a.gameID, g.gameName\n" +
+            ResultSet reset = stmt.executeQuery("SELECT a.gameID, g.gameName, g.manifest\n" +
                     "FROM assignedGame AS a\n" +
                     "INNER JOIN game AS g\n" +
                     "ON a.gameID = g.gameID\n" +
@@ -2031,7 +2031,7 @@ public class dbfile{
                                                 "WHERE patientID = '"+patientId+ "' AND isApproved = "+ 1 +" AND isDeleted = "+0+" AND datediff(day, endDate, GETDATE())<=0 )");
             */
             while (reset.next()) {
-                listOfAssignedGames.add(reset.getString("gameName") + ". GameID: "+ reset.getString("gameID")); //the "fullstop" is essential in AssignedGamesActivity.java, try not to remove it.
+                listOfAssignedGames.add(reset.getString("gameName") + "-" + reset.getString("gameID")+ "-" + reset.getString("manifest")); //the "-" is essential in AssignedGamesActivity.java, act as delimiter.
             }
             conn.close();
         }

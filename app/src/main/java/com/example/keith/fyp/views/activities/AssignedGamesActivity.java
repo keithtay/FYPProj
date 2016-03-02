@@ -46,6 +46,8 @@ public class AssignedGamesActivity extends AppCompatActivity implements Drawer.O
     private Button runSelectedGameButton;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,18 +69,28 @@ public class AssignedGamesActivity extends AppCompatActivity implements Drawer.O
         Log.v("check patient nric ", i.getStringExtra("patientNRIC")); //test nric.
         Log.v("check patient ID ", ""+getPatientID); //test patient ID.
         allAssignedGameNames = db.getAssignedGamesOfPatient(getPatientID);
-        Log.v("abc", "" + allAssignedGameNames); //test show all assigned game names & gameID of selected patient.
+        Log.v("abc", "" + allAssignedGameNames); //test show all assigned game names, gameID & manifest of selected patient.
 
         //set textView of patient name and ID.
         patientName.setText("Patient Name: " + i.getStringExtra("patientName"));
         patientID.setText("Patient ID: " + getPatientID);
 
-        String[] mStringArray = new String[allAssignedGameNames.size()];
-        mStringArray = allAssignedGameNames.toArray(mStringArray);
-
-        //populate spinner with assigned games name and gameID of patient.
+        final String [] fullManifestName = new String[allAssignedGameNames.size()];
+        final String [] gameName = new String[allAssignedGameNames.size()];
+        final String [] gameID = new String[allAssignedGameNames.size()];
+        String [] splitedString;
+        for (int j = 0; j< allAssignedGameNames.size(); j++){
+            splitedString = allAssignedGameNames.get(j).split("-");
+            gameName[j] = splitedString[0]; //check game name.
+            gameID[j] = splitedString[1]; //check game ID.
+            fullManifestName[j] = splitedString[2]; //check manifest name.
+            Log.v("xyz2",gameName[j]);
+            Log.v("xyz2",gameID[j]);
+            Log.v("xyz2",fullManifestName[j]);
+        }
+        //populate spinner with assigned games name.
         assignedGamesSpinner = (MaterialSpinner) findViewById(R.id.list_of_assigned_games);
-        ArrayAdapter<String> assignedGamesAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mStringArray);
+        final ArrayAdapter<String> assignedGamesAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, gameName);
         assignedGamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         assignedGamesSpinner.setAdapter(assignedGamesAdapter);
 
@@ -86,46 +98,21 @@ public class AssignedGamesActivity extends AppCompatActivity implements Drawer.O
         runSelectedGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String assignedGamesSpinnerText = null;
-                String[] splitGameName;
-                String gameName;
+                int chosenItemPosition;
                 String errorMessage = getResources().getString(R.string.error_msg_field_required);
-                String packageName = "com.example.";
                 if (assignedGamesSpinner.getSelectedItemPosition() != 0) {
-                    assignedGamesSpinnerText = assignedGamesSpinner.getSelectedItem().toString();
-                    if (assignedGamesSpinnerText.contains(".")){
-                        splitGameName = assignedGamesSpinnerText.split("\\."); //split game name out via "fullstop" store in array [0].
-                        gameName = splitGameName[0];
-                        Log.v("gameName",gameName);
-                        packageName = gameName;
-                        if (packageName.contains("Memory Matrix")){
-                            packageName = "jb.esperanza";
-                        } else if (packageName.contains("Color Match")){
-                            packageName = "com.cgame.colourmatch";
-                        } else if (packageName.contains("Number Pop")){
-                            packageName = "com.example.numberpop";
-                        } else if (packageName.contains("Follow The Pattern")){
-                            packageName = "com.sng.followthepattern";
-                        } else if (packageName.contains("The Maze")){
-                            packageName = "com.example.amazinggame";
-                        } else if (packageName.contains("Puzzle")) {
-                            packageName = "com.example.elie.puzzle";
-                        }
-                        String chosenGameID= assignedGamesSpinnerText.replaceAll("[^0-9]", ""); //extract numbers(gameID) from spinnerText.
-                        Log.v("P-ID: "+getPatientID, "G-ID :"+chosenGameID);
-                        Log.v("package Name", packageName);
-                        Intent launchGameIntent = getPackageManager().getLaunchIntentForPackage(packageName); //androidManifest package name.
-                        launchGameIntent.putExtra("selectedPatientID", String.valueOf(getPatientID));
-                        launchGameIntent.putExtra("selectedGameID", chosenGameID);
-                        startActivity(launchGameIntent);
-                    }
-
+                    chosenItemPosition = assignedGamesSpinner.getSelectedItemPosition() - 1; //-1 because array starts from 0 and spinner starts from 1.
+                    Log.v("item Pos", "" + chosenItemPosition);
+                    Intent launchGameIntent = getPackageManager().getLaunchIntentForPackage(fullManifestName[chosenItemPosition]);
+                    launchGameIntent.putExtra("selectedPatientID", String.valueOf(getPatientID));
+                    launchGameIntent.putExtra("selectedGameID", gameID[chosenItemPosition]);
+                    Log.v("patientID", "intent:" + String.valueOf(getPatientID)); //check patient ID to be passed on to nxt intent.
+                    Log.v("gameID","intent:"+gameID[chosenItemPosition]); //check game ID to be passed on to nxt intent.
+                    startActivity(launchGameIntent);
                 }else{
                     assignedGamesSpinner.setError(errorMessage);
                 }
-
             }
-
         });
     }
 
@@ -146,36 +133,3 @@ public class AssignedGamesActivity extends AppCompatActivity implements Drawer.O
     }
 
 }
-/*
-//replace "runSelectedGameButton" on click listener when ALL game apps have a standardise naming convention in it's manifest.
-// standard proposed naming convention for game package: "com.example.[gameNameInLowerCaseAndNoSpacing]". can change as u fit.
-// FOR FUTURE DEVELOPMENT, sample source code for future developers (:
-
-                String assignedGamesSpinnerText = null;
-                String[] splitGameName;
-                String gameName;
-                String errorMessage = getResources().getString(R.string.error_msg_field_required);
-                String packageName = "com.example."; //set default string.
-                if (assignedGamesSpinner.getSelectedItemPosition() != 0) {
-                    assignedGamesSpinnerText = assignedGamesSpinner.getSelectedItem().toString();
-                    if (assignedGamesSpinnerText.contains(".")){
-                        splitGameName = assignedGamesSpinnerText.split("\\."); //split game name out via "fullstop" store in array [0].
-                        gameName = splitGameName[0];
-                        Log.v("gameName",gameName);
-                        packageName += gameName.replace(" ", "").toLowerCase();
-                        String chosenGameID= assignedGamesSpinnerText.replaceAll("[^0-9]", ""); //extract numbers(gameID) from spinnerText.
-                        Log.v("P-ID: "+getPatientID, "G-ID :"+chosenGameID); //check patient & game ID values.
-                        Log.v("package Name", packageName);
-                        Intent launchGameIntent = getPackageManager().getLaunchIntentForPackage(packageName); //androidManifest package name.
-                        launchGameIntent.putExtra("selectedPatientID", String.valueOf(getPatientID));
-                        launchGameIntent.putExtra("selectedGameID", chosenGameID);
-                        startActivity(launchGameIntent);
-                    }
-
-                }else{
-                    assignedGamesSpinner.setError(errorMessage);
-                }
-
-
-
- */
