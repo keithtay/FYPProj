@@ -21,7 +21,7 @@
         android:paddingBottom="2dp"
         android:background="@drawable/button_background"
         android:textColor="#ffffff"
-        android:text="Close" />
+        android:text="@string/fullScreenCloseButton" />
 
     <Button
         android:id="@+id/btnDelete"
@@ -31,7 +31,7 @@
         android:paddingBottom="2dp"
         android:background="@drawable/button_background"
         android:textColor="#ffffff"
-        android:text="Delete"
+        android:text="@string/fullScreenDeleteButton"
         android:layout_alignTop="@+id/btnClose"
         android:layout_toLeftOf="@+id/btnClose"
         android:layout_toStartOf="@+id/btnClose" />

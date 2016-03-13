@@ -13,14 +13,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Patient Name:"
+        android:text="@string/assignedGamesPatientName"
         android:id="@+id/patient_name_assigned_games" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Patient ID:"
+        android:text="@string/assignedGamesPatientID"
         android:id="@+id/patient_id_assigned_games" />
 
     <fr.ganfra.materialspinner.MaterialSpinner
@@ -48,8 +48,15 @@
         android:layout_alignParentRight="true"
         android:paddingLeft="@dimen/padding_flat_button"
         android:paddingRight="@dimen/padding_flat_button"
-        android:text="Run game"
+        android:text="@string/assignedGamesRunButton"
         android:textAllCaps="true"
         android:textColor="@color/primary"
         android:textStyle="bold" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/assignedGamesPreviouslyPlayedGames"
+        android:id="@+id/played_games" />
+
 </LinearLayout>

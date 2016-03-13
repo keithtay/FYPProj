@@ -228,4 +228,12 @@
     <string name="autofill_form">Auto-fill Form</string>
     <string name="deletePhotoDialogBoxNo">No</string>
     <string name="deletePhotoDialogBoxYes">Yes</string>
+    <string name="assignedGamesPatientName">Patient Name:</string>
+    <string name="assignedGamesPatientID">Patient ID:</string>
+    <string name="assignedGamesRunButton">Run Game</string>
+    <string name="assignedGamesPreviouslyPlayedGames">Previously played game(s) in game session:</string>
+    <string name="fullScreenDeleteButton">Delete</string>
+    <string name="fullScreenCloseButton">Close</string>
+    <string name="expandableAddPhotoHeader_title">Add New Photos</string>
+    <string name="expandableAddPhotoContent_TakePhotoButton">Take Photo</string>
 </resources>

@@ -8,9 +8,11 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.database.dbfile;
@@ -24,6 +26,7 @@ import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.MiniDrawer;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+import java.sql.Time;
 import java.util.ArrayList;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
@@ -44,7 +47,7 @@ public class AssignedGamesActivity extends AppCompatActivity implements Drawer.O
     protected Patient viewedPatient;
     private MaterialSpinner assignedGamesSpinner;
     private Button runSelectedGameButton;
-
+    private TextView playedGames;
 
 
 
@@ -63,6 +66,7 @@ public class AssignedGamesActivity extends AppCompatActivity implements Drawer.O
         patientName = (TextView) findViewById(R.id.patient_name_assigned_games);
         patientID = (TextView) findViewById(R.id.patient_id_assigned_games);
         runSelectedGameButton = (Button) findViewById(R.id.run_game_button);
+        playedGames = (TextView) findViewById(R.id.played_games);
 
         //retrieval of details for assignedGames.
         getPatientID = db.getPatientId(i.getStringExtra("patientNRIC"));
@@ -72,8 +76,8 @@ public class AssignedGamesActivity extends AppCompatActivity implements Drawer.O
         Log.v("abc", "" + allAssignedGameNames); //test show all assigned game names, gameID & manifest of selected patient.
 
         //set textView of patient name and ID.
-        patientName.setText("Patient Name: " + i.getStringExtra("patientName"));
-        patientID.setText("Patient ID: " + getPatientID);
+        patientName.append(" " + i.getStringExtra("patientName"));
+        patientID.append(" " + getPatientID);
 
         final String [] fullManifestName = new String[allAssignedGameNames.size()];
         final String [] gameName = new String[allAssignedGameNames.size()];
@@ -98,7 +102,7 @@ public class AssignedGamesActivity extends AppCompatActivity implements Drawer.O
         runSelectedGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int chosenItemPosition;
+                final int chosenItemPosition;
                 String errorMessage = getResources().getString(R.string.error_msg_field_required);
                 if (assignedGamesSpinner.getSelectedItemPosition() != 0) {
                     chosenItemPosition = assignedGamesSpinner.getSelectedItemPosition() - 1; //-1 because array starts from 0 and spinner starts from 1.
@@ -107,13 +111,15 @@ public class AssignedGamesActivity extends AppCompatActivity implements Drawer.O
                     launchGameIntent.putExtra("selectedPatientID", String.valueOf(getPatientID));
                     launchGameIntent.putExtra("selectedGameID", gameID[chosenItemPosition]);
                     Log.v("patientID", "intent:" + String.valueOf(getPatientID)); //check patient ID to be passed on to nxt intent.
-                    Log.v("gameID","intent:"+gameID[chosenItemPosition]); //check game ID to be passed on to nxt intent.
+                    Log.v("gameID", "intent:" + gameID[chosenItemPosition]); //check game ID to be passed on to nxt intent.
                     startActivity(launchGameIntent);
-                }else{
+                    playedGames.append(" "+ gameName[chosenItemPosition]+" "); //log down what kind of games played.
+                } else {
                     assignedGamesSpinner.setError(errorMessage);
                 }
             }
         });
+
     }
 
     @Override

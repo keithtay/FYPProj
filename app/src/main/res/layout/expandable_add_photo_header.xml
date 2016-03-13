@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="@dimen/paper_card_padding"
-        android:text="Add New Photos"
+        android:text="@string/expandableAddPhotoHeader_title"
         android:textAllCaps="true"
         android:textColor="@color/primary" />
 </LinearLayout>
