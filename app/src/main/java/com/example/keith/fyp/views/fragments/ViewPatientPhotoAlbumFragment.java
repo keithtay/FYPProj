@@ -2,7 +2,6 @@ package com.example.keith.fyp.views.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,7 +36,6 @@ import com.example.keith.fyp.R;
 import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.PhotoAlbum;
 import com.example.keith.fyp.utils.Global;
-import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.views.adapters.PhotoAlbumTitleAdapter;
 
 import java.io.ByteArrayOutputStream;
@@ -134,8 +132,8 @@ public class ViewPatientPhotoAlbumFragment extends Fragment {
 
         photoAlbumTitleSpinner = (MaterialSpinner) rootView.findViewById(R.id.photo_album_title_spinner);
         ArrayAdapter<CharSequence> photoAlbumTitleAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.option_album_title, android.R.layout.simple_spinner_item);
-        photoAlbumTitleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.array.option_album_title,R.layout.spinner_dropdown_item_photoalbum_assignedgames);
+        photoAlbumTitleAdapter.setDropDownViewResource(R.layout.spinner_dropdown_list_photoalbum_assignedgames);
         photoAlbumTitleSpinner.setAdapter(photoAlbumTitleAdapter);
 
 

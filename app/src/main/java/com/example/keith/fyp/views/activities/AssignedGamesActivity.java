@@ -1,32 +1,24 @@
 package com.example.keith.fyp.views.activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.keith.fyp.R;
 import com.example.keith.fyp.database.dbfile;
 import com.example.keith.fyp.models.DrawerAndMiniDrawerPair;
 import com.example.keith.fyp.models.Patient;
 import com.example.keith.fyp.utils.Global;
-import com.example.keith.fyp.utils.UtilsString;
 import com.example.keith.fyp.utils.UtilsUi;
-import com.example.keith.fyp.views.customviews.TextField;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.MiniDrawer;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-import java.sql.Time;
 import java.util.ArrayList;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
@@ -94,8 +86,8 @@ public class AssignedGamesActivity extends AppCompatActivity implements Drawer.O
         }
         //populate spinner with assigned games name.
         assignedGamesSpinner = (MaterialSpinner) findViewById(R.id.list_of_assigned_games);
-        final ArrayAdapter<String> assignedGamesAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, gameName);
-        assignedGamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        final ArrayAdapter<String> assignedGamesAdapter = new ArrayAdapter<String>(this, R.layout.spinner_dropdown_item_photoalbum_assignedgames, gameName);
+        assignedGamesAdapter.setDropDownViewResource(R.layout.spinner_dropdown_list_photoalbum_assignedgames);
         assignedGamesSpinner.setAdapter(assignedGamesAdapter);
 
         //'run game' button on click listener.
