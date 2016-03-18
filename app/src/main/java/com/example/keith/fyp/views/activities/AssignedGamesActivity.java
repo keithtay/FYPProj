@@ -1,6 +1,7 @@
 package com.example.keith.fyp.views.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -99,6 +100,10 @@ public class AssignedGamesActivity extends AppCompatActivity implements Drawer.O
                 if (assignedGamesSpinner.getSelectedItemPosition() != 0) {
                     chosenItemPosition = assignedGamesSpinner.getSelectedItemPosition() - 1; //-1 because array starts from 0 and spinner starts from 1.
                     Log.v("item Pos", "" + chosenItemPosition);
+                    TextView selectedText = (TextView) assignedGamesSpinner.getChildAt(0);
+                    if (selectedText != null) {
+                        selectedText.setTextColor(Color.RED);
+                    }
                     Intent launchGameIntent = getPackageManager().getLaunchIntentForPackage(fullManifestName[chosenItemPosition]);
                     launchGameIntent.putExtra("selectedPatientID", String.valueOf(getPatientID));
                     launchGameIntent.putExtra("selectedGameID", gameID[chosenItemPosition]);
