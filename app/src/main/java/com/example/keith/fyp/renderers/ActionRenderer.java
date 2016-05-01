@@ -140,7 +140,44 @@ public class ActionRenderer extends Renderer {
                         db.updateLogPatientInfo(logid, patientid, info[1], "guardianContactNo", UserID);
                     } else if (columnAffected.equals("Guardian Email")) {
                         db.updateLogPatientInfo(logid, patientid, info[1], "guardianEmail", UserID);
+                    } else if (columnAffected.equals("Live With")) {
+                        db.updateSocialHistory(logid,patientid,info[1], 0, UserID);
+                    }else if (columnAffected.equals("Diet")) {
+                        db.updateSocialHistory(logid,patientid,info[1], 1, UserID);
+                    }else if (columnAffected.equals("Religion")) {
+                        db.updateSocialHistory(logid,patientid,info[1], 2, UserID);
+                    }else if (columnAffected.equals("Sexually Active")) {
+                        db.updateSocialHistory(logid,patientid,info[1], 3, UserID);
+                    }else if (columnAffected.equals("Secondhand Smoker")) {
+                        db.updateSocialHistory(logid,patientid,info[1], 4, UserID);
+                    }else if (columnAffected.equals("Alcohol Use")) {
+                        db.updateSocialHistory(logid,patientid,info[1], 5, UserID);
+                    }else if (columnAffected.equals("Caffeine Use")) {
+                        db.updateSocialHistory(logid,patientid,info[1], 6, UserID);
+                    }else if (columnAffected.equals("Tobacco Use")) {
+                        db.updateSocialHistory(logid,patientid,info[1], 7, UserID);
+                    }else if (columnAffected.equals("Drug Use")) {
+                        db.updateSocialHistory(logid,patientid,info[1], 8, UserID);
+                    }else if (columnAffected.equals("Pet")) {
+                        db.updateSocialHistory(logid,patientid,info[1], 9, UserID);
+                    }else if (columnAffected.equals("Occupation")) {
+                        db.updateSocialHistory(logid,patientid,info[1], 10, UserID);
+                    }else if (columnAffected.equals("Like")) {
+                        db.updateSocialHistory(logid,patientid,info[1], 11, UserID);
+                    }else if (columnAffected.equals("Dislike")) {
+                        db.updateSocialHistory(logid,patientid,info[1], 12, UserID);
+                    }else if (columnAffected.equals("Hobby")) {
+                        db.updateSocialHistory(logid,patientid,info[1], 13, UserID);
+                    }else if (columnAffected.equals("Habbit")) {
+                        db.updateSocialHistory(logid,patientid,info[1], 14, UserID);
+                    }else if (columnAffected.equals("Holiday Experience")) {
+                        db.updateSocialHistory(logid,patientid,info[1], 15, UserID);
+                    }else if (columnAffected.equals("Education")) {
+                        db.updateSocialHistory(logid,patientid,info[1], 16, UserID);
+                    }else if (columnAffected.equals("Exercise")) {
+                        db.updateSocialHistory(logid,patientid,info[1], 17, UserID);
                     }
+
                 } else if (getNotificationId == 4) {
                     String[] newData = logdata.split(">");
                     db.updateLogPatientSpecInfo(logid, rowid, newData[0], UserID);

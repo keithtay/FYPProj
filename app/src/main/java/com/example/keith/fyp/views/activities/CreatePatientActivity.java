@@ -226,6 +226,9 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
                             String concatString = livewith + ";" + diet + ";" + religion+ ";" + sexuallyactive+ ";" + secondhandsmoker+ ";" + alcoholuse+ ";" + caffineuse+ ";" + tobbaco
                                     + ";" + druguse + ";" + pet + ";" + occupation + ";" + like+ ";" + dislike + ";" + hobby + ";" + habbit+ ";" + holidayExperience + ";" + education + ";" + exercise;
                             db.insertPatientSpec(concatString,id,3, UserTypeID, UserID);
+                        }else{
+                            String concatString = "null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null";
+                            db.insertPatientSpec(concatString,id,3, UserTypeID, UserID);
                         }
                         if (createdPatient.getPrescriptionList().size() >= 1){
                             ArrayList<Prescription> p1 = createdPatient.getPrescriptionList();

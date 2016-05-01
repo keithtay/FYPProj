@@ -70,7 +70,260 @@ public class dbfile{
     ArrayList<Patient> patientList = new ArrayList<>();
     ArrayList<Patient> patientList1 = new ArrayList<>();
     ArrayList<DefaultEvent> defaultEvent = new ArrayList<>();
+    public void SupinsertNewPatientInfo(String oldData, String newData, String columnAffected, int patientId, int UserTypeID, int UserID){
 
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            int checkIsSupervisor, checkIsSuper;
+            if(UserTypeID == 3){
+                checkIsSupervisor = 1;
+            }else{
+                checkIsSupervisor = 0;
+            }
+            if(checkIsSupervisor ==1){
+                checkIsSuper = UserID;
+            }else{
+                checkIsSuper = 0;
+            }
+            String allData = oldData +";"+ newData;
+            String logDesc = "New Update to Patient Particulars";
+            String tableAffected = "patient";
+            String sql1 = "INSERT INTO log " +
+                    "VALUES ('" + allData + "','" + logDesc + "'," + 4 + "," + patientId + "," + UserID + ",'" + checkIsSuper + "','" + columnAffected + "'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + null + "," + checkIsSupervisor + ",'" + timestamp + "')";
+            Statement stmt1 = conn.createStatement();
+            stmt1.executeUpdate(sql1);
+            if (columnAffected.equals("First Name")) {
+                stmt1.executeUpdate("UPDATE patient SET " + columnAffected + "='" + newData + "' WHERE patientID=" + patientId);
+            } else if (columnAffected.equals("Last Name")) {
+                stmt1.executeUpdate("UPDATE patient SET " + columnAffected + "='" + newData + "' WHERE patientID=" + patientId);
+            } else if (columnAffected.equals("NRIC")) {
+                stmt1.executeUpdate("UPDATE patient SET " + columnAffected + "='" + newData + "' WHERE patientID=" + patientId);
+            } else if (columnAffected.equals("Address")) {
+                stmt1.executeUpdate("UPDATE patient SET " + columnAffected + "='" + newData + "' WHERE patientID=" + patientId);
+            } else if (columnAffected.equals("Home Number")) {
+                stmt1.executeUpdate("UPDATE patient SET " + columnAffected + "='" + newData + "' WHERE patientID=" + patientId);
+            } else if (columnAffected.equals("Phone Number")) {
+                stmt1.executeUpdate("UPDATE patient SET " + columnAffected + "='" + newData + "' WHERE patientID=" + patientId);
+            } else if (columnAffected.equals("Gender")) {
+                stmt1.executeUpdate("UPDATE patient SET " + columnAffected + "='" + newData + "' WHERE patientID=" + patientId);
+            } else if (columnAffected.equals("Date of Birth")) {
+                stmt1.executeUpdate("UPDATE patient SET " + columnAffected + "='" + newData + "' WHERE patientID=" + patientId);
+            } else if (columnAffected.equals("Guardian Full Name")) {
+                stmt1.executeUpdate("UPDATE patient SET " + columnAffected + "='" + newData + "' WHERE patientID=" + patientId);
+            } else if (columnAffected.equals("Guardian Contact Number")) {
+                stmt1.executeUpdate("UPDATE patient SET " + columnAffected + "='" + newData + "' WHERE patientID=" + patientId);
+            } else if (columnAffected.equals("Guardian Email")) {
+                stmt1.executeUpdate("UPDATE patient SET " + columnAffected + "='" + newData + "' WHERE patientID=" + patientId);
+            } else if (columnAffected.equals("Live With")) {
+                ResultSet reset = stmt1.executeQuery("SELECT * from patientSpecInfo WHERE patientID=" + patientId + " AND specInfoID=3 AND isApproved=1");
+                String value ="";
+                while (reset.next()) {
+                    value = reset.getString("patientSpecInfoValue");
+                }
+                String[] info = value.split(";");
+                info[0] = newData;
+                String concat = info[0] + ";" + info[1] +";" + info[2] +";" + info[3] +";" + info[4] +";" + info[5] +";" + info[6] +";" + info[7] +";" + info[8] +";" + info[9] +";" + info[10] +";" + info[11] +";" + info[12] +";" + info[13] +";" + info[14] +";" + info[15] +";" + info[16] +";" + info[17];
+                stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + concat + "' WHERE patientID=" + patientId + " AND specInfoID=3");
+            }else if (columnAffected.equals("Diet")) {
+                ResultSet reset = stmt1.executeQuery("SELECT * from patientSpecInfo WHERE patientID=" + patientId + " AND specInfoID=3 AND isApproved=1");
+                String value ="";
+                while (reset.next()) {
+                    value = reset.getString("patientSpecInfoValue");
+                }
+                String[] info = value.split(";");
+                info[1] = newData;
+                String concat = info[0] + ";" + info[1] +";" + info[2] +";" + info[3] +";" + info[4] +";" + info[5] +";" + info[6] +";" + info[7] +";" + info[8] +";" + info[9] +";" + info[10] +";" + info[11] +";" + info[12] +";" + info[13] +";" + info[14] +";" + info[15] +";" + info[16] +";" + info[17];
+                stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + concat + "' WHERE patientID=" + patientId + " AND specInfoID=3");
+
+            }else if (columnAffected.equals("Religion")) {
+                ResultSet reset = stmt1.executeQuery("SELECT * from patientSpecInfo WHERE patientID=" + patientId + " AND specInfoID=3 AND isApproved=1");
+                String value ="";
+                while (reset.next()) {
+                    value = reset.getString("patientSpecInfoValue");
+                }
+                String[] info = value.split(";");
+                info[2] = newData;
+                String concat = info[0] + ";" + info[1] +";" + info[2] +";" + info[3] +";" + info[4] +";" + info[5] +";" + info[6] +";" + info[7] +";" + info[8] +";" + info[9] +";" + info[10] +";" + info[11] +";" + info[12] +";" + info[13] +";" + info[14] +";" + info[15] +";" + info[16] +";" + info[17];
+                stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + concat + "' WHERE patientID=" + patientId + " AND specInfoID=3");
+
+            }else if (columnAffected.equals("Sexually Active")) {
+                ResultSet reset = stmt1.executeQuery("SELECT * from patientSpecInfo WHERE patientID=" + patientId + " AND specInfoID=3 AND isApproved=1");
+                String value ="";
+                while (reset.next()) {
+                    value = reset.getString("patientSpecInfoValue");
+                }
+                String[] info = value.split(";");
+                info[3] = newData;
+                String concat = info[0] + ";" + info[1] +";" + info[2] +";" + info[3] +";" + info[4] +";" + info[5] +";" + info[6] +";" + info[7] +";" + info[8] +";" + info[9] +";" + info[10] +";" + info[11] +";" + info[12] +";" + info[13] +";" + info[14] +";" + info[15] +";" + info[16] +";" + info[17];
+                stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + concat + "' WHERE patientID=" + patientId + " AND specInfoID=3");
+
+            }else if (columnAffected.equals("Secondhand Smoker")) {
+                ResultSet reset = stmt1.executeQuery("SELECT * from patientSpecInfo WHERE patientID=" + patientId + " AND specInfoID=3 AND isApproved=1");
+                String value ="";
+                while (reset.next()) {
+                    value = reset.getString("patientSpecInfoValue");
+                }
+                String[] info = value.split(";");
+                info[4] = newData;
+                String concat = info[0] + ";" + info[1] +";" + info[2] +";" + info[3] +";" + info[4] +";" + info[5] +";" + info[6] +";" + info[7] +";" + info[8] +";" + info[9] +";" + info[10] +";" + info[11] +";" + info[12] +";" + info[13] +";" + info[14] +";" + info[15] +";" + info[16] +";" + info[17];
+                stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + concat + "' WHERE patientID=" + patientId + " AND specInfoID=3");
+
+            }else if (columnAffected.equals("Alcohol Use")) {
+                ResultSet reset = stmt1.executeQuery("SELECT * from patientSpecInfo WHERE patientID=" + patientId + " AND specInfoID=3 AND isApproved=1");
+                String value ="";
+                while (reset.next()) {
+                    value = reset.getString("patientSpecInfoValue");
+                }
+                String[] info = value.split(";");
+                info[5] = newData;
+                String concat = info[0] + ";" + info[1] +";" + info[2] +";" + info[3] +";" + info[4] +";" + info[5] +";" + info[6] +";" + info[7] +";" + info[8] +";" + info[9] +";" + info[10] +";" + info[11] +";" + info[12] +";" + info[13] +";" + info[14] +";" + info[15] +";" + info[16] +";" + info[17];
+                stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + concat + "' WHERE patientID=" + patientId + " AND specInfoID=3");
+
+            }else if (columnAffected.equals("Caffeine Use")) {
+                ResultSet reset = stmt1.executeQuery("SELECT * from patientSpecInfo WHERE patientID=" + patientId + " AND specInfoID=3 AND isApproved=1");
+                String value ="";
+                while (reset.next()) {
+                    value = reset.getString("patientSpecInfoValue");
+                }
+                String[] info = value.split(";");
+                info[6] = newData;
+                String concat = info[0] + ";" + info[1] +";" + info[2] +";" + info[3] +";" + info[4] +";" + info[5] +";" + info[6] +";" + info[7] +";" + info[8] +";" + info[9] +";" + info[10] +";" + info[11] +";" + info[12] +";" + info[13] +";" + info[14] +";" + info[15] +";" + info[16] +";" + info[17];
+                stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + concat + "' WHERE patientID=" + patientId + " AND specInfoID=3");
+
+            }else if (columnAffected.equals("Tobacco Use")) {
+                ResultSet reset = stmt1.executeQuery("SELECT * from patientSpecInfo WHERE patientID=" + patientId + " AND specInfoID=3 AND isApproved=1");
+                String value ="";
+                while (reset.next()) {
+                    value = reset.getString("patientSpecInfoValue");
+                }
+                String[] info = value.split(";");
+                info[7] = newData;
+                String concat = info[0] + ";" + info[1] +";" + info[2] +";" + info[3] +";" + info[4] +";" + info[5] +";" + info[6] +";" + info[7] +";" + info[8] +";" + info[9] +";" + info[10] +";" + info[11] +";" + info[12] +";" + info[13] +";" + info[14] +";" + info[15] +";" + info[16] +";" + info[17];
+                stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + concat + "' WHERE patientID=" + patientId + " AND specInfoID=3");
+
+            }else if (columnAffected.equals("Drug Use")) {
+                ResultSet reset = stmt1.executeQuery("SELECT * from patientSpecInfo WHERE patientID=" + patientId + " AND specInfoID=3 AND isApproved=1");
+                String value ="";
+                while (reset.next()) {
+                    value = reset.getString("patientSpecInfoValue");
+                }
+                String[] info = value.split(";");
+                info[8] = newData;
+                String concat = info[0] + ";" + info[1] +";" + info[2] +";" + info[3] +";" + info[4] +";" + info[5] +";" + info[6] +";" + info[7] +";" + info[8] +";" + info[9] +";" + info[10] +";" + info[11] +";" + info[12] +";" + info[13] +";" + info[14] +";" + info[15] +";" + info[16] +";" + info[17];
+                stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + concat + "' WHERE patientID=" + patientId + " AND specInfoID=3");
+
+            }else if (columnAffected.equals("Pet")) {
+                ResultSet reset = stmt1.executeQuery("SELECT * from patientSpecInfo WHERE patientID=" + patientId + " AND specInfoID=3 AND isApproved=1");
+                String value ="";
+                while (reset.next()) {
+                    value = reset.getString("patientSpecInfoValue");
+                }
+                String[] info = value.split(";");
+                info[9] = newData;
+                String concat = info[0] + ";" + info[1] +";" + info[2] +";" + info[3] +";" + info[4] +";" + info[5] +";" + info[6] +";" + info[7] +";" + info[8] +";" + info[9] +";" + info[10] +";" + info[11] +";" + info[12] +";" + info[13] +";" + info[14] +";" + info[15] +";" + info[16] +";" + info[17];
+                stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + concat + "' WHERE patientID=" + patientId + " AND specInfoID=3");
+
+            }else if (columnAffected.equals("Occupation")) {
+                ResultSet reset = stmt1.executeQuery("SELECT * from patientSpecInfo WHERE patientID=" + patientId + " AND specInfoID=3 AND isApproved=1");
+                String value ="";
+                while (reset.next()) {
+                    value = reset.getString("patientSpecInfoValue");
+                }
+                String[] info = value.split(";");
+                info[10] = newData;
+                String concat = info[0] + ";" + info[1] +";" + info[2] +";" + info[3] +";" + info[4] +";" + info[5] +";" + info[6] +";" + info[7] +";" + info[8] +";" + info[9] +";" + info[10] +";" + info[11] +";" + info[12] +";" + info[13] +";" + info[14] +";" + info[15] +";" + info[16] +";" + info[17];
+                stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + concat + "' WHERE patientID=" + patientId + " AND specInfoID=3");
+
+            }else if (columnAffected.equals("Like")) {
+                ResultSet reset = stmt1.executeQuery("SELECT * from patientSpecInfo WHERE patientID=" + patientId + " AND specInfoID=3 AND isApproved=1");
+                String value ="";
+                while (reset.next()) {
+                    value = reset.getString("patientSpecInfoValue");
+                }
+                String[] info = value.split(";");
+                info[11] = newData;
+                String concat = info[0] + ";" + info[1] +";" + info[2] +";" + info[3] +";" + info[4] +";" + info[5] +";" + info[6] +";" + info[7] +";" + info[8] +";" + info[9] +";" + info[10] +";" + info[11] +";" + info[12] +";" + info[13] +";" + info[14] +";" + info[15] +";" + info[16] +";" + info[17];
+                stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + concat + "' WHERE patientID=" + patientId + " AND specInfoID=3");
+
+            }else if (columnAffected.equals("Dislike")) {
+                ResultSet reset = stmt1.executeQuery("SELECT * from patientSpecInfo WHERE patientID=" + patientId + " AND specInfoID=3 AND isApproved=1");
+                String value ="";
+                while (reset.next()) {
+                    value = reset.getString("patientSpecInfoValue");
+                }
+                String[] info = value.split(";");
+                info[12] = newData;
+                String concat = info[0] + ";" + info[1] +";" + info[2] +";" + info[3] +";" + info[4] +";" + info[5] +";" + info[6] +";" + info[7] +";" + info[8] +";" + info[9] +";" + info[10] +";" + info[11] +";" + info[12] +";" + info[13] +";" + info[14] +";" + info[15] +";" + info[16] +";" + info[17];
+                stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + concat + "' WHERE patientID=" + patientId + " AND specInfoID=3");
+
+            }else if (columnAffected.equals("Hobby")) {
+                ResultSet reset = stmt1.executeQuery("SELECT * from patientSpecInfo WHERE patientID=" + patientId + " AND specInfoID=3 AND isApproved=1");
+                String value ="";
+                while (reset.next()) {
+                    value = reset.getString("patientSpecInfoValue");
+                }
+                String[] info = value.split(";");
+                info[13] = newData;
+                String concat = info[0] + ";" + info[1] +";" + info[2] +";" + info[3] +";" + info[4] +";" + info[5] +";" + info[6] +";" + info[7] +";" + info[8] +";" + info[9] +";" + info[10] +";" + info[11] +";" + info[12] +";" + info[13] +";" + info[14] +";" + info[15] +";" + info[16] +";" + info[17];
+                stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + concat + "' WHERE patientID=" + patientId + " AND specInfoID=3");
+
+            }else if (columnAffected.equals("Habbit")) {
+                ResultSet reset = stmt1.executeQuery("SELECT * from patientSpecInfo WHERE patientID=" + patientId + " AND specInfoID=3 AND isApproved=1");
+                String value ="";
+                while (reset.next()) {
+                    value = reset.getString("patientSpecInfoValue");
+                }
+                String[] info = value.split(";");
+                info[14] = newData;
+                String concat = info[0] + ";" + info[1] +";" + info[2] +";" + info[3] +";" + info[4] +";" + info[5] +";" + info[6] +";" + info[7] +";" + info[8] +";" + info[9] +";" + info[10] +";" + info[11] +";" + info[12] +";" + info[13] +";" + info[14] +";" + info[15] +";" + info[16] +";" + info[17];
+                stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + concat + "' WHERE patientID=" + patientId + " AND specInfoID=3");
+
+            }else if (columnAffected.equals("Holiday Experience")) {
+                ResultSet reset = stmt1.executeQuery("SELECT * from patientSpecInfo WHERE patientID=" + patientId + " AND specInfoID=3 AND isApproved=1");
+                String value ="";
+                while (reset.next()) {
+                    value = reset.getString("patientSpecInfoValue");
+                }
+                String[] info = value.split(";");
+                info[15] = newData;
+                String concat = info[0] + ";" + info[1] +";" + info[2] +";" + info[3] +";" + info[4] +";" + info[5] +";" + info[6] +";" + info[7] +";" + info[8] +";" + info[9] +";" + info[10] +";" + info[11] +";" + info[12] +";" + info[13] +";" + info[14] +";" + info[15] +";" + info[16] +";" + info[17];
+                stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + concat + "' WHERE patientID=" + patientId + " AND specInfoID=3");
+
+            }else if (columnAffected.equals("Education")) {
+                ResultSet reset = stmt1.executeQuery("SELECT * from patientSpecInfo WHERE patientID=" + patientId + " AND specInfoID=3 AND isApproved=1");
+                String value ="";
+                while (reset.next()) {
+                    value = reset.getString("patientSpecInfoValue");
+                }
+                String[] info = value.split(";");
+                info[16] = newData;
+                String concat = info[0] + ";" + info[1] +";" + info[2] +";" + info[3] +";" + info[4] +";" + info[5] +";" + info[6] +";" + info[7] +";" + info[8] +";" + info[9] +";" + info[10] +";" + info[11] +";" + info[12] +";" + info[13] +";" + info[14] +";" + info[15] +";" + info[16] +";" + info[17];
+                stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + concat + "' WHERE patientID=" + patientId + " AND specInfoID=3");
+
+            }else if (columnAffected.equals("Exercise")) {
+                ResultSet reset = stmt1.executeQuery("SELECT * from patientSpecInfo WHERE patientID=" + patientId + " AND specInfoID=3 AND isApproved=1");
+                String value ="";
+                while (reset.next()) {
+                    value = reset.getString("patientSpecInfoValue");
+                }
+                String[] info = value.split(";");
+                info[17] = newData;
+                String concat = info[0] + ";" + info[1] +";" + info[2] +";" + info[3] +";" + info[4] +";" + info[5] +";" + info[6] +";" + info[7] +";" + info[8] +";" + info[9] +";" + info[10] +";" + info[11] +";" + info[12] +";" + info[13] +";" + info[14] +";" + info[15] +";" + info[16] +";" + info[17];
+                stmt1.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + concat + "' WHERE patientID=" + patientId + " AND specInfoID=3");
+
+            }
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void insertNewPatientInfo(String oldData, String newData, String columnAffected, int patientId, int UserTypeID, int UserID){
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
@@ -343,6 +596,32 @@ public class dbfile{
             Log.v("WHY NEVER READ", "W");
                 stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID +" WHERE logID=" + logid);
                 stmt.executeUpdate("UPDATE patient SET " + columnname + "='" + newData + "' WHERE patientID=" + patientid);
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void updateSocialHistory(int logid, int patientid, String newData, int number,int UserID ){
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+        Connection conn = null;
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(connString, username, password);
+            Statement stmt = conn.createStatement();
+            ResultSet reset = stmt.executeQuery("SELECT * from patientSpecInfo WHERE patientID=" + patientid + " AND specInfoID=3 AND isApproved=1");
+            String value ="";
+            while (reset.next()) {
+                value = reset.getString("patientSpecInfoValue");
+            }
+            String[] info = value.split(";");
+            info[number] = newData;
+            String concat = info[0] + ";" + info[1] +";" + info[2] +";" + info[3] +";" + info[4] +";" + info[5] +";" + info[6] +";" + info[7] +";" + info[8] +";" + info[9] +";" + info[10] +";" + info[11] +";" + info[12] +";" + info[13] +";" + info[14] +";" + info[15] +";" + info[16] +";" + info[17];
+            stmt.executeUpdate("UPDATE log SET isDeleted=1, userIDApproved=" + UserID +" WHERE logID=" + logid);
+            stmt.executeUpdate("UPDATE patientSpecInfo SET patientSpecInfoValue='" + concat + "' WHERE patientID=" + patientid + " AND specInfoID=3");
             conn.close();
         } catch (Exception e) {
             e.printStackTrace();

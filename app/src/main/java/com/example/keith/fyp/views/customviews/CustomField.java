@@ -366,7 +366,7 @@ public class CustomField extends LinearLayout {
         int x = db.getPatientId(selectedPatientNric);
         if (UserTypeID ==3){
             newValue = fieldValueEditText.getText().toString();
-            db.insertNewPatientInfo(oldValue, newValue, fieldTitleStr, x, UserTypeID, UserID);
+            db.SupinsertNewPatientInfo(oldValue, newValue, fieldTitleStr, x, UserTypeID, UserID);
             oldValue = newValue;
         }else{
             newValue = fieldValueEditText.getText().toString();

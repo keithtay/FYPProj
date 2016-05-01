@@ -329,7 +329,12 @@ public class HomeScheduleFragment extends Fragment {
                 }else{
                     check = false;
                 }
-                holder = patientScheduleList.get(i + 1).getNric();
+                if(i+1 >= patientScheduleList.size()) {
+                    holder = patientScheduleList.get(i).getNric();
+                }else{
+                  holder = patientScheduleList.get(i + 1).getNric();
+                }
+
                 String date2 = patientScheduleList.get(i).getnActivityTime();
                 String e1 = date2.substring(0, 2);
                 String e2 = date2.substring(3, 5);
