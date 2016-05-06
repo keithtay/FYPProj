@@ -107,8 +107,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Temperature (\u00B0C)"
-                            android:inputType="number"
-                            android:nextFocusDown="@+id/vital_item_blood_pressure_systol_edit_text" />
+                            android:nextFocusDown="@+id/vital_item_blood_pressure_systol_edit_text"
+                            android:inputType="numberDecimal" />
                     </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
@@ -131,8 +131,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Blood Pressure (Systol)"
-                            android:inputType="number"
-                            android:nextFocusDown="@+id/vital_item_blood_pressure_diastol_edit_text" />
+                            android:nextFocusDown="@+id/vital_item_blood_pressure_diastol_edit_text"
+                            android:inputType="numberDecimal" />
                     </android.support.design.widget.TextInputLayout>
 
                     <View
@@ -150,7 +150,7 @@
                             android:layout_height="wrap_content"
                             android:hint="Blood Pressure (Diastol)"
                             android:imeOptions="actionNext"
-                            android:inputType="number"
+                            android:inputType="numberDecimal"
                             android:nextFocusDown="@+id/vital_item_height_edit_text" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -174,8 +174,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Height (cm)"
-                            android:inputType="number"
-                            android:nextFocusDown="@+id/vital_item_weight_edit_text" />
+                            android:nextFocusDown="@+id/vital_item_weight_edit_text"
+                            android:inputType="numberDecimal" />
                     </android.support.design.widget.TextInputLayout>
 
                     <View
@@ -192,8 +192,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Weight (kg)"
-                            android:inputType="number"
-                            android:nextFocusDown="@+id/vital_item_notes_edit_text" />
+                            android:nextFocusDown="@+id/vital_item_notes_edit_text"
+                            android:inputType="numberDecimal" />
                     </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>

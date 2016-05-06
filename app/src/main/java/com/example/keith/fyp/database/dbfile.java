@@ -1332,6 +1332,7 @@ public class dbfile{
                     String[] vital1 = vital.split(";");
                     String test = vital1[0];
                     DateTime a = DateTime.parse(test);
+                    Log.v("Temp:", vital1[2]);
                     Vital vital2 = new Vital(a, Boolean.valueOf(vital1[1]),Float.parseFloat(vital1[2]),
                             Float.parseFloat(vital1[3]),Float.parseFloat(vital1[4]),Float.parseFloat(vital1[5]),Float.parseFloat(vital1[6]),
                             vital1[7]);
@@ -2025,14 +2026,14 @@ public class dbfile{
                 conn.close();
             }else if(specValue == 3){
                 String sql = "INSERT INTO patientSpecInfo " +
-                        "VALUES ('" + info + "'," + patientId + "," + 3 + "," + 0 + "," + checkIsSupervisor + ",'"+ timestamp + "')";
+                        "VALUES ('" + info + "'," + patientId + "," + 3 + "," + 0 + "," + 1 + ",'"+ timestamp + "')";
                 PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 stmt.executeUpdate();
                 ResultSet rs = stmt.getGeneratedKeys();
                 if(rs.next()) {
                     int key = rs.getInt(1);
                     String sql1 = "INSERT INTO log " +
-                            "VALUES ('" + info + "','" + "New Social History Spec Info for patient" + "'," + 2 + "," + patientId + "," + UserID + "," + checkSuper + ",'social history'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + "," + k + ",'" + timestamp + "')";
+                            "VALUES ('" + info + "','" + "New Social History Spec Info for patient" + "'," + 2 + "," + patientId + "," + UserID + "," + checkSuper + ",'social history'," + null + ",'" + tableAffected + "','" + columnAffected + "'," + key + "," + 1 + ",'" + timestamp + "')";
                     Statement stmt1 = conn.createStatement();
                     stmt1.executeUpdate(sql1);
                 }
@@ -2065,9 +2066,9 @@ public class dbfile{
                     stmt1.executeUpdate(sql1);
                 }
                 conn.close();
-            }else if(specValue == 12){
+            }else if(specValue == 13){
                 String sql = "INSERT INTO patientSpecInfo " +
-                        "VALUES ('" + info + "'," + patientId + "," + 12 + "," + 0 + "," + checkIsSupervisor + ",'"+ timestamp + "')";
+                        "VALUES ('" + info + "'," + patientId + "," + 13 + "," + 0 + "," + checkIsSupervisor + ",'"+ timestamp + "')";
                 PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 stmt.executeUpdate();
                 ResultSet rs = stmt.getGeneratedKeys();

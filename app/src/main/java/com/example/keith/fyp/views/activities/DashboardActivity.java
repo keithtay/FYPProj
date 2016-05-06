@@ -68,7 +68,7 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
         }
 
         View contentWrapper = findViewById(R.id.dashboard_fragment_container);
-        DrawerAndMiniDrawerPair drawerAndMiniDrawerPair = UtilsUi.setNavigationDrawer(this, contentWrapper, this, savedInstanceState);
+        DrawerAndMiniDrawerPair drawerAndMiniDrawerPair = UtilsUi.setNavigationDrawer(this, contentWrapper, this, savedInstanceState, UserID);
         this.navDrawer = drawerAndMiniDrawerPair.getDrawer();
         this.miniDrawer = drawerAndMiniDrawerPair.getMiniDrawer();
 
@@ -325,11 +325,17 @@ public class DashboardActivity extends AppCompatActivity implements OnNotificati
                 case Global.NAVIGATION_CARE_CENTER_CONFIG_ID:
                     fragmentToBeDisplayed = new CareCenterConfigFragment();
                     break;
-                case 5:
-                    finish();
-                    System.exit(0);
-                    break;
+//                case 5:
+////                    fragmentToBeDisplayed = new HomeScheduleFragment();
+////                    moveTaskToBack(true);
+//                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+//                    startActivity(intent);
+//                    break;
+
             }
+//                    finish();
+//                    System.exit(0);
+
 
             miniDrawer.updateItem(currentDisplayedFragmentId);
 

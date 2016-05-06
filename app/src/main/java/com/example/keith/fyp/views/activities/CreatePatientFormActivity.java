@@ -3,6 +3,7 @@ package com.example.keith.fyp.views.activities;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -61,7 +62,9 @@ public class CreatePatientFormActivity extends PatientFormActivity implements Dr
         selectedPatientDraftId = getIntent().getStringExtra(Global.EXTRA_SELECTED_PATIENT_DRAFT_ID);
 
         createdPatient = DataHolder.getCreatedPatient();
-
+        SharedPreferences preferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+        final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
+        final int UserID = Integer.parseInt(preferences.getString("userid",""));
         Intent intent = getIntent();
         int selectedCategoryIndex = intent.getIntExtra(Global.EXTRA_SELECTED_CATEGORY, 0);
         Fragment fragmentToBeDisplayed = CreatePatientFormFragmentEncoder.getFragment(selectedCategoryIndex);
@@ -80,7 +83,7 @@ public class CreatePatientFormActivity extends PatientFormActivity implements Dr
         transaction.commit();
 
         View contentWrapper = findViewById(R.id.activity_content_container);
-        DrawerAndMiniDrawerPair drawerAndMiniDrawerPair = UtilsUi.setNavigationDrawer(this, contentWrapper, this, savedInstanceState);
+        DrawerAndMiniDrawerPair drawerAndMiniDrawerPair = UtilsUi.setNavigationDrawer(this, contentWrapper, this, savedInstanceState, UserID);
         this.navDrawer = drawerAndMiniDrawerPair.getDrawer();
         this.miniDrawer = drawerAndMiniDrawerPair.getMiniDrawer();
 

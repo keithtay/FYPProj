@@ -64,9 +64,11 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         init();
-
+        SharedPreferences preferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+        final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
+        final int UserID = Integer.parseInt(preferences.getString("userid",""));
         View contentWrapper = findViewById(R.id.activity_content_container);
-        DrawerAndMiniDrawerPair drawerAndMiniDrawerPair = UtilsUi.setNavigationDrawer(this, contentWrapper, this, savedInstanceState);
+        DrawerAndMiniDrawerPair drawerAndMiniDrawerPair = UtilsUi.setNavigationDrawer(this, contentWrapper, this, savedInstanceState, UserID);
         this.navDrawer = drawerAndMiniDrawerPair.getDrawer();
         this.miniDrawer = drawerAndMiniDrawerPair.getMiniDrawer();
 
@@ -188,7 +190,7 @@ public class ViewScheduleActivity extends ScheduleActivity implements Drawer.OnD
                     String info = creationDate.toString() + ";" + category + ";" + notes;
                     dbfile db = new dbfile();
                     int x = db.getPatientId(viewedPatient.getNric());
-                    db.insertPatientSpec(info, x, 12, UserTypeID,UserID);
+                    db.insertPatientSpec(info, x, 13, UserTypeID,UserID);
                     dialog.dismiss();
                 }
             }

@@ -3,7 +3,9 @@ package com.example.keith.fyp.views.activities;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,10 +37,12 @@ public class CareCenterConfigDetailActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_care_center_config_detail);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        SharedPreferences preferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+        final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
+        final int UserID = Integer.parseInt(preferences.getString("userid",""));
         View contentWrapper = findViewById(R.id.activity_content_container);
         DrawerAndMiniDrawerPair drawerAndMiniDrawerPair = UtilsUi.setNavigationDrawer(this, contentWrapper,
-                this, savedInstanceState);
+                this, savedInstanceState, UserID);
         this.navDrawer = drawerAndMiniDrawerPair.getDrawer();
         this.miniDrawer = drawerAndMiniDrawerPair.getMiniDrawer();
 

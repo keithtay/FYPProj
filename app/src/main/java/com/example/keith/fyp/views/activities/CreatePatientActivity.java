@@ -143,7 +143,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
         infoCategListFragment.setCommunicator(this);
 
         View contentWrapper = findViewById(R.id.activity_content_container);
-        DrawerAndMiniDrawerPair drawerAndMiniDrawerPair = UtilsUi.setNavigationDrawer(this, contentWrapper, this, savedInstanceState);
+        DrawerAndMiniDrawerPair drawerAndMiniDrawerPair = UtilsUi.setNavigationDrawer(this, contentWrapper, this, savedInstanceState, UserID);
         this.navDrawer = drawerAndMiniDrawerPair.getDrawer();
         this.miniDrawer = drawerAndMiniDrawerPair.getMiniDrawer();
 
@@ -227,7 +227,7 @@ public class CreatePatientActivity extends AppCompatActivity implements CreatePa
                                     + ";" + druguse + ";" + pet + ";" + occupation + ";" + like+ ";" + dislike + ";" + hobby + ";" + habbit+ ";" + holidayExperience + ";" + education + ";" + exercise;
                             db.insertPatientSpec(concatString,id,3, UserTypeID, UserID);
                         }else{
-                            String concatString = "null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null";
+                            String concatString = " ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ";
                             db.insertPatientSpec(concatString,id,3, UserTypeID, UserID);
                         }
                         if (createdPatient.getPrescriptionList().size() >= 1){

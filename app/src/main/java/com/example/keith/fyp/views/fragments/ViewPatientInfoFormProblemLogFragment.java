@@ -203,7 +203,7 @@ public class ViewPatientInfoFormProblemLogFragment extends ViewPatientInfoFormFr
         String info = newProblemLog.getCreationDate() + ";" + newProblemLog.getCategory() + ";" + newProblemLog.getNotes();
         dbfile db = new dbfile();
         int x = db.getPatientId(viewedPatient.getNric());
-        db.insertPatientSpec(info, x, 12, UserTypeID,UserID);
+        db.insertPatientSpec(info, x, 13, UserTypeID,UserID);
         resetNewProblemLogFields();
 
         closeExpandableAddProblemLog();

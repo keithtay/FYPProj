@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -284,9 +285,18 @@ public class UtilsUi {
      * @param savedInstanceState save instance state
      * @return pair of navigation drawer and mini navigation drawer
      */
-    public static DrawerAndMiniDrawerPair setNavigationDrawer(Activity activity, View contentWrapper, Drawer.OnDrawerItemClickListener drawerItemClickListener, Bundle savedInstanceState) {
+    public static DrawerAndMiniDrawerPair setNavigationDrawer(Activity activity, View contentWrapper, Drawer.OnDrawerItemClickListener drawerItemClickListener, Bundle savedInstanceState, int UserID) {
         Resources resource = activity.getResources();
-        final IProfile profile = new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").withIcon(resource.getDrawable(R.drawable.avatar1));
+        final IProfile profile;
+        if (UserID == 4) { //adeline
+            profile = new ProfileDrawerItem().withName("Adeline Tan").withEmail("adelinetan@gmail.com").withIcon(resource.getDrawable(R.drawable.adelinetan));
+        }else if (UserID == 5) { // jess
+            profile = new ProfileDrawerItem().withName("Jess Sim").withEmail("jesssim@gmail.com").withIcon(resource.getDrawable(R.drawable.jesssim));
+        }else if (UserID == 6) { //Andy
+            profile = new ProfileDrawerItem().withName("Andy Tan").withEmail("andytan@gmail.com").withIcon(resource.getDrawable(R.drawable.andytan));
+        }else{
+            profile = new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").withIcon(resource.getDrawable(R.drawable.avatar1));
+        }
 
         AccountHeader accountHeader = new AccountHeaderBuilder()
                 .withActivity(activity)
@@ -297,7 +307,7 @@ public class UtilsUi {
                 .build();
 
         PrimaryDrawerItem homeDrawerItem = new PrimaryDrawerItem()
-                .withName(R.string.nav_patient_list)
+                .withName("Patient's Current Activity")
                 .withIcon(GoogleMaterial.Icon.gmd_supervisor_account)
                 .withIdentifier(Global.NAVIGATION_PATIENT_LIST_ID);
         String notificationCount = Integer.toString(UtilsUi.countUnprocessedNotificationGroup());
@@ -308,17 +318,17 @@ public class UtilsUi {
                 .withBadgeStyle(getVisibleBadgeStyle(activity))
                 .withIdentifier(Global.NAVIGATION_NOTIFICATION_ID);
         PrimaryDrawerItem accountDrawerItem = new PrimaryDrawerItem()
-                .withName(R.string.nav_account)
+                .withName("Patient List")
                 .withIcon(GoogleMaterial.Icon.gmd_person)
                 .withIdentifier(3);
         PrimaryDrawerItem settingsDrawerItem = new PrimaryDrawerItem()
                 .withName(R.string.nav_care_center_config)
                 .withIcon(FontAwesome.Icon.faw_building)
                 .withIdentifier(Global.NAVIGATION_CARE_CENTER_CONFIG_ID);
-        PrimaryDrawerItem logoutDrawerItem = new PrimaryDrawerItem()
-                .withName(R.string.nav_care_center_config)
-                .withIcon(GoogleMaterial.Icon.gmd_lock_outline)
-                .withIdentifier(5);
+//        PrimaryDrawerItem logoutDrawerItem = new PrimaryDrawerItem()
+//                .withName(R.string.nav_care_center_config)
+//                .withIcon(GoogleMaterial.Icon.gmd_lock_outline)
+//                .withIdentifier(5);
 //        PrimaryDrawerItem logoutItem = new PrimaryDrawerItem()
 //                .withName(R.string.nav_care_center_config)
 //                .withIcon(FontAwesome.Icon.faw_sign_out)
@@ -332,8 +342,8 @@ public class UtilsUi {
                         homeDrawerItem,
                         notificationDrawerItem,
                         accountDrawerItem,
-                        settingsDrawerItem,
-                        logoutDrawerItem
+                        settingsDrawerItem
+//                        logoutDrawerItem
 //                        logoutItem
                 )
                 .withOnDrawerItemClickListener(drawerItemClickListener)

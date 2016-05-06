@@ -297,6 +297,7 @@ public class ViewPatientInfoFormVitalFragment extends ViewPatientInfoFormFragmen
 
             int x = db.getPatientId(viewedPatient.getNric());
 
+            Log.v("Temperature" , String.valueOf(temperature));
             db.insertPatientSpec(info, x, 2, UserTypeID, UserID);
             if (UserTypeID == 3) {
                 Vital newVital = new Vital(dateTimeToSave, isBeforeMeal, temperature, bloodPressureSystol, bloodPressureDiastol, height, weight, notes);

@@ -51,12 +51,14 @@ public class ViewPatientActivity extends AppCompatActivity  implements CreatePat
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getPatientInfoDetails();
-
+        SharedPreferences preferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+        final int UserTypeID = Integer.parseInt(preferences.getString("userTypeId", ""));
+        final int UserID = Integer.parseInt(preferences.getString("userid",""));
         inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         View contentWrapper = findViewById(R.id.activity_content_container);
         DrawerAndMiniDrawerPair drawerAndMiniDrawerPair = UtilsUi.setNavigationDrawer(this, contentWrapper,
-                this, savedInstanceState);
+                this, savedInstanceState, UserID);
         this.navDrawer = drawerAndMiniDrawerPair.getDrawer();
         this.miniDrawer = drawerAndMiniDrawerPair.getMiniDrawer();
 
